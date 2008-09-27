@@ -5,20 +5,21 @@
 	Notes: You may adjust all the required settings here to run Plans
 */
 
+require_once('Configuration.php');
+
 //What is the database table?
-$dbtable = "plans";
+$dbtable = MYSQL_DB;
 
 //What is the database login name?
 
-$dbloginname = "plans";
+$dbloginname = MYSQL_USER;
 
 //What is the database password?
 
-#$dbloginpassword = "'M>e4oV'";
-$dbloginpassword = "'wIM2bHI'";
+$dbloginpassword = MYSQL_PASS;
 
 //What is the server the database is on?
 
-$dbserver = "'127.0.0.1'";
+$dbserver = MYSQL_HOST;
 
 ?>

@@ -31,12 +31,7 @@ Grinnell, IA 50112
 
 */
 
-//require("config-db.php");
-
-$dbserver = 'plans';
-$dbloginname = 'plans';
-$dbloginpassword = 'M>e4oV';
-$dbtable = '127.0.0.1';
+include("config-db.php");
 
 /*
  *Connects to the Database and returns the database handler.
@@ -46,7 +41,6 @@ $dbtable = '127.0.0.1';
  function db_connect() {
 	 global $dbloginpassword ;
 	 $dbh = mysql_connect('127.0.0.1', 'plans', $dbloginpassword); //$dbloginpassword);
-	 //$dbh = @ mysql_pconnect('127.0.0.1','test','');
 	 mysql_select_db('plans');
 	 if (!$dbh)
 	 {

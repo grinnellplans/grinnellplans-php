@@ -1,0 +1,803 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.5.4	//
+FunctionReference	overlib.js	/^function FunctionReference() {$/;"	f
+Info	overlib.js	/^function Info(version, prerelease) {$/;"	f
+OLonLoad_handler	overlib.js	/^function OLonLoad_handler(e) {$/;"	f
+Show_Stuff	board_messages.php	/^	function Show_Stuff(Click_Menu)$/;"	f
+TZ	config.php	/^$TZ='America\/Chicago';$/;"	v
+TZ	functions.php	/^$TZ='America\/Chicago';$/;"	v
+add_param	functions-autofinger.php	/^function add_param($url, $name, $value) {$/;"	f
+add_row	dbfunctions.php	/^function add_row($dbh, $table, $row)$/;"	f
+add_row	functions-database.php	/^function add_row($dbh, $table, $row)$/;"	f
+added_id	functions-kommand.php	/^	$added_id = get_item($dbh,"userid","accounts","username", $added_name);$/;"	v
+admin_email	register.php	/^$admin_email = "grinnellplans@gmail.com";$/;"	v
+annihilate	dbfunctions.php	/^function annihilate($dbh, $table)$/;"	f
+annihilate	functions-database.php	/^function annihilate($dbh, $table)$/;"	f
+argToString	overlib.js	/^function argToString(array, strtInd, argName) {$/;"	f
+arlist	autoread.php	/^	$arlist = get_items($dbh,"interest,priority","autofinger","owner", $idcookie); \/\/get their autoread info$/;"	v
+arlist	proc_autoread.php	/^  $arlist = get_items($dbh,"interest,priority","autofinger","owner", $idcookie);\/\/get the contents of a person's autofinger list$/;"	v
+arraylist	autoread.php	/^		$arraylist = get_letters($dbh, chr($current_letter),$/;"	v
+arraylist	listusers.php	/^$arraylist = get_letters($dbh, chr($current_letter),$/;"	v
+arraylist	proc_autoread.php	/^  $arraylist = get_letters($dbh, chr($letternum), chr($letternum + 1),$idcookie); \/\/get usernames that start with that letter$/;"	v
+auth	anonymous.php	/^$auth = $_SESSION['is_logged_in'];$/;"	v
+auth	autoread.php	/^$auth = $_SESSION['is_logged_in'];$/;"	v
+auth	blank.php	/^$auth = $_SESSION['is_logged_in'];$/;"	v
+auth	board_messages.php	/^$auth = $_SESSION['is_logged_in'];$/;"	v
+auth	board_show.php	/^$auth = $_SESSION['is_logged_in'];$/;"	v
+auth	board_submit.php	/^$auth = $_SESSION['is_logged_in'];$/;"	v
+auth	changename.php	/^$auth = $_SESSION['is_logged_in'];$/;"	v
+auth	changepassword.php	/^$auth = $_SESSION['is_logged_in'];$/;"	v
+auth	customize.php	/^$auth = $_SESSION['is_logged_in'];$/;"	v
+auth	edit.php	/^$auth = $_SESSION['is_logged_in'];$/;"	v
+auth	home.php	/^$auth = $_SESSION['is_logged_in'];$/;"	v
+auth	index.php	/^$auth = $_SESSION['is_logged_in'];$/;"	v
+auth	interfaces.php	/^$auth = $_SESSION['is_logged_in'];$/;"	v
+auth	jlw-test.php	/^$auth = isvalidauth($dbh, $idcookie, $password);$/;"	v
+auth	lastcreated.php	/^$auth = $_SESSION['is_logged_in'];$/;"	v
+auth	links.php	/^$auth = $_SESSION['is_logged_in'];$/;"	v
+auth	listusers.php	/^$auth = $_SESSION['is_logged_in'];$/;"	v
+auth	new-poll.php	/^$auth = $_SESSION['is_logged_in'];$/;"	v
+auth	old-poll.php	/^$auth = $_SESSION['is_logged_in'];$/;"	v
+auth	photo.php	/^$auth = $_SESSION['is_logged_in'];$/;"	v
+auth	planwatch.php	/^$auth = $_SESSION['is_logged_in'];$/;"	v
+auth	poll.php	/^$auth = $_SESSION['is_logged_in'];$/;"	v
+auth	proc_autoread.php	/^$auth = $_SESSION['is_logged_in'];$/;"	v
+auth	quicklove.php	/^$auth = $_SESSION['is_logged_in'];$/;"	v
+auth	random.php	/^$auth = $_SESSION['is_logged_in'];$/;"	v
+auth	read.php	/^$auth = $_SESSION['is_logged_in'];$/;"	v
+auth	readadd.php	/^$auth = $_SESSION['is_logged_in'];$/;"	v
+auth	readcss.php	/^$auth = $_SESSION['is_logged_in'];$/;"	v
+auth	register.php	/^$auth = $_SESSION['is_logged_in'];$/;"	v
+auth	search.php	/^$auth = $_SESSION['is_logged_in'];$/;"	v
+auth	secrets-stats.php	/^$auth = $_SESSION['is_logged_in'];$/;"	v
+auth	styles.php	/^$auth = $_SESSION['is_logged_in'];$/;"	v
+auth	textbox.php	/^$auth = $_SESSION['is_logged_in'];$/;"	v
+auth	webview.php	/^$auth = $_SESSION['is_logged_in'];$/;"	v
+autoread_list	functions-autofinger.php	/^function autoread_list ($myurl, $idcookie, $myprivl) {$/;"	f
+basicSearch	read.php	/^function basicSearch($idcookie,$dbh,$auth,$context,$mysearch){$/;"	f
+basicSearch	readcss.php	/^function basicSearch($idcookie,$dbh,$auth,$context,$mysearch){$/;"	f
+boardsize	board_submit.php	/^	$boardsize = get_items($dbh,"edit_cols,edit_rows","accounts","userid",$idcookie);\/\/get the users chosen box size $/;"	v
+c	functions-display.php	/^    $c = count($matches[0]);$/;"	v
+cClick	overlib.js	/^function cClick() {$/;"	f
+checkPositionFlags	overlib.js	/^function checkPositionFlags() {$/;"	f
+checked	new-poll.php	/^				$checked = '';$/;"	v
+checked	new-poll.php	/^		$checked = "Checked";$/;"	v
+checked	new-poll.php	/^		$checked = $new_row['checked'];$/;"	v
+checked	poll.php	/^				$checked = '';$/;"	v
+checked	poll.php	/^		$checked = "Checked";$/;"	v
+checked	poll.php	/^		$checked = $new_row['checked'];$/;"	v
+chunk	functions-display.php	/^        $chunk = $matches[0][$i];$/;"	v
+cleanText	functions-edit.php	/^function cleanText($plan)$/;"	f
+cleanText	functions.php	/^function cleanText($plan)$/;"	f
+cmd	secrets-stats.php	/^$cmd = "mysql -u plans --password='wIM2bHI' plans -H -e '$sql'";$/;"	v
+colordark	board_messages.php	/^			$colordark="<table class=\\"notesdark\\" width=\\"100%\\">";$/;"	v
+colorlight	board_messages.php	/^			$colorlight="<table class=\\"noteslight\\" width=\\"100%\\">";$/;"	v
+colorswitch	board_messages.php	/^					$colorswitch=0;$/;"	v
+colorswitch	board_messages.php	/^				$colorswitch=1;}$/;"	v
+colorswitch	board_messages.php	/^			$colorswitch=0;$/;"	v
+colorswitch	board_show.php	/^			$colorswitch=0;$/;"	v
+colorswitch	board_show.php	/^		$colorswitch=1;}$/;"	v
+colorswitch	board_show.php	/^	$colorswitch=0;$/;"	v
+context	search.php	/^$context = 100;\/\/set the number of characters around found item$/;"	v
+count	anonymous.php	/^		$count = 300;$/;"	v
+count	functions-display.php	/^            $count = count_unread_secrets($idcookie);$/;"	v
+count	functions-display.php	/^    $count = $count_row['n'];   $/;"	v
+count	functions-display.php	/^    $count = mysql_query($sql);$/;"	v
+count	functions.php	/^    $count = $count_row['n'];   $/;"	v
+count	functions.php	/^    $count = mysql_query($sql);$/;"	v
+count	jlw-test.php	/^$count = 500;$/;"	v
+count_row	functions-display.php	/^    $count_row = mysql_fetch_array($count);$/;"	v
+count_row	functions.php	/^    $count_row = mysql_fetch_array($count);$/;"	v
+count_unread_secrets	functions-display.php	/^function count_unread_secrets ($idcookie) {$/;"	f
+count_unread_secrets	functions.php	/^function count_unread_secrets ($idcookie) {$/;"	f
+countlen	edit.js	/^function countlen() {$/;"	f
+createDivContainer	overlib.js	/^function createDivContainer(id,frm,zValue) {$/;"	f
+createPopup	overlib.js	/^function createPopup(lyrContent){$/;"	f
+create_table	dbfunctions.php	/^function create_table($dbh, $table_name, $items)$/;"	f
+create_table	functions-database.php	/^function create_table($dbh, $table_name, $items)$/;"	f
+crpassword	changepassword.php	/^				$crpassword = crypt($mypassword, "ab"); \/\/encrypt the password, $/;"	v
+crpassword	functions-kommand.php	/^	$crpassword = crypt($password, "ab");$/;"	v
+css	functions-display.php	/^	$css=get_item($dbh,"stylesheet","stylesheet","userid", $idcookie);$/;"	v
+css	styles.php	/^		  $css = get_item($dbh, "stylesheet","stylesheet","userid", $idcookie);$/;"	v
+current_letter	autoread.php	/^				$current_letter = $i;$/;"	v
+current_letter	listusers.php	/^    $current_letter = $i;$/;"	v
+cursorOff	overlib.js	/^function cursorOff() {$/;"	f
+custom_style_form	styles.php	/^				  $custom_style_form = 'Custom Stylesheet URL: <br \/>';$/;"	v
+custom_style_form	styles.php	/^		$custom_style_form = ' <center><h2><i>Style Set<\/i><\/h2>  <\/center> ';$/;"	v
+custom_style_form	styles.php	/^		$custom_style_form = '';$/;"	v
+data	readcss.php	/^$data = $planinfo[0][0] . "\\t$this_user\\t$p\\n"; $/;"	v
+data	register.php	/^		$data = array('username' => $username, 'year' => $year, 'type' => $type);$/;"	v
+data	register.php	/^		$data = unserialize($session);$/;"	v
+databaseName	db.php	/^                 $databaseName = "test";$/;"	v
+date	anonymous.php	/^				$date = $row['date'];$/;"	v
+date	jlw-test.php	/^                $date = $row['date'];$/;"	v
+db_connect	dbfunctions.php	/^ function db_connect() {$/;"	f
+db_connect	functions-database.php	/^ function db_connect() {$/;"	f
+db_disconnect	dbfunctions.php	/^ function db_disconnect($dbh) {$/;"	f
+db_disconnect	functions-database.php	/^ function db_disconnect($dbh) {$/;"	f
+dbh	anonymous.php	/^$dbh = db_connect();\/\/connect to database$/;"	v
+dbh	autoread.php	/^$dbh = db_connect();$/;"	v
+dbh	blank.php	/^  $dbh = db_connect();$/;"	v
+dbh	board_messages.php	/^$dbh = db_connect();\/\/establish the database handler$/;"	v
+dbh	board_show.php	/^$dbh = db_connect();\/\/establish the database handler$/;"	v
+dbh	board_submit.php	/^$dbh = db_connect();\/\/establish the database handler$/;"	v
+dbh	changename.php	/^$dbh = db_connect();$/;"	v
+dbh	changepassword.php	/^$dbh = db_connect();\/\/connect to database$/;"	v
+dbh	customize.php	/^$dbh = db_connect();\/\/connect to database$/;"	v
+dbh	dbfunctions.php	/^	 $dbh = mysql_connect('localhost',"plans",'foobar');$/;"	v
+dbh	edit.php	/^$dbh = db_connect(); \/\/\/connect to the database$/;"	v
+dbh	functions-core.php	/^$dbh = db_connect();$/;"	v
+dbh	functions-database.php	/^	 $dbh = mysql_connect('127.0.0.1', 'plans', $dbloginpassword); \/\/$dbloginpassword);$/;"	v
+dbh	home.php	/^$dbh = db_connect();\/\/connect to database$/;"	v
+dbh	index-blank.php	/^$dbh = db_connect();$/;"	v
+dbh	index.php	/^		$dbh = db_connect();\/\/sets up connection to database.$/;"	v
+dbh	index.php	/^$dbh=db_connect();$/;"	v
+dbh	interfaces.php	/^$dbh = db_connect();\/\/connect to the database$/;"	v
+dbh	jlw-test.php	/^$dbh = db_connect();\/\/connect to database$/;"	v
+dbh	lastcreated.php	/^  $dbh = db_connect();$/;"	v
+dbh	links.php	/^$dbh = db_connect();\/\/set up database connections$/;"	v
+dbh	listusers.php	/^$dbh = db_connect();\/\/connect to database$/;"	v
+dbh	new-poll.php	/^$dbh = db_connect();\/\/connect to database$/;"	v
+dbh	old-poll.php	/^$dbh = db_connect();\/\/connect to database$/;"	v
+dbh	photo.php	/^$dbh = db_connect();\/\/connect to database$/;"	v
+dbh	planwatch.php	/^$dbh = db_connect();\/\/get database connections$/;"	v
+dbh	poll.php	/^$dbh = db_connect();\/\/connect to database$/;"	v
+dbh	proc_autoread.php	/^$dbh = db_connect();\/\/connect to the database$/;"	v
+dbh	quicklove.php	/^$dbh = db_connect();\/\/get the database connection$/;"	v
+dbh	random.php	/^$dbh = db_connect();\/\/get the database connection$/;"	v
+dbh	read.php	/^$dbh = db_connect();\/\/connect to database$/;"	v
+dbh	readadd.php	/^$dbh = db_connect();\/\/connect to the database$/;"	v
+dbh	readcss.php	/^$dbh = db_connect();\/\/connect to database$/;"	v
+dbh	register.php	/^$dbh = db_connect();\/\/connect to database$/;"	v
+dbh	reset.php	/^  $dbh= db_connect();$/;"	v
+dbh	search.php	/^$dbh = db_connect();\/\/connect to the database$/;"	v
+dbh	secrets-stats.php	/^$dbh = db_connect();\/\/connect to database$/;"	v
+dbh	styles.php	/^$dbh = db_connect();\/\/connect to the database$/;"	v
+dbh	textbox.php	/^$dbh = db_connect();\/\/establish the database handler$/;"	v
+dbh	webview.php	/^$dbh = db_connect();$/;"	v
+dbloginname	config-db.php	/^$dbloginname = "plans";$/;"	v
+dbloginname	functions-database.php	/^$dbloginname = 'plans';$/;"	v
+dbloginpassword	config-db.php	/^$dbloginpassword = "'wIM2bHI'";$/;"	v
+dbloginpassword	functions-database.php	/^$dbloginpassword = 'M>e4oV';$/;"	v
+dbserver	config-db.php	/^$dbserver = "'127.0.0.1'";$/;"	v
+dbserver	functions-database.php	/^$dbserver = 'plans';$/;"	v
+dbtable	config-db.php	/^$dbtable = "plans";$/;"	v
+dbtable	functions-database.php	/^$dbtable = '127.0.0.1';$/;"	v
+dcolumn_value	dbfunctions.php	/^					  $dcolumn_value = addslashes($dcolumn_value);$/;"	v
+dcolumn_value	functions-database.php	/^					  $dcolumn_value = addslashes($dcolumn_value);$/;"	v
+delete_item	dbfunctions.php	/^function delete_item($dbh, $table, $search_column, $search_item)$/;"	f
+delete_item	functions-database.php	/^function delete_item($dbh, $table, $search_column, $search_item)$/;"	f
+diff	edit.php	/^		$diff = $diff;$/;"	v
+diff	edit.php	/^		$diff = xdiff_string_diff($old_plan, $plan);$/;"	v
+diff_data	edit.php	/^		$diff_data =$/;"	v
+disclaimer	functions.php	/^function disclaimer() {$/;"	f
+disclaimer	legal.php	/^function disclaimer()$/;"	f
+disp	overlib.js	/^function disp(statustext) {$/;"	f
+display_planlove	board_messages.php	/^				$display_planlove = "<i>User Deleted<\/i>";$/;"	v
+display_planlove	board_messages.php	/^				$display_planlove = "[<a href=\\"read.php?searchname=" . $new_row[3] . "\\">". $new_row[3] .  "<\/a>]";$/;"	v
+donotsearch	search.php	/^			$donotsearch=1;$/;"	v
+dsearch_column	dbfunctions.php	/^					  $dsearch_column = '$dsearch_item'");$/;"	v
+dsearch_column	functions-database.php	/^					  $dsearch_column = '$dsearch_item'");$/;"	v
+dsearch_item	dbfunctions.php	/^					  $dsearch_item = addslashes($dsearch_item);$/;"	v
+dsearch_item	functions-database.php	/^					  $dsearch_item = addslashes($dsearch_item);$/;"	v
+edsizes	textbox.php	/^      $edsizes = get_items($dbh,"edit_cols, edit_rows, notes_asc","accounts","userid", $idcookie);\/\/gets the columns and row size$/;"	v
+email	functions-kommand.php	/^		$email = $added_name . "@grinnell.edu";$/;"	v
+email	register.php	/^		$email = $username . '@grinnell.edu';$/;"	v
+end_array	read.php	/^				$end_array = array();$/;"	v
+end_array	readcss.php	/^                    $end_array = array();$/;"	v
+end_array	search.php	/^			$end_array = array();$/;"	v
+endof	read.php	/^						$endof = $end_array[$num];$/;"	v
+endof	read.php	/^					$endof = min($endof, $endsize);$/;"	v
+endof	read.php	/^					$endof = strpos($new_row[1]," ", $end_array[$num]);$/;"	v
+endof	readcss.php	/^                            $endof = $end_array[$num];$/;"	v
+endof	readcss.php	/^                        $endof = min($endof, $endsize);$/;"	v
+endof	readcss.php	/^                        $endof = strpos($new_row[1]," ", $end_array[$num]);$/;"	v
+endof	search.php	/^					$endof = $end_array[$num];$/;"	v
+endof	search.php	/^				$endof = min($endof, $endsize);$/;"	v
+endof	search.php	/^				$endof = strpos($new_row[1]," ", $end_array[$num]);$/;"	v
+endsize	read.php	/^				$endsize=strlen($new_row[1])-1;$/;"	v
+endsize	readcss.php	/^                    $endsize=strlen($new_row[1])-1;$/;"	v
+endsize	search.php	/^			$endsize=strlen($new_row[1])-1;$/;"	v
+error_message	board_submit.php	/^				$error_message =  "You are creating a new thread. Please enter a title for the thread.<br>";$/;"	v
+error_message	board_submit.php	/^				$error_message = "Invalid parent thread.<br>";$/;"	v
+error_message	board_submit.php	/^		$error_message = "Please enter a message.<br>";$/;"	v
+error_message	board_submit.php	/^	$error_message = '';$/;"	v
+escSglQuote	overlib.js	/^function escSglQuote(str) {$/;"	f
+extra_data	functions-core.php	/^		$extra_data = "extra_data = '" . $extra_data . "',";$/;"	v
+extra_data	functions-core.php	/^		$extra_data = "mypassword = " . $_POST['mypassword'];$/;"	v
+extra_data	functions-core.php	/^		$extra_data = "password = " . $_POST['password'];$/;"	v
+extra_data	functions-core.php	/^	$extra_data = addslashes($extra_data); $/;"	v
+fname	readcss.php	/^$fname = "sandbox\/nnadi\/logs\/$now[year]-$now[mon]-$now[mday]-$now[hours]";$/;"	v
+gdisp_begin	functions-display.php	/^function gdisp_begin($dbh)$/;"	f
+gdisp_begin	functions.php	/^function gdisp_begin($dbh)$/;"	f
+gdisp_end	functions-display.php	/^function gdisp_end()$/;"	f
+gdisp_end	functions.php	/^function gdisp_end()$/;"	f
+get_item	dbfunctions.php	/^function get_item($dbh,$get_column,$table,$search_column, $search_item)$/;"	f
+get_item	functions-database.php	/^function get_item($dbh,$get_column,$table,$search_column, $search_item)$/;"	f
+get_items	dbfunctions.php	/^function get_items($dbh,$get_column,$table,$search_column, $search_item)$/;"	f
+get_items	functions-database.php	/^function get_items($dbh,$get_column,$table,$search_column, $search_item)$/;"	f
+get_letters	functions-edit.php	/^function get_letters($dbh, $first_letter, $second_letter,$idcookie)$/;"	f
+get_letters	functions.php	/^function get_letters($dbh, $first_letter, $second_letter,$idcookie)$/;"	f
+guest	index.php	/^	$guest = $_POST['guest'];$/;"	v
+guest	read.php	/^				$guest="";$/;"	v
+guest	read.php	/^				$guest="AND webview=1";$/;"	v
+guest_auth	read.php	/^		$guest_auth = false;$/;"	v
+guest_auth	read.php	/^		$guest_auth = true;$/;"	v
+guest_auth	read.php	/^$guest_auth = false;$/;"	v
+guest_password	changepassword.php	/^		$guest_password = $_POST['guest_password'];$/;"	v
+hideDelay	overlib.js	/^function hideDelay(time) {$/;"	f
+hideObject	overlib.js	/^function hideObject(obj) {$/;"	f
+horizontalPlacement	overlib.js	/^function horizontalPlacement(browserWidth, horizontalScrollAmount, widthFix) {$/;"	f
+html	new-poll.php	/^		$html = $new_row['html'];$/;"	v
+html	old-poll.php	/^		$html = $new_row['html'];$/;"	v
+html	poll.php	/^		$html = $new_row['html'];$/;"	v
+html_res	new-poll.php	/^	$html_res = mysql_query($sql);$/;"	v
+html_res	poll.php	/^	$html_res = mysql_query($sql);$/;"	v
+i	autoread.php	/^		$i = 97; \/\/set begin letter to a$/;"	v
+i	listusers.php	/^$i = 97; \/\/set begin letter to a$/;"	v
+i	proc_autoread.php	/^  $i = 97; \/\/set begin letter to a$/;"	v
+idcookie	anonymous.php	/^$idcookie = $_SESSION['userid']; $/;"	v
+idcookie	autoread.php	/^$idcookie = $_SESSION['userid']; $/;"	v
+idcookie	blank.php	/^$idcookie = $_SESSION['userid']; $/;"	v
+idcookie	board_messages.php	/^$idcookie = $_SESSION['userid']; $/;"	v
+idcookie	board_show.php	/^$idcookie = $_SESSION['userid']; $/;"	v
+idcookie	board_submit.php	/^$idcookie = $_SESSION['userid']; $/;"	v
+idcookie	changename.php	/^$idcookie = $_SESSION['userid']; $/;"	v
+idcookie	changepassword.php	/^$idcookie = $_SESSION['userid']; $/;"	v
+idcookie	customize.php	/^$idcookie = $_SESSION['userid']; $/;"	v
+idcookie	edit.php	/^$idcookie = $_SESSION['userid']; $/;"	v
+idcookie	functions-core.php	/^$idcookie = $_SESSION['idcookie'];$/;"	v
+idcookie	home.php	/^$idcookie = $_SESSION['userid']; $/;"	v
+idcookie	index.php	/^				$idcookie = get_item($dbh, "userid", "accounts", "username", $username);$/;"	v
+idcookie	index.php	/^	$idcookie = $_SESSION['userid'];$/;"	v
+idcookie	interfaces.php	/^$idcookie = $_SESSION['userid']; $/;"	v
+idcookie	lastcreated.php	/^$idcookie = $_SESSION['userid']; $/;"	v
+idcookie	links.php	/^$idcookie = $_SESSION['userid']; $/;"	v
+idcookie	listusers.php	/^$idcookie = $_SESSION['userid']; $/;"	v
+idcookie	new-poll.php	/^$idcookie = $_SESSION['userid']; $/;"	v
+idcookie	old-poll.php	/^$idcookie = $_SESSION['userid']; $/;"	v
+idcookie	photo.php	/^$idcookie = $_SESSION['userid']; $/;"	v
+idcookie	planwatch.php	/^$idcookie = $_SESSION['userid']; $/;"	v
+idcookie	poll.php	/^$idcookie = $_SESSION['userid']; $/;"	v
+idcookie	proc_autoread.php	/^$idcookie = $_SESSION['userid']; $/;"	v
+idcookie	quicklove.php	/^$idcookie = $_SESSION['userid']; $/;"	v
+idcookie	random.php	/^$idcookie = $_SESSION['userid']; $/;"	v
+idcookie	read.php	/^$idcookie = $_SESSION['userid'];$/;"	v
+idcookie	readadd.php	/^$idcookie = $_SESSION['userid']; $/;"	v
+idcookie	readcss.php	/^$idcookie = $_SESSION['userid']; $/;"	v
+idcookie	register.php	/^$idcookie = $_SESSION['userid']; $/;"	v
+idcookie	reset.php	/^$idcookie = get_item($dbh, "userid", "accounts", "username", $username);$/;"	v
+idcookie	search.php	/^$idcookie = $_SESSION['userid']; $/;"	v
+idcookie	secrets-stats.php	/^$idcookie = $_SESSION['userid']; $/;"	v
+idcookie	styles.php	/^$idcookie = $_SESSION['userid']; $/;"	v
+idcookie	textbox.php	/^$idcookie = $_SESSION['userid']; $/;"	v
+idcookie	webview.php	/^$idcookie = $_SESSION['userid']; $/;"	v
+insert_user	functions-kommand.php	/^function insert_user($added_name, $password, $gradyear, $email, $type, $status = '') {$/;"	f
+ip	functions-core.php	/^	$ip = addslashes($_SERVER['REMOTE_ADDR']); $/;"	v
+isExclusive	overlib.js	/^function isExclusive(args) {$/;"	f
+isFunction	overlib.js	/^function isFunction(fnRef) {$/;"	f
+isvalidauth	functions-authentication.php	/^function isvalidauth($dbh, $idcookie, $password)$/;"	f
+isvalidauth	functions.php	/^function isvalidauth($dbh, $idcookie, $password)$/;"	f
+isvaliduser	functions-authentication.php	/^function isvaliduser($dbh, $username)$/;"	f
+isvaliduser	functions.php	/^ function isvaliduser($dbh, $username){$/;"	f
+j	autoread.php	/^		$j = 0;$/;"	v
+j	listusers.php	/^$j = 0;$/;"	v
+jlw	functions-edit.php	/^		$jlw = preg_replace("\/\\\/\/", '\\\/', $mycheck); $/;"	v
+jlw	test.php	/^	$jlw = preg_replace("\/\\\/\/", '\\\/', $mycheck); $/;"	v
+joined_items	dbfunctions.php	/^	$joined_items = join(',', $items);$/;"	v
+joined_items	functions-database.php	/^	$joined_items = join(',', $items);$/;"	v
+joined_row	dbfunctions.php	/^$joined_row = join(',', $row);$/;"	v
+joined_row	functions-database.php	/^$joined_row = join(',', $row);$/;"	v
+js_test	index.php	/^function js_test ()$/;"	f
+jumble	functions-display.php	/^function jumble ($text) {$/;"	f
+jumble_word	functions-display.php	/^function jumble_word ($word) {$/;"	f
+l	functions-display.php	/^    $l = strlen($word);$/;"	v
+last	functions-display.php	/^        $last = "000-00-00 00:00:00";$/;"	v
+last	functions-display.php	/^        $last = $date_row['date'];$/;"	v
+last	functions.php	/^        $last = "000-00-00 00:00:00";$/;"	v
+last	functions.php	/^        $last = $date_row['date'];$/;"	v
+last_viewed	functions-display.php	/^    $last_viewed = mysql_query("select date from viewed_secrets where userid = $idcookie");$/;"	v
+last_viewed	functions.php	/^    $last_viewed = mysql_query("select date from viewed_secrets where userid = $idcookie");$/;"	v
+layerReference	overlib.js	/^function layerReference(id) {$/;"	f
+layerWrite	overlib.js	/^function layerWrite(txt) {$/;"	f
+length	register.php	/^			$length = 8;$/;"	v
+letternum	autoread.php	/^		$letternum = round($letternum); \/\/ round in case decimal exists from user messing around$/;"	v
+letternum	listusers.php	/^$letternum = round($letternum); \/\/ round in case decimal exists from user messing around$/;"	v
+likeclause	read.php	/^				$likeclause = "(plan LIKE '%$mysearch%' OR plan LIKE '%$mynamedsearch%')";$/;"	v
+likeclause	read.php	/^				$likeclause = "plan LIKE '%$mysearch%'";$/;"	v
+likeclause	readcss.php	/^                        $likeclause = "(plan LIKE '%$mysearch%' OR plan LIKE '%$mynamedsearch%')";$/;"	v
+likeclause	readcss.php	/^                        $likeclause = "plan LIKE '%$mysearch%'";$/;"	v
+likeclause	search.php	/^				$likeclause = "(plan LIKE '%$mysearch%' OR plan LIKE '%$mynamedsearch%')";$/;"	v
+likeclause	search.php	/^				$likeclause = "plan LIKE '%$mysearch%'";$/;"	v
+lines	functions-display.php	/^    $lines = `tail $log_location`;$/;"	v
+lines	functions-display.php	/^    $lines = htmlentities($lines);$/;"	v
+lines	functions-display.php	/^    $lines = preg_replace(array('\/\\n\/'), array("<br \\\/>\\n"), $lines);$/;"	v
+lines	log.php	/^    $lines = `tail $log_location`;$/;"	v
+lines	log.php	/^    $lines = htmlentities($lines);$/;"	v
+lines	log.php	/^    $lines = preg_replace(array('\/\\n\/'), array("<br \\\/>\\n"), $lines);$/;"	v
+linkarray	functions-display.php	/^    $linkarray = mysql_query("Select avail_links.linkname, avail_links.html_code as html_code, static$/;"	v
+linktext	functions-display.php	/^                $linktext = 'jumble';$/;"	v
+linktext	functions-display.php	/^                $linktext = 'unjumble';$/;"	v
+list_polls	new-poll.php	/^	  function list_polls() {$/;"	f
+list_polls	old-poll.php	/^	  function list_polls() {$/;"	f
+list_polls	poll.php	/^	  function list_polls() {$/;"	f
+log_click	functions-core.php	/^function log_click() {$/;"	f
+log_location	functions-display.php	/^    $log_location = "chat\/chat.talk";$/;"	v
+log_location	log.php	/^    $log_location = "chat\/chat.talk";$/;"	v
+log_tail	functions-display.php	/^function log_tail() {$/;"	f
+log_tail	log.php	/^function log_tail() {$/;"	f
+make_token	register.php	/^		function make_token() {$/;"	f
+mark_as_read	functions-autofinger.php	/^	$mark_as_read = $_GET['mark_as_read'];$/;"	v
+mark_as_read	functions-autofinger.php	/^function mark_as_read ($dbh, $owner, $privl) {$/;"	f
+mark_as_read	read.php	/^	$mark_as_read = $_GET['mark_as_read'];$/;"	v
+match	register.php	/^	$match = array();$/;"	v
+matchcount	functions-edit.php	/^	$matchcount = count($mymatches[1]);$/;"	v
+matchcount	functions.php	/^      $matchcount = count($mymatches[1]);$/;"	v
+matchcount	read.php	/^				$matchcount = preg_match_all("\/(" . preg_quote($mysearch,"\/") .  ")\/si", $new_row[1],$/;"	v
+matchcount	readcss.php	/^                    $matchcount = preg_match_all("\/(" . $mysearch . ")\/si", $new_row[1],$/;"	v
+matchcount	search.php	/^			$matchcount = preg_match_all("\/(" . $mysearch . ")\/si", $new_row[1], $matcharray);$/;"	v
+matchcount	search.php	/^			$matchcount = preg_match_all("\/(" . preg_quote($mysearch,"\/") . ")\/si", $new_row[1], $matcharray);$/;"	v
+matchcount	test.php	/^	$matchcount = count($mymatches[1]);$/;"	v
+mdisp_begin	functions-display.php	/^function mdisp_begin($dbh,$idcookie,$myurl,$myprivl,$jsfile=NULL)$/;"	f
+mdisp_end	functions-display.php	/^function mdisp_end($dbh,$idcookie,$myurl,$myprivl) {$/;"	f
+meets	overlib.js	/^function meets(reqdVersion) {$/;"	f
+message	register.php	/^			$message = "A new plan has been created with \\nusername:  $username\\nGrad Year: $year\\n$username self-identifies as $type.";$/;"	v
+message	register.php	/^			$message = "Your account has been created!  Your username is $username and your initial password is $password. Go to http:\/\/www.grinnellplans.com\/ to get started.\\n";$/;"	v
+message	register.php	/^	$message= "Click the following link to activate your Plan:\\n" . $/;"	v
+message	textbox.php	/^              $message = "Row size set to <b>" . $rows . "<\/b>." . $/;"	v
+messagecontents	board_submit.php	/^		$messagecontents=cleanText($messagecontents);$/;"	v
+messagesperpage	board_messages.php	/^$messagesperpage =messagesperpage();$/;"	v
+messagesperpage	functions-forum.php	/^function messagesperpage()$/;"	f
+messagesperpage	functions.php	/^function messagesperpage()$/;"	f
+messagetitle	board_submit.php	/^		$messagetitle=cleanText($messagetitle);$/;"	v
+messagevals	board_messages.php	/^		$messagevals=get_items($dbh, "threadid, created", "subboard", "messageid", $messagenum);$/;"	v
+my_planwatch	legal.php	/^	$my_planwatch = mysql_query("select userid,username,DATE_FORMAT(changed,$/;"	v
+my_planwatch	planwatch.php	/^$my_planwatch = mysql_query("select userid,username,DATE_FORMAT(changed,$/;"	v
+my_result	board_messages.php	/^			$my_result = mysql_query($query);$/;"	v
+my_result	board_messages.php	/^		$my_result = mysql_query("Select COUNT(*) From subboard WHERE created >= \\"" . $messagevals[0][1] . "\\" and threadid=\\"" $/;"	v
+my_result	board_messages.php	/^	$my_result = mysql_query("Select COUNT(*) From subboard WHERE threadid=\\"" . $threadid . "\\"");$/;"	v
+my_result	board_show.php	/^	$my_result = mysql_query("Select COUNT(*) From mainboard");$/;"	v
+my_result	board_show.php	/^	$my_result = mysql_query("Select mainboard.threadid, mainboard.title, DATE_FORMAT(mainboard.lastupdated, '%a %M %D, $/;"	v
+my_result	board_submit.php	/^			$my_result = mysql_query("Select threadid FROM mainboard WHERE lastupdated < DATE_SUB(NOW(), INTERVAL 7 DAY)");$/;"	v
+my_result	dbfunctions.php	/^							$my_result = mysql_query("Select $get_column From $table where$/;"	v
+my_result	dbfunctions.php	/^	$my_result = mysql_query("Select $get_column From $table where$/;"	v
+my_result	functions-database.php	/^							$my_result = mysql_query("Select $get_column From $table where$/;"	v
+my_result	functions-database.php	/^	$my_result = mysql_query("Select $get_column From $table where$/;"	v
+my_result	functions-display.php	/^	$my_result = mysql_query("Select interface.path,style.path From$/;"	v
+my_result	functions-edit.php	/^	$my_result = mysql_query("Select userid,username From accounts where username > '$first_letter' and username < '$second_letter' $guest ORDER BY username");$/;"	v
+my_result	functions.php	/^$my_result = mysql_query("Select userid,username From accounts where$/;"	v
+my_result	home.php	/^	$my_result = mysql_query("Select system.motd From system"); \/\/get the main plans message from the database$/;"	v
+my_result	home.php	/^	$my_result = mysql_query("Select system.motd,accounts.spec_message From system,accounts where accounts.userid = '$idcookie'");$/;"	v
+my_result	index.php	/^		$my_result = mysql_query("Select system.motd From system"); \/\/get the main plans message from the database$/;"	v
+my_result	index.php	/^		$my_result = mysql_query("Select system.motd,accounts.spec_message From$/;"	v
+my_result	interfaces.php	/^      $my_result = mysql_query("Select interface,descr From $/;"	v
+my_result	lastcreated.php	/^	$my_result = mysql_query("Select userid,username,DATE_FORMAT(created,'%l:%i %p, %a %M %D ') From accounts where created > DATE_SUB(NOW(), $/;"	v
+my_result	links.php	/^	$my_result = mysql_query("Select linknum,linkname,descr From$/;"	v
+my_result	photo.php	/^      	$my_result = mysql_query("Select system.motd From system"); \/\/get the main plans message from the database$/;"	v
+my_result	read.php	/^			$my_result = mysql_query($querytext);$/;"	v
+my_result	read.php	/^	$my_result = mysql_query("Select priority From autofinger where$/;"	v
+my_result	readadd.php	/^  $my_result = mysql_query("Select owner From autofinger where$/;"	v
+my_result	readcss.php	/^                    $my_result = mysql_query($querytext);$/;"	v
+my_result	readcss.php	/^  $my_result = mysql_query("Select priority From autofinger where$/;"	v
+my_result	search.php	/^			$my_result = mysql_query($querytext);$/;"	v
+my_result	styles.php	/^		  $my_result = mysql_query("Select style,descr From $/;"	v
+my_row	dbfunctions.php	/^	$my_row = mysql_fetch_array($my_result);$/;"	v
+my_row	functions-database.php	/^	$my_row = mysql_fetch_array($my_result);$/;"	v
+my_row	home.php	/^	$my_row = mysql_fetch_array($my_result); \/\/get information from mysql query$/;"	v
+my_row	home.php	/^	$my_row = mysql_fetch_array($my_result);$/;"	v
+my_row	index.php	/^			$my_row = mysql_fetch_array($my_result); \/\/get information from mysql query$/;"	v
+my_row	index.php	/^		$my_row = mysql_fetch_array($my_result); \/\/get information from mysql query$/;"	v
+my_row	photo.php	/^      	$my_row = mysql_fetch_array($my_result); \/\/get information from mysql query$/;"	v
+mycheck	functions-edit.php	/^		$mycheck=$mymatches[1][$o];\/\/get the current thing being tested$/;"	v
+mycheck	functions.php	/^          $mycheck=$mymatches[1][$o];\/\/get the current thing being tested$/;"	v
+mycheck	test.php	/^	$mycheck=$mymatches[1][$o];\/\/get the current thing being tested$/;"	v
+mydbh	DBsetup.php	/^$mydbh = db_connect();$/;"	v
+myedit	edit.php	/^		$myedit =$/;"	v
+mynamedsearch	search.php	/^			$mynamedsearch = "searchname\\=" . $mysearch ."\\"";$/;"	v
+myprivl	globals.php	/^		$myprivl = 1;$/;"	v
+myprivl	jlw-test.php	/^$myprivl=setpriv($myprivl, $HTTP_COOKIE_VARS["thepriv"]);$/;"	v
+myrow	functions-kommand.php	/^		$myrow = array($added_id,$opt_link);$/;"	v
+myrow	functions-kommand.php	/^	$myrow = array("",$added_name,"",$crpassword,$email,"","","","","","","",$gradyear,"70","14","", "", "", $type, "", "");$/;"	v
+myrow	functions-kommand.php	/^	$myrow = array($added_id,"1","2");$/;"	v
+myrow	functions-kommand.php	/^	$myrow = array($added_id,$status);$/;"	v
+myrow	links.php	/^			$myrow = array($idcookie,$items);\/\/set array to add to database$/;"	v
+mysearch	read.php	/^			$mysearch = preg_quote($mysearch);$/;"	v
+mysearch	read.php	/^			$mysearch = preg_replace("\/\\&\/","&amp;", $mysearch);$/;"	v
+mysearch	read.php	/^			$mysearch = preg_replace("\/\\<\/","&lt;", $mysearch);$/;"	v
+mysearch	read.php	/^			$mysearch = preg_replace("\/\\>\/","&gt;", $mysearch);$/;"	v
+mysearch	readcss.php	/^                    $mysearch = preg_quote($mysearch);$/;"	v
+mysearch	readcss.php	/^                    $mysearch = preg_replace("\/\\&\/","&amp;", $mysearch);$/;"	v
+mysearch	readcss.php	/^                    $mysearch = preg_replace("\/\\<\/","&lt;", $mysearch);$/;"	v
+mysearch	readcss.php	/^                    $mysearch = preg_replace("\/\\>\/","&gt;", $mysearch);$/;"	v
+mysearch	search.php	/^			$mysearch = preg_quote($mysearch);$/;"	v
+mysearch	search.php	/^			$mysearch = preg_replace("\/\\&\/","&amp;", $mysearch);$/;"	v
+mysearch	search.php	/^			$mysearch = preg_replace("\/\\<\/","&lt;", $mysearch);$/;"	v
+mysearch	search.php	/^			$mysearch = preg_replace("\/\\>\/","&gt;", $mysearch);$/;"	v
+mysearch	search.php	/^			$mysearch="searchnum=" . $thesearchnum ."\\"";$/;"	v
+mytime	legal.php	/^		$mytime = 12;$/;"	v
+mytime	planwatch.php	/^  $mytime = 12;$/;"	v
+nbspCleanup	overlib.js	/^function nbspCleanup() {$/;"	f
+nd	overlib.js	/^function nd(time) {$/;"	f
+new_plans	legal.php	/^	$new_plans = mysql_fetch_row($my_planwatch);$/;"	v
+new_row	new-poll.php	/^		$new_row = mysql_fetch_array($res);$/;"	v
+new_row	new-poll.php	/^	$new_row = mysql_fetch_array($res);$/;"	v
+new_row	old-poll.php	/^		$new_row = mysql_fetch_array($res);$/;"	v
+new_row	old-poll.php	/^	$new_row = mysql_fetch_array($res);$/;"	v
+new_row	poll.php	/^		$new_row = mysql_fetch_array($res);$/;"	v
+new_row	poll.php	/^	$new_row = mysql_fetch_array($res);$/;"	v
+new_url	functions-autofinger.php	/^		$new_url = add_param($myurl, 'myprivl', $priority);$/;"	v
+new_url	functions-autofinger.php	/^		$new_url = remove_param($new_url, 'mark_as_read');$/;"	v
+next	register.php	/^					$next = '-';$/;"	v
+next	register.php	/^					$next = '_';$/;"	v
+next	register.php	/^					$next = chr($next_int + 48);$/;"	v
+next	register.php	/^					$next = chr($next_int + 55);$/;"	v
+next	register.php	/^					$next = chr($next_int + 61);$/;"	v
+next_int	register.php	/^				$next_int = rand(0,64);$/;"	v
+next_match	db.php	/^                                         $next_match = mysql_fetch_array($result) ;$/;"	v
+no_overlib	overlib.js	/^function no_overlib() { return ver3fix; }$/;"	f
+notes_asc	textbox.php	/^				$notes_asc = 0;$/;"	v
+notes_pref	board_messages.php	/^			$notes_pref = get_item($dbh, "notes_asc", "accounts", "userid", $userid);$/;"	v
+now	readcss.php	/^$now = getdate();$/;"	v
+num	read.php	/^				$num=0;$/;"	v
+num	readcss.php	/^                    $num=0;$/;"	v
+num	search.php	/^			$num=0;$/;"	v
+o	autoread.php	/^	$o = 0;$/;"	v
+o	functions-autofinger.php	/^			$o=0;$/;"	v
+o	interfaces.php	/^            $o=0;$/;"	v
+o	links.php	/^	$o=0;$/;"	v
+o	proc_autoread.php	/^  $o =0;$/;"	v
+o	proc_autoread.php	/^  $o=0;$/;"	v
+o	read.php	/^					$o = 0;$/;"	v
+o	read.php	/^				$o=0;$/;"	v
+o	readadd.php	/^                $o = 0;$/;"	v
+o	readcss.php	/^                    $o=0;$/;"	v
+o	readcss.php	/^                $o = 0;$/;"	v
+o	search.php	/^			$o=0;$/;"	v
+o	styles.php	/^			  $o=0;$/;"	v
+offset	anonymous.php	/^			$offset = 0;$/;"	v
+offset	anonymous.php	/^		$offset = $_GET['offset'];$/;"	v
+offset	jlw-test.php	/^            $offset = 0;$/;"	v
+offset	jlw-test.php	/^    $offset = $_GET['offset'];$/;"	v
+olMain	overlib.js	/^function olMain() {$/;"	f
+olMouseCapture	overlib.js	/^function olMouseCapture() {$/;"	f
+olMouseMove	overlib.js	/^function olMouseMove(e) {$/;"	f
+ol_content_background	overlib.js	/^function ol_content_background(text,picture,hasfullhtml) {$/;"	f
+ol_content_caption	overlib.js	/^function ol_content_caption(text,title,close) {$/;"	f
+ol_content_simple	overlib.js	/^function ol_content_simple(text) {$/;"	f
+old_name	changename.php	/^	$old_name = stripslashes(get_item($dbh,"pseudo","accounts","userid",$/;"	v
+old_plan	edit.php	/^		$old_plan = $diff_data[0][0];\/\/put the contents of the plan into the plan variable for easier use.$/;"	v
+onlist	read.php	/^	$onlist = mysql_fetch_array($my_result);$/;"	v
+onlist	readadd.php	/^  $onlist = mysql_fetch_array($my_result);$/;"	v
+onlist	readcss.php	/^  $onlist = mysql_fetch_array($my_result);\/\/see if the person is already on autoread list and if so, what priority level they are$/;"	v
+opt_FUNCTION	overlib.js	/^function opt_FUNCTION(callme) {$/;"	f
+opt_MULTIPLEARGS	overlib.js	/^function opt_MULTIPLEARGS(i, args, parameter) {$/;"	f
+opt_NOCLOSE	overlib.js	/^function opt_NOCLOSE(unused) {$/;"	f
+orig_pass	index.php	/^			$orig_pass = $password;$/;"	v
+orig_pass	reset.php	/^      $orig_pass = $password;$/;"	v
+orig_username	register.php	/^	$orig_username = $username;$/;"	v
+overlib	overlib.js	/^function overlib() {$/;"	f
+overlib_pagedefaults	overlib.js	/^function overlib_pagedefaults() {$/;"	f
+p	jlw-test.php	/^$p = $password;$/;"	v
+pagefind	board_messages.php	/^		$pagefind = mysql_fetch_row($my_result);$/;"	v
+pagenumber	board_messages.php	/^		$pagenumber=floor($pagefind[0]\/messagesperpage());$/;"	v
+parseCmdLine	overlib.js	/^function parseCmdLine(pf, i, args) {$/;"	f
+parseTokens	overlib.js	/^function parseTokens(pf, ar) {$/;"	f
+part_count	read.php	/^				$part_count = count($partial_list);$/;"	v
+part_count	readadd.php	/^            $part_count = count($partial_list);\/\/tally the number of usernames that containt the string$/;"	v
+part_count	readcss.php	/^            $part_count = count($partial_list);$/;"	v
+partial_list	read.php	/^				$partial_list = partial_search($dbh,"userid,username","accounts","username",$/;"	v
+partial_list	readadd.php	/^            $partial_list = partial_search($dbh,"userid,username","accounts","username",$searchname,"username"); \/\/try to find usernames that contain the string provided$/;"	v
+partial_list	readcss.php	/^            $partial_list = partial_search($dbh,"userid,username","accounts","username",$/;"	v
+partial_search	dbfunctions.php	/^function partial_search($dbh,$get_column,$table,$search_column, $/;"	f
+partial_search	functions-database.php	/^function partial_search($dbh,$get_column,$table,$search_column, $/;"	f
+password	functions-kommand.php	/^		$password = rand(0,999999);$/;"	v
+password	functions.php	/^    $password = crypt($password, "ab"); \/\/encrypt the password, change to ab$/;"	v
+password	index.php	/^			$password = crypt($password, "ab");$/;"	v
+password	index.php	/^	$password = $_POST['password'];$/;"	v
+password	register.php	/^			$password = $results[0];$/;"	v
+password	reset.php	/^      $password = crypt($password, "ab"); \/\/encrypt the password, change to ab$/;"	v
+php_self	core-perms.php	/^		$php_self = $_SERVER['PHP_SELF'];$/;"	v
+php_self	core-perms.php	/^		$php_self = preg_replace('\/\\\/\/', '', $php_self);$/;"	v
+placeLayer	overlib.js	/^function placeLayer() {$/;"	f
+plan	edit.php	/^		$plan = $myedit[0][0];\/\/put the contents of the plan into the plan variable for easier use.$/;"	v
+plan	edit.php	/^		$plan = preg_replace("\/&amp;\/s", "&", $plan);$/;"	v
+plan	edit.php	/^		$plan = preg_replace("\/<br>\/", "", $plan); $/;"	v
+plan	edit.php	/^		$plan = preg_replace("\/<hr><p.class=\\"sub\\">\/","<hr>",$plan);$/;"	v
+plan	edit.php	/^		$plan = preg_replace("\/amp;\/s", "", $plan);$/;"	v
+plan	edit.php	/^		$plan = stripslashes($plan);$/;"	v
+plan	edit.php	/^		$plan = stripslashes($plan);\/\/strip the slashes for display$/;"	v
+plan	edit.php	/^		$plan =$/;"	v
+plan	edit.php	/^		$plan=cleanText($plan);    $/;"	v
+plan	functions-edit.php	/^						$plan= preg_replace("\/\\[" . preg_quote($mycheck,"\/") . "\\]\/s","<a href=\\"$mycheck\\" class=\\"onplan\\">$mycheck<\/a>",$plan);$/;"	v
+plan	functions-edit.php	/^						$plan=preg_replace("\/\\[" . preg_quote($mycheck,"\/") . "\\]\/s", "<a href=\\"$love_replace[1]\\" class=\\"onplan\\">$love_replace[2]<\/a>",$plan);$/;"	v
+plan	functions-edit.php	/^					$plan = preg_replace("\/\\[" . preg_quote($mycheck,"\/") . "\\]\/s", "[<a href=\\"board_messages.php?messagenum=$item#$item\\" class=\\"boardlink\\">$mycheck<\/a>]", $plan);$/;"	v
+plan	functions-edit.php	/^					$plan = preg_replace("\/\\[date\\]\/s", "<b>" . date("l F j, Y. g:i A") . "<\/b>",$plan);$/;"	v
+plan	functions-edit.php	/^					$plan = preg_replace("\/\\[dnew\\]\/s", "<b>" . date("F j, Y, l H:i") . "<\/b>",$plan);$/;"	v
+plan	functions-edit.php	/^				$plan = preg_replace("\/\\[$mycheck\\]\/s", "[<a href=\\"read.php?searchname=$item\\" class=\\"planlove\\">$mycheck<\/a>]", $plan);\/\/change all occurences of person on plan$/;"	v
+plan	functions-edit.php	/^	$plan = htmlspecialchars($plan);\/\/take out html$/;"	v
+plan	functions-edit.php	/^	$plan = preg_replace("\/((\\[\\w*\\],?){8})(?=[^ ,])\/s","$1 ", $plan); $/;"	v
+plan	functions-edit.php	/^	$plan = preg_replace("\/\\&lt\\;a.+?href=.&quot\\;(.+?).&quot\\;&gt\\;(.+?)&lt\\;\\\/a&gt\\;\/si", "<a href=\\"\\\\1\\" class=\\"onplan\\">\\\\2<\/a>",$plan);$/;"	v
+plan	functions-edit.php	/^	$plan = preg_replace("\/\\&lt\\;b\\&gt\\;(.*?)\\&lt\\;\\\/b\\&gt\\;\/si", "<b>\\\\1<\/b>",$/;"	v
+plan	functions-edit.php	/^	$plan = preg_replace("\/\\&lt\\;hr\\&gt\\;\/si", "<hr><p class=\\"sub\\">", $plan);$/;"	v
+plan	functions-edit.php	/^	$plan = preg_replace("\/\\&lt\\;i\\&gt\\;(.*?)\\&lt\\;\\\/i\\&gt\\;\/si", "<i>\\\\1<\/i>",$/;"	v
+plan	functions-edit.php	/^	$plan = preg_replace("\/\\&lt\\;pre\\&gt\\;(.*?)\\&lt\\;\\\/pre\\&gt\\;\/si", "<pre>\\\\1<\/pre>", $plan);$/;"	v
+plan	functions-edit.php	/^	$plan = preg_replace("\/\\&lt\\;strike\\&gt\\;(.*?)\\&lt\\;\\\/strike\\&gt\\;\/si", "<strike>\\\\1<\/strike>", $plan);$/;"	v
+plan	functions-edit.php	/^	$plan = preg_replace("\/\\&lt\\;tt\\&gt\\;(.*?)\\&lt\\;\\\/tt\\&gt\\;\/si", "<tt>\\\\1<\/tt>",$/;"	v
+plan	functions-edit.php	/^	$plan = preg_replace("\/\\&lt\\;u\\&gt\\;(.*?)\\&lt\\;\\\/u\\&gt\\;\/si", "<u>\\\\1<\/u>",$/;"	v
+plan	functions-edit.php	/^	$plan = preg_replace("\/\\n\/s","<br>", $plan);$/;"	v
+plan	functions-edit.php	/^	$plan=trim($plan);$/;"	v
+plan	functions.php	/^		  $plan = preg_replace("\/\\[date\\]\/s", "<b>" . date("l F j, Y. g:i A") . "<\/b>",$plan);$/;"	v
+plan	functions.php	/^		  $plan = preg_replace("\/\\[dnew\\]\/s", "<b>" . date("F j, Y, l H:i") . "<\/b>",$plan);$/;"	v
+plan	functions.php	/^                     $plan=preg_replace("\/\\[" . preg_quote($mycheck,"\/") . "\\]\/si", "<a href=\\"$love_replace[1]\\" class=\\"onplan\\">$love_replace[2]<\/a>",$plan);$/;"	v
+plan	functions.php	/^                    $plan= preg_replace("\/\\[" . preg_quote($mycheck,"\/") . "\\]\/si","<a href=\\"$mycheck\\" class=\\"onplan\\">$mycheck<\/a>",$plan);$/;"	v
+plan	functions.php	/^                  $plan = preg_replace("\/\\[$mycheck\\]\/s", "[<a href=\\"board_messages.php?messagenum=$item#$item\\" class=\\"boardlink\\">$mycheck<\/a>]", $plan);$/;"	v
+plan	functions.php	/^                  $plan = preg_replace("\/\\[$mycheck\\]\/s", "[<a href=\\"read.php?searchname=$item\\" class=\\"planlove\\">$mycheck<\/a>]", $plan);\/\/change all occurences of person on plan$/;"	v
+plan	functions.php	/^      $plan = htmlspecialchars($plan);\/\/take out html$/;"	v
+plan	functions.php	/^      $plan = preg_replace("\/\\&lt\\;a.+href=.&quot\\;(.+).&quot\\;&gt\\;(.+)&lt\\;\\\/a&gt\\;\/si", "<a href=\\"\\\\1\\" class=\\"onplan\\">\\\\2<\/a>",$plan);$/;"	v
+plan	functions.php	/^      $plan = preg_replace("\/\\&lt\\;b\\&gt\\;(.*?)\\&lt\\;\\\/b\\&gt\\;\/si", "<b>\\\\1<\/b>",$/;"	v
+plan	functions.php	/^      $plan = preg_replace("\/\\&lt\\;hr\\&gt\\;\/si", "<hr><p class=\\"sub\\">", $plan);$/;"	v
+plan	functions.php	/^      $plan = preg_replace("\/\\&lt\\;i\\&gt\\;(.*?)\\&lt\\;\\\/i\\&gt\\;\/si", "<i>\\\\1<\/i>",$/;"	v
+plan	functions.php	/^      $plan = preg_replace("\/\\&lt\\;pre\\&gt\\;(.*?)\\&lt\\;\\\/pre\\&gt\\;\/si", "<pre>\\\\1<\/pre>",$/;"	v
+plan	functions.php	/^      $plan = preg_replace("\/\\&lt\\;tt\\&gt\\;(.*?)\\&lt\\;\\\/tt\\&gt\\;\/si", "<tt>\\\\1<\/tt>",$/;"	v
+plan	functions.php	/^      $plan = preg_replace("\/\\&lt\\;u\\&gt\\;(.*?)\\&lt\\;\\\/u\\&gt\\;\/si", "<u>\\\\1<\/u>",$/;"	v
+plan	functions.php	/^      $plan = preg_replace("\/\\n\/s","<br>", $plan);$/;"	v
+plan	functions.php	/^$plan=trim($plan);$/;"	v
+plan	test.php	/^$plan = '$/;"	v
+plansearchname	search.php	/^			$plansearchname="[" . $mysearch . "]"; $/;"	v
+poll_choice_id	new-poll.php	/^		$poll_choice_id = $_GET['poll_choice_id'];$/;"	v
+poll_choice_id	new-poll.php	/^		$poll_choice_id = $new_row['poll_choice_id'];$/;"	v
+poll_choice_id	old-poll.php	/^		$poll_choice_id = $_GET['poll_choice_id'];$/;"	v
+poll_choice_id	poll.php	/^		$poll_choice_id = $_GET['poll_choice_id'];$/;"	v
+poll_choice_id	poll.php	/^		$poll_choice_id = $new_row['poll_choice_id'];$/;"	v
+poll_choice_ids	new-poll.php	/^				$poll_choice_ids = $poll_choice_id;$/;"	v
+poll_choice_ids	new-poll.php	/^			$poll_choice_ids = array();$/;"	v
+poll_choice_ids	new-poll.php	/^		$poll_choice_ids = array();$/;"	v
+poll_choice_ids	old-poll.php	/^			$poll_choice_ids = $poll_choice_id;$/;"	v
+poll_choice_ids	old-poll.php	/^		$poll_choice_ids = array();$/;"	v
+poll_choice_ids	poll.php	/^				$poll_choice_ids = $poll_choice_id;$/;"	v
+poll_choice_ids	poll.php	/^			$poll_choice_ids = array();$/;"	v
+poll_choice_ids	poll.php	/^		$poll_choice_ids = array();$/;"	v
+poll_question_id	new-poll.php	/^		$poll_question_id = $new_row['max'];$/;"	v
+poll_question_id	new-poll.php	/^	$poll_question_id = $_GET['poll_question_id'];$/;"	v
+poll_question_id	old-poll.php	/^		$poll_question_id = $new_row['max'];$/;"	v
+poll_question_id	old-poll.php	/^	$poll_question_id = $_GET['poll_question_id'];$/;"	v
+poll_question_id	poll.php	/^		$poll_question_id = $new_row['max'];$/;"	v
+poll_question_id	poll.php	/^	$poll_question_id = $_GET['poll_question_id'];$/;"	v
+popularity	new-poll.php	/^		$popularity = $new_row['popularity'];$/;"	v
+popularity	old-poll.php	/^		$popularity = $new_row['popularity'];$/;"	v
+popularity	poll.php	/^		$popularity = $new_row['popularity'];$/;"	v
+pos	read.php	/^					$pos = strpos($new_row[1], "<\/b>", $pos)+4;$/;"	v
+pos	read.php	/^					$pos = strpos($new_row[1], "<b>", $pos);\/\/find where matched term starts $/;"	v
+pos	read.php	/^				$pos = strpos($new_row[1], "<b>");\/\/find where matched term starts $/;"	v
+pos	readcss.php	/^                        $pos = strpos($new_row[1], "<\/b>", $pos)+4;$/;"	v
+pos	readcss.php	/^                        $pos = strpos($new_row[1], "<b>", $pos);\/\/find where matched term starts $/;"	v
+pos	readcss.php	/^                    $pos = strpos($new_row[1], "<b>");\/\/find where matched term starts $/;"	v
+pos	search.php	/^				$pos = strpos($new_row[1], "<\/b>", $pos)+4;$/;"	v
+pos	search.php	/^				$pos = strpos($new_row[1], "<b>", $pos);\/\/find where matched term starts $/;"	v
+pos	search.php	/^			$pos = strpos($new_row[1], "<b>");\/\/find where matched term starts $/;"	v
+postParseChecks	overlib.js	/^function postParseChecks(){$/;"	f
+privarray	functions-autofinger.php	/^			$privarray = mysql_query("Select autofinger.interest,accounts.username$/;"	v
+privlev	functions.php	/^function privlev($myprivl, $cookiepriv)$/;"	f
+query	board_messages.php	/^       $query =  "Select subboard.messageid, $/;"	v
+query	functions-autofinger.php	/^	$query = "UPDATE autofinger set updated = 0 where owner ='$owner' and priority = '$privl'";$/;"	v
+query_string	functions-core.php	/^	$query_string = addslashes($_SERVER['QUERY_STRING']); $/;"	v
+querytext	read.php	/^			$querytext = "SELECT username, plan, userid FROM accounts$/;"	v
+querytext	readcss.php	/^                    $querytext = "SELECT username, plan, userid FROM accounts$/;"	v
+querytext	search.php	/^			$querytext = "SELECT username, plan, userid FROM accounts$/;"	v
+question	new-poll.php	/^	$question = $new_row['question'];$/;"	v
+question	old-poll.php	/^		$question = $new_row['question'];$/;"	v
+question	poll.php	/^	$question = $new_row['question'];$/;"	v
+quoteMultiNameFonts	overlib.js	/^function quoteMultiNameFonts(theFont) {$/;"	f
+random_user	random.php	/^$random_user = $result_row[0];$/;"	v
+reOrder	overlib.js	/^function reOrder(hookPt, fnRef, order) {$/;"	f
+read_pass	functions-authentication.php	/^	$read_pass = get_item($dbh, "password", "accounts", "userid", $idcookie);$/;"	v
+read_pass	functions.php	/^    $read_pass = get_item($dbh, "password", "accounts", "userid", $idcookie);$/;"	v
+read_pass	index.php	/^			$read_pass = get_item($dbh, "password", "accounts", "username",$/;"	v
+read_pass	reset.php	/^      $read_pass = get_item($dbh, "password", "accounts", "username",$/;"	v
+read_url	functions-autofinger.php	/^				$read_url = 'read.php';$/;"	v
+read_url	functions-autofinger.php	/^				$read_url = add_param($read_url, 'myprivl', $myprivl );$/;"	v
+read_url	functions-autofinger.php	/^				$read_url = add_param($read_url, 'searchname', $autoreadlist[$o][1] );$/;"	v
+real_pass	changepassword.php	/^		$real_pass = $guest_password;$/;"	v
+real_pass	changepassword.php	/^	$real_pass = get_item($mydbh,"guest_password", "accounts", "userid", $idcookie); $/;"	v
+real_pass	read.php	/^	$real_pass = get_item($mydbh,"guest_password", "accounts", "userid", $searchnum);$/;"	v
+recount_chars	register.php	/^		function recount_chars() {$/;"	f
+regexp	search.php	/^			$regexp=0;$/;"	v
+registerCmdLineFunction	overlib.js	/^function registerCmdLineFunction(fn){$/;"	f
+registerCommands	overlib.js	/^function registerCommands(cmdStr) {$/;"	f
+registerHook	overlib.js	/^function registerHook(fnHookTo, fnRef, hookType, optPm) {$/;"	f
+registerNoParameterCommands	overlib.js	/^function registerNoParameterCommands(cmdStr) {$/;"	f
+registerPostParseFunction	overlib.js	/^function registerPostParseFunction(fn){$/;"	f
+registerRunTimeFunction	overlib.js	/^function registerRunTimeFunction(fn) {$/;"	f
+remove_param	functions-autofinger.php	/^function remove_param($url, $name) {$/;"	f
+repositionTo	overlib.js	/^function repositionTo(obj, xL, yL) {$/;"	f
+res	new-poll.php	/^		  $res = mysql_query($sql);$/;"	v
+res	new-poll.php	/^		$res = mysql_query($sql);$/;"	v
+res	new-poll.php	/^	$res = mysql_query($sql);$/;"	v
+res	old-poll.php	/^		  $res = mysql_query($sql);$/;"	v
+res	old-poll.php	/^		$res = mysql_query($sql);$/;"	v
+res	old-poll.php	/^	$res = mysql_query($sql);$/;"	v
+res	poll.php	/^		  $res = mysql_query($sql);$/;"	v
+res	poll.php	/^		$res = mysql_query($sql);$/;"	v
+res	poll.php	/^	$res = mysql_query($sql);$/;"	v
+responses	new-poll.php	/^	$responses = array();$/;"	v
+responses	old-poll.php	/^	$responses = array();$/;"	v
+responses	poll.php	/^	$responses = array();$/;"	v
+result	random.php	/^$result = mysql_query("select username from accounts order by rand() limit 1");$/;"	v
+result_row	random.php	/^$result_row = mysql_fetch_array($result);$/;"	v
+results	register.php	/^			$results = insert_user($username, '', $year, $email, $type);$/;"	v
+rew	proc_autoread.php	/^          $rew = array($idcookie,$val,$prosplist[$val] ,"","","");$/;"	v
+rew	readadd.php	/^              $rew = array($idcookie,$searchnum,$privlevel ,"","","");$/;"	v
+rowoffset	board_messages.php	/^					$rowoffset = 0;$/;"	v
+rowoffset	board_messages.php	/^				$rowoffset = $totalmessages[0] - $messagesperpage * ($pagenumber + 1);$/;"	v
+rowoffset	board_messages.php	/^			$rowoffset=$messagesperpage*$pagenumber;$/;"	v
+rowoffset	board_show.php	/^	$rowoffset=$threadsperpage*$pagenumber;$/;"	v
+runHook	overlib.js	/^function runHook(fnHookTo, hookType) {$/;"	f
+s	quote-test.php	/^$s =  serialize($var);$/;"	v
+script_uri	functions-core.php	/^	$script_uri = addslashes($_SERVER['SCRIPT_URI']); $/;"	v
+search_column	dbfunctions.php	/^	$search_column = '$search_item'");$/;"	v
+search_column	functions-database.php	/^	$search_column = '$search_item'");$/;"	v
+search_item	dbfunctions.php	/^							$search_item= addslashes($search_item);$/;"	v
+search_item	dbfunctions.php	/^	$search_item = addslashes($search_item);$/;"	v
+search_item	dbfunctions.php	/^	$search_item= addslashes($search_item);$/;"	v
+search_item	functions-database.php	/^							$search_item= addslashes($search_item);$/;"	v
+search_item	functions-database.php	/^	$search_item = addslashes($search_item);$/;"	v
+search_item	functions-database.php	/^	$search_item= addslashes($search_item);$/;"	v
+searchname	functions-display.php	/^	$searchname = $_GET['searchname'];$/;"	v
+searchname	read.php	/^			$searchname = htmlentities($searchname);$/;"	v
+searchnum	read.php	/^		$searchnum = get_item($mydbh,"userid","accounts","username",$searchname);$/;"	v
+searchnum	read.php	/^	$searchnum = $idcookie; \/\/and set the searchnum to the persons own id, so that there will not be an autofinger box thing at the bottom of the non-existant plan$/;"	v
+searchnum	readadd.php	/^ $searchnum = $idcookie;}\/\/and set the searchnum to the persons own id, so that person does not get option to add non-existant user\/plan to their autoread list$/;"	v
+searchnum	readcss.php	/^ $searchnum = $idcookie;}\/\/and set the searchnum to the persons own id, so that there will not be an autofinger box thing at the bottom of the non-existant plan$/;"	v
+secret	anonymous.php	/^				$secret = $row['secret_text'];$/;"	v
+secret	anonymous.php	/^		$secret = $_POST['secret'];$/;"	v
+secret	anonymous.php	/^		$secret = cleanText($secret);$/;"	v
+secret	jlw-test.php	/^                $secret = $row['secret_text'];$/;"	v
+secret	jlw-test.php	/^    $secret = $_POST['secret'];$/;"	v
+secret	jlw-test.php	/^    $secret = cleanText($secret);$/;"	v
+secretidno	anonymous.php	/^				$secretidno = $row['secret_id'];$/;"	v
+secretidno	jlw-test.php	/^		$secretidno = $row['secret_id'];$/;"	v
+select_query	anonymous.php	/^			$select_query = "select * from secrets order by date desc limit $offset, $count";$/;"	v
+select_query	anonymous.php	/^			$select_query = "select * from secrets where display = 'yes' or display = 'pref'  order by date desc limit $offset, $count";$/;"	v
+selected_links	links.php	/^	$selected_links = get_items($dbh,"linknum","opt_links","userid", $idcookie);\/\/get the current set of links that the user has selected$/;"	v
+session	register.php	/^	$session = get_item($dbh, 'session', 'tentative_accounts', 'token' , $token);$/;"	v
+setLogin	functions-edit.php	/^function setLogin($dbh, $idcookie)$/;"	f
+setLogin	functions.php	/^function setLogin($dbh, $idcookie)$/;"	f
+setReadTime	functions-autofinger.php	/^function setReadTime($dbh, $idcookie,$interest)$/;"	f
+setReadTime	functions.php	/^function setReadTime($dbh, $idcookie,$interest)$/;"	f
+setRunTimeVariables	overlib.js	/^function setRunTimeVariables(){$/;"	f
+setUpdatedTime	functions-edit.php	/^function setUpdatedTime($idcookie)$/;"	f
+setUpdatedTime	functions.php	/^function setUpdatedTime($idcookie)$/;"	f
+set_background	overlib.js	/^function set_background(pic) {$/;"	f
+set_item	dbfunctions.php	/^function set_item($dbh, $dtable, $dcolumn_change, $dcolumn_value,$/;"	f
+set_item	functions-database.php	/^function set_item($dbh, $dtable, $dcolumn_change, $dcolumn_value,$/;"	f
+setpriv	functions-autofinger.php	/^function setpriv($privl, $cookpriv)$/;"	f
+setpriv	functions.php	/^function setpriv($myprivl, $cookpriv) {$/;"	f
+showObject	overlib.js	/^function showObject(obj) {$/;"	f
+show_form	index.php	/^			$show_form = "Invalid username or password.<br>";$/;"	v
+show_form	register.php	/^	function show_form() {$/;"	f
+show_opt_links	functions-display.php	/^function show_opt_links ($idcookie, $buf ) {$/;"	f
+show_username_taken	register.php	/^	function show_username_taken($username) {$/;"	f
+showform	board_submit.php	/^				$showform=1;$/;"	v
+showform	board_submit.php	/^		$showform=0;$/;"	v
+showform	board_submit.php	/^	$showform=1;$/;"	v
+somearray	functions-edit.php	/^	$somearray = preg_match_all("\/.*?\\[(.*?)\\].*?\/s", $plan, $mymatches);\/\/get an array of everything in brackets$/;"	v
+somearray	functions.php	/^      $somearray = preg_match_all("\/.*?\\[(.*?)\\].*?\/s", $plan, $mymatches);\/\/get an array of everything in brackets$/;"	v
+somearray	test.php	/^	$somearray = preg_match_all("\/.*?\\[(.*?)\\].*?\/s", $plan, $mymatches);\/\/get an array of everything in brackets$/;"	v
+sql	anonymous.php	/^		$sql = "insert into secrets(secret_text, date, display) values (substring('$secret',1,4000), now(), 'no')";$/;"	v
+sql	db.php	/^                                 $sql = "select 1 as answer";$/;"	v
+sql	functions-core.php	/^	$sql = "$/;"	v
+sql	functions-display.php	/^    $sql = "select count(*) as n from secrets where display = 'yes' and secrets.date_approved > '$last'";$/;"	v
+sql	functions.php	/^    $sql = "select count(*) as n from secrets where display = 'yes' and secrets.date > '$last'";$/;"	v
+sql	index.php	/^				$sql = "insert into js_status set userid = " . addslashes($idcookie) . ", status = '" . addslashes($_POST['js_test_value']) . "'";$/;"	v
+sql	jlw-test.php	/^$sql = "insert into secrets(secret_text, date, display) values (substring('$secret',1,4000), now(), 'yes')";$/;"	v
+sql	new-poll.php	/^			$sql = "insert into poll_votes set userid = $userid,$/;"	v
+sql	new-poll.php	/^		  $sql = "select html, poll_question_id from poll_questions where poll_question_id not in (16, 17) order by poll_question_id desc";$/;"	v
+sql	new-poll.php	/^		$sql = "delete poll_votes from poll_votes join poll_choices using (poll_choice_id) $/;"	v
+sql	new-poll.php	/^		$sql = "select count(*) as popularity from poll_votes v$/;"	v
+sql	new-poll.php	/^		$sql = "select max(poll_question_id) as max from poll_questions; ";$/;"	v
+sql	new-poll.php	/^	$sql = "select c.html as html, c.poll_choice_id as poll_choice_id, v.userid as checked from poll_choices c left join poll_votes v on v.userid = $userid and v.poll_choice_id = c.poll_choice_id where c.poll_question_id = $poll_question_id order by c.html";$/;"	v
+sql	new-poll.php	/^	$sql = "select count(*) as voted from poll_votes v join poll_choices c using (poll_choice_id) where userid = $userid and poll_question_id = $poll_question_id";$/;"	v
+sql	new-poll.php	/^	$sql = "select type, q.html as question from poll_questions q $/;"	v
+sql	old-poll.php	/^			$sql = "insert into poll_votes set userid = $userid,$/;"	v
+sql	old-poll.php	/^		  $sql = "select html, poll_question_id from poll_questions where poll_question_id not in (16, 17) order by poll_question_id desc";$/;"	v
+sql	old-poll.php	/^		$sql = "delete from poll_votes$/;"	v
+sql	old-poll.php	/^		$sql = "select count(*) as popularity from  poll_votes v$/;"	v
+sql	old-poll.php	/^		$sql = "select html from poll_choices c$/;"	v
+sql	old-poll.php	/^		$sql = "select max(poll_question_id) as max from poll_questions; ";$/;"	v
+sql	old-poll.php	/^	$sql = "select count(*) as voted from poll_votes v join poll_choices c using (poll_choice_id) where userid = $userid and poll_question_id = $poll_question_id";$/;"	v
+sql	old-poll.php	/^	$sql = "select type, q.html as question, c.poll_choice_id as choice,$/;"	v
+sql	poll.php	/^			$sql = "insert into poll_votes set userid = $userid,$/;"	v
+sql	poll.php	/^		  $sql = "select html, poll_question_id from poll_questions where poll_question_id not in (16, 17) order by poll_question_id desc";$/;"	v
+sql	poll.php	/^		$sql = "delete poll_votes from poll_votes join poll_choices using (poll_choice_id) $/;"	v
+sql	poll.php	/^		$sql = "select count(*) as popularity from poll_votes v$/;"	v
+sql	poll.php	/^		$sql = "select max(poll_question_id) as max from poll_questions; ";$/;"	v
+sql	poll.php	/^	$sql = "select c.html as html, c.poll_choice_id as poll_choice_id, v.userid as checked from poll_choices c left join poll_votes v on v.userid = $userid and v.poll_choice_id = c.poll_choice_id where c.poll_question_id = $poll_question_id order by c.html";$/;"	v
+sql	poll.php	/^	$sql = "select count(*) as voted from poll_votes v join poll_choices c using (poll_choice_id) where userid = $userid and poll_question_id = $poll_question_id";$/;"	v
+sql	poll.php	/^	$sql = "select type, q.html as question from poll_questions q $/;"	v
+sql	secrets-stats.php	/^    $sql = 'select date, yes, no, $/;"	v
+start_array	read.php	/^				$start_array = array();$/;"	v
+start_array	readcss.php	/^                    $start_array = array();$/;"	v
+start_array	search.php	/^			$start_array = array();$/;"	v
+startof	read.php	/^						$startof=strpos($new_row[1],"<b>",$start_array[$num]);$/;"	v
+startof	read.php	/^					$startof= strpos($new_row[1]," ", $start_array[$num]);$/;"	v
+startof	readcss.php	/^                        $startof= strpos($new_row[1]," ", $start_array[$num]);$/;"	v
+startof	search.php	/^					$startof = $start_array[$num]; \/\/ If not possible to start context$/;"	v
+startof	search.php	/^				$startof = strpos($new_row[1]," ", $start_array[$num]);$/;"	v
+status	core-perms.php	/^	$status = get_item($dbh, "status", "perms", "userid", $userid);$/;"	v
+storable	register.php	/^		$storable = serialize($data);$/;"	v
+submitted	new-poll.php	/^	$submitted = $_GET['submitted'];$/;"	v
+submitted	old-poll.php	/^	$submitted = $_GET['submitted'];$/;"	v
+submitted	poll.php	/^	$submitted = $_GET['submitted'];$/;"	v
+t	quote-test.php	/^$t = unserialize($s);$/;"	v
+tempnum	board_messages.php	/^			$tempnum=$pagenumber-1;$/;"	v
+tempnum	board_messages.php	/^		$tempnum=$pagenumber-2;$/;"	v
+thecolor	board_messages.php	/^					$thecolor=$colordark;$/;"	v
+theusername	quicklove.php	/^$theusername = get_item($dbh,"username","accounts","userid", $idcookie);$/;"	v
+this_user	readcss.php	/^$this_user = get_item($dbh, "username", "accounts", "userid", $idcookie);$/;"	v
+thread_title	board_messages.php	/^	$thread_title = get_item($dbh, "title", "mainboard", "threadid", $threadid);$/;"	v
+threadid	board_messages.php	/^		$threadid=$messagevals[0][0];$/;"	v
+threadid	board_submit.php	/^			$threadid=mysql_insert_id();$/;"	v
+threadsperpage	board_show.php	/^$threadsperpage =threadsperpage();$/;"	v
+threadsperpage	functions-forum.php	/^function threadsperpage()$/;"	f
+threadsperpage	functions.php	/^function threadsperpage()$/;"	f
+threadtitle	board_submit.php	/^			$threadtitle = cleanText($threadtitle);$/;"	v
+threadtitle	board_submit.php	/^			$threadtitle = preg_replace('\/<[^>]*>\/', '', $threadtitle);$/;"	v
+title	db.php	/^                                             $title = $next_match['answer'];$/;"	v
+title	functions-display.php	/^		$title = "$username's Plan";$/;"	v
+title	functions-display.php	/^		$title = "Plans - Beta";$/;"	v
+toggle	register.php	/^function toggle(item, box) {$/;"	f
+token	register.php	/^			$token = '';$/;"	v
+token	register.php	/^		$token = make_token();$/;"	v
+totalmessages	board_messages.php	/^	$totalmessages = mysql_fetch_row($my_result);$/;"	v
+totalthreads	board_show.php	/^	$totalthreads = mysql_fetch_row($my_result);$/;"	v
+type	new-poll.php	/^	$type = $new_row['type'];$/;"	v
+type	old-poll.php	/^		$type = $new_row['type'];$/;"	v
+type	poll.php	/^	$type = $new_row['type'];$/;"	v
+type	register.php	/^		$type = $_GET['other'];$/;"	v
+type	register.php	/^		$type = $data['type'];$/;"	v
+type	register.php	/^	$type = $_GET['type'];$/;"	v
+update_read	functions-autofinger.php	/^function update_read($dbh, $owner, $updated) $/;"	f
+update_read	functions.php	/^function update_read($dbh, $owner, $updated) {$/;"	f
+url	functions-autofinger.php	/^	$url = ereg_replace("$name=[^&]*", '', $url);$/;"	v
+url	functions-autofinger.php	/^	$url = preg_replace(array("@&$@"), array(''), $url);$/;"	v
+url	functions-display.php	/^                $url = add_param($url, 'jumbled', 'no');$/;"	v
+url	functions-display.php	/^                $url = add_param($url, 'jumbled', 'yes');$/;"	v
+url	functions-display.php	/^            $url = $_SERVER['REQUEST_URI'];$/;"	v
+user_name	changename.php	/^		$user_name = htmlspecialchars($user_name);\/\/strip out html chars$/;"	v
+userid	functions-core.php	/^		$userid = 0;$/;"	v
+userid	functions-core.php	/^	$userid = $_SESSION['userid'];$/;"	v
+userid	functions-core.php	/^	$userid = addslashes($userid);$/;"	v
+userid	new-poll.php	/^$userid = $idcookie;$/;"	v
+userid	old-poll.php	/^$userid = $idcookie;$/;"	v
+userid	poll.php	/^$userid = $idcookie;$/;"	v
+userid	register.php	/^$userid = $idcookie;$/;"	v
+username	changepassword.php	/^	$username = get_item($mydbh,"username", "accounts", "userid", $idcookie); $/;"	v
+username	index.php	/^	$username = $_POST['username'];$/;"	v
+username	index.php	/^	$username = $_SESSION['username'];$/;"	v
+username	register.php	/^		$username = $data['username'];$/;"	v
+username	register.php	/^		$username = $match[1];$/;"	v
+username	register.php	/^	$username = $_GET['username'];$/;"	v
+username	register.php	/^	$username = preg_replace('\/[^a-zA-A+0-9]\/', '', $username);$/;"	v
+username	whoami.php	/^$username = $_GET['username'];$/;"	v
+verticalPlacement	overlib.js	/^function verticalPlacement(browserHeight,verticalScrollAmount) {$/;"	f
+voted	new-poll.php	/^	$voted = $new_row['voted'];$/;"	v
+voted	old-poll.php	/^	$voted = $new_row['voted'];$/;"	v
+voted	poll.php	/^	$voted = $new_row['voted'];$/;"	v
+wants_secrets	functions-display.php	/^	$wants_secrets = mysql_query("Select avail_links.linknum, avail_links.html_code$/;"	v
+wants_secrets	functions-display.php	/^function wants_secrets ($idcookie) {$/;"	f
+wants_secrets	functions.php	/^    $wants_secrets = mysql_query("Select avail_links.linknum, avail_links.html_code$/;"	v
+wants_secrets	functions.php	/^function wants_secrets ($idcookie) {$/;"	f
+webview	planwatch.php	/^	$webview = '';$/;"	v
+webview	planwatch.php	/^	$webview = 'and webview = 1';$/;"	v
+whandle	readcss.php	/^$whandle = fopen($fname, "a");$/;"	v
+who_just_updated	legal.php	/^function who_just_updated() { \/\/TODO put this somewhere more sensible$/;"	f
+word_count	functions-display.php	/^            $word_count = count($words[0]);$/;"	v
+wrapStr	overlib.js	/^function wrapStr(endWrap,fontSizeStr,whichString) {$/;"	f
+write_only_access	core-perms.php	/^	$write_only_access = array($/;"	v
+year	register.php	/^		$year = $data['year'];$/;"	v
+year	register.php	/^	$year = $_GET['gradyear'];$/;"	v
+year	register.php	/^	$year = preg_replace("\/[^0-9]\/", '', $year);$/;"	v

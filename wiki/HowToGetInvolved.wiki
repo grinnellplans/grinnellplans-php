@@ -1,15 +1,15 @@
 #summary HowToGetInvolved
-#labels Phase-Implementation
+#labels Phase-Implementation,Phase-QA
 
 Interested in helping with the development of Plans? This is the place!
 
 ==Places to know==
-* **Mailing list** - This is where almost all development-related discussion goes on. To join, either visit [http://groups.google.com/group/grinnellplans-development|the Google Groups page] or send a message to [mailto:grinnellplans-development-subscribe@googlegroups.com|grinnellplans-development-subscribe@googlegroups.com].
-* **SVN repository** - This is where you get the actual source code for Plans. See [http://sourceforge.net/svn/?group_id=77235|this page] for instructions on checking out code from the repository (note that you need to have [http://subversion.tigris.org/ Subversion] installed). The trunk should have code that closely mirrors that which is running on the Plans server. If you are planning substantial code changes that require testing, you'll likely want to take a look at [Setting up a Plans server].
-* **Bugzilla** - Use this to submit and track bug reports. It's fun! Go [http://www.grinnellplans.com/bugs/|here].
+  * *Mailing list* - This is where almost all development-related discussion goes on. To join, either visit [http://groups.google.com/group/grinnellplans-development the Google Groups page] or send a message to mailto:grinnellplans-development-subscribe@googlegroups.com.
+  * *SVN repository* - This is where you get the actual source code for Plans. See [http://sourceforge.net/svn/?group_id=77235|this page] for instructions on checking out code from the repository (note that you need to have [http://subversion.tigris.org/ Subversion] installed). The trunk should have code that closely mirrors that which is running on the Plans server. If you are planning substantial code changes that require testing, you'll likely want to take a look at [Setting up a Plans server].
+  * *Bugzilla* - Use this to submit and track bug reports. It's fun! Go [http://www.grinnellplans.com/bugs/|here].
 
 ==How to help==
-* Make sure you join the mailing list.
-* Have a look at the [TODO] (coming soon).
-* Report bugs! Seriously, this is hugely helpful.
-* Suggest features! While there's no guarantee we'll implement your suggestion, well thought-out ideas are always welcome.
+  * Make sure you join the mailing list.
+  * Have a look at the [TODO] (coming soon).
+  * Report bugs! Seriously, this is hugely helpful.
+  * Suggest features! While there's no guarantee we'll implement your suggestion, well thought-out ideas are always welcome.

@@ -1,11 +1,13 @@
 <?php
-//TODO which of this, old-poll, and new-poll are actually used?
-session_start();
+require_once ("Plans.php");
+new SessionBroker();
+
 require ("functions-main.php"); //load main functions
 $idcookie = $_SESSION['userid'];
 $userid = $idcookie;
 $auth = $_SESSION['is_logged_in'];
 $dbh = db_connect(); //connect to database
+$myprivl = setpriv($myprivl, $HTTP_COOKIE_VARS["thepriv"]);
 if ($auth) {
 	mdisp_begin($dbh, $idcookie, $HTTP_HOST . $REQUEST_URI, $myprivl);
 } else {

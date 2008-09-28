@@ -1,8 +1,6 @@
 <?php
-/*
-GrinnellPlans - legal disclaimer file
-Version Nov-11-05-1 (Laiu-Draft-1)
-*/
+require_once ("Plans.php");
+
 /*
 * who_just_updated()
 * Return the planname of the most recent person to update their plan.

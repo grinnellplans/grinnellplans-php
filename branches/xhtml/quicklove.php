@@ -1,5 +1,7 @@
 <?php
-session_start();
+require_once ("Plans.php");
+new SessionBroker();
+
 require ("functions-main.php"); //load main functions
 $dbh = db_connect(); //get the database connection
 $idcookie = $_SESSION['userid'];
@@ -13,5 +15,3 @@ if ($auth) {
 }
 db_disconnect($dbh);
 ?>
-
-

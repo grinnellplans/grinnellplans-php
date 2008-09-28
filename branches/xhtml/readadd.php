@@ -1,5 +1,7 @@
 <?php
-session_start();
+require_once ("Plans.php");
+new SessionBroker();
+
 require ("functions-main.php"); //load main functions
 $dbh = db_connect(); //connect to the database
 $idcookie = $_SESSION['userid'];
@@ -34,7 +36,7 @@ the term in them.";
 				$o = 0;
 				while ($partial_list[$o][0]) //loop through the array of usernames that contain string, printing each one nicely.
 				{
-					echo "<li><a href=\"read.php?searchnum=" . $partial_list[$o][0] . "\">" . $partial_list[$o][1] . "</a>";
+					echo "<li><a href=\"read.php?myprivl=" . $myprivl . "&searchnum=" . $partial_list[$o][0] . "\">" . $partial_list[$o][1] . "</a>";
 					$o++;
 				} //while ($partial_list [$o][0])
 				echo "</ul>";

@@ -1,230 +1,64 @@
 <?php
+require_once ("Plans.php");
+function Redirect($url) {
+	Header("Location: $url");
+}
+
+function microtime_float()
+{
+	list($utime, $time) = explode(" ", microtime());
+	return ((float)$utime + (float)$time);
+}
+$starttime__ = microtime_float();
 /*
 GrinnellPlans - Displayfunctions
+version Nov-11-05-1 (Laiu-Draft-1)
 What this is: old parts of functions.php separated - in this page, those delaying with display to user controls.
 */
 //////////
 /* mdisp_beg- Looks up from the database what choices the user has for their interface and style,
 *and gets the pathnames for the files associated with those choices. Loads the code contained in
-*the interface page that the user basically selected, which is actually a set of a couple of functions.
+*the interface page that the user basically selected, which is actually a set of a couple of
+*functions, including mdisp_end.
 */
-/* DEPRECATED */
 function mdisp_begin($dbh, $idcookie, $myurl, $myprivl, $jsfile = NULL)
 {
-	//get the paths of the interface and style files that the user indicated as wanting to use
-	$my_result = mysql_query("Select interface.path,style.path From
+	$sql = "Select interface.path,style.path From
 	interface interface, style style,display display where
-	display.userid = '$idcookie' and display.interface = interface.interface and display.style=style.style");
+	display.userid = '$idcookie' and display.interface = interface.interface and display.style=style.style";
+	//echo '<!-- ' . $sql . ' -->';
+	$my_result = mysql_query($sql); //get the paths of the interface and style files that the user indicated as wanting to use
+	$css = get_item($dbh, "stylesheet", "stylesheet", "userid", $idcookie);
 	while ($new_row = mysql_fetch_row($my_result)) {
 		$mydisplayar[] = $new_row;
 	} //gets contents from query
 	require ($mydisplayar[0][0]); //loads up the interface functions
-	$css = get_item($dbh, "stylesheet", "stylesheet", "userid", $idcookie);
 	if ($css) {
 		$mycss = $css;
 	} else {
 		$mycss = $mydisplayar[0][1];
 	}
-	$searchname = $_GET['searchname'];
-	$linkarr = cinterface_get_all_links($idcookie);
-	for ($i = 1; $i < 4; $i++) { //TODO variable number
-		$autofingerarr[$i - 1] = cinterface_get_autoread($idcookie, $i);
-	}
-	//call the function which actually does the work of sending the beginning html code to the user
-	interface_disp_begin($searchname, $linkarr, $autofingerarr, $myurl, $myprivl, $mycss, $jsfile);
-}
-function get_guest_interface()
-{
-	require ("interfaces/xhtml/xhtml.php"); //TODO hardcoding! bleh!
-	
-}
-//TODO comment
-function get_interface($idcookie)
-{
-	//TODO again, clean this up, it's ugly
-	//get the paths of the interface and style files that the user indicated as wanting to use
-	$my_result = mysql_query("Select interface.path,style.path From
-	interface interface, style style,display display where
-	display.userid = '$idcookie' and display.interface = interface.interface and display.style=style.style");
-	while ($new_row = mysql_fetch_row($my_result)) {
-		$mydisplayar[] = $new_row;
-	} //gets contents from query
-	require ($mydisplayar[0][0]); //loads up the interface functions
-	
-}
-//TODO comment
-function populate_page(PlansPage $page, $dbh, $idcookie)
-{
-	//TODO get rid of all this crap - it should be much simpler
-	//get the paths of the interface and style files that the user indicated as wanting to use
-	$my_result = mysql_query("Select interface.path,style.path From
-	interface interface, style style,display display where
-	display.userid = '$idcookie' and display.interface = interface.interface and display.style=style.style");
-	while ($new_row = mysql_fetch_row($my_result)) {
-		$mydisplayar[] = $new_row;
-	} //gets contents from query
-	//require ($mydisplayar[0][0]);//loads up the interface functions
-	$css = get_item($dbh, "stylesheet", "stylesheet", "userid", $idcookie);
-	if ($css) {
-		$page->stylesheet = $css;
-	} else {
-		$page->stylesheet = $mydisplayar[0][1];
-	}
-	global $myprivl;
-	$page->autoreadpriority = $myprivl;
-	$mp = new MainPanel();
-	$page->mainpanel = $mp;
-	$mp->fingerbox = get_fingerbox();
-	$mp->linkhome = get_linkhome();
-	$mp->requiredlinks = get_req_links();
-	$mp->optionallinks = get_opt_links($idcookie);
-	$mp->autoreads = array();
-	for ($i = 1; $i <= 3; $i++) { //TODO variable number
-		$mp->autoreads[] = get_autoread($idcookie, $i);
-	}
-	$footer = new Footer();
-	$footer->doyouread = get_just_updated();
-	$footer->legal = new InfoText(get_disclaimer(), NULL);
-	$page->footer = $footer;
-}
-function populate_guest_page(PlansPage $page)
-{
-	//$css=get_item($dbh,"stylesheet","stylesheet","userid", $idcookie);
-	//if ($css) {$page->stylesheet=$css;}
-	$css = "styles/guest.css"; //TODO hardcoding this is ugly
-	$page->stylesheet = $css;
-	$mp = new MainPanel();
-	$page->mainpanel = $mp;
-	$mp->fingerbox = get_fingerbox();
-	$mp->linkhome = get_linkhome();
-	$mp->requiredlinks = get_guest_links();
-	$mp->optionallinks = NULL;
-	$mp->autoreads = NULL;
-	$footer = new Footer();
-	$footer->doyouread = NULL;
-	$footer->legal = new InfoText(get_disclaimer(), NULL);
-	$page->footer = $footer;
-}
-/*
-* Returns an AutoRead object for the given priority
-*/
-function get_autoread($idcookie, $p)
-{
-	$newarr = array();
-	//TODO get a string for the level name from db
-	$privarray = mysql_query("Select autofinger.interest,accounts.username
-		From autofinger, accounts where owner = '$idcookie' and priority =
-		'$p' and updated = '1' and autofinger.interest=accounts.userid");
-	while ($new_row = mysql_fetch_row($privarray)) {
-		$autoreadlist[] = $new_row;
-	}
-	$ar = new AutoRead($p);
-	$o = 0;
-	while ($autoreadlist[$o][0]) {
-		$ar->append(new PlanLink(NULL, $autoreadlist[$o][1]));
-		$o++;
-	}
-	return $ar;
-}
-//TODO comments
-function get_req_links()
-{
-	$newarr = array();
-	$newarr[] = new Hyperlink('mainlink_edit', 'edit.php', 'Edit Plan');
-	$newarr[] = new Hyperlink('mainlink_search', 'search.php', 'Search Plans');
-	$newarr[] = new Hyperlink('mainlink_prefs', 'customize.php', 'Preferences');
-	$newarr[] = new Hyperlink('mainlink_logout', 'index.php?logout=1', 'Log Out');
-	return $newarr;
-}
-function get_guest_links()
-{
-	$newarr = array();
-	$newarr[] = new Hyperlink('mainlink_search', 'search.php', 'Search Plans');
-	$newarr[] = new Hyperlink('mainlink_listusers', 'listusers.php', 'List Users');
-	$newarr[] = new Hyperlink('mainlink_logout', 'index.php?logout=1', 'Log Out');
-	return $newarr;
-}
-function get_opt_links($idcookie)
-{
-	$linkarray = mysql_query("Select avail_links.linkname, avail_links.html_code as html_code, static
-    From avail_links, opt_links where   
-    opt_links.userid = '$idcookie' and opt_links.linknum = avail_links.linknum");
-	$newarr = array();
-	while ($new_row = mysql_fetch_row($linkarray)) {
-		if ($new_row[2] == 'yes') {
-			$foo = array();
-			preg_match("/href=\"([^\"]+)\"/", $new_row[1], &$foo);
-			$href = $foo[1]; // TODO this is silly, let's just store href in the db
-			$thislink = new Hyperlink(NULL, $href, $new_row[0]);
-		} else if ($new_row[0] == 'Secrets') {
-			$count = count_unread_secrets($idcookie);
-			$thislink = new Hyperlink('mainlink_secrets', 'anonymous.php', "Secrets ($count)");
-		} else if ($new_row[0] == 'Jumble') {
-			$url = $_SERVER['REQUEST_URI'];
-			if ($_GET['jumbled'] == 'yes' || ($_COOKIE['jumbled'] == 'yes' && $_GET['jumbled'] != 'no')) {
-				// TODO build add_param into Hyperlink class?
-				$url = add_param($url, 'jumbled', 'no');
-				$linktext = 'unjumble';
-			} else {
-				$url = add_param($url, 'jumbled', 'yes');
-				$linktext = 'jumble';
-			}
-			$thislink = new Hyperlink('mainlink_jumble', $url, $linktext);
+	disp_begin($dbh, $idcookie, $myurl, $myprivl, $mycss, $jsfile); //calls the real beginning display
+	//function which actually does the work of sending the beginning html code to the user
+	if (isset($_SESSION['b'])) {
+		$b = (int)$_SESSION['b'];
+		if (file_exists("buckets/$b.php")) {
+			include ("buckets/$b.php");
+		} else {
+			echo "Invalid bucket!";
 		}
-		$newarr[] = $thislink;
 	}
-	return $newarr;
 }
-function get_fingerbox()
-{
-	$f = new Form('finger', 'Finger Plan');
-	$f->action = 'read.php';
-	$f->method = 'GET';
-	$item = new FormItem('text', 'searchname', NULL);
-	$item->datatype = Form::FIELD_TEXT; //TODO avram?
-	$f->appendField($item);
-	$item = new FormItem('hidden', 'myprivl', $myprivl);
-	$f->appendField($item);
-	$item = new FormItem('submit', NULL, 'Read');
-	$f->appendField($item);
-	return $f;
-}
-function get_linkhome()
-{
-	$l = new Hyperlink('home', 'index.php', '');
-	return $l;
-}
-function get_just_updated()
-{
-	//TODO eh? is this used?
-	//if time is out of acceptable period, set to 12
-	if (!($mytime > 0 and $mytime < 100)) {
-		$mytime = 12;
-	}
-	//TODO simplify?
-	//do the query with specifying date format to be returned
-	$my_planwatch = mysql_query("select userid,username,DATE_FORMAT(changed,
-		'%l:%i %p, %a %M %D ') from accounts where
-		changed > DATE_SUB(NOW(), INTERVAL $mytime HOUR) and username != 'test'
-		ORDER BY changed desc LIMIT 1");
-	//return the results of the query
-	$new_plans = mysql_fetch_row($my_planwatch);
-	return new PlanLink('justupdated', $new_plans[1]);
-}
-/* DEPRECATED */
-function mdisp_end($dbh, $idcookie, $myurl, $myprivl)
-{
-	// currently just calls the interface function
-	interface_disp_end($myurl);
-}
+/* Did text outline, did a gradiant with white and gray, with white being
+on top, but less of white. Did a neon glow thing, then did an invert, the
+messed with the color balance, to make it a light blue
+*/
+//////////
 /*
 *Simple beginning to guest display
 */
-/* DEPRECATED */
 function gdisp_begin($dbh)
 {
-	//TODO fix this - does guest even need myprivl?
-	global $myprivl;
 	if (!$myprivl == 2 or !$myprivl == 3) {
 		$myprivl = 1;
 	}
@@ -238,7 +72,8 @@ function gdisp_begin($dbh)
 	<head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<title><?php
-	echo $title ?></title>
+	echo $title
+?></title>
 		<style type="text/css">
 		<!--
 		body {  color: #000000; background-color: #ffffff}
@@ -324,12 +159,39 @@ function gdisp_begin($dbh)
 /*
 *Even simpler end to guest display
 */
-/* DEPRECATED */
 function gdisp_end()
 {
 	echo "</td></tr></table></td></tr></table></body></html>";
 }
-//TODO see what below here is deprecated
+/*
+function privlev($myprivl, $cookiepriv)
+{
+echo $cookiepriv . "---<br>";
+echo $myprivl . "=<br>";
+
+
+
+if (($myprivl == "") and ($cookiepriv == ""))
+{
+return 1;
+}
+else
+{
+if ($cookiepriv == "")
+{
+//setcookie("myprivl", $myprivl,0, "/~kenslerj/plans3/");
+return $myprivl;
+}
+if ($myprivl == "")
+{return $cookiepriv;
+}
+if (($myprivl != "") and ($cookiepriv !=""))
+{//setcookie("myprivl", $myprivl,0, "/~kenslerj/plans3/");
+return $myprivl;
+}
+}
+}
+*/
 function wants_secrets($idcookie)
 {
 	$wants_secrets = mysql_query("Select avail_links.linknum, avail_links.html_code
@@ -384,7 +246,6 @@ function jumble($text)
 		}
 	}
 }
-/* DEPRECATED */
 function show_opt_links($idcookie, $buf)
 {
 	$linkarray = mysql_query("Select avail_links.linkname, avail_links.html_code as html_code, static
@@ -395,8 +256,10 @@ function show_opt_links($idcookie, $buf)
 ?>
             <tr>
            <?php
-			echo $buf ?> 
-            <td><?php echo $new_row[1] ?></td>
+			echo $buf
+?> 
+            <td><?php
+			echo $new_row[1] ?></td>
             </tr>
             <?php
 		} else if ($new_row[0] == 'Secrets') {
@@ -404,8 +267,10 @@ function show_opt_links($idcookie, $buf)
 ?>
             <tr>
            <?php
-			echo $buf ?> 
-            <td><a href="anonymous.php" class="main">Secrets (<?php echo $count ?>)</a></td>
+			echo $buf
+?> 
+            <td><a href="anonymous.php" class="main">Secrets (<?php
+			echo $count ?>)</a></td>
             </tr>
             <?php
 		} else if ($new_row[0] == 'Jumble') {
@@ -420,10 +285,13 @@ function show_opt_links($idcookie, $buf)
 ?>
             <tr>
            <?php
-			echo $buf ?> 
+			echo $buf
+?> 
             <td><a href="<?php
-			echo $url ?>" class="main"><?php
-			echo $linktext ?></a></td>
+			echo $url
+?>" class="main"><?php
+			echo $linktext
+?></a></td>
                 </tr>
                 <?php
 		}

@@ -1,10 +1,9 @@
 <?php
-session_start();
+require_once ("Plans.php");
 require ("functions-main.php"); //load main functions
 $dbh = db_connect();
 $idcookie = $_SESSION['userid'];
-$auth = $_SESSION['is_logged_in'];
-if (!$auth) {
+if (!User::logged_in()) {
 	gdisp_begin($dbh); //begin guestdisplay
 	echo ("You do not have an autoread list as a guest."); //tell them nothing to see
 	gdisp_end(); //send end guestdisplay
@@ -37,7 +36,7 @@ if (!$auth) {
 		} else
 		//if not selected letter, make letter link to select that letter
 		{
-			echo " <a href= \"autoread.php?letternum=" . $i . "\">" . chr($i) . "</a> ";
+			echo " <a href= \"autoread.php?myprivl=" . $myprivl . "&letternum=" . $i . "\">" . chr($i) . "</a> ";
 		}
 		$i++; //go on to next letter
 		
@@ -75,6 +74,7 @@ if (!$auth) {
 	//pass on other info
 	echo "<input type=\"hidden\" name=\"set_autoreadlist\" value=\"" . $idcookie . "\">";
 	echo "<input type=\"hidden\" name=\"letternum\" value=\"" . $letternum . "\">";
+	echo "<input type=\"hidden\" name=\"myprivl\" value=\"" . $myprivl . "\">";
 	echo "<input type=\"submit\" value=\"Submit\"></form>";
 	/////endform here
 	mdisp_end($dbh, $idcookie, $HTTP_HOST . $REQUEST_URI, $myprivl); //end display

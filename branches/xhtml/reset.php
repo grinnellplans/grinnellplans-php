@@ -1,4 +1,6 @@
-<html><head><title>Reset Style Sheet</title></head><body><center>
+<?php
+require_once ("Plans.php");
+?><html><head><title>Reset Style Sheet</title></head><body><center>
 
 <?php
 require ("functions-main.php");

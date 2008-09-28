@@ -1,5 +1,7 @@
 <?php
-session_start();
+require_once ("Plans.php");
+new SessionBroker();
+
 require ("functions-main.php"); //load main functions
 $dbh = db_connect(); //get database connections
 $idcookie = $_SESSION['userid'];
@@ -19,9 +21,11 @@ if (!($mytime > 0 and $mytime < 100)) {
 
 ?>
 <form action="planwatch.php" method="POST">
-<input type="text" name="mytime" value="<?php echo $mytime
+<input type="text" name="mytime" value="<?php
+echo $mytime
 ?>">
-<input type="hidden" name="myprivl" value="<?php echo $myprivl
+<input type="hidden" name="myprivl" value="<?php
+echo $myprivl
 ?>">
 <input type="submit" value="See Plans">
 </form>
@@ -40,7 +44,7 @@ ORDER BY changed desc");
 echo "<table>";
 //display the results of the query
 while ($new_plans = mysql_fetch_row($my_planwatch)) {
-	echo "<tr><td><a href=\"read.php?searchname=" . $new_plans[1] . "\">" . $new_plans[1] . "</a></td><td>" . $new_plans[2] . "</td></tr>";
+	echo "<tr><td><a href=\"read.php?myprivl=" . $myprivl . "&searchname=" . $new_plans[1] . "\">" . $new_plans[1] . "</a></td><td>" . $new_plans[2] . "</td></tr>";
 }
 echo "</table>";
 if (!$auth) //if not logged in

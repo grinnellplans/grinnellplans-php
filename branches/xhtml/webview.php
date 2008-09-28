@@ -1,5 +1,6 @@
 <?php
-session_start();
+require_once ("Plans.php");
+new SessionBroker();
 require ("functions-main.php"); //load main functions
 require ("syntax-classes.php"); //load main functions
 $dbh = db_connect();
@@ -54,4 +55,3 @@ if (!$auth) {
 interface_disp_page($thispage);
 db_disconnect($dbh);
 ?>
-

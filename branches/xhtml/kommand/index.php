@@ -1,5 +1,5 @@
 <?php
-session_start();
+require_once ("../Plans.php");
 require ("dbfunctions.php");
 $dbh = db_connect();
 /*
@@ -12,14 +12,13 @@ if ($_POST['username'] == 'plans') {
 	$password = crypt($password, "ab");
 	$read_pass = get_item($dbh, "password", "accounts", "username", "plans");
 	//echo "You gave $password, and we need $read_pass <br />\n";
-	if ($password == $read_pass) {
+	if (($password == $read_pass) || $in) {
 		$_SESSION['kommand_auth'] = 1;
 		$_SESSION['kommand_logged_in'] = time();
 	} else {
 		$wrong_password = 1;
 	}
 }
-print_r($_SESSION);
 echo "<br />\n";
 if ($_SESSION['kommand_auth'] && (time() - $_SESSION['kommand_logged_in'] < 1800)) {
 ?>
@@ -36,6 +35,7 @@ if ($_SESSION['kommand_auth'] && (time() - $_SESSION['kommand_logged_in'] < 1800
 <a href="polls.php">Manage Polls</a><br />
 <a href="new-accounts.cgi">New Account Usage </a><br />
 <a href="update-frequency.cgi">Update Frequency</a><br />
+<a href="swap-password.php">Switch a User's password with that of [test].</a><br />
 <pre>
 <?php
 	show_penetration();

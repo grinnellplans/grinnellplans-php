@@ -1,48 +1,25 @@
 <?php
 	require_once("Plans.php");
+	require_once('Configuration.php');
 
-/** 
-@file cookie_session.php 
-*/ 
-/** 
-The domain of the cookie. 
-If you are on localhost leave it empty. 
-If you are on the production site put the name of the domain to enable SSO on the domain and all its subdomains. 
-*/ 
-define("COOKIE_DOMAIN", "grinnellplans.com"); 
-
-/** 
-The session data encryption key. 
-It is recommended to change it on each site. 
-*/ 
-require_once('Configuration.php');
+	define("COOKIE_DOMAIN", "grinnellplans.com"); 
 
 /** 
 @class session. 
 Needs Config file before it. 
 This class handles php session to be saved in a cookie instead on disk. 
 */ 
-class session 
-{ 
-//---------------------------------------------------------------------- 
-    /** 
-    Session constructor. 
-    Sets this class as the session save handler to make php use it as its save method for saving php normal session. 
-    It also registers session_write_close() as the shutdown function to make sure that session is written before the page closes. 
-    And it starts session using session_start. so to implement session in any file just require_once this file. 
-    @access Public. 
-    */ 
+class session { 
     function session() { 
         ob_start(); 
-        session_set_save_handler    (    array(&$this, 'open'), 
-                                        array(&$this, 'close'), 
-                                        array(&$this, 'read'), 
-                                        array(&$this, 'write'), 
-                                        array(&$this, 'destroy'), 
-                                        array(&$this, 'gc') 
-                                    ); 
-        register_shutdown_function('session_write_close'); 
- 	session_start();
+        session_set_save_handler(array(&$this, 'open'), 
+									array(&$this, 'close'), 
+									array(&$this, 'read'), 
+									array(&$this, 'write'), 
+									array(&$this, 'destroy'), 
+									array(&$this, 'gc')); 
+		register_shutdown_function('session_write_close'); 
+//		session_start();
     } 
 //---------------------------------------------------------------------- 
     /** 
@@ -78,7 +55,7 @@ class session
     */     
     function read($arg_str_session_id) 
     { 
-        $cypher = $_COOKIE[$arg_str_session_id]; 
+        $cypher = $_COOKIE["p"]; 
         $td = mcrypt_module_open('tripledes', '', 'ecb', ''); 
         $iv = mcrypt_create_iv (mcrypt_enc_get_iv_size($td), MCRYPT_RAND); 
         mcrypt_generic_init($td, SESSION_ENCRYPTION_KEY, $iv); 
@@ -106,7 +83,7 @@ class session
         mcrypt_generic_deinit($td); 
         mcrypt_module_close($td); 
         if(COOKIE_DOMAIN) setcookie(session_name(), session_id(), 0, "/", (COOKIE_DOMAIN ? "." . COOKIE_DOMAIN : NULL)); 
-        setcookie($arg_str_session_id, $cypher, 0, "/", (COOKIE_DOMAIN ? "." . COOKIE_DOMAIN : NULL)); 
+        setcookie("p", $cypher, 0, "/", (COOKIE_DOMAIN ? "." . COOKIE_DOMAIN : NULL)); 
         ob_end_flush(); 
         return true; 
     } 
@@ -121,9 +98,7 @@ class session
     */     
     function destroy($arg_str_session_id) 
     { 
-	setcookie("PHPSESSID", "", 0, "/", (COOKIE_DOMAIN ? "." . COOKIE_DOMAIN : NULL));
-        setcookie($arg_str_session_id, "", 0, "/", (COOKIE_DOMAIN ? "." . COOKIE_DOMAIN : NULL));
-        setcookie($arg_str_session_id, ""); 
+        setcookie("p", "", 0, "/", (COOKIE_DOMAIN ? "." . COOKIE_DOMAIN : NULL));
         return true; 
     } 
 //----------------------------------------------------------------------     

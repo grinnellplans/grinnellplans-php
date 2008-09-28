@@ -2,7 +2,7 @@
 	// Boilerplate code for _all_ Plans scripts
 
 	// Set some testings only for when we're called through /beta/.
-	if (strstr($_SERVER['REQUEST_URI'], '/beta/') != FALSE) {
+	if (strstr($_SERVER['REQUEST_URI'], '/dev/') != FALSE) {
 		ini_set('error_reporting', E_ALL);
 		ini_set('register_globals',	FALSE);
 		ini_set('html_errors',	TRUE);

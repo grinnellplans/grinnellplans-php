@@ -8,12 +8,12 @@
 		ini_set('html_errors',	TRUE);
 	}
 	
-	ini_set('include_path', '/inc');
+	// ini_set('include_path', '/inc');
 	
 	function __autoload($classname) {
 		require_once("inc/$classname.php");
 	}
 
-	require_once("SessionBroker.php");
+	require_once("inc/SessionBroker.php");
 	header('Content-Type: text/html; charset=UTF-8');
 ?>

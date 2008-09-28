@@ -8,18 +8,23 @@ require_once ('Configuration.php');
   * _SESSION. 
   */
 class SessionBroker {
+	private static $instances = 0;
+	
 	function SessionBroker() {
-		ob_start();
-		session_set_save_handler(array(&$this, 'open'),
-									array(&$this, 'close'),
-									array(&$this, 'read'),
-									array(&$this, 'write'),
-									array(&$this, 'destroy'),
-									array(&$this, 'gc'));
-		register_shutdown_function('session_write_close');
-		session_set_cookie_params(0, '/', COOKIE_DOMAIN);
-		session_start();
-		setcookie(session_name(), "", 0, '/', COOKIE_DOMAIN);
+		if (SessionBroker::$instances == 0) {
+			ob_start();
+			session_set_save_handler(array(&$this, 'open'),
+										array(&$this, 'close'),
+										array(&$this, 'read'),
+										array(&$this, 'write'),
+										array(&$this, 'destroy'),
+										array(&$this, 'gc'));
+			register_shutdown_function('session_write_close');
+			session_set_cookie_params(0, '/', COOKIE_DOMAIN);
+			session_start();
+			setcookie(session_name(), "", 0, '/', COOKIE_DOMAIN);
+		}
+		SessionBroker::$instances++;
 	}
 	
 	function open($arg_str_save_path, $arg_str_session_name) {

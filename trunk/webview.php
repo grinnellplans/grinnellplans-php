@@ -3,7 +3,7 @@ require_once ("Plans.php");
 require ("functions-main.php"); //load main functions
 $dbh = db_connect();
 $idcookie = $_SESSION['userid'];
-if (User::logged_in()) {
+if (!User::logged_in()) {
 	gdisp_begin($dbh);
 	echo ("You are not allowed to edit as a guest.");
 	gdisp_end();

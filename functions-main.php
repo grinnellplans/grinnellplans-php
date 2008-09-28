@@ -9,6 +9,11 @@ if (isset($_GET['jumbled'])) {
 	}
 } else {
 }
+
+function Redirect($url) {
+	Header('Location: $url');
+
+
 //Load Configuration settings - let's increase our level of abstraction here....
 require_once ("Configuration.php");
 //Load the legal disclaimer file (Your needs may differ!)

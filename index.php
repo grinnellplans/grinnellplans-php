@@ -1,27 +1,25 @@
 <?php
 require_once ("Plans.php");
 new SessionBroker();
+
 require ("functions-main.php");
+
 if (isset($_GET['logout'])) {
 	User::logout();
 }
+
 $dbh = db_connect();
 
-if (isset($_GET['myprivl'])) {
-$myprivl = $_GET['myprivl'];	
-} else {
-	$myprivl = FALSE;
-}
-
 if (User::logged_in()) {
-	$username = $_SESSION['username'];
-	$idcookie = $_SESSION['userid'];
+	Redirect('home.php');
 } else {
 	$username = $_POST['username'];
 	$password = $_POST['password'];
 	$guest = $_POST['guest'];
 	if ($username) {
-		if (!User::login($username, $password)) {
+		if (User::login($username, $password)) {
+			redirect('home.php');
+		} else {
 			$show_form = "Invalid username or password.<br>";
 		}
 	} else {
@@ -122,46 +120,6 @@ Use of the GrinnellPlans service means you have accepted the <a href="http://www
 
        <?php
 }
-//Part 3: Logged in as a user or guest
-//At this point we've handled the loggin in part of the process and the processing should now
-//handle what comes after the person is either an accepted
-//user or logged in as a guest.
-if ($_SESSION['is_logged_in'] or $guest) {
-	/*
-	echo "<br />";
-	print_r ($_SESSION);
-	echo "<br />";
-	echo "idcookie is $idcookie<br>";
-	echo "<br />" . $_SESSION['is_logged_in'];
-	echo "<br />" . $guest;
-	echo "<br />";
-	*/
-	if ($_SESSION['is_logged_in']) {
-		mdisp_begin($dbh, $idcookie, $HTTP_HOST . $REQUEST_URI, $myprivl); //send beginning display info
-		
-	}
-	if ($guest) {
-		$dbh = db_connect(); //sets up connection to database.
-		gdisp_begin($dbh); //sends beginning part of guest display
-		$my_result = mysql_query("Select system.motd From system"); //get the main plans message from the database
-		$my_row = mysql_fetch_array($my_result); //get information from mysql query
-		
-	} else {
-		$my_result = mysql_query("Select system.motd,accounts.spec_message From
-				system,accounts where accounts.userid = '$idcookie'"); //get the main plans messsage as well as the person's private message to be displayed
-		$my_row = mysql_fetch_array($my_result); //get information from mysql query
-		echo stripslashes(stripslashes($my_row[1])); //if logged in, show the private message
-		echo '<pre>';
-		echo '</pre>';
-	}
-	echo stripslashes(stripslashes($my_row[0])); //display the main Plans message
-	if ($_SESSION['is_logged_in']) {
-		mdisp_end($dbh, $idcookie, $HTTP_HOST . $REQUEST_URI, $myprivl); //and send closing display data
-		
-	} else {
-		gdisp_end();
-	} //if guest send guest closing display data
-	
-}
+
 db_disconnect($dbh);
 ?>

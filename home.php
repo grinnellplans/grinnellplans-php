@@ -1,30 +1,31 @@
 <?php
 require_once ("Plans.php");
-//Load the functions file
 require ("functions-main.php");
-//Connects to database and pulls out the information from cookies
-$dbh = db_connect(); //connect to database
+
+$dbh = db_connect();
 $idcookie = $_SESSION['userid'];
 $myprivl = setpriv($myprivl, $HTTP_COOKIE_VARS["thepriv"]);
-//Check for user or NON-GUEST status, and provide correct display with MoTD
-//This allows NON-GUESTS to read the MoTD
+
 if (User::logged_in()) {
-	mdisp_begin($dbh, $idcookie, $HTTP_HOST . $REQUEST_URI, $myprivl);
-	$my_result = mysql_query("Select system.motd,accounts.spec_message From system,accounts where accounts.userid = '$idcookie'");
-	$my_row = mysql_fetch_array($my_result);
-	echo stripslashes(stripslashes($my_row[1]));
-	echo stripslashes(stripslashes($my_row[0]));
-} else
-//begin ANYONE display
-{
-	gdisp_begin($dbh); //guest
-	$my_result = mysql_query("Select system.motd From system"); //get the main plans message from the database
-	$my_row = mysql_fetch_array($my_result); //get information from mysql query
-	echo stripslashes(stripslashes($my_row[1]));
-	echo stripslashes(stripslashes($my_row[0]));
+	mdisp_begin($dbh, $idcookie, $HTTP_HOST . $REQUEST_URI, $myprivl); //send beginning display info
+} else {
+	gdisp_begin($dbh);
 }
-//quick hack to display the public RSS page
-//Disabled
-//include("http://grinnellplans.com/rss");
+
+$my_result = mysql_query("Select system.motd,accounts.spec_message From system,accounts where accounts.userid = '$idcookie'");
+$my_row = mysql_fetch_array($my_result); //get information from mysql query
+echo stripslashes(stripslashes($my_row[1])); //if logged in, show the private message
+echo '<pre>';
+echo '</pre>';
+
+echo stripslashes(stripslashes($my_row[0])); //display the main Plans message
+
+if (User::logged_in()) {
+	mdisp_end($dbh, $idcookie, $HTTP_HOST . $REQUEST_URI, $myprivl); //and send closing display data
+} else {
+	gdisp_end();
+}
+
+
 db_disconnect($dbh);
 ?>

@@ -12,9 +12,9 @@ if (User::logged_in()) {
 	gdisp_begin($dbh);
 }
 
-$my_result = mysql_query("Select system.motd,accounts.spec_message From system,accounts where accounts.userid = '$idcookie'");
+$my_result = mysql_query("Select system.motd from system");
 $my_row = mysql_fetch_array($my_result); //get information from mysql query
-echo stripslashes(stripslashes($my_row[1])); //if logged in, show the private message
+// echo stripslashes(stripslashes($my_row[1])); //if logged in, show the private message
 echo '<pre>';
 echo '</pre>';
 

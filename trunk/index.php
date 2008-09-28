@@ -39,7 +39,7 @@ function js_test ()
 	  <table cellpadding=0 width="100%">
 	  <tr>
 		<td colspan=2 align=center>
-		echo '<img src="img/logo.jpg">';
+			<img src="img/logo.jpg">
 		</td>
 	  </tr>
 	  <tr class="boxes">
@@ -53,7 +53,7 @@ function js_test ()
 	  </tr>
 	  <tr valign=top>
 		<td align=right width="50%">
-			<input type="submit" value="Login">
+			<input type="submit" name="submit" value="Login">
 			<input type="hidden" value="off" name="js_test_value">  
 <script>
 <!--
@@ -64,7 +64,7 @@ js_test();
 		<form action="index.php" method="POST"> <!--gimmick to make the buttons display at the same height-->
 		<td align=left width="50%">
 			<input type="hidden" value="1" name="guest">
-			<input type="submit" value="Guest">
+			<input type="submit" name="submit" value="Guest">
 			</form></td>
 	  </tr>
 	  <tr>

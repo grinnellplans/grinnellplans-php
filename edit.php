@@ -4,7 +4,7 @@ require ("functions-main.php"); //load main functions
 $dbh = db_connect(); ///connect to the database
 $idcookie = $_SESSION['userid'];
 $noedit = $_GET['noedit'];
-if (User::logged_in()) {
+if (!User::logged_in()) {
 	gdisp_begin($dbh); //begin guest display
 	echo ("You are not allowed to edit as a guest."); //tell guest they can't edit
 	gdisp_end(); //end guest display

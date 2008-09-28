@@ -3,7 +3,7 @@ require_once ("Plans.php");
 require ("functions-main.php"); //load main functions
 $dbh = db_connect();
 $idcookie = $_SESSION['userid'];
-if (User::logged_in()) {
+if (!User::logged_in()) {
 	gdisp_begin($dbh); //begin guestdisplay
 	echo ("You do not have an autoread list as a guest."); //tell them nothing to see
 	gdisp_end(); //send end guestdisplay

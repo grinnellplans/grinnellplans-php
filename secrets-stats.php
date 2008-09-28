@@ -23,7 +23,7 @@ $myprivl=setpriv($myprivl, $HTTP_COOKIE_VARS["thepriv"]);
     sum(if(display="no",1,0)) as no  from secrets where date > "2005-12-04"
     group by date) as m';
 
-$cmd = "mysql -u plans --password='wIM2bHI' plans -H -e '$sql'";
+$cmd = "mysql -u " . MYSQL_USER . " --password='" . MYSQL_PASSWORD . "' " .  MYSQL_DB . " -H -e '$sql'";
 
 system($cmd);
           

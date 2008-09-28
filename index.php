@@ -33,7 +33,7 @@ if (User::logged_in()) {
 //print_r($_SESSION);
 //Visitor display - login form
 //If there is a show_form comment to be placed at top of form, show the form. If no comment you want to add, just set to a space to have it show the form.
-if ($show_form) {
+if (isset($show_form)) {
 ?>
     
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">   

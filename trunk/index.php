@@ -25,6 +25,8 @@ if (User::logged_in()) {
 	} else {
 		if (!$guest) {
 			$show_form = " ";
+		} else {
+			redirect('home.php');
 		}
 	}
 }

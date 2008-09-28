@@ -2,7 +2,7 @@
 require_once ("Plans.php");
 require ("functions-main.php"); //load main functions
 $dbh = db_connect();
-$idcookie = $_SESSION['userid'];
+$idcookie = User::id();
 $auth = $_SESSION['is_logged_in'];
 if (User::logged_in()) {
 	mdisp_begin($dbh, $idcookie, $HTTP_HOST . $REQUEST_URI, $myprivl);

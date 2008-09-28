@@ -15,7 +15,7 @@ $dbh = db_connect();
 log_click();
 function log_click()
 {
-	$userid = $_SESSION['userid'];
+	$userid = User::id();
 	$userid = addslashes($userid);
 	if (!$userid) {
 		$userid = 0;

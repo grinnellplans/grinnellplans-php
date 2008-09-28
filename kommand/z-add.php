@@ -1,6 +1,6 @@
 <?php
-require_once("../cookie_session.php");
+require_once ("../cookie_session.php");
 $username = $_POST['username'];
-require("auth.php");
+require ("auth.php");
 ?>
 

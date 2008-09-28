@@ -1,21 +1,16 @@
 <?php
-	require_once("Plans.php");
-
-require("functions-main.php");//load main functions
-require("functions-kommand.php");//load main functions
-$idcookie = $_SESSION['userid']; 
+require_once ("Plans.php");
+require ("functions-main.php"); //load main functions
+require ("functions-kommand.php"); //load main functions
+$idcookie = $_SESSION['userid'];
 $userid = $idcookie;
 $auth = $_SESSION['is_logged_in'];
-
-
-$dbh = db_connect();//connect to database
+$dbh = db_connect(); //connect to database
 $admin_email = "grinnellplans@gmail.com";
-
-$myprivl=setpriv($myprivl, $HTTP_COOKIE_VARS["thepriv"]);
-
+$myprivl = setpriv($myprivl, $HTTP_COOKIE_VARS["thepriv"]);
 if ($auth) {
-	mdisp_begin($dbh,$idcookie,$HTTP_HOST . $REQUEST_URI,$myprivl);
-} else { 
+	mdisp_begin($dbh, $idcookie, $HTTP_HOST . $REQUEST_URI, $myprivl);
+} else {
 	gdisp_begin($dbh);
 }
 ?>
@@ -26,14 +21,13 @@ if ($auth) {
 <br />
 
 <?php
-if ($_GET['submitted'] ) {
+if ($_GET['submitted']) {
 	$username = $_GET['username'];
 	$match = array();
-	if (preg_match('/(.*)@grinnell.edu/', $username, $match )) {
+	if (preg_match('/(.*)@grinnell.edu/', $username, $match)) {
 		$username = $match[1];
 	}
 	$orig_username = $username;
-
 	$username = preg_replace('/[^a-zA-Z+0-9]/', '', $username);
 	$year = $_GET['gradyear'];
 	$year = preg_replace("/[^0-9]/", '', $year);
@@ -41,30 +35,21 @@ if ($_GET['submitted'] ) {
 	if ($type == "other") {
 		$type = $_GET['other'];
 	}
-
-	if ( $username == '' || get_item($dbh, 'username', 'accounts', 'username' , $username)) {
+	if ($username == '' || get_item($dbh, 'username', 'accounts', 'username', $username)) {
 		show_username_taken($orig_username);
 	} else {
 		$token = make_token();
 		$data = array('username' => $username, 'year' => $year, 'type' => $type);
-
 		$storable = serialize($data);
 		$email = $username . '@grinnell.edu';
-
-		mysql_query("insert into tentative_accounts set session = '$storable', token = '$token', created = now()"); 
-
-		$message= "Click the following link to activate your Plan:\n" . 
-			"www.grinnellplans.com/register.php?token=$token\n\n" . 
-			"The link will expire in 24 hours.";
-
-		mail($email, "Activate your new plan.", $message,
-				"From:$admin_email\nReply-to:$admin_email");
+		mysql_query("insert into tentative_accounts set session = '$storable', token = '$token', created = now()");
+		$message = "Click the following link to activate your Plan:\n" . "www.grinnellplans.com/register.php?token=$token\n\n" . "The link will expire in 24 hours.";
+		mail($email, "Activate your new plan.", $message, "From:$admin_email\nReply-to:$admin_email");
 		echo "An email has been sent to $email with a link to activate your Plan.  You will probably receive it right away, but if you don't get it within a few hours, <a href=" . '"mailto:grinnellplans@gmail.com"' . ">Bug us</a>.";
 	}
-
 } else if ($_GET['token']) {
-	$session = get_item($dbh, 'session', 'tentative_accounts', 'token' , $token);
-	if (! $session) {
+	$session = get_item($dbh, 'session', 'tentative_accounts', 'token', $token);
+	if (!$session) {
 		echo 'That doesn\'t seem to be a valid or unexpired token, please try again or <a href="mailto:grinnellplans@gmail.com">Email</a> us.<br /> <hr />';
 		show_form();
 	} else {
@@ -73,7 +58,7 @@ if ($_GET['submitted'] ) {
 		$type = $data['type'];
 		$year = $data['year'];
 		$email = $username . '@grinnell.edu';
-		if (get_item($dbh, 'username', 'accounts', 'username' , $username)) {
+		if (get_item($dbh, 'username', 'accounts', 'username', $username)) {
 			echo 'A plan with the username ' . $username . ' already exists, meaning this token has been used.  If you are the owner of that email, your password was given to you when you first clicked the link.  If you\'ve lost the password, or for anything else, <a href="mailto:grinnellplans@gmail.com">Email</a> us.';
 			show_form();
 		} else {
@@ -86,11 +71,9 @@ if ($_GET['submitted'] ) {
 			echo 'All you have to do is log in and type "newbie" (without the brackets) in the box in the upper-right-hand corner and click "Read".';
 			echo '<p>An email with a copy of your password has also been emailed to you.';
 			$message = "A new plan has been created with \nusername:  $username\nGrad Year: $year\n$username self-identifies as $type.";
-			mail($admin_email, "Plan Created: $username", $message,
-					"From:$admin_email\nReply-to:$admin_email");
+			mail($admin_email, "Plan Created: $username", $message, "From:$admin_email\nReply-to:$admin_email");
 			$message = "Your account has been created!  Your username is $username and your initial password is $password. Go to http://www.grinnellplans.com/ to get started.\n Don't forget that you can log in and read [newbie] or [help] any time you want a little guidance. You can also email us at grinnellplans@gmail.com.\n";
-			mail("$email", "Plan Created", $message,
-					"From:$admin_email\nReply-to:$admin_email");
+			mail("$email", "Plan Created", $message, "From:$admin_email\nReply-to:$admin_email");
 		}
 	}
 } else {
@@ -100,12 +83,12 @@ if ($_GET['submitted'] ) {
 
 
 	<?php
-if ($auth)
-{
-	mdisp_end($dbh,$idcookie,$HTTP_HOST . $REQUEST_URI,$myprivl); //and send closing display data
-}
-else
-{gdisp_end();}//if guest send guest closing display data
+if ($auth) {
+	mdisp_end($dbh, $idcookie, $HTTP_HOST . $REQUEST_URI, $myprivl); //and send closing display data
+	
+} else {
+	gdisp_end();
+} //if guest send guest closing display data
 
 ?>
 </p>
@@ -135,11 +118,13 @@ function toggle(item, box) {
 
 
 <?php
-function show_username_taken($username) {
+function show_username_taken($username)
+{
 	echo " Oh nO!, the username '$username' is already taken.  Please <a href=" . '"mailto:grinnellplans@gmail.com"' . ">Email</a> us and we'll make your account by hand.";
 }
-function show_form() {
-	?>
+function show_form()
+{
+?>
 		<p>
 		If you have an @grinnell.edu email address for yourself or a student group, you may use this page to register a Plan for that username.<br />
 		<b>If you are an alum</b>, please <a href="mailto:grinnellplans@gmail.com">Send us</a> your alumni.grinnell.edu email address and we will contact you through it with a username and password.  Please include your year of graduation, if any.<br />
@@ -180,11 +165,12 @@ function show_form() {
 				</form>
 				<?php
 }
-function make_token() {
+function make_token()
+{
 	$length = 8;
 	$token = '';
 	for ($i = 0; $i < $length; $i++) {
-		$next_int = rand(0,64);
+		$next_int = rand(0, 64);
 		if ($next_int < 10) {
 			$next = chr($next_int + 48);
 		} else if ($next_int < 36) {
@@ -196,9 +182,8 @@ function make_token() {
 		} else {
 			$next = '_';
 		}
-		$token .= $next;
+		$token.= $next;
 	}
 	return $token;
 }
-
 ?>

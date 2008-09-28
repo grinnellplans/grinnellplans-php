@@ -1,22 +1,19 @@
 <?php
-require_once("../cookie_session.php");
+require_once ("../cookie_session.php");
 $username = $_POST['username'];
-require("auth.php");
+require ("auth.php");
 ?>
 
-<?php 
-    echo '<?xml version="1.0" encoding="ISO-8859-1"?>
+<?php
+echo '<?xml version="1.0" encoding="ISO-8859-1"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">';
 ?>
 <html>
 <body>
-<?
-
-require("dbfunctions.php");
+<?php
+require ("dbfunctions.php");
 $dbh = db_connect();
-
-
-    ?>
+?>
 
 <html>
   <head><title>Enter donations</title></head>
@@ -62,8 +59,6 @@ $dbh = db_connect();
 </html>
 
 <?php
-
 db_disconnect($dbh);
-
 ?>
 

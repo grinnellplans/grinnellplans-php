@@ -1,4 +1,4 @@
 <?php
-	require_once('../dbfunctions.php');
+require_once ('../dbfunctions.php');
 ?>
 

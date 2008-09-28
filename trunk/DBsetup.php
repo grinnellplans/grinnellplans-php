@@ -1,5 +1,5 @@
 <?php
-	require_once("Plans.php");
+require_once ("Plans.php");
 /*
 Grinnell Plans. A web-based version of social .plans.
 Copyright (C) 2002 by Jonathan Kensler
@@ -7,18 +7,18 @@ Copyright (C) 2002 by Jonathan Kensler
 ---
 
 This program is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
 
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
 
-    You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 ---
 If you need to contact me you may so at:
@@ -31,14 +31,9 @@ Box 07-04 Grinnell College
 Grinnell, IA 50112
 
 */
-
 //Issues the queries to set up the database
-
-
-
-require("dbfunctions.php");
+require ("dbfunctions.php");
 $mydbh = db_connect();
-
 /*
 mysql_query("CREATE TABLE accounts(
 userid SMALLINT UNSIGNED PRIMARY KEY NOT NULL AUTO_INCREMENT,
@@ -131,15 +126,10 @@ contents TEXT NOT NULL
 )");
 
 */
-
-
 mysql_query("CREATE TABLE stylesheet(
 userid SMALLINT UNSIGNED PRIMARY KEY NOT NULL,
 stylesheet tinytext
 )");
-
-
-
 //annihilate($mydbh, "accounts");
 //annihilate($mydbh, "autofinger");
 //annihilate($mydbh, "display");
@@ -150,8 +140,5 @@ stylesheet tinytext
 //annihilate($mydbh, "mainboard");
 //annihilate($mydbh, "subboard");
 //annihilate($mydbh, "stylesheet");
-
 db_disconnect($mydbh);
-
-
 ?>

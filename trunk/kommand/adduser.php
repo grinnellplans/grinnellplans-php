@@ -1,42 +1,44 @@
 <?php
-require_once("../cookie_session.php");
+require_once ("../cookie_session.php");
 $added_name = $_POST['username'];
-require("auth.php");
-require("../functions-kommand.php");
+require ("auth.php");
+require ("../functions-kommand.php");
 ?>
 <html>
 <body>
-<?
-require("dbfunctions.php");
+<?php
+require ("dbfunctions.php");
 $dbh = db_connect();
-
-if ($added_name)
-{
-	if(isvaliduser($dbh, $added_name)) {
+if ($added_name) {
+	if (isvaliduser($dbh, $added_name)) {
 		echo "User already exists.";
 	} else {
-			if ($type == "other") {
-				$type = $_POST['other'];
-				}
+		if ($type == "other") {
+			$type = $_POST['other'];
+		}
 		$results = insert_user($added_name, $password, $gradyear, $email, $type, $perms);
 		$password = $results[0];
 		$email = $results[1];
-		echo "Account created for " . $added_name . " with password " . $password . 
-		", email " . $email . ", and graduation year " . $gradyear . ".<br>";
-		?>
+		echo "Account created for " . $added_name . " with password " . $password . ", email " . $email . ", and graduation year " . $gradyear . ".<br>";
+?>
 		<form action="email.php" method="POST">
-		<input type="hidden" name="username" value="<?=$added_name?>">
-		<input type="hidden" name="password" value="<?=$password?>">
-		<input type="hidden" name="email" value="<?=$email?>">
-		<input type="hidden" name="type" value="<?=$type?>">
-		<input type="hidden" name="perms" value="<?=$perms?>">
+		<input type="hidden" name="username" value="<?php echo $added_name
+?>">
+		<input type="hidden" name="password" value="<?php echo $password
+?>">
+		<input type="hidden" name="email" value="<?php echo $email
+?>">
+		<input type="hidden" name="type" value="<?php echo $type
+?>">
+		<input type="hidden" name="perms" value="<?php echo $perms
+?>">
 		<input type="hidden" name="whatoperation" value="create">
 		<input type="submit" value="Send Email">
 		</form>
-		<?
+		<?php
 	}
 } else {
-	?>
+?>
 	<form name="signup" action="adduser.php" method="POST">
 	Username: <input type="text" name="username"><br>
 	Password: <input type="text" name="password"><br>
@@ -78,8 +80,8 @@ Write-Only: <input type="radio" name="perms" value='write-only'>
 	&nbsp; * For RLCs, put "rlc" in other instead of calling them staff, because they're a special case<br>
 	&nbsp; * For anything else, put a few essential keywords in the "other"<br>
 	&nbsp; * Remember that if a new group of "other" plans comes up, this list can be added to <br>
-	<?
-}//if no username
+	<?php
+} //if no username
 db_disconnect($dbh);
 ?>
 	<script>

@@ -1,25 +1,21 @@
 <?php
-	require_once("Plans.php");
-
-require("functions-main.php");//load main functions
-
-$dbh = db_connect();//connect to database
-
-$idcookie = $_SESSION['userid']; 
+require_once ("Plans.php");
+require ("functions-main.php"); //load main functions
+$dbh = db_connect(); //connect to database
+$idcookie = $_SESSION['userid'];
 $auth = $_SESSION['is_logged_in'];
-
-$myprivl=setpriv($myprivl, $HTTP_COOKIE_VARS["thepriv"]);
-
-
-	    if ($auth)//begin valid user display
-		{
-			mysql_query("delete from viewed_secrets where userid = $idcookie");
-			mysql_query("insert into viewed_secrets (userid, date) values($idcookie, now())");
-			mdisp_begin($dbh,$idcookie,$HTTP_HOST . $REQUEST_URI,$myprivl);}
-            else //begin guest user display
-			{gdisp_begin($dbh);}
-       
-              ?>
+$myprivl = setpriv($myprivl, $HTTP_COOKIE_VARS["thepriv"]);
+if ($auth) //begin valid user display
+{
+	mysql_query("delete from viewed_secrets where userid = $idcookie");
+	mysql_query("insert into viewed_secrets (userid, date) values($idcookie, now())");
+	mdisp_begin($dbh, $idcookie, $HTTP_HOST . $REQUEST_URI, $myprivl);
+} else
+//begin guest user display
+{
+	gdisp_begin($dbh);
+}
+?>
 
 
               <p>
@@ -44,56 +40,44 @@ $myprivl=setpriv($myprivl, $HTTP_COOKIE_VARS["thepriv"]);
     -->
     </script>  
 <?php
-              
-	if ($_POST['secret_submitted']) {
-		$secret = $_POST['secret'];
-		$secret = cleanText($secret);
-		$sql = "insert into secrets(secret_text, date, display) values (substring('$secret',1,4000), now(), 'no')";
-		mysql_query($sql);
-	} 
-
-	if ($auth) {
-
-		$count = 300;
-		$offset = $_GET['offset'];
-		if (! is_numeric($offset)) {
-			$offset = 0;
-		}
-
-		echo "<!--- $offset --->";
-		echo '<p><a href="anonymous.php?offset=' . ($offset + $count) . '">Older Secrets</a></p>';
-
-
-		if ($_SERVER['REMOTE_ADDR'] == '70.12.157.227' || $_GET['show_all']) {
-			$select_query = "select * from secrets order by date desc limit $offset, $count";
-		} else {
-			$select_query = "select * from secrets where display = 'yes' or display = 'pref'  order by date desc limit $offset, $count";
-		}
-
-		if (!$secrets =
-		mysql_query($select_query))
-		{ echo "No secrets";}
-		else {
-			while ($row = mysql_fetch_array($secrets)) {
-				echo '<p class="sub">';
-				$secret = $row['secret_text'];
-				$date = $row['date'];
-				$secretidno = $row['secret_id'];
-				echo "$secretidno <b>$date</b><br />\n";
-				echo "$secret\n";
-			}
-			echo '</p>';
-		}
-
+if ($_POST['secret_submitted']) {
+	$secret = $_POST['secret'];
+	$secret = cleanText($secret);
+	$sql = "insert into secrets(secret_text, date, display) values (substring('$secret',1,4000), now(), 'no')";
+	mysql_query($sql);
+}
+if ($auth) {
+	$count = 300;
+	$offset = $_GET['offset'];
+	if (!is_numeric($offset)) {
+		$offset = 0;
 	}
-
-
-	    if ($auth)//begin valid user display
-        {
-  mdisp_end($dbh,$idcookie,$HTTP_HOST . $REQUEST_URI,$myprivl);
-} else
-{gdisp_end();}
-
+	echo "<!--- $offset --->";
+	echo '<p><a href="anonymous.php?offset=' . ($offset + $count) . '">Older Secrets</a></p>';
+	if ($_SERVER['REMOTE_ADDR'] == '70.12.157.227' || $_GET['show_all']) {
+		$select_query = "select * from secrets order by date desc limit $offset, $count";
+	} else {
+		$select_query = "select * from secrets where display = 'yes' or display = 'pref'  order by date desc limit $offset, $count";
+	}
+	if (!$secrets = mysql_query($select_query)) {
+		echo "No secrets";
+	} else {
+		while ($row = mysql_fetch_array($secrets)) {
+			echo '<p class="sub">';
+			$secret = $row['secret_text'];
+			$date = $row['date'];
+			$secretidno = $row['secret_id'];
+			echo "$secretidno <b>$date</b><br />\n";
+			echo "$secret\n";
+		}
+		echo '</p>';
+	}
+}
+if ($auth) //begin valid user display
+{
+	mdisp_end($dbh, $idcookie, $HTTP_HOST . $REQUEST_URI, $myprivl);
+} else {
+	gdisp_end();
+}
 db_disconnect($dbh);
-
 ?>

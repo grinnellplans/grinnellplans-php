@@ -1,5 +1,5 @@
 <?php
-	require_once("Plans.inc");
+	require_once("Plans.php");
 require("functions-main.php");
 
 if ($_GET['logout']) {

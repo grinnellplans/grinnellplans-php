@@ -1,11 +1,10 @@
 <?php
-require_once ("Plans.php");
-new SessionBroker();
-
+session_start();
 require ("functions-main.php"); //load main functions
 $dbh = db_connect(); //connect to the database
 $idcookie = $_SESSION['userid'];
-if (!User::logged_in()) {
+$auth = $_SESSION['is_logged_in'];
+if (!$auth) {
 	gdisp_begin($dbh); //begin guest display
 	echo ("You are not allowed to edit as a guest."); //tell user they can't edit as a guest
 	gdisp_end();

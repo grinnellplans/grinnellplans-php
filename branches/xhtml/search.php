@@ -1,12 +1,14 @@
 <?php
-require_once ("Plans.php");
-new SessionBroker();
-
+//Please not that this page is still quite unfinished, and as a result the comments aren't very good at the moment.
+// This version of search.php committed 13 June 2004 [nnadioge]
+session_start();
 require ("functions-main.php"); //load main functions
 $dbh = db_connect(); //connect to the database
 $idcookie = $_SESSION['userid'];
+$auth = $_SESSION['is_logged_in'];
 $context = 100; //set the number of characters around found item
-if (User::logged_in()) {
+if ($auth) //if is a valid user
+{
 	mdisp_begin($dbh, $idcookie, $HTTP_HOST . $REQUEST_URI, $myprivl);
 } //begin user display
 else {
@@ -103,7 +105,7 @@ if (!$mysearch) //if no search query, give search form
 				*/
 				echo "<!--- " . $mysearch . "--->";
 				echo "<!--- " . preg_quote($mysearch, "/") . "--->";
-				echo "<li>[<a href=\"read.php?myprivl=" . $myprivl . "&searchname=" . $new_row[0] . "\">" . $new_row[0] . "</a>] (" . $matchcount . ")<br>";
+				echo "<li>[<a href=\"read.php?searchname=" . $new_row[0] . "\">" . $new_row[0] . "</a>] (" . $matchcount . ")<br>";
 				$start_array = array();
 				$end_array = array();
 				$o = 0;

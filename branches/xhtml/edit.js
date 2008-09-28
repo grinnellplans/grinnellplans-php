@@ -7,9 +7,9 @@ function countlen() {
     document.editform.filled.width = perc;
     document.editform.unfilled.width = 100 - perc;
     if ( perc >= 100 && window.perc < 100 )
-      document.editform.filled.src = "img/danger.gif";
+      document.editform.filled.src = "danger.gif";
     else if ( perc < 100 && window.perc >= 100 )
-      document.editform.filled.src = "img/filled.gif";
+      document.editform.filled.src = "filled.gif";
     window.perc = perc;
   }
 }

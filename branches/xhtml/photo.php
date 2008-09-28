@@ -1,13 +1,16 @@
 <?php
-require_once ("Plans.php");
-new SessionBroker();
+/* Sechyi Laiu, Created 7/15/2005 12:58 p.m.
+* Last edit -
+* Purpose: This program attempts to load up the 'home' page (MoTD under system table) upon request
+* Modified index.php from GrinnellPlans
+*/
+session_start();
 //Load the functions file
 require ("functions-main.php");
 //Connects to database and pulls out the information from cookies
 $dbh = db_connect(); //connect to database
 $idcookie = $_SESSION['userid'];
 $auth = $_SESSION['is_logged_in'];
-$myprivl = setpriv($myprivl, $HTTP_COOKIE_VARS["thepriv"]);
 //Check for user or NON-GUEST status, and provide correct display with MoTD
 //This allows NON-GUESTS to read the MoTD
 if ($auth) {

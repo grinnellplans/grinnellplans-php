@@ -1,19 +1,18 @@
 <?php
-require_once ("Plans.php");
-new SessionBroker();
-
+session_start();
 require ("functions-main.php"); //load main functions
 $dbh = db_connect(); //connect to database
 $idcookie = $_SESSION['userid'];
-$myprivl = setpriv($myprivl, $HTTP_COOKIE_VARS["thepriv"]);
-if (User::logged_in()) {
+$auth = $_SESSION['is_logged_in'];
+if ($auth) //begin valid user display
+{
 	mdisp_begin($dbh, $idcookie, $HTTP_HOST . $REQUEST_URI, $myprivl);
 	$sql = 'select date, yes, no, 
     substr(concat("  ",100*no/(yes+no),"%"), -7) as percent_no 
     from (select date(date) as date, sum(if(display="yes",1,0)) as yes,
     sum(if(display="no",1,0)) as no  from secrets where date > "2005-12-04"
     group by date) as m';
-	$cmd = "mysql -u " . MYSQL_USER . " --password='" . MYSQL_PASSWORD . "' " . MYSQL_DB . " -H -e '$sql'";
+	$cmd = "mysql -u plans --password='wIM2bHI' plans -H -e '$sql'";
 	system($cmd);
 } else
 //begin guest user display

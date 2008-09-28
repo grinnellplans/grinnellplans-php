@@ -1,12 +1,9 @@
 <?php
-require_once ("Plans.php");
-new SessionBroker();
-
+session_start();
 require ("functions-main.php"); //load main functions
 $dbh = db_connect(); //connect to database
 $idcookie = $_SESSION['userid'];
 $auth = $_SESSION['is_logged_in'];
-$myprivl = setpriv($myprivl, $HTTP_COOKIE_VARS["thepriv"]);
 if (!$searchnum) //if no search number given
 {
 	if (isvaliduser($dbh, $searchname)) //if valid username, change to num
@@ -17,7 +14,8 @@ if (!$searchnum) //if no search number given
 	{
 		if ($searchname) //if a searchname has been given
 		{
-			if (User::logged_in()) {
+			if ($auth) //begin valid user display
+			{
 				mdisp_begin($dbh, $idcookie, $HTTP_HOST . $REQUEST_URI, $myprivl);
 			} else
 			//begin guest user display
@@ -39,7 +37,7 @@ if (!$searchnum) //if no search number given
 					$o = 0;
 					while ($partial_list[$o][0]) //loop through displaying the usernames as links
 					{
-						echo "<li><a href=\"read.php?myprivl=" . $myprivl . "&searchnum=" . $partial_list[$o][0] . "\">" . $partial_list[$o][1] . "</a>";
+						echo "<li><a href=\"read.php?searchnum=" . $partial_list[$o][0] . "\">" . $partial_list[$o][1] . "</a>";
 						$o++;
 					} //while ($partial_list [$o][0])
 					echo "</ul>";
@@ -198,7 +196,7 @@ function basicSearch($idcookie, $dbh, $auth, $context, $mysearch)
 				$new_row[1] = stripslashes($new_row[1]);
 				$matchcount = preg_match_all("/(" . $mysearch . ")/si", $new_row[1], $matcharray);
 				$new_row[1] = preg_replace("/(" . $mysearch . ")/si", "<b>\\1</b>", $new_row[1]);
-				echo "<li>[<a href=\"read.php?myprivl=" . $myprivl . "&searchname=" . $new_row[0] . "\">" . $new_row[0] . "</a>] (" . $matchcount . ")<br>";
+				echo "<li>[<a href=\"read.php?searchname=" . $new_row[0] . "\">" . $new_row[0] . "</a>] (" . $matchcount . ")<br>";
 				$start_array = array();
 				$end_array = array();
 				$o = 0;

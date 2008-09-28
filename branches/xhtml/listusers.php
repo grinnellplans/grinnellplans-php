@@ -1,11 +1,10 @@
 <?php
-require_once ("Plans.php");
-new SessionBroker();
-
+session_start();
 require ("functions-main.php"); //load main functions
 $dbh = db_connect(); //connect to database
 $idcookie = $_SESSION['userid'];
-if (User::logged_in()) {
+$auth = $_SESSION['is_logged_in'];
+if ($auth) {
 	mdisp_begin($dbh, $idcookie, $HTTP_HOST . $REQUEST_URI, $myprivl); //begin valid user display
 	
 } else {
@@ -30,7 +29,7 @@ while ($i < 123) //while before z
 	else
 	//if not selected letter, make letter link to select that letter
 	{
-		echo " <a href= \"listusers.php?myprivl=" . $myprivl . "&letternum=" . $i . "\">" . chr($i) . "</a> ";
+		echo " <a href= \"listusers.php?letternum=" . $i . "\">" . chr($i) . "</a> ";
 	}
 	$i++; //go on to next letter
 	
@@ -40,10 +39,10 @@ $arraylist = get_letters($dbh, chr($current_letter), chr($current_letter + 1), $
 //display those usernames
 $j = 0;
 while ($arraylist[$j][0]) {
-	echo "<a href=\"read.php?myprivl=" . $myprivl . "&searchname=" . $arraylist[$j][1] . "\">" . $arraylist[$j][1] . "</a><br>";
+	echo "<a href=\"read.php?searchname=" . $arraylist[$j][1] . "\">" . $arraylist[$j][1] . "</a><br>";
 	$j++;
 }
-if (User::logged_in()) {
+if ($auth) {
 	mdisp_end($dbh, $idcookie, $HTTP_HOST . $REQUEST_URI, $myprivl);
 } else {
 	gdisp_end();

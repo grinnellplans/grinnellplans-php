@@ -1,12 +1,11 @@
 <?php
-require_once ("Plans.php");
+/*
+GrinnellPlans - autofingerplansfunctions functions
+Version Nov-11-05-1 (Laiu-Draft-1)
+*/
 //////////
 /*
-<<<<<<< .working
 setpriv - This function sets privilege level
-=======
-setpriv - This function sets priviledge level
->>>>>>> .merge-right.r91
 */
 function setpriv($privl, $cookpriv)
 {
@@ -41,6 +40,7 @@ function mark_as_read($dbh, $owner, $privl)
 	//echo $query;
 	mysql_query($query);
 	//echo $privl;
+	
 }
 function add_param($url, $name, $value)
 {
@@ -60,7 +60,6 @@ function remove_param($url, $name)
 	$url = preg_replace(array("@&$@"), array(''), $url);
 	return $url;
 }
-
 //TODO deprecate this shit
 function autoread_list($myurl, $idcookie, $myprivl)
 {
@@ -98,7 +97,7 @@ function autoread_list($myurl, $idcookie, $myprivl)
 			//echo '&nbsp;&nbsp;&nbsp;&nbsp;';
 			
 		}
+		echo "</tr>\n";
 	}
 }
 ?>
-

@@ -1,7 +1,5 @@
 <?php
-require_once ("Plans.php");
-new SessionBroker();
-
+session_start();
 require ("functions-main.php"); //load main functions
 $dbh = db_connect(); //connect to the database
 $idcookie = $_SESSION['userid'];
@@ -84,7 +82,7 @@ owner = '$idcookie' and interest = '$val'");
 			echo "[" . chr($i) . "]"; //show that the letter is selected
 			
 		} else {
-			echo " <a href= \"autoread.php?myprivl=" . $myprivl . "&letternum=" . $i . "\">" . chr($i) . "</a> ";
+			echo " <a href= \"autoread.php?letternum=" . $i . "\">" . chr($i) . "</a> ";
 		}
 		$i++;
 	}

@@ -1,54 +1,69 @@
 <?php
-require_once ("Plans.php");
-new SessionBroker();
-require_once("syntax-classes.php");
-if (isset($_GET['logout'])) {
-	User::logout();
-	$msg = 'You have been successfully logged out.';
-}
-
+session_start();
 require ("functions-main.php");
+require ("syntax-classes.php");
+/*
+echo '<br>';
+echo "index.php";
+echo '<br>';
+print_r($_SESSION);
+echo '<br>';
+*/
+if ($_GET['logout']) {
+	//session_destroy();
+	$_SESSION['is_logged_in'] = 0;
+	$_SESSION['userid'] = false;
+	//	echo "In logout";
+	//echo print_r($_SESSION);
+	
+}
 $dbh = db_connect();
-
-if (isset($_POST['username']) && isset($_POST['password'])) {
-	if (!User::login($_POST['username'], $_POST['password'])) {
-		$msg = "Invalid username or password.";
+$auth = $_SESSION['is_logged_in'];
+if ($auth) {
+	$username = $_SESSION['username'];
+	$idcookie = $_SESSION['userid'];
+} else {
+	$username = $_POST['username'];
+	$password = $_POST['password'];
+	$guest = $_POST['guest'];
+	if ($username) {
+		if (isValidUser($dbh, $username)) {
+			$orig_pass = $password;
+			$password = crypt($password, "ab");
+			$read_pass = get_item($dbh, "password", "accounts", "username", $username); //get password encrypted password in db
+			//echo ($username . " " . $orig_pass . " " . $password . " " . $read_pass);
+			if ($password == $read_pass) {
+				$idcookie = get_item($dbh, "userid", "accounts", "username", $username);
+				setLogin($dbh, $idcookie);
+				$_SESSION['is_logged_in'] = 1;
+				$_SESSION['username'] = $username;
+				$_SESSION['userid'] = $idcookie;
+				$sql = "insert into js_status set userid = " . addslashes($idcookie) . ", status = '" . addslashes($_POST['js_test_value']) . "'";
+				mysql_query($sql);
+				echo "<!-- $sql --!>";
+			}
+		}
+		if (!$_SESSION['is_logged_in']) {
+			$show_form = "Invalid username or password.<br>";
+		}
+	} else {
+		if (!$guest) {
+			$show_form = " ";
+		}
 	}
 }
-
-if (!$msg && isset($_POST['submit']) || User::logged_in()) {
-	Redirect('home.php');	
-} else {
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">   
+//print_r($_SESSION);
+//Visitor display - login form
+//If there is a show_form comment to be placed at top of form, show the form. If no comment you want to add, just set to a space to have it show the form.
+if ($show_form) {
+?>
+    
+	<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">   
 <html dir="ltr">
    <head>
-   <title>GrinnellPlans <?= PLANSVNAME ?></title>
-	<STYLE TYPE="text/css">
-	<!--
-	BODY { 
-			font-family: verdana;
-			}
-	TD { 
-			align: center;
-			}
-	.boxes { 
-			font-family: courier; 
-			}
-	.buttons {
-			}
-	.graphic{
-			position: relative;
-			top: 50px;
-			}
-	.legalese {
-			position: static; 
-			text-align: justify;
-			cellpadding: 3;
-			font-size: 8pt;
-			font-family: verdana;
-			}
-	-->
-	</STYLE>
+   <title>GrinnellPlans <?php
+	echo PLANSVNAME ?></title>
+   <link rel="stylesheet" href="index.css">
 <script>
 <!--
 function js_test ()
@@ -65,7 +80,12 @@ function js_test ()
 	  <table cellpadding=0 width="100%">
 	  <tr>
 		<td colspan=2 align=center>
-			<img src="logo.jpg">
+	<?php
+	if (isset($_GET['noimage'])) {
+	} else {
+		echo '<img src="plans76.jpg">';
+	}
+?>
 		</td>
 	  </tr>
 	  <tr class="boxes">
@@ -97,7 +117,7 @@ js_test();
 		<td align=center colspan=2>
 		<font face=verdana>
 			<p><?php
-	echo $msg
+	echo $show_form
 ?></p>
 		<br>
 		<br>Need a plan? <a href="register.php">Register</a> if you have an @grinnell.edu email address.
@@ -121,6 +141,42 @@ Alumni, please include your @alumni.grinnell.edu forwarding address (which you c
 	<p class="legalese">
 Use of the GrinnellPlans service means you have accepted the <a href="http://www.grinnellplans.com/tos/">GrinnellPlans Terms of Service</a> agreement. If you do not accept and abide by this agreement, you may not use GrinnellPlans. This agreement is subject to change without notice, so you should periodically review the most up-to-date version.	
 </p>
-<?php
+
+
+       <?php
 }
+//Part 3: Logged in as a user or guest
+//At this point we've handled the loggin in part of the process and the processing should now
+//handle what comes after the person is either an accepted
+//user or logged in as a guest.
+if ($_SESSION['is_logged_in'] or $guest) {
+	// Create the new page
+	$page = new PlansPage('Plan', 'readplan', PLANSVNAME, 'read.php');
+	if ($_SESSION['is_logged_in']) {
+		get_interface($idcookie);
+		populate_page($page, $dbh, $idcookie);
+	}
+	if ($guest) {
+		get_guest_interface();
+		populate_guest_page($page);
+		$dbh = db_connect(); //sets up connection to database.
+		$my_result = mysql_query("Select system.motd From system"); //get the main plans message from the database
+		$my_row = mysql_fetch_array($my_result); //get information from mysql query
+		
+	} else {
+		$my_result = mysql_query("Select system.motd,accounts.spec_message From
+				system,accounts where accounts.userid = '$idcookie'"); //get the main plans messsage as well as the person's private message to be displayed
+		$my_row = mysql_fetch_array($my_result); //get information from mysql query
+		$privmessage = new InfoText(stripslashes(stripslashes($my_row[1])), 'User MOTD'); //if logged in, show the private message
+		$page->append($privmessage);
+		/* TODO why? why?
+		echo '<pre>';
+		echo '</pre>';
+		*/
+	}
+	$motd = new InfoText(stripslashes(stripslashes($my_row[0])), 'MOTD'); //display the main Plans message
+	$page->append($motd);
+	interface_disp_page($page);
+}
+db_disconnect($dbh);
 ?>

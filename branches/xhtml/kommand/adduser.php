@@ -1,6 +1,5 @@
 <?php
-require_once ("../Plans.php");
-
+session_start();
 $added_name = $_POST['username'];
 require ("auth.php");
 require ("../functions-kommand.php");

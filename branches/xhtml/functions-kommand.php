@@ -1,5 +1,4 @@
 <?php
-require_once ("Plans.php");
 function insert_user($added_name, $password, $gradyear, $email, $type, $status = '')
 {
 	if (!$password) {
@@ -17,7 +16,7 @@ function insert_user($added_name, $password, $gradyear, $email, $type, $status =
 	$added_id = get_item($dbh, "userid", "accounts", "username", $added_name);
 	$myrow = array($added_id, "1", "2");
 	add_row($dbh, "display", $myrow);
-	foreach(array(2, 4, 6, 8, 14, 15, 16) as $opt_link) {
+	foreach(array(2, 4, 6, 8, 14, 15) as $opt_link) {
 		$myrow = array($added_id, $opt_link);
 		add_row($dbh, "opt_links", $myrow);
 	}

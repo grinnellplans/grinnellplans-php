@@ -1,11 +1,10 @@
 <?php
-require_once ("Plans.php");
-new SessionBroker();
-
+session_start();
 require ("functions-main.php"); //load main functions
 $dbh = db_connect(); //establish the database handler
 $idcookie = $_SESSION['userid'];
-if (!User::logged_in()) {
+$auth = $_SESSION['is_logged_in'];
+if (!$auth) {
 	gdisp_begin($dbh); //begin guest display
 	echo ("You are not allowed to edit as a guest."); //tell person they can't log in
 	gdisp_end();
@@ -44,8 +43,7 @@ else
 		
 ?>
           <center><h2>Change Edit Box Size:</h2>
-             <?php
-		echo $message
+             <?php echo $message
 ?>
              </center>
              <?php
@@ -61,17 +59,14 @@ else
             <table>
             <input type="hidden" name="part" value="1">
             <tr><td>Rows:</td><td><input type="text" name="rows" 
-            value="<?php
-		echo $edsizes[0][1] ?>"></td></tr>
+            value="<?php echo $edsizes[0][1] ?>"></td></tr>
             <tr><td>Columns:</td><td><input type="text" name="cols" 
-            value="<?php
-		echo $edsizes[0][0] ?>"></tr>
+            value="<?php echo $edsizes[0][0] ?>"></tr>
             <tr><td>Notes Posts in ascending order:</td><td><input type="checkbox" name="notes_asc" 
             <?php
 		if ($edsizes[0][2] == "1") echo 'checked' ?> value="1"></tr>
             <tr><td></td><td>
-            <input type="hidden" name="myprivl" value="<?php
-		echo $myprivl ?>"> 
+            <input type="hidden" name="myprivl" value="<?php echo $myprivl ?>"> 
             <input type="submit" value="Change Edit Box"></td></tr>
             </table>
             </form>

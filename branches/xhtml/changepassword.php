@@ -1,9 +1,10 @@
 <?php
-require_once ("Plans.php");
+session_start();
 require ("functions-main.php"); //load main functions
 $dbh = db_connect(); //connect to database
 $idcookie = $_SESSION['userid'];
-if (!User::logged_in()) {
+$auth = $_SESSION['is_logged_in'];
+if (!$auth) {
 	gdisp_begin($dbh); //begin guest display
 	echo ("You are not allowed to edit as a guest."); //tell guest they can't use page
 	gdisp_end();
@@ -13,10 +14,6 @@ if (!User::logged_in()) {
 	$username = get_item($mydbh, "username", "accounts", "userid", $idcookie);
 	if ($changed && ($checknumb != $idcookie)) {
 		echo "Error: Checknumbers do not match.";
-		exit(0);
-	}
-	if ($changed && ($mypassword != $mypassword2)) {
-		echo "Error: Passwords do not match.\n";
 		exit(0);
 	}
 	if ($changed == 'pass') {
@@ -41,9 +38,7 @@ if (!User::logged_in()) {
 ?>
 		<center><h2>Change Login Password</h2>
 		<form method="POST" action="">
-<table>
-	<tr><td>New Password:</td><td><input type="password" name="mypassword"></td></tr>
-		<tr><td>Confirm: </td><td><input type="password" name="mypassword2"></td></tr></table> <br />
+		<input type="text" name="mypassword">
 		<input type="hidden" name="myprivl" value="<?php
 	echo $myprivl; ?>">
 		<input type="hidden" name="changed" value="pass">
@@ -61,15 +56,11 @@ At any time, you may change this password to prevent people from accessing your 
 <?php
 	if ($real_pass) { ?>
 You may give this link out to anyone who you would like to be able to read you plan and ask them to bookmark it: <br />
-<a href="http://www.grinnellplans.com/read.php?searchname=<?php
-		echo $username
-?>&amp;guest-pass=<?php
-		echo $real_pass
+<a href="http://www.grinnellplans.com/read.php?searchname=<?php echo $username
+?>&amp;guest-pass=<?php echo $real_pass
 ?>">
-http://www.grinnellplans.com/read.php?searchname=<?php
-		echo $username
-?>&amp;guest-pass=<?php
-		echo $real_pass
+http://www.grinnellplans.com/read.php?searchname=<?php echo $username
+?>&amp;guest-pass=<?php echo $real_pass
 ?>
 </a> <br />
 <?php
@@ -79,8 +70,7 @@ http://www.grinnellplans.com/read.php?searchname=<?php
 	} ?>
 		</p>
 		<form method="POST" action="">
-		<input type="text" name="guest_password" value="<?php
-	echo $real_pass
+		<input type="text" name="guest_password" value="<?php echo $real_pass
 ?>">
 		<input type="hidden" name="myprivl" value="<?php
 	echo $myprivl; ?>">

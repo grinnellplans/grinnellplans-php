@@ -2,5 +2,5 @@
 $hostName = "localhost";
 $databaseName = "plans";
 $username = "plans";
-$password = "somepasswd";
+$password = "wIM2bHI";
 ?>

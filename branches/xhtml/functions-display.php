@@ -1,16 +1,13 @@
 <?php
-require_once ("Plans.php");
-function Redirect($url) {
-	Header("Location: $url");
-}
-
-function microtime_float()
-{
-	list($utime, $time) = explode(" ", microtime());
-	return ((float)$utime + (float)$time);
-}
-$starttime__ = microtime_float();
-
+/*
+GrinnellPlans - Displayfunctions
+What this is: old parts of functions.php separated - in this page, those delaying with display to user controls.
+*/
+//////////
+/* mdisp_beg- Looks up from the database what choices the user has for their interface and style,
+*and gets the pathnames for the files associated with those choices. Loads the code contained in
+*the interface page that the user basically selected, which is actually a set of a couple of functions.
+*/
 /* DEPRECATED */
 function mdisp_begin($dbh, $idcookie, $myurl, $myprivl, $jsfile = NULL)
 {
@@ -35,14 +32,6 @@ function mdisp_begin($dbh, $idcookie, $myurl, $myprivl, $jsfile = NULL)
 	}
 	//call the function which actually does the work of sending the beginning html code to the user
 	interface_disp_begin($searchname, $linkarr, $autofingerarr, $myurl, $myprivl, $mycss, $jsfile);
-	if (isset($_SESSION['b'])) {
-		$b = (int)$_SESSION['b'];
-		if (file_exists("buckets/$b.php")) {
-			include ("buckets/$b.php");
-		} else {
-			echo "Invalid bucket!";
-		}
-	}
 }
 function get_guest_interface()
 {

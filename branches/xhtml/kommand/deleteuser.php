@@ -1,5 +1,5 @@
 <?php
-require_once ("../Plans.php");
+session_start();
 $deleted_name = $_POST['username'];
 require ("auth.php");
 ?>

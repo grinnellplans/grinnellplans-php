@@ -1,6 +1,6 @@
 <?php
-require_once ("Plans.php");
 require ("syntax-classes.php");
+session_start();
 require ("functions-main.php"); //load main functions
 $dbh = db_connect(); ///connect to the database
 $idcookie = $_SESSION['userid'];
@@ -75,3 +75,4 @@ if (!$auth) {
 interface_disp_page($page);
 db_disconnect($dbh);
 ?>
+

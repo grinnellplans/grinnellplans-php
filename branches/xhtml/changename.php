@@ -1,6 +1,6 @@
 <?php
-require_once ("Plans.php");
 require ("syntax-classes.php");
+session_start();
 require ("functions-main.php"); //load main functions
 $dbh = db_connect();
 $idcookie = $_SESSION['userid'];

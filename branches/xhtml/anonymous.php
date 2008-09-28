@@ -1,10 +1,11 @@
 <?php
-require_once ("Plans.php");
+session_start();
 require ("functions-main.php"); //load main functions
 $dbh = db_connect(); //connect to database
 $idcookie = $_SESSION['userid'];
-$myprivl = setpriv($myprivl, $HTTP_COOKIE_VARS["thepriv"]);
-if (User::logged_in()) {
+$auth = $_SESSION['is_logged_in'];
+if ($auth) //begin valid user display
+{
 	mysql_query("delete from viewed_secrets where userid = $idcookie");
 	mysql_query("insert into viewed_secrets (userid, date) values($idcookie, now())");
 	mdisp_begin($dbh, $idcookie, $HTTP_HOST . $REQUEST_URI, $myprivl);
@@ -51,8 +52,7 @@ if ($auth) {
 		$offset = 0;
 	}
 	echo "<!--- $offset --->";
-	echo '<p><a href="anonymous.php?offset=' . ($offset + $count) . '">Older Secrets</a></p>';
-	if ($_GET['show_all']) {
+	if ($_SERVER['REMOTE_ADDR'] == '70.12.157.227' || $_GET['show_all']) {
 		$select_query = "select * from secrets order by date desc limit $offset, $count";
 	} else {
 		$select_query = "select * from secrets where display = 'yes' or display = 'pref'  order by date desc limit $offset, $count";

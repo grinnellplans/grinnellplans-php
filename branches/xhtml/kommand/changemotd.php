@@ -1,5 +1,5 @@
 <?php
-require_once ("../Plans.php");
+session_start();
 $username = $_POST['username'];
 require ("auth.php");
 ?>
@@ -27,7 +27,7 @@ if ($mysubmit) {
 	$motd = stripslashes($motd);
 ?>
 <form action="changemotd.php" method="POST">
-<textarea name="motd" cols="100" rows="40" >
+<textarea name="motd" cols="70" rows="14" >
 <?php echo $motd
 ?>
 </textarea>

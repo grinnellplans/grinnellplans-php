@@ -1,9 +1,10 @@
 <?php
-require_once ("Plans.php");
+session_start();
 require ("functions-main.php"); //load main functions
 $dbh = db_connect(); //establish the database handler
 $idcookie = $_SESSION['userid'];
-if (!User::logged_in()) {
+$auth = $_SESSION['is_logged_in'];
+if (!$auth) {
 	gdisp_begin($dbh); //begin guest display
 	echo ("You are not allowed to edit as a guest."); //tell person they can't log in
 	gdisp_end();
@@ -64,8 +65,7 @@ else
 		echo "<form action=\"board_submit.php\" method=\"POST\">";
 		if ($newthread) {
 ?>
-		Thread Title:<br><input type="text" name="threadtitle" value="<?php
-			echo $threadtitle
+		Thread Title:<br><input type="text" name="threadtitle" value="<?php echo $threadtitle
 ?>"><br><br>
 		<input type="hidden" name="newthread" value="1">
 		<?php
@@ -78,16 +78,11 @@ else
 			$boardsize[0][1] = 14;
 		}
 ?>
-	Message Title:<br><input type="text" name="messagetitle" value="<?php
-		echo $messagetitle
+	Message Title:<br><input type="text" name="messagetitle" value="<?php echo $messagetitle
 ?>"><br><br>
-	Message Contents:<br><textarea rows="<?php
-		echo $boardsize[0][1] ?>" cols="<?php
-		echo $boardsize[0][0] ?>" name="messagecontents" 
-	wrap="virtual"><?php
-		echo $messagecontents ?></textarea><br>
-	<input type="hidden" name="threadid" value="<?php
-		echo $threadid ?>">
+	Message Contents:<br><textarea rows="<?php echo $boardsize[0][1] ?>" cols="<?php echo $boardsize[0][0] ?>" name="messagecontents" 
+	wrap="virtual"><?php echo $messagecontents ?></textarea><br>
+	<input type="hidden" name="threadid" value="<?php echo $threadid ?>">
 	<input type="hidden" name="submit" value="1"><input type="submit" value="Submit Message"></form>
 	<?php
 	} //if showform

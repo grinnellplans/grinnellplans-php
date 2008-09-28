@@ -51,15 +51,17 @@ class SessionBroker {
 	}
 	
 	function write($arg_str_session_id, $arg_str_session_data) {
-		$td = mcrypt_module_open('tripledes', '', 'ecb', '');
-		$iv = mcrypt_create_iv(mcrypt_enc_get_iv_size($td), MCRYPT_RAND);
-		mcrypt_generic_init($td, SESSION_ENCRYPTION_KEY, $iv);
-		$cypher = base64_encode(mcrypt_generic($td, $arg_str_session_data));
-		mcrypt_generic_deinit($td);
-		mcrypt_module_close($td);
-		setcookie(session_name(), "", 0, "/", COOKIE_DOMAIN);
-		setcookie(COOKIE_PAYLOAD, $cypher, 0, "/", COOKIE_DOMAIN);
-		ob_end_flush();
+		if (!empty($arg_str_session_data)) {
+			$td = mcrypt_module_open('tripledes', '', 'ecb', '');
+			$iv = mcrypt_create_iv(mcrypt_enc_get_iv_size($td), MCRYPT_RAND);
+			mcrypt_generic_init($td, SESSION_ENCRYPTION_KEY, $iv);
+			$cypher = base64_encode(mcrypt_generic($td, $arg_str_session_data));
+			mcrypt_generic_deinit($td);
+			mcrypt_module_close($td);
+			setcookie(session_name(), "", 0, "/", COOKIE_DOMAIN);
+			setcookie(COOKIE_PAYLOAD, $cypher, 0, "/", COOKIE_DOMAIN);
+			ob_end_flush();
+		}
 		return true;
 	}
 	

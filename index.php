@@ -16,7 +16,7 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
 	}
 }
 
-if (!$msg && isset($_POST['submit']) || User::logged_in()) {
+if (!isset($msg) && (isset($_POST['submit']) || User::logged_in())) {
 	Redirect('home.php');	
 } else {
 ?>

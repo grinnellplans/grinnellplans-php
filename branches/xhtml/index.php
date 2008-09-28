@@ -1,6 +1,7 @@
 <?
 session_start();
 require("functions-main.php");
+require("syntax-classes.php");
 /*
 echo '<br>';
 echo "index.php";
@@ -77,7 +78,7 @@ if ($show_form)
 	<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">   
 <html dir="ltr">
    <head>
-   <title>GrinnellPlans 2.3</title>
+   <title>GrinnellPlans <?php echo PLANSVNAME?></title>
    <link rel="stylesheet" href="index.css">
 <script>
 <!--
@@ -164,43 +165,40 @@ Use of the GrinnellPlans service means you have accepted the <a href="http://www
 //handle what comes after the person is either an accepted
 //user or logged in as a guest.
 if ($_SESSION['is_logged_in'] or $guest) {
-/*
-echo "<br />";
-print_r ($_SESSION);
-echo "<br />";
-echo "idcookie is $idcookie<br>";
-echo "<br />" . $_SESSION['is_logged_in'];
-echo "<br />" . $guest;
-echo "<br />";
-*/
+
+	// Create the new page
+	$page = new PlansPage('Plan', 'readplan', PLANSVNAME, 'read.php');
 
 	if ($_SESSION['is_logged_in']) {
-		mdisp_begin($dbh,$idcookie,$HTTP_HOST . $REQUEST_URI,$myprivl);//send beginning display info          
+		get_interface($idcookie);
+		populate_page($page, $dbh, $idcookie);
 	}
 
 	if ($guest) {
+		get_guest_interface();
+		populate_guest_page($page);
+
 		$dbh = db_connect();//sets up connection to database.
-		gdisp_begin($dbh); //sends beginning part of guest display
 		$my_result = mysql_query("Select system.motd From system"); //get the main plans message from the database
 		$my_row = mysql_fetch_array($my_result); //get information from mysql query
 	} else {
 		$my_result = mysql_query("Select system.motd,accounts.spec_message From
 				system,accounts where accounts.userid = '$idcookie'");//get the main plans messsage as well as the person's private message to be displayed
-			$my_row = mysql_fetch_array($my_result); //get information from mysql query
-		echo stripslashes(stripslashes($my_row[1]));//if logged in, show the private message
+		$my_row = mysql_fetch_array($my_result); //get information from mysql query
+		$privmessage = new InfoText(stripslashes(stripslashes($my_row[1])), 'User MOTD');//if logged in, show the private message
+		$page->append($privmessage);
 
+		/* TODO why? why?
 		echo '<pre>';
 		echo '</pre>';
+		 */
 
 	}
 
-	echo stripslashes(stripslashes($my_row[0])); //display the main Plans message
+	$motd = new InfoText(stripslashes(stripslashes($my_row[0])), 'MOTD'); //display the main Plans message
+	$page->append($motd);
 
-	if ($_SESSION['is_logged_in']) {
-		mdisp_end($dbh,$idcookie,$HTTP_HOST . $REQUEST_URI,$myprivl); //and send closing display data
-	} else {
-		gdisp_end();
-	}//if guest send guest closing display data
+	interface_disp_page($page);
 
 }
 db_disconnect($dbh);

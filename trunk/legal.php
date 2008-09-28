@@ -1,9 +1,4 @@
 <?php
-/*
-	GrinnellPlans - legal disclaimer file
-	Version Nov-11-05-1 (Laiu-Draft-1)
-	
-*/
 function disclaimer()
 {
 

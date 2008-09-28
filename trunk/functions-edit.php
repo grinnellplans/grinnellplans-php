@@ -1,10 +1,4 @@
-<?php
-/*
-	GrinnellPlans - functions-edit
-	Version 11-4-05 Laiu Draft 1
-	Notes: This file contains a hodgepodge of assorted controls regarding when someone logs in, last update, time logged in...
-*/
-
+<?
 //////////
 
 /*

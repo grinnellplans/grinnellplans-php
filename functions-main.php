@@ -24,7 +24,6 @@ require_once ("functions-display.php");
 //Load Notes functionalities
 require_once ("functions-forum.php");
 //Load valid-user authentications
-require_once ("functions-authentication.php");
 //Load editing, updating, and other related functions
 require_once ("functions-edit.php");
 require_once ("functions-core.php");

@@ -31,14 +31,18 @@ class SessionBroker {
 	}
 	
 	function read($arg_str_session_id) {
-		$cypher = $_COOKIE[COOKIE_PAYLOAD];
-		$td = mcrypt_module_open('tripledes', '', 'ecb', '');
-		$iv = mcrypt_create_iv(mcrypt_enc_get_iv_size($td), MCRYPT_RAND);
-		mcrypt_generic_init($td, SESSION_ENCRYPTION_KEY, $iv);
-		$plain_text = rtrim(mdecrypt_generic($td, base64_decode($cypher)), "\0");
-		mcrypt_generic_deinit($td);
-		mcrypt_module_close($td);
-		return $plain_text;
+		if (isset($_COOKIE[COOKIE_PAYLOAD])) {
+			$cypher = $_COOKIE[COOKIE_PAYLOAD];
+			$td = mcrypt_module_open('tripledes', '', 'ecb', '');
+			$iv = mcrypt_create_iv(mcrypt_enc_get_iv_size($td), MCRYPT_RAND);
+			mcrypt_generic_init($td, SESSION_ENCRYPTION_KEY, $iv);
+			$plain_text = rtrim(mdecrypt_generic($td, base64_decode($cypher)), "\0");
+			mcrypt_generic_deinit($td);
+			mcrypt_module_close($td);
+			return $plain_text;
+		} else {
+			return "";
+		}
 	}
 	
 	function write($arg_str_session_id, $arg_str_session_data) {

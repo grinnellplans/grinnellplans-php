@@ -44,7 +44,7 @@ if ($_POST['secret_submitted']) {
 	$sql = "insert into secrets(secret_text, date, display) values (substring('$secret',1,4000), now(), 'no')";
 	mysql_query($sql);
 }
-if ($auth) {
+if (User::logged_in()) {
 	$count = 300;
 	$offset = $_GET['offset'];
 	if (!is_numeric($offset)) {

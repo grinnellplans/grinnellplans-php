@@ -15,28 +15,8 @@ if (User::logged_in()) {
 	$username = $_POST['username'];
 	$password = $_POST['password'];
 	$guest = $_POST['guest'];
-	if ($username) {
-		if (isValidUser($dbh, $username)) {
-			$orig_pass = $password;
-			$password = crypt($password, "ab");
-			$read_pass = get_item($dbh, "password", "accounts", "username", $username);
-			if ($password == $read_pass) {
-				$idcookie = get_item($dbh, "userid", "accounts", "username", $username);
-				setLogin($dbh, $idcookie);
-				$_SESSION['is_logged_in'] = 1;
-				$_SESSION['username'] = $username;
-				$_SESSION['userid'] = $idcookie;
-				$sql = "insert into js_status set userid = " . addslashes($idcookie) . ", status = '" . addslashes($_POST['js_test_value']) . "'";
-				mysql_query($sql);
-			}
-		}
-		if (!$_SESSION['is_logged_in']) {
-			$show_form = "Invalid username or password.<br>";
-		}
-	} else {
-		if (!$guest) {
-			$show_form = " ";
-		}
+	if (!User::login($usernamem, $password)) {
+		$show_form = "Invalid username or password.<br>";
 	}
 }
 //print_r($_SESSION);

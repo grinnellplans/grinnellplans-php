@@ -1,6 +1,8 @@
 <?php
 	// Boilerplate code for _all_ Plans scripts
-
+	require_once('Configuration.php');
+	putenv('TZ=' . TZ);
+		
 	// Set some testings only for when we're called through /beta/.
 	if (strstr($_SERVER['REQUEST_URI'], '/dev/') != FALSE) {
 		ini_set('error_reporting', E_ALL);

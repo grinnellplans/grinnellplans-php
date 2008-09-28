@@ -12,7 +12,7 @@ if (isset($_GET['jumbled'])) {
 
 function Redirect($url) {
 	Header('Location: $url');
-
+}
 
 //Load Configuration settings - let's increase our level of abstraction here....
 require_once ("Configuration.php");

@@ -1,7 +1,7 @@
 #summary A how-to for setting up your own GrinnellPlans deployment.
 #labels Phase-Deploy
 
-=Your very own Plans=
+==Your very own Plans==
 This page describes how to set up your own PC or server to host an instance of Plans. You can do this to give yourself a testing platform if you're doing development work, or if you wanted to use Plans software somewhere new, you can start your own server to host it (although you might want to take additional security precautions besides those described in this guide).
 
 _Disclaimer_: At the moment, this is far from a comprehensive guide. It's simply what worked for me, hopefully with enough details that you can fill in any missing parts. So don't take it as gospel, and don't blame me if your computer becomes sentient and flees captivity.
@@ -9,12 +9,12 @@ _Disclaimer_: At the moment, this is far from a comprehensive guide. It's simply
 Other Notes: I've written this based on my experience setting things up on a UNIX-like system. These instructions have been tested on Gentoo Linux and Mac OS X. If other platforms do or do not work, please let us know!
 I imagine it's comparable on other platforms, but I've never tried, so I don't really know. And if you do have things you would like to add to this page, please do! That's what wikis are for!
 
-=Get the files=
-You'll need a copy of Plans code, which you can check out from SVN from this group (just click on the SVN tab). Note that you don't necessarily need the whole repository; you can check out the trunk for roughly the current Plans code, or you can check out the xhtml branch for the most recent development that Ian has been doing (not guaranteed to completely work just yet).
+==Get the files==
+You'll need a copy of Plans code, which you can check out from SVN from this group (just click on the Source tab). Note that you don't necessarily need the whole repository; you can check out the trunk for roughly the current Plans code, or you can check out the xhtml branch for the most recent development that Ian has been doing (not guaranteed to completely work just yet).
 
-You'll also need a MySQL database dump. To download the basic database dump, see the [[Contents of sample database|sample dump instructions and description]]. We'll use this later.
+You'll also need a MySQL database dump. To download the basic database dump, see the [SampleDatabaseDescription sample dump instructions and description]. We'll use this later.
 
-=Install software=
+==Install software==
 I can't provide all the details of setting everything up, but with a little looking you can find nice instructions for most of these programs. You'll need MySQL, PHP, and some software to serve http requests to your computer (I used lighttpd, apache is also popular).
 
 The /trunk code requires PHP4 or higher. To use the /branches/xhtml code, you'll need PHP5.
@@ -77,11 +77,11 @@ UPDATE display SET interface=1;
 quit
 }}}
 
-=Set up Plans configuration=
+==Set up Plans configuration==
 You'll need to change the database name and password in the Plans code so that it can connect to MySQL. Currently it is found in functions-db.php. (TODO: more detailed explanation of this part).
 
-=Done!=
+==Done!==
 If everything's worked, you should be all set. Make sure your web server is running, fire up a web browser and point it towards the server you've just set up (for example, if it's your PC, you might try [http://127.0.0.1/] or [http://127.0.0.1/plans] or something like that, depending on how you've configured it).
-If you run into problems, feel free to email the devel list, hosted as the GrinnellPlans-Development [http://groups.google.com/group/grinnellplans-development]
+If you run into problems, feel free to email the devel list, hosted as the !GrinnellPlans-Development [http://groups.google.com/group/grinnellplans-development list]
 
 If would like to see more information added to any section of this guide, please do so (you will need to be a member of this SourceForge group first).

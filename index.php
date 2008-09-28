@@ -102,3 +102,6 @@ Use of the GrinnellPlans service means you have accepted the <a href="http://www
 </p>
 </body>
 </html>
+<?php
+	}
+?>

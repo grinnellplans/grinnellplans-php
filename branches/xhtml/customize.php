@@ -2,25 +2,55 @@
 
 session_start();
 require("functions-main.php");//load main functions
+require("syntax-classes.php");//load main functions
 $dbh = db_connect();//connect to database
 
 $idcookie = $_SESSION['userid']; 
 $auth = $_SESSION['is_logged_in'];
 
+// initialize page classes
+$thispage = new PlansPage('Preferences', 'prefs', PLANSVNAME.' - Preferences', 'customize.php');
+
 if (!$auth) {
-	gdisp_begin($dbh);//begin guest display
-	echo("You are not allowed to edit as a guest.");//tell guest they can't edit
-	gdisp_end();
+	get_guest_interface();
+	populate_guest_page($thispage);
+	$denied = new AlertText('You are not allowed to edit as a guest.', 'Access Denied');
+	$thispage->append($denied);
 } else {
-	mdisp_begin($dbh,$idcookie,$HTTP_HOST . $REQUEST_URI,$myprivl);//begin valid user display
 
-	//Give list of links of types of customization
-	$preflist = cinterface_get_preferences_list();
-	interface_disp_preferences($preflist);
+	get_interface($idcookie);
+	populate_page($thispage, $dbh, $idcookie);
 
-	interface_disp_footer(false, who_just_updated());
+	$heading = new HeadingText('Preferences', 1);
+	$thispage->append($heading);
 
-	mdisp_end($dbh,$idcookie,$HTTP_HOST . $REQUEST_URI,$myprivl);//end display
+	$preflist = new WidgetList('preflist', "Preferences");
+
+	// make the list of preference pages
+	$arr = array('Change Auto List' => "autoread.php",
+				'Change Password' => "changepassword.php",
+				'Change Name' => "changename.php",
+				'Guest Readable' => "webview.php",
+				'Customize' => '',
+				'Interfaces' => "interfaces.php",
+				'Styles' => "styles.php",
+				'Edit Text Box Size' => "textbox.php",
+				'Optional Links' => "links.php");
+	foreach ($arr as $name => $ref) {
+		if (strtolower($name) != 'customize') {
+			$alink = new Hyperlink(null, $ref, $name);
+			$preflist->append($alink);
+		} else {
+			$aheading = new HeadingText('Customize', 2);
+			$preflist->append($aheading);
+		}
+	}
+
+	$thispage->append($preflist);
+
 }//if is a valid user
+
+interface_disp_page($thispage);
+
 db_disconnect($dbh);
 ?>

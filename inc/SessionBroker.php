@@ -2,10 +2,20 @@
 require_once ("Plans.php");
 require_once ('Configuration.php');
 
+/**
+  * Modifies the run-time environment as to save _SESSION in the user-side cookie.
+  * It encrypts the cookie to ensure its origin. Needs to be instantiated before using
+  * _SESSION. 
+  */
 class SessionBroker {
 	function SessionBroker() {
 		ob_start();
-		session_set_save_handler(array(&$this, 'open'), array(&$this, 'close'), array(&$this, 'read'), array(&$this, 'write'), array(&$this, 'destroy'), array(&$this, 'gc'));
+		session_set_save_handler(array(&$this, 'open'),
+									array(&$this, 'close'),
+									array(&$this, 'read'),
+									array(&$this, 'write'),
+									array(&$this, 'destroy'),
+									array(&$this, 'gc'));
 		register_shutdown_function('session_write_close');
 		session_set_cookie_params(0, '/', COOKIE_DOMAIN);
 		session_start();
@@ -53,6 +63,4 @@ class SessionBroker {
 		return true;
 	}
 }
-
-new SessionBroker();
 ?>

@@ -1,5 +1,7 @@
 <?php
 require_once ("Plans.php");
+new SessionBroker();
+
 require ("functions-main.php"); //load main functions
 require ("functions-kommand.php"); //load main functions
 $idcookie = $_SESSION['userid'];

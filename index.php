@@ -1,5 +1,6 @@
 <?php
 require_once ("Plans.php");
+new SessionBroker();
 require ("functions-main.php");
 if ($_GET['logout']) {
 	User::logout();

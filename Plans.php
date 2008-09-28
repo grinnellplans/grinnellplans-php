@@ -1,6 +1,6 @@
 <?php
 // Boilerplate code for _all_ Plans scripts
-require_once ('Configuration.php');
+require_once('Configuration.php');
 putenv('TZ=' . TZ);
 
 // Set some testings only for when we're called through /beta/.
@@ -12,7 +12,7 @@ if (strstr($_SERVER['REQUEST_URI'], '/dev/') != FALSE) {
 
 function __autoload($classname)
 {
-	require_once ("inc/$classname.php");
+	require_once("inc/$classname.php");
 }
 
 require_once ("inc/SessionBroker.php");

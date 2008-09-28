@@ -7,7 +7,7 @@
 require_once('Configuration.php');
 // Database login and password
 $dblogin = MYSQL_USER;
-$dbpasswd = MYSQL_PASSWORD;
+$dbpasswd = MYSQL_PASS;
 // The table within the database dedicated to plans stuff
 $dbtable = MYSQL_DB;
 // Which server the database is on

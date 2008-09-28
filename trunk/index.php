@@ -25,14 +25,6 @@ if (isset($_POST['submit'])) {
 <head>
 	<title>GrinnellPlans</title>
 	<link rel="stylesheet" href="index.css">
-<script>
-<!--
-function js_test ()
-{
-    document.post.js_test_value.value = "on";
-}
--->
-</script> 
 </head>
 <body bgcolor="#ffffff" onLoad="self.focus();document.post.username.focus()">       
 	<div class="left"><br><br>
@@ -44,7 +36,7 @@ function js_test ()
 	  </tr>
 	  <tr class="boxes">
 		<td colspan=2 align=center class="boxes">
-			<form name="post" action="index.php" method="POST">
+			<form name="post" action="<?=$_SERVER['PHP_SELF']?>" method="POST">
 			<div class="boxes">
 				Username: <input type="text" name="username"><br>
 				Password: <input type="password" name="password"><br>
@@ -57,11 +49,11 @@ function js_test ()
 			<input type="hidden" value="off" name="js_test_value">  
 <script>
 <!--
-js_test();
+document.post.js_test_value.value = "on";
 -->
 </script>  
 			</form></td>
-		<form action="index.php" method="POST"> <!--gimmick to make the buttons display at the same height-->
+		<form action="<?=$_SERVER['PHP_SELF']?>" method="POST"> <!--gimmick to make the buttons display at the same height-->
 		<td align=left width="50%">
 			<input type="hidden" value="1" name="guest">
 			<input type="submit" name="submit" value="Guest">

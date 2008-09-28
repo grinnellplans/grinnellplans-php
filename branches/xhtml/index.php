@@ -1,7 +1,7 @@
 <?php
 require_once ("Plans.php");
 new SessionBroker();
-
+require_once("syntax-classes.php");
 if (isset($_GET['logout'])) {
 	User::logout();
 	$msg = 'You have been successfully logged out.';
@@ -19,11 +19,10 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
 if (!$msg && isset($_POST['submit']) || User::logged_in()) {
 	Redirect('home.php');	
 } else {
-?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">   
 <html dir="ltr">
-<head>
-	<title>GrinnellPlans</title>
+   <head>
+   <title>GrinnellPlans <?= PLANSVNAME ?></title>
 	<STYLE TYPE="text/css">
 	<!--
 	BODY { 
@@ -50,18 +49,28 @@ if (!$msg && isset($_POST['submit']) || User::logged_in()) {
 			}
 	-->
 	</STYLE>
-</head>
-<body bgcolor="#ffffff" onLoad="self.focus();document.post.username.focus()">       
+<script>
+<!--
+function js_test ()
+{
+    document.post.js_test_value.value = "on";
+}
+-->
+</script> 
+   </head>
+   
+       <body bgcolor="#ffffff" onLoad="self.focus();document.post.username.focus()">       
+     
 	<div class="left"><br><br>
 	  <table cellpadding=0 width="100%">
 	  <tr>
 		<td colspan=2 align=center>
-			<img src="img/logo.jpg">
+			<img src="logo.jpg">
 		</td>
 	  </tr>
 	  <tr class="boxes">
 		<td colspan=2 align=center class="boxes">
-			<form name="post" action="<?=$_SERVER['PHP_SELF']?>" method="POST">
+			<form name="post" action="index.php" method="POST">
 			<div class="boxes">
 				Username: <input type="text" name="username"><br>
 				Password: <input type="password" name="password"><br>
@@ -70,31 +79,26 @@ if (!$msg && isset($_POST['submit']) || User::logged_in()) {
 	  </tr>
 	  <tr valign=top>
 		<td align=right width="50%">
-			<input type="submit" name="submit" value="Login">
+			<input type="submit" value="Login">
 			<input type="hidden" value="off" name="js_test_value">  
 <script>
 <!--
-document.post.js_test_value.value = "on";
+js_test();
 -->
 </script>  
 			</form></td>
-		<form action="<?=$_SERVER['PHP_SELF']?>" method="POST"> <!--gimmick to make the buttons display at the same height-->
+		<form action="index.php" method="POST"> <!--gimmick to make the buttons display at the same height-->
 		<td align=left width="50%">
 			<input type="hidden" value="1" name="guest">
-			<input type="submit" name="submit" value="Guest">
+			<input type="submit" value="Guest">
 			</form></td>
 	  </tr>
 	  <tr>
 		<td align=center colspan=2>
-<?php
-	if (isset($msg)) {
-?>
 		<font face=verdana>
-		<p><?=$msg?>
-		</p>
-		<?php
-	}
-		?>
+			<p><?php
+	echo $msg
+?></p>
 		<br>
 		<br>Need a plan? <a href="register.php">Register</a> if you have an @grinnell.edu email address.
 <br />  
@@ -117,8 +121,6 @@ Alumni, please include your @alumni.grinnell.edu forwarding address (which you c
 	<p class="legalese">
 Use of the GrinnellPlans service means you have accepted the <a href="http://www.grinnellplans.com/tos/">GrinnellPlans Terms of Service</a> agreement. If you do not accept and abide by this agreement, you may not use GrinnellPlans. This agreement is subject to change without notice, so you should periodically review the most up-to-date version.	
 </p>
-</body>
-</html>
 <?php
-	}
+}
 ?>

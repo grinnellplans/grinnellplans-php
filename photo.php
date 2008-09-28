@@ -1,11 +1,4 @@
 <?php
-
-/* Sechyi Laiu, Created 7/15/2005 12:58 p.m. 
- * Last edit -
- * Purpose: This program attempts to load up the 'home' page (MoTD under system table) upon request
- * Modified index.php from GrinnellPlans
- */
-
 require_once("cookie_session.php");
 
 //Load the functions file

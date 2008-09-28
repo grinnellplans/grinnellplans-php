@@ -1,13 +1,4 @@
 <?php
-
-/*
-	Identification: GrinnellPlans - plansfunctions files
-	Version: Nov-11-05-1 (Laiu-Draft-1)
-	What this does: It replaces KenslerJ-2 functions.php and divides up the functions code by purpose. 
-		Ideally, this makes rewriting Plans easier.
-	Notes: This file will contain functions called up by GrinnellPlans
-*/
-
 /* =====================================================
     The below code should always run for a logged in user.  We need a 
     file for this so we don't have to keep adding stuff to the top of each 

@@ -1,13 +1,4 @@
 <?php
-
-/*
-	Identification: GrinnellPlans - index-blank.php
-	Version: 11-4-05-Laiu-Draft-1-1
-	What this does: This file returns a blank page to the person who changes a priority level immediately after login.
-		Without this page, the user would reload the login page and be forced to login again.
-	Notes: This is a legacy support page from kenslerj2 blank.php
-*/
-
 //Load main functions
 require("fuctions-main.php"); 
 //Connect to database

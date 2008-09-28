@@ -1,7 +1,7 @@
 <?php
 require_once ("Plans.php");
 function Redirect($url) {
-	Header('Location: $url');
+	Header("Location: $url");
 }
 
 function microtime_float()

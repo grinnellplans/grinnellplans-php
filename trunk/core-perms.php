@@ -1,4 +1,5 @@
 <?php
+	require_once("Plans.inc");
 
 	$status = get_item($dbh, "status", "perms", "userid", $userid);
 	$write_only_access = array(

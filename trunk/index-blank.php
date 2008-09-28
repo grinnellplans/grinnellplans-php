@@ -1,4 +1,5 @@
 <?php
+	require_once("Plans.inc");
 //Load main functions
 require("fuctions-main.php"); 
 //Connect to database

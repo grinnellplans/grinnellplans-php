@@ -1,8 +1,5 @@
 <?php
-/*
-	GrinnellPlans - valid user functions
-	Version 11-4-05-Laiu Draft 1
-*/
+	require_once("Plans.inc");
 
 //////////
 

@@ -1,4 +1,6 @@
-<html><head><title>Reset Style Sheet</title></head><body><center>
+<?php
+	require_once("Plans.inc");
+?><html><head><title>Reset Style Sheet</title></head><body><center>
 
 <?
 

@@ -1,8 +1,5 @@
-<?
-
-//Please not that this page is still quite unfinished, and as a result the comments aren't very good at the moment.
-
-// This version of search.php committed 13 June 2004 [nnadioge]
+<?php
+	require_once("Plans.inc");
 
 
 require_once("cookie_session.php");

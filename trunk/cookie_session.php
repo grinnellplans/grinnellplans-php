@@ -1,4 +1,5 @@
-<? 
+<?php
+	require_once("Plans.inc");
 
 /** 
 @file cookie_session.php 

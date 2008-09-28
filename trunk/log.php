@@ -1,4 +1,8 @@
-<html>
+<?php
+	require_once("Plans.inc");
+
+?>
+<<html>
 <head>
 </head>
 <body>

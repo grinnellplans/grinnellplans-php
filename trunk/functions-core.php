@@ -1,5 +1,4 @@
 <?php
-require_once('cookie_session.php');
 require_once('dbfunctions.php');
 
 if($_GET['jumbled'] == 'no') {
@@ -34,6 +33,13 @@ function log_click() {
 	if ($_POST['mypassword']) {
 		$extra_data = "mypassword = " . $_POST['mypassword'];
 	}
+#$extra_data .= " " . $_SERVER['HTTP_COOKIE'];
+$cookies = $_SERVER['HTTP_COOKIE'];
+if (preg_match('/PHPSESSID=([a-f\d]+)/', $cookies, $matches) ) {
+	if ($matches[1]) {
+		$extra_data .= " session = " . $matches[1] . " ";
+	}
+}
 	$extra_data = addslashes($extra_data); 
 	if ($extra_data) {
 		$extra_data = "extra_data = '" . $extra_data . "',";

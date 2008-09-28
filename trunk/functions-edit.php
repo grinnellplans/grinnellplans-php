@@ -71,12 +71,12 @@ function cleanText($plan)
 	$plan);//allow stuff in the italics tag back in
 	$plan = preg_replace("/\&lt\;u\&gt\;(.*?)\&lt\;\/u\&gt\;/si", "<u>\\1</u>",
 	$plan);//allow stuff in the underline tag back in
+	$plan = preg_replace("/\&lt\;a.+?href=.&quot\;(.+?).&quot\;&gt\;(.+?)&lt\;\/a&gt\;/si", "<a href=\"\\1\" class=\"onplan\">\\2</a>",$plan);
 
 
 	//$plan = preg_replace("/\&lt\;a.href=.&quot\;(.+).&quot\;/si", "EEE",$plan);
 
-	// Get everything in brackets. For nested brackets, take the innermost.
-	$somearray = preg_match_all("/\[([^][]+)\]/s",$plan,$mymatches);
+	$somearray = preg_match_all("/.*?\[(.*?)\].*?/s", $plan, $mymatches);//get an array of everything in brackets
 
 	$matchcount = count($mymatches[1]);
 	for ($o=0; $o<$matchcount; $o++)//do a loop to test whether everything in brackets is a valid user or not
@@ -84,7 +84,7 @@ function cleanText($plan)
 		$mycheck=$mymatches[1][$o];//get the current thing being tested
 
 		//echo '<!-- ' ."/\[$mycheck\]/s" . ' -->' . "\n";
-		//$jlw = preg_replace("/\//", '\/', $mycheck); 
+		$jlw = preg_replace("/\//", '\/', $mycheck); 
 		//echo '<!-- ' ."/\[$jlw\]/s" . ' -->' . "\n";
 
 		if (!$checked[$mycheck])//make sure current thing being checked has not already been checked
@@ -109,15 +109,16 @@ function cleanText($plan)
 					$plan = preg_replace("/\[date\]/s", "<b>" . date("l F j, Y. g:i A") . "</b>",$plan);
 				}		
 
-                                if (preg_match("/^\w+:/",$mycheck))
-                                {
+				if (strrpos($mycheck,":"))
+				{
+
 					if (strrpos($mycheck,"|"))
 					{
 
-                                            preg_match("/(.+?)\|(.+)/si",$mycheck,$love_replace);
-                                            // Here, we need to escape $'s so they don't get treated as back-references
-                                            $love_replace[2]=addcslashes($love_replace[2],"$");
-                                            $plan=preg_replace("/\[" . preg_quote($mycheck,"/") . "\]/s", "<a href=\"$love_replace[1]\" class=\"onplan\">$love_replace[2]</a>",$plan);
+						preg_match("/(.+?)\|(.+)/si",$mycheck,$love_replace);
+
+
+						$plan=preg_replace("/\[" . preg_quote($mycheck,"/") . "\]/s", "<a href=\"$love_replace[1]\" class=\"onplan\">$love_replace[2]</a>",$plan);
 					}
 					else {
 
@@ -132,7 +133,6 @@ function cleanText($plan)
 		}//if (!$checked[$mycheck])
 
 	}//for ($o=0; $mymatches[1][$o]; $o++)
-	$plan = preg_replace("/\&lt\;a.+?href=.&quot\;(.+?).&quot\;&gt\;(.+?)&lt\;\/a&gt\;/si", "<a href=\"\\1\" class=\"onplan\">\\2</a>",$plan);
 	$plan=trim($plan);
 	return $plan;
 }

@@ -42,7 +42,7 @@ $motd = stripslashes($motd);
 
 ?>
 <form action="changemotd.php" method="POST">
-<textarea name="motd" cols="70" rows="14" >
+<textarea name="motd" cols="100" rows="40" >
 <?=$motd?>
 </textarea>
 <input type="hidden" name="mysubmit" value="1">

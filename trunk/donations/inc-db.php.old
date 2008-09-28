@@ -1,6 +1,0 @@
-<?php
-   $hostName = "hilbert.math.grin.edu";
-   $databaseName = "LabPCUsage";
-   $username = "wellons";
-   $password = "";
-?>

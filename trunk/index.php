@@ -1,13 +1,6 @@
 <?
-require_once("cookie_session.php");
 require("functions-main.php");
-/*
-echo '<br>';
-echo "index.php";
-echo '<br>';
-print_r($_SESSION);
-echo '<br>';
-*/
+
 if ($_GET['logout']) {
 	$_SESSION['is_logged_in'] = 0;
 	$_SESSION['userid'] = false;
@@ -49,7 +42,6 @@ if ( $auth) {
 				$_SESSION['userid'] = $idcookie;
 				$sql = "insert into js_status set userid = " . addslashes($idcookie) . ", status = '" . addslashes($_POST['js_test_value']) . "'";
 				mysql_query($sql);
-				echo "<!-- $sql --!>";
 
 			}
 		}

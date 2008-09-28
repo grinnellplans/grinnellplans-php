@@ -61,6 +61,7 @@ $myprivl=setpriv($myprivl, $HTTP_COOKIE_VARS["thepriv"]);
 		}
 
 		echo "<!--- $offset --->";
+		echo '<p><a href="anonymous.php?offset=' . ($offset + $count) . '">Older Secrets</a></p>';
 
 
 		if ($_SERVER['REMOTE_ADDR'] == '70.12.157.227' || $_GET['show_all']) {

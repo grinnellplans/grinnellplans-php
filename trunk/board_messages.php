@@ -35,8 +35,67 @@ else //elseallowed to edit
 			Click_Menu.style.display = "none";
 		}
 	}
+        function is_activated(arrow) {
+            return (arrow.style.borderWidth);
+        }
+        function activate(arrow) {
+            arrow.style.border = '#222222 thin solid';
+        }
+        function deactivate(arrow) {
+            arrow.style.border = '';
+            arrow.style.borderWidth = '';
+        }
+        function vote(messageid, vote) {
+            yes_arrow = document.getElementById(messageid+'y');
+            no_arrow = document.getElementById(messageid+'n');
+            counter = document.getElementById(messageid+'c');
+            num_votes = document.getElementById(messageid+'i');
+            if (vote == 'y') {
+                if (is_activated(yes_arrow)) {
+                    deactivate(yes_arrow);
+                    vote = '';
+                    counter.innerHTML = parseInt(counter.innerHTML)-1;
+                    num_votes.innerHTML = parseInt(num_votes.innerHTML)-1;
+                } else {
+                   activate(yes_arrow);
+                   if (is_activated(no_arrow)) {
+                       deactivate(no_arrow);
+                       counter.innerHTML = parseInt(counter.innerHTML)+2;
+                   } else {
+                       counter.innerHTML = parseInt(counter.innerHTML)+1;
+                       num_votes.innerHTML = parseInt(num_votes.innerHTML)+1;
+                   }
+                }
+            } else {
+                if (is_activated(no_arrow)) {
+                    deactivate(no_arrow);
+                    vote = '';
+                    counter.innerHTML = parseInt(counter.innerHTML)+1;
+                    num_votes.innerHTML = parseInt(num_votes.innerHTML)-1;
+                } else {
+                   activate(no_arrow);
+                   if (is_activated(yes_arrow)) {
+                       deactivate(yes_arrow);
+                       counter.innerHTML = parseInt(counter.innerHTML)-2;
+                   } else {
+                       counter.innerHTML = parseInt(counter.innerHTML)-1;
+                       num_votes.innerHTML = parseInt(num_votes.innerHTML)+1;
+                   }
+                }
+            }
+            
+            if (window.XMLHttpRequest) {
+                request = new XMLHttpRequest();
+            } else if (window.ActiveXObject) {
+                request = new ActiveXObject("Microsoft.XMLHTTP");
+            }
+            request.open("GET", "vote_thread.php?messageid="+messageid+"&vote="+vote, true);
+            request.send(null);
+        
+        }
 	-->
 	</script>
+
 
 	<div style="position: fixed;width: 50px;display:none" id="reply"><a 
 	href="javascript:Show_Stuff(display1);javascript:Show_Stuff(hide)" class="lev2">Reply</a></div><br>
@@ -184,9 +243,15 @@ else //elseallowed to edit
 				//echo "\n\n <!-- " . $messagesperpage * $pagenumber . " --> \n";
        $query =  "Select subboard.messageid, 
                 DATE_FORMAT(subboard.created, ' %l:%i %p, %a %M %D, %Y'),
-                subboard.userid, accounts.username, subboard.title ,subboard.contents 
+                subboard.userid, accounts.username, subboard.title ,subboard.contents, ifnull(vts.votes,0), mv.vote, ifnull(vts.num_votes,0)
                 From 
                 subboard left join  accounts using (userid)
+                left join (select messageid, sum(vote) as votes, count(*) as num_votes from boardvotes 
+                           where threadid = " . $threadid . "
+                           group by messageid) as vts on 
+                vts.messageid = subboard.messageid
+                left join (select messageid, vote from boardvotes where userid = " . $idcookie . ") as mv
+                     on mv.messageid = subboard.messageid
                 where subboard.threadid = " . $threadid . " 
                 ORDER BY subboard.messageid DESC 
                 LIMIT " . $rowoffset . "," . $messagesperpage;   
@@ -209,14 +274,21 @@ else //elseallowed to edit
 				$display_planlove = "[<a href=\"read.php?searchname=" . $new_row[3] . "\">". $new_row[3] .  "</a>]";
 	} else {
 				$display_planlove = "<i>User Deleted</i>";
-
-
-}
+}                               
+                                $yes_vote = $no_vote = "{}";
+                                if ($new_row[7] == 1) {
+                                   $yes_vote = "border: #222222 thin solid";
+                                }
+                                if ($new_row[7] == -1) {
+                                   $no_vote = "border: #222222 thin solid";
+                                }
 				echo "<tr><td>";
 				echo $thecolor . "<tr><td>";
 				echo "<tr><td><b><p id=\"" . $new_row[0]."\">" . stripslashes($new_row[4]) . "</p></b></td></tr>";
 
-				echo "<tr><td><table border=\"1\" width=\"100%\"><tr><td>" . $new_row[0] . "</td><td>" . $new_row[1] . 
+				echo "<tr><td><table border=\"1\" width=\"100%\"><tr><td>" . $new_row[0] . "</td>
+    <td style=\"cursor:pointer; cursor:hand\"><span style=\"".$yes_vote."\" id=\"".$new_row[0]."y\" onclick=\"vote(" . $new_row[0] . ",'y');\">&uarr;</span>&nbsp;&nbsp; <span style=\"".$no_vote."\" id=\"".$new_row[0]."n\" onclick=\"vote(" . $new_row[0] . ",'n');\">&darr;</span> &nbsp;&nbsp;(<span id=\"".$new_row[0] ."c\">" . $new_row[6] . "</span>) (<span id=\"".$new_row[0] ."i\">". $new_row[8]  ."</span> votes)</td>
+<td>" . $new_row[1] . 
 				"</td><td><center>" .
 $display_planlove
 . " </center></td></tr></table></td></tr>";

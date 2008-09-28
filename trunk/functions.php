@@ -72,6 +72,43 @@ function setpriv($myprivl, $cookpriv) {
 }
 
 
+
+//////////////////////////////////////////////////////////////
+
+/* mdisp_beg- Looks up from the database what choices the user has for their interface and style, 
+ *and gets the pathnames for the files associated with those choices. Loads the code contained in 
+ *the interface page that the user basically selected, which is actually a set of a couple of 
+ *functions, including mdisp_end.
+*/
+
+function mdisp_begin($dbh,$idcookie,$myurl,$myprivl,$jsfile=NULL)
+{
+	$my_result = mysql_query("Select interface.path,style.path From
+	interface interface, style style,display display where
+	display.userid = '$idcookie' and display.interface = interface.interface and display.style=style.style");//get the paths of the interface and style files that the user indicated as wanting to use
+
+	$css=get_item($dbh,"stylesheet","stylesheet","userid", $idcookie);
+
+
+	while($new_row = mysql_fetch_row($my_result)) {
+		$mydisplayar[] = $new_row;
+	}//gets contents from query
+
+	require ($mydisplayar[0][0]);//loads up the interface functions
+
+	if ($css) {$mycss=$css;}
+	else {$mycss=$mydisplayar[0][1];}
+	disp_begin($dbh,$idcookie,$myurl,$myprivl,$mycss,$jsfile);//calls the real beginning display 
+	//function which actually does the work of sending the beginning html code to the user
+}
+
+
+/* Did text outline, did a gradiant with white and gray, with white being
+on top, but less of white. Did a neon glow thing, then did an invert, the
+messed with the color balance, to make it a light blue
+*/
+
+
 ////////////////////////////////////////////////////////////////////
 function threadsperpage()
 {return 25;}
@@ -190,8 +227,7 @@ function cleanText($plan)
 
 //$plan = preg_replace("/\&lt\;a.href=.&quot\;(.+).&quot\;/si", "EEE",$plan);
 
-      // Get everything in brackets. For nested brackets, take the innermost.
-      $somearray = preg_match_all("/\[([^][]+)\]/s",$plan,$mymatches);
+      $somearray = preg_match_all("/.*?\[(.*?)\].*?/s", $plan, $mymatches);//get an array of everything in brackets
 
       $matchcount = count($mymatches[1]);
       for ($o=0; $o<$matchcount; $o++)//do a loop to test whether everything in brackets is a valid user or not
@@ -307,7 +343,7 @@ exit();
 <tr>
 <td valign="top" align="left">
 <img src="plans2.jpg">
-<form action="read.php" method="post">
+<Form action="read.php" method="post">
 <input name="searchname" type="text"><br>
 <input type="hidden" name="myprivl" value="<? echo $myprivl; ?>">
 <input type="submit" value="Read"></form>

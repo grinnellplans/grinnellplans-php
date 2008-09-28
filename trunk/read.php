@@ -58,6 +58,7 @@ if (!$searchnum) //if no search number given
 
 			} else {
 				echo "There is either no plan with that name or it is not viewable to guests. ";
+				echo "Note that you must have cookies enabled to log in to Plans.  You may want to check that cookies are enabled if you have tried to log in and continue to see this message. ";
 				echo 'Please  <a href="index.php">Log in</a> or <a href="register.php">Register</a>.';
 			}
 
@@ -142,7 +143,8 @@ if (!$planinfo =
 	else{
 		if (!$idcookie && $planinfo[0][5] !=1 && !$guest_auth)
 		{
-			echo "There is either no plan with that name or it is not viewable to guests.";
+			echo "There is either no plan with that name or it is not viewable to guests. ";
+				echo "Note that you must have cookies enabled to log in to Plans.  You may want to check that cookies are enabled if you have tried to log in and continue to see this message. ";
 		}
 		else {
 			$planinfo[0][1] = stripslashes($planinfo[0][1]);

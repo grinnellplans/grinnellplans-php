@@ -14,7 +14,7 @@
 //\  license agreement at the link above. Please give credit on sites that
 //\  use overLIB and submit changes of the script so other people can use
 //\  them as well.
-//   $Revision: 1.1 $                $Date: 2007/12/06 06:31:37 $
+//   $Revision: 1.97 $                $Date: 2004/10/24 14:34:30 $
 //\/////
 //\mini
 

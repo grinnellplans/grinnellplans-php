@@ -1,6 +1,6 @@
 <?php
 	require_once("Plans.php");
-require_once("cookie_session.php");
+
 //Load the functions file
 require("functions-main.php");
 

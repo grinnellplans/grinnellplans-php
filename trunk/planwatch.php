@@ -1,6 +1,6 @@
 <?php
 	require_once("Plans.php");
-require_once("cookie_session.php");
+
 require("functions-main.php");//load main functions
 $dbh = db_connect();//get database connections
 

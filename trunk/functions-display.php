@@ -48,7 +48,7 @@ function mdisp_begin($dbh,$idcookie,$myurl,$myprivl,$jsfile=NULL)
 	else {$mycss=$mydisplayar[0][1];}
 	disp_begin($dbh,$idcookie,$myurl,$myprivl,$mycss,$jsfile);//calls the real beginning display 
 	//function which actually does the work of sending the beginning html code to the user
-	require_once("cookie_session.php");
+	
 	if (isset($_SESSION['b'])) {
 		$b = (int) $_SESSION['b'];
 		if (file_exists("buckets/$b.php")) {

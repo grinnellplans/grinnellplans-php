@@ -1,41 +1,3 @@
-<?php
-require_once ("Plans.php");
-new SessionBroker();
-
-require ("functions-main.php");
-
-if (isset($_GET['logout'])) {
-	User::logout();
-}
-
-$dbh = db_connect();
-
-if (User::logged_in()) {
-	Redirect('home.php');
-} else {
-	$username = $_POST['username'];
-	$password = $_POST['password'];
-	$guest = $_POST['guest'];
-	if ($username) {
-		if (User::login($username, $password)) {
-			redirect('home.php');
-		} else {
-			$show_form = "Invalid username or password.<br>";
-		}
-	} else {
-		if (!$guest) {
-			$show_form = " ";
-		} else {
-			redirect('home.php');
-		}
-	}
-}
-//print_r($_SESSION);
-//Visitor display - login form
-//If there is a show_form comment to be placed at top of form, show the form. If no comment you want to add, just set to a space to have it show the form.
-if (isset($show_form)) {
-?>
-    
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">   
 <html dir="ltr">
 <head>
@@ -49,10 +11,8 @@ function js_test ()
 }
 -->
 </script> 
-   </head>
-   
-       <body bgcolor="#ffffff" onLoad="self.focus();document.post.username.focus()">       
-     
+</head>
+<body bgcolor="#ffffff" onLoad="self.focus();document.post.username.focus()">       
 	<div class="left"><br><br>
 	  <table cellpadding=0 width="100%">
 	  <tr>
@@ -67,7 +27,7 @@ function js_test ()
 	  </tr>
 	  <tr class="boxes">
 		<td colspan=2 align=center class="boxes">
-			<form name="post" action="index.php" method="POST">
+			<form name="post" action="login.php" method="POST">
 			<div class="boxes">
 				Username: <input type="text" name="username"><br>
 				Password: <input type="password" name="password"><br>
@@ -84,7 +44,7 @@ js_test();
 -->
 </script>  
 			</form></td>
-		<form action="index.php" method="POST"> <!--gimmick to make the buttons display at the same height-->
+		<form action="login.php" method="POST"> <!--gimmick to make the buttons display at the same height-->
 		<td align=left width="50%">
 			<input type="hidden" value="1" name="guest">
 			<input type="submit" value="Guest">
@@ -118,10 +78,5 @@ Alumni, please include your @alumni.grinnell.edu forwarding address (which you c
 	<p class="legalese">
 Use of the GrinnellPlans service means you have accepted the <a href="http://www.grinnellplans.com/tos/">GrinnellPlans Terms of Service</a> agreement. If you do not accept and abide by this agreement, you may not use GrinnellPlans. This agreement is subject to change without notice, so you should periodically review the most up-to-date version.	
 </p>
-
-
-       <?php
-}
-
-db_disconnect($dbh);
-?>
+</body>
+</html>

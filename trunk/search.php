@@ -78,29 +78,15 @@ if (!$mysearch) //if no search query, give search form
 				$new_row[1] = preg_replace("/<br>/", "|br|", $new_row[1]);
 				$new_row[1] = preg_replace("/<.*?>/s", "", $new_row[1]);
 				$new_row[1] = preg_replace("/\|br\|/", "<br>", $new_row[1]);
-				/*
-				$new_row[1] = preg_replace("/<br>/","", $new_row[1]);
-				
-				$new_row[1] = preg_replace("/<b>/","", $new_row[1]);
-				$new_row[1] = preg_replace("/<\/b>/","", $new_row[1]);
-				$new_row[1] = preg_replace("/<i>/","", $new_row[1]);
-				$new_row[1] = preg_replace("/<\/i>/","", $new_row[1]);
-				$new_row[1] = preg_replace("/<u>/","", $new_row[1]);
-				$new_row[1] = preg_replace("/<\/u>/","", $new_row[1]);
-				*/
+
 				$new_row[1] = stripslashes($new_row[1]);
 				if ($planlove) {
 					$mysearch = $plansearchname;
 				}
-				//$mysearch = preg_quote($mysearch,"/");
-				/*
-				*/
+
 				$matchcount = preg_match_all("/(" . preg_quote($mysearch, "/") . ")/si", $new_row[1], $matcharray);
 				$new_row[1] = preg_replace("/(" . preg_quote($mysearch, "/") . ")/si", "<b>\\1</b>", $new_row[1]);
-				/*
-				$matchcount = preg_match_all("/(" . $mysearch . ")/si", $new_row[1], $matcharray);
-				$new_row[1] = preg_replace("/(" . $mysearch . ")/si", "<b>\\1</b>", $new_row[1]);
-				*/
+
 				echo "<!--- " . $mysearch . "--->";
 				echo "<!--- " . preg_quote($mysearch, "/") . "--->";
 				echo "<li>[<a href=\"read.php?myprivl=" . $myprivl . "&searchname=" . $new_row[0] . "\">" . $new_row[0] . "</a>] (" . $matchcount . ")<br>";
@@ -183,7 +169,7 @@ if (!$mysearch) //if no search query, give search form
 	} //if search is not an underscore
 	
 } //if something is entered to search for
-if ($auth) {
+if (User::logged_in()) {
 	mdisp_end($dbh, $idcookie, $HTTP_HOST . $REQUEST_URI, $myprivl);
 } else {
 	gdisp_end();

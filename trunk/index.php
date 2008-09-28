@@ -15,8 +15,14 @@ if (User::logged_in()) {
 	$username = $_POST['username'];
 	$password = $_POST['password'];
 	$guest = $_POST['guest'];
-	if (!User::login($username, $password)) {
-		$show_form = "Invalid username or password.<br>";
+	if ($username) {
+		if (!User::login($username, $password)) {
+			$show_form = "Invalid username or password.<br>";
+		}
+	} else {
+		if (!$guest) {
+			$show_form = " ";
+		}
 	}
 }
 //print_r($_SESSION);

@@ -8,13 +8,12 @@
 		ini_set('html_errors',	TRUE);
 	}
 
-	ini_set('include_path', '/inc');
+//	ini_set('include_path', '/inc');
 	
 	require_once("Configuration.php");	
 	require_once("cookie_session.php");
 	
-	function __autoload($classname)
-	{
+	function __autoload($classname) {
 		require_once("inc/$classname.php");
 	}
 	

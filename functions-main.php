@@ -19,7 +19,7 @@ require_once ("dbfunctions.php");
 //Load autofinger functions
 require_once ("functions-autofinger.php");
 //require_once user display functions
-require ("functions-display.php");
+require_once ("functions-display.php");
 //Load Notes functionalities
 require_once ("functions-forum.php");
 //Load valid-user authentications

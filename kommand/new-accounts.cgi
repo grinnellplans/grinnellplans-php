@@ -30,7 +30,7 @@ print "\n\n(Older data is not usable.)";
 
 # db_connect: Connect to the DB
 sub db_connect() {
-    my $dbh = DBI->connect("dbi:mysql:plans:127.0.0.1","myplandb",'mypassword') or die "Could not connect $!";
+    my $dbh = DBI->connect("dbi:mysql:plans:127.0.0.1","plans",'M>e4oV') or die "Could not connect $!";
     return $dbh;
 }
 

@@ -20,6 +20,10 @@ if ( ! $auth) {
 		echo "Error: Checknumbers do not match.";
 		exit(0);
 	}
+	if ($changed && ($mypassword != $mypassword2)) {
+		echo "Error: Passwords do not match.\n";
+		exit(0);
+	}
 	if ($changed=='pass') {
 		if (!(strstr($mypassword, "\"") or strstr($mypassword, "\'"))){
 			if (strlen($mypassword)>3){
@@ -38,7 +42,9 @@ if ( ! $auth) {
 	?>
 		<center><h2>Change Login Password</h2>
 		<form method="POST" action="">
-		<input type="text" name="mypassword">
+<table>
+	<tr><td>New Password:</td><td><input type="password" name="mypassword"></td></tr>
+		<tr><td>Confirm: </td><td><input type="password" name="mypassword2"></td></tr></table> <br />
 		<input type="hidden" name="myprivl" value="<?php echo $myprivl; ?>">
 		<input type="hidden" name="changed" value="pass">
 		<input type="hidden" name="checknumb" value="<?php echo $idcookie; ?>">

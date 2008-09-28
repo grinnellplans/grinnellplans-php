@@ -1,4 +1,13 @@
 <?php
+require_once("cookie_session.php"); 
+print_r ($_SERVER['HTTP_COOKIE']);
+echo '<br >';
+echo '<br >';
+echo '<br >';
+echo '<br >';
+echo '<br >';
+echo '<br >';
+echo '<br >';
 $plan = '
 
 

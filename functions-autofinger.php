@@ -114,8 +114,9 @@ function autoread_list ($myurl, $idcookie, $myprivl) {
 				$o++;
 			}
 			//echo '&nbsp;&nbsp;&nbsp;&nbsp;';
-		}
+		} else {
 		echo "</tr>\n";
+		}
 	}
 
 }

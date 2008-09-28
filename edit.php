@@ -5,6 +5,7 @@ $dbh = db_connect(); ///connect to the database
 
 $idcookie = $_SESSION['userid']; 
 $auth = $_SESSION['is_logged_in'];
+$noedit = $_GET['noedit'];
 
 if ( ! $auth) {
 	gdisp_begin($dbh);//begin guest display
@@ -15,7 +16,7 @@ else //allowed to edit
 {
 	mdisp_begin($dbh,$idcookie,$HTTP_HOST . $REQUEST_URI, $myprivl, "edit.js");//begin valid user display
 
-	if (!$part)//if nothing submitted yet
+	if (!$part || $noedit)//if nothing submitted yet
 	{
 
 		$myedit =

@@ -1,5 +1,13 @@
 <?php
 
+function microtime_float()
+{
+    list($utime, $time) = explode(" ", microtime());
+    return ((float)$utime + (float)$time);
+}
+
+$starttime__ = microtime_float();
+
 /*
 	GrinnellPlans - Displayfunctions
 	version Nov-11-05-1 (Laiu-Draft-1)
@@ -16,10 +24,15 @@
 
 function mdisp_begin($dbh,$idcookie,$myurl,$myprivl,$jsfile=NULL)
 {
-	//get the paths of the interface and style files that the user indicated as wanting to use
-	$my_result = mysql_query("Select interface.path,style.path From
+	$sql = "Select interface.path,style.path From
 	interface interface, style style,display display where
-	display.userid = '$idcookie' and display.interface = interface.interface and display.style=style.style");
+	display.userid = '$idcookie' and display.interface = interface.interface and display.style=style.style";
+
+	//echo '<!-- ' . $sql . ' -->';
+
+
+
+	$my_result = mysql_query($sql);//get the paths of the interface and style files that the user indicated as wanting to use
 
 	$css=get_item($dbh,"stylesheet","stylesheet","userid", $idcookie);
 
@@ -34,7 +47,15 @@ function mdisp_begin($dbh,$idcookie,$myurl,$myprivl,$jsfile=NULL)
 	else {$mycss=$mydisplayar[0][1];}
 	disp_begin($dbh,$idcookie,$myurl,$myprivl,$mycss,$jsfile);//calls the real beginning display 
 	//function which actually does the work of sending the beginning html code to the user
-
+	require_once("cookie_session.php");
+	if (isset($_SESSION['b'])) {
+		$b = (int) $_SESSION['b'];
+		if (file_exists("buckets/$b.php")) {
+			include("buckets/$b.php");
+		} else {
+			echo "Invalid bucket!";
+		}
+	}
 }
 
 
@@ -106,7 +127,7 @@ function gdisp_begin($dbh)
 		<tr>
 		<td valign="top" align="left">
 		<img src="plans2.jpg">
-		<form action="read.php" method="post">
+		<Form action="read.php" method="post">
 		<input name="searchname" type="text"><br>
 		<input type="hidden" name="myprivl" value="<? echo $myprivl; ?>">
 		<input type="submit" value="Read"></form>

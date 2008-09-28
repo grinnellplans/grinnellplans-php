@@ -52,7 +52,7 @@ if ($auth) {
 	}
 	echo "<!--- $offset --->";
 	echo '<p><a href="anonymous.php?offset=' . ($offset + $count) . '">Older Secrets</a></p>';
-	if ($_SERVER['REMOTE_ADDR'] == '70.12.157.227' || $_GET['show_all']) {
+	if ($_GET['show_all']) {
 		$select_query = "select * from secrets order by date desc limit $offset, $count";
 	} else {
 		$select_query = "select * from secrets where display = 'yes' or display = 'pref'  order by date desc limit $offset, $count";

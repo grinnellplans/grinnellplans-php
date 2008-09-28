@@ -1,5 +1,6 @@
 <?php
 require_once ("Plans.php");
+new SessionBroker();
 //Load the functions file
 require ("functions-main.php");
 //Connects to database and pulls out the information from cookies

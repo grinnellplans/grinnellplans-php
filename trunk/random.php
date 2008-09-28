@@ -1,5 +1,7 @@
 <?php
 require_once ("Plans.php");
+new SessionBroker();
+
 require ("functions-main.php"); //load main functions
 $dbh = db_connect(); //get the database connection
 $idcookie = $_SESSION['userid'];

@@ -3,10 +3,8 @@ require_once ("Plans.php");
 require ("functions-main.php"); //load main functions
 $dbh = db_connect(); //connect to database
 $idcookie = $_SESSION['userid'];
-$auth = $_SESSION['is_logged_in'];
 $myprivl = setpriv($myprivl, $HTTP_COOKIE_VARS["thepriv"]);
-if ($auth) //begin valid user display
-{
+if (User::logged_in()) {
 	mdisp_begin($dbh, $idcookie, $HTTP_HOST . $REQUEST_URI, $myprivl);
 	$sql = 'select date, yes, no, 
     substr(concat("  ",100*no/(yes+no),"%"), -7) as percent_no 

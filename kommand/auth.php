@@ -1,4 +1,5 @@
 <?php
+require_once ("../Plans.php");
 //echo "In auth.php <br />\n";
 //print_r($_SESSION);
 if ($_SESSION['kommand_auth']) {

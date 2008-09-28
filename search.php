@@ -3,10 +3,8 @@ require_once ("Plans.php");
 require ("functions-main.php"); //load main functions
 $dbh = db_connect(); //connect to the database
 $idcookie = $_SESSION['userid'];
-$auth = $_SESSION['is_logged_in'];
 $context = 100; //set the number of characters around found item
-if ($auth) //if is a valid user
-{
+if (User::logged_in()) {
 	mdisp_begin($dbh, $idcookie, $HTTP_HOST . $REQUEST_URI, $myprivl);
 } //begin user display
 else {

@@ -5,11 +5,10 @@ require ("functions-main.php");
 //Connects to database and pulls out the information from cookies
 $dbh = db_connect(); //connect to database
 $idcookie = $_SESSION['userid'];
-$auth = $_SESSION['is_logged_in'];
 $myprivl = setpriv($myprivl, $HTTP_COOKIE_VARS["thepriv"]);
 //Check for user or NON-GUEST status, and provide correct display with MoTD
 //This allows NON-GUESTS to read the MoTD
-if ($auth) {
+if (User::logged_in()) {
 	mdisp_begin($dbh, $idcookie, $HTTP_HOST . $REQUEST_URI, $myprivl);
 	$my_result = mysql_query("Select system.motd,accounts.spec_message From system,accounts where accounts.userid = '$idcookie'");
 	$my_row = mysql_fetch_array($my_result);

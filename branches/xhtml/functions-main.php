@@ -12,6 +12,7 @@ if (isset($_GET['jumbled'])) {
 require_once ("Configuration.php");
 require_once ("dbfunctions.php");
 require_once ("functions-autofinger.php");
+require_once ("legal.php");
 require_once ("globals.php");
 require_once ("functions-display.php");
 require_once ("functions-forum.php");

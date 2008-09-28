@@ -2,12 +2,17 @@
 require_once ("Plans.php");
 new SessionBroker();
 require ("functions-main.php");
-if ($_GET['logout']) {
+if (isset($_GET['logout'])) {
 	User::logout();
 }
 $dbh = db_connect();
 
-$myprivl = $_GET['myprivl'];
+if (isset($_GET['myprivl'])) {
+$myprivl = $_GET['myprivl'];	
+} else {
+	$myprivl = FALSE;
+}
+
 if (User::logged_in()) {
 	$username = $_SESSION['username'];
 	$idcookie = $_SESSION['userid'];

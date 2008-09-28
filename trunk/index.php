@@ -2,14 +2,12 @@
 require_once ("Plans.php");
 require ("functions-main.php");
 if ($_GET['logout']) {
-	$_SESSION['is_logged_in'] = 0;
-	$_SESSION['userid'] = false;
-	session_destroy();
+	User::logout();
 }
 $dbh = db_connect();
-$auth = $_SESSION['is_logged_in'];
+
 $myprivl = $_GET['myprivl'];
-if ($auth) {
+if (User::logged_in()) {
 	$username = $_SESSION['username'];
 	$idcookie = $_SESSION['userid'];
 } else {
@@ -20,8 +18,7 @@ if ($auth) {
 		if (isValidUser($dbh, $username)) {
 			$orig_pass = $password;
 			$password = crypt($password, "ab");
-			$read_pass = get_item($dbh, "password", "accounts", "username", $username); //get password encrypted password in db
-			//echo ($username . " " . $orig_pass . " " . $password . " " . $read_pass);
+			$read_pass = get_item($dbh, "password", "accounts", "username", $username);
 			if ($password == $read_pass) {
 				$idcookie = get_item($dbh, "userid", "accounts", "username", $username);
 				setLogin($dbh, $idcookie);
@@ -47,11 +44,11 @@ if ($auth) {
 if ($show_form) {
 ?>
     
-	<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">   
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">   
 <html dir="ltr">
-   <head>
-   <title>GrinnellPlans</title>
-   <link rel="stylesheet" href="index.css">
+<head>
+	<title>GrinnellPlans</title>
+	<link rel="stylesheet" href="index.css">
 <script>
 <!--
 function js_test ()

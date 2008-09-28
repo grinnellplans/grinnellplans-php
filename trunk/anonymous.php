@@ -3,10 +3,8 @@ require_once ("Plans.php");
 require ("functions-main.php"); //load main functions
 $dbh = db_connect(); //connect to database
 $idcookie = $_SESSION['userid'];
-$auth = $_SESSION['is_logged_in'];
 $myprivl = setpriv($myprivl, $HTTP_COOKIE_VARS["thepriv"]);
-if ($auth) //begin valid user display
-{
+if (User::logged_in()) {
 	mysql_query("delete from viewed_secrets where userid = $idcookie");
 	mysql_query("insert into viewed_secrets (userid, date) values($idcookie, now())");
 	mdisp_begin($dbh, $idcookie, $HTTP_HOST . $REQUEST_URI, $myprivl);

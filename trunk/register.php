@@ -4,11 +4,10 @@ require ("functions-main.php"); //load main functions
 require ("functions-kommand.php"); //load main functions
 $idcookie = $_SESSION['userid'];
 $userid = $idcookie;
-$auth = $_SESSION['is_logged_in'];
 $dbh = db_connect(); //connect to database
 $admin_email = "grinnellplans@gmail.com";
 $myprivl = setpriv($myprivl, $HTTP_COOKIE_VARS["thepriv"]);
-if ($auth) {
+if (User::logged_in()) {
 	mdisp_begin($dbh, $idcookie, $HTTP_HOST . $REQUEST_URI, $myprivl);
 } else {
 	gdisp_begin($dbh);

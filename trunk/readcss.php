@@ -15,8 +15,7 @@ if (!$searchnum) //if no search number given
 	{
 		if ($searchname) //if a searchname has been given
 		{
-			if ($auth) //begin valid user display
-			{
+			if (User::logged_in()) {
 				mdisp_begin($dbh, $idcookie, $HTTP_HOST . $REQUEST_URI, $myprivl);
 			} else
 			//begin guest user display

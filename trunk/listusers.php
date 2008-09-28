@@ -3,8 +3,7 @@ require_once ("Plans.php");
 require ("functions-main.php"); //load main functions
 $dbh = db_connect(); //connect to database
 $idcookie = $_SESSION['userid'];
-$auth = $_SESSION['is_logged_in'];
-if ($auth) {
+if (User::logged_in()) {
 	mdisp_begin($dbh, $idcookie, $HTTP_HOST . $REQUEST_URI, $myprivl); //begin valid user display
 	
 } else {
@@ -42,7 +41,7 @@ while ($arraylist[$j][0]) {
 	echo "<a href=\"read.php?myprivl=" . $myprivl . "&searchname=" . $arraylist[$j][1] . "\">" . $arraylist[$j][1] . "</a><br>";
 	$j++;
 }
-if ($auth) {
+if (User::logged_in()) {
 	mdisp_end($dbh, $idcookie, $HTTP_HOST . $REQUEST_URI, $myprivl);
 } else {
 	gdisp_end();

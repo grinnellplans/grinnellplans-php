@@ -24,7 +24,32 @@ if (isset($_POST['submit'])) {
 <html dir="ltr">
 <head>
 	<title>GrinnellPlans</title>
-	<link rel="stylesheet" href="index.css">
+	<STYLE TYPE="text/css">
+	<!--
+	BODY { 
+			font-family: verdana;
+			}
+	TD { 
+			align: center;
+			}
+	.boxes { 
+			font-family: courier; 
+			}
+	.buttons {
+			}
+	.graphic{
+			position: relative;
+			top: 50px;
+			}
+	.legalese {
+			position: static; 
+			text-align: justify;
+			cellpadding: 3;
+			font-size: 8pt;
+			font-family: verdana;
+			}
+	-->
+	</STYLE>
 </head>
 <body bgcolor="#ffffff" onLoad="self.focus();document.post.username.focus()">       
 	<div class="left"><br><br>

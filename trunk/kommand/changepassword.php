@@ -1,5 +1,5 @@
 <?php
-session_start();
+require_once("../cookie_session.php");
 $subject_name = $_POST['username'];
 require("auth.php");
 ?>

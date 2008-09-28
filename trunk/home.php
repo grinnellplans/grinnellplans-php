@@ -6,7 +6,7 @@
  * Modified index.php from GrinnellPlans
  */
 
-session_start();
+require_once("cookie_session.php");
 //Load the functions file
 require("functions-main.php");
 

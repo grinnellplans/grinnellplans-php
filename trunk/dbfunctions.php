@@ -38,9 +38,9 @@ Grinnell, IA 50112
  */
 
  function db_connect() {
-	 $dbh = mysql_connect('localhost',"mydbname",'mypassword');
-	 //$dbh = @ mysql_pconnect('127.0.0.1','test','');
-	 mysql_select_db("planstest");
+	 $dbh = mysql_connect(MYSQL_HOST, MYSQL_USER, MYSQL_PASS);
+	 mysql_select_db(MYSQL_DB);
+	echo mysql_error();
 	 if (!$dbh)
 	 {
 		 print "Obviously, the above messages suggest that the database connection failed. It's not a bad idea to report this error to grinnellplans@gmail.com";

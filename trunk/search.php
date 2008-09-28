@@ -5,7 +5,7 @@
 // This version of search.php committed 13 June 2004 [nnadioge]
 
 
-session_start();
+require_once("cookie_session.php");
 require("functions-main.php");//load main functions
 $dbh = db_connect();//connect to the database
 

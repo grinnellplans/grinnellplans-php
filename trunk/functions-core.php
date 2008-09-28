@@ -1,4 +1,5 @@
 <?php
+require_once('cookie_session.php');
 require_once('dbfunctions.php');
 
 if($_GET['jumbled'] == 'no') {

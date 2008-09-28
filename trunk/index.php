@@ -1,5 +1,5 @@
 <?
-session_start();
+require_once("cookie_session.php");
 require("functions-main.php");
 /*
 echo '<br>';
@@ -9,11 +9,9 @@ print_r($_SESSION);
 echo '<br>';
 */
 if ($_GET['logout']) {
-	//session_destroy(); 
 	$_SESSION['is_logged_in'] = 0;
 	$_SESSION['userid'] = false;
-//	echo "In logout";
-	//echo print_r($_SESSION);
+	session_destroy();
 }
 
 $dbh=db_connect();

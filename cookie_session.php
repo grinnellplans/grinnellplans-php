@@ -120,6 +120,8 @@ class session
     */     
     function destroy($arg_str_session_id) 
     { 
+	setcookie("PHPSESSID", "", 0, "/", (COOKIE_DOMAIN ? "." . COOKIE_DOMAIN : NULL));
+        setcookie($arg_str_session_id, "", 0, "/", (COOKIE_DOMAIN ? "." . COOKIE_DOMAIN : NULL));
         setcookie($arg_str_session_id, ""); 
         return true; 
     } 

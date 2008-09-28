@@ -4,15 +4,16 @@
 * webserver, and changing dbconfig.php to simply point to the new location.
 * For example, require("../dbconfig.php").
 */
+require_once('Configuration.php');
 // Database login and password
-$dblogin = "plans";
-$dbpasswd = 'foobar';
+$dblogin = MYSQL_USER;
+$dbpasswd = MYSQL_PASSWORD;
 // The table within the database dedicated to plans stuff
-$dbtable = 'planstest';
+$dbtable = MYSQL_DB;
 // Which server the database is on
-$dbserver = 'localhost';
+$dbserver = MYSQL_HOST;
 //Define your Timezone - the default is to US/Central Time
-$TZ = 'America/Chicago';
+$TZ = TZ;
 putenv("TZ=$TZ");
 //What version of Plans is this?
 define("PLANSVERSION", "2.4");

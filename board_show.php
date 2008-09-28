@@ -3,7 +3,7 @@ require_once ("Plans.php");
 require ("functions-main.php"); //load main functions
 $dbh = db_connect(); //establish the database handler
 $idcookie = User::id();
-$threadsperpage = threadsperpage();
+
 if (!User::logged_in()) {
 	gdisp_begin($dbh); //begin guest display
 	echo ("You are not allowed to edit as a guest."); //tell person they can't log in
@@ -13,7 +13,7 @@ if (!User::logged_in()) {
 	echo "<center><a href=\"board_submit.php?newthread=1\" class=\"lev2\">New Thread</a>";
 	$my_result = mysql_query("Select COUNT(*) From mainboard");
 	$totalthreads = mysql_fetch_row($my_result);
-	$max_page = ceil($totalthreads[0] / $threadsperpage) - 1;
+	$max_page = ceil($totalthreads[0] / NOTES_THREADS_PER_PAGE) - 1;
 	if (!($pagenumber > 0)) {
 		$pagenumber = 0;
 	}
@@ -55,7 +55,7 @@ if (!User::logged_in()) {
 	} else {
 		echo "&gt;&gt;</center>";
 	}
-	$rowoffset = $threadsperpage * $pagenumber;
+	$rowoffset = NOTES_THREADS_PER_PAGE * $pagenumber;
 	echo "<table class=\"boardshow\"><tr class=\"boardrow1\"><td><center><b>Title</b></center></td><td><center><b>Newest 
 		Message</b></center></td><td><center><b># Posts</b></center></td><td><center><b>First</b></center></td><td><center><b>Last</b></center></td></tr>";
 	$the_query = "Select
@@ -67,7 +67,7 @@ accounts.username,
 maxes.username
 From
 mainboard
-left join (select username, tids.threadid from (select max(messageid) uid, subboard.threadid from subboard, accounts, (select threadid from mainboard order by lastupdated desc limit " . $rowoffset . "," . $threadsperpage . ") these where subboard.userid = accounts.userid and subboard.threadid = these.threadid group by subboard.threadid) tids, subboard, accounts where tids.uid = subboard.messageid and subboard.userid = accounts.userid) maxes
+left join (select username, tids.threadid from (select max(messageid) uid, subboard.threadid from subboard, accounts, (select threadid from mainboard order by lastupdated desc limit " . $rowoffset . "," . NOTES_THREADS_PER_PAGE . ") these where subboard.userid = accounts.userid and subboard.threadid = these.threadid group by subboard.threadid) tids, subboard, accounts where tids.uid = subboard.messageid and subboard.userid = accounts.userid) maxes
 using
 (threadid)
 left join
@@ -85,7 +85,7 @@ ORDER
 BY
 lastupdated
 DESC
-LIMIT " . $rowoffset . "," . $threadsperpage;
+LIMIT " . $rowoffset . "," . NOTES_THREADS_PER_PAGE;
 	$my_result = mysql_query($the_query);
 	//error_log($the_query);
 	$colorswitch = 0;

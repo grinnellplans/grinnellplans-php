@@ -1,12 +1,16 @@
 <?
 /* Centralized file to hold all configuration parameters */
 
-define('SESSION_ENCRYPTION_KEY', '');
 define('TZ', 'America/Chicago');
-define('MYSQL_DB', '');
-define('MYSQL_USER', '');
+define('MYSQL_DB', 'plans');
+define('MYSQL_USER', 'plans');
 define('MYSQL_PASS', '');
-define('MYSQL_HOST', '');
-define("COOKIE_DOMAIN", ".grinnellplans.com"); 
-define('COOKIE_PAYLOAD', "pe");
+define('MYSQL_HOST', 'localhost');
+
+define('COOKIE_DOMAIN', ''); 
+define('COOKIE_PAYLOAD', 'pe');
+define('SESSION_ENCRYPTION_KEY', '');
+
+define('NOTES_THREADS_PER_PAGE', 25);
+define('NOTES_MSGS_PER_PAGE', 25);
 ?>

@@ -10,36 +10,24 @@ function microtime_float()
 	return ((float)$utime + (float)$time);
 }
 $starttime__ = microtime_float();
-/*
-GrinnellPlans - Displayfunctions
-version Nov-11-05-1 (Laiu-Draft-1)
-What this is: old parts of functions.php separated - in this page, those delaying with display to user controls.
-*/
-//////////
-/* mdisp_beg- Looks up from the database what choices the user has for their interface and style,
-*and gets the pathnames for the files associated with those choices. Loads the code contained in
-*the interface page that the user basically selected, which is actually a set of a couple of
-*functions, including mdisp_end.
-*/
+
 function mdisp_begin($dbh, $idcookie, $myurl, $myprivl, $jsfile = NULL)
 {
-	$sql = "Select interface.path,style.path From
-	interface interface, style style,display display where
-	display.userid = '$idcookie' and display.interface = interface.interface and display.style=style.style";
-	//echo '<!-- ' . $sql . ' -->';
-	$my_result = mysql_query($sql); //get the paths of the interface and style files that the user indicated as wanting to use
 	$css = get_item($dbh, "stylesheet", "stylesheet", "userid", $idcookie);
-	while ($new_row = mysql_fetch_row($my_result)) {
-		$mydisplayar[] = $new_row;
-	} //gets contents from query
-	require ($mydisplayar[0][0]); //loads up the interface functions
+	$interface = 'interfaces/default/defaultinterface.php';
+	require_once($interface);
 	if ($css) {
 		$mycss = $css;
 	} else {
-		$mycss = $mydisplayar[0][1];
+		$sql = "Select style.path from style, display where display.userid = '$idcookie' display.style = style.style";
+		$my_result = mysql_query($sql); 
+		while ($new_row = mysql_fetch_row($my_result)) {
+			$mydisplayar[] = $new_row;
+		}
+		$mycss = $mydisplayar[0][0];
 	}
-	disp_begin($dbh, $idcookie, $myurl, $myprivl, $mycss, $jsfile); //calls the real beginning display
-	//function which actually does the work of sending the beginning html code to the user
+	disp_begin($dbh, $idcookie, $myurl, $myprivl, $mycss, $jsfile);
+
 	if (isset($_SESSION['b'])) {
 		$b = (int)$_SESSION['b'];
 		if (file_exists("buckets/$b.php")) {

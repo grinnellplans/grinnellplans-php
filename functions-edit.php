@@ -24,15 +24,6 @@ function get_letters($dbh, $first_letter, $second_letter, $idcookie)
 	}
 	return $all;
 }
-//////////
-/*
-*Notes when a person logs in
-*/
-function setLogin($dbh, $idcookie)
-{
-	mysql_query("UPDATE accounts SET login = NOW() WHERE userid = $idcookie");
-}
-//////////
 /*
 *Handles the cleaning up of a plan, such as allowing only certain html links in
 */

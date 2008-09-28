@@ -3,6 +3,7 @@
 	require_once('Configuration.php');
 
 	define("COOKIE_DOMAIN", "grinnellplans.com"); 
+	define('COOKIE_PAYLOAD', "pe");
 
 /** 
 @class session. 
@@ -18,7 +19,8 @@ class session {
 									array(&$this, 'write'), 
 									array(&$this, 'destroy'), 
 									array(&$this, 'gc')); 
-		register_shutdown_function('session_write_close'); 
+		register_shutdown_function('session_write_close');
+//		session_set_cookie_params(0, '/', COOKIE_DOMAIN);
 		session_start();
     } 
 //---------------------------------------------------------------------- 
@@ -82,8 +84,9 @@ class session {
         $cypher = base64_encode(mcrypt_generic($td, $arg_str_session_data)); 
         mcrypt_generic_deinit($td); 
         mcrypt_module_close($td); 
-        if(COOKIE_DOMAIN) setcookie(session_name(), session_id(), 0, "/", (COOKIE_DOMAIN ? "." . COOKIE_DOMAIN : NULL)); 
-        setcookie("p", $cypher, 0, "/", (COOKIE_DOMAIN ? "." . COOKIE_DOMAIN : NULL)); 
+//        if(COOKIE_DOMAIN) setcookie(session_name(), session_id(), 0, "/", (COOKIE_DOMAIN ? "." . COOKIE_DOMAIN : NULL)); 
+        setcookie(COOKIE_PAYLOAD, $cypher, 0, "/", (COOKIE_DOMAIN ? "." . COOKIE_DOMAIN : NULL)); 
+		setcookie(session_name(), "");
         ob_end_flush(); 
         return true; 
     } 
@@ -98,7 +101,7 @@ class session {
     */     
     function destroy($arg_str_session_id) 
     { 
-        setcookie("p", "", 0, "/", (COOKIE_DOMAIN ? "." . COOKIE_DOMAIN : NULL));
+        setcookie(COOKIE_PAYLOAD, "", 0, "/", (COOKIE_DOMAIN ? "." . COOKIE_DOMAIN : NULL));
         return true; 
     } 
 //----------------------------------------------------------------------     

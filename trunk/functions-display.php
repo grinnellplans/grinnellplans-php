@@ -92,14 +92,6 @@ function gdisp_begin($dbh)
 		<body bgcolor="#ffffff" vlink="#696aac" link="#696aac">
 
 
-		<?php
-	/* The following disables guest access
-	echo "<p align=\"center\">Guest access is (most likely) temporarily disabled.<br><br><br>
-	<a href=\"http://grinnellplans.com/\">http://grinnellplans.com/</a></body></html>";
-	db_disconnect($dbh);
-	exit();
-	*/
-?>
 
 
 		<table width="100%" border="0" cellspacing="0" cellpadding="0">
@@ -144,42 +136,12 @@ function gdisp_begin($dbh)
 
 		<?php
 }
-/*
-*Even simpler end to guest display
-*/
+
 function gdisp_end()
 {
 	echo "</td></tr></table></td></tr></table></body></html>";
 }
-/*
-function privlev($myprivl, $cookiepriv)
-{
-echo $cookiepriv . "---<br>";
-echo $myprivl . "=<br>";
 
-
-
-if (($myprivl == "") and ($cookiepriv == ""))
-{
-return 1;
-}
-else
-{
-if ($cookiepriv == "")
-{
-//setcookie("myprivl", $myprivl,0, "/~kenslerj/plans3/");
-return $myprivl;
-}
-if ($myprivl == "")
-{return $cookiepriv;
-}
-if (($myprivl != "") and ($cookiepriv !=""))
-{//setcookie("myprivl", $myprivl,0, "/~kenslerj/plans3/");
-return $myprivl;
-}
-}
-}
-*/
 function wants_secrets($idcookie)
 {
 	$wants_secrets = mysql_query("Select avail_links.linknum, avail_links.html_code
@@ -284,15 +246,5 @@ function show_opt_links($idcookie, $buf)
                 <?php
 		}
 	}
-}
-function log_tail()
-{
-	$log_location = "chat/chat.talk";
-	echo "<p>\n";
-	$lines = `tail $log_location`;
-	$lines = htmlentities($lines);
-	$lines = preg_replace(array('/\n/'), array("<br \/>\n"), $lines);
-	echo $lines;
-	echo "</p>";
 }
 ?>

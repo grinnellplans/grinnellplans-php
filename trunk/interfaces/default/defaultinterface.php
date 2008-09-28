@@ -1,7 +1,4 @@
 <?
-
-
-
 function disp_begin($dbh,$idcookie,$myurl,$myprivl,$cssloc,$jsfile)
 {
 
@@ -79,53 +76,7 @@ show_opt_links($idcookie, $buf);
 <td><p class="main">auto read list</p></td>
 </tr>
 
-<?
-autoread_list ($myurl, $idcookie, $myprivl);
-/*
-//get autoread list
-if (ereg("index.php", $myurl)) // if has ? but not privl
-{$myurl = ereg_replace("index.php", "blank.php", $myurl);}
-
-
-if (!($myprivl == 1))
-{priority_link($myurl, 1);
-if (!($myprivl == 2))
-{priority_link($myurl, 2);}
-}
-
-echo "<tr><td></td><td><p
-class=\"imagelev2\">&nbsp;</p></td><td></td><td><p 
-class=\"lev2\">level " . $myprivl . "</p></td></tr>";
-
-
-$privarray = mysql_query("Select autofinger.interest,accounts.username
-From autofinger, accounts where owner = '$idcookie' and priority =
-'$myprivl' and updated = '1' and autofinger.interest=accounts.userid");
-
-    while($new_row = mysql_fetch_row($privarray)) {
-      $autoreadlist[] = $new_row;
-    }
-
-$o=0;
-while ($autoreadlist[$o][0])
-{
-echo "<tr><td></td><td></td><td><p class=\"imagelev3\">&nbsp;</p></td>";
-echo "<td><a href=\"read.php?myprivl=" . $myprivl . "&searchname=" .
-$autoreadlist[$o][1] . "\" class=\"lev3\">" .
-$autoreadlist[$o][1] . "</a></td></tr>\n";
-
- $o++;}
-
-if (!($myprivl == 3))
- {if (!($myprivl == 2))
- {priority_link($myurl, 2);}
- priority_link($myurl, 3);
-}
-*/
-
-?>
-
-
+<? autoread_list ($myurl, $idcookie, $myprivl); ?>
 
 </table>
 </td></tr></table>

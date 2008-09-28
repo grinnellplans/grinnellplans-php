@@ -41,11 +41,19 @@ class User {
 	}
 	
 	public static function id() {
-		return (int) $_SESSION['userid'];
+		if (isset($_SESSION['userid'])) {
+			return (int) $_SESSION['userid'];
+		} else {
+			return false;
+		}
 	}
 	
 	public static function name() {
-		return $_SESSION['username'];
+		if (isset($_SESSION['username'])) {
+			return $_SESSION['username'];	
+		} else {
+			return USER_GUEST_NAME;
+		}
 	}
 	
 	public static function is_admin() {

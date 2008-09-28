@@ -25,7 +25,12 @@ if($_GET['jumbled'] == 'yes') {
 }    
 
 //Load Configuration settings - let's increase our level of abstraction here....
-require("config.php");
+require("Configuration.php");
+$TZ=TZ;
+putenv ("TZ=$TZ");
+
+//Load the legal disclaimer file (Your needs may differ!)
+require("legal.php");
 
 //Load Plans database abstraction functions
 //Warning: Still using old version.

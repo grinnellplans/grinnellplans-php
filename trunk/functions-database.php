@@ -1,37 +1,5 @@
 <?
-/*
-Grinnell Plans. A web-based version of social .plans.
-Copyright (C) 2002 by Jonathan Kensler
-
----
-
-This program is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-
----
-If you need to contact me you may so at:
-kenslerj@grinnell.edu
-
-or
-
-Jonathan Kensler
-Box 07-04 Grinnell College
-Grinnell, IA 50112
-
-*/
-
-include("config-db.php");
+	require_once('Configuration.php');
 
 /*
  *Connects to the Database and returns the database handler.
@@ -39,9 +7,8 @@ include("config-db.php");
  */
 
  function db_connect() {
-	 global $dbloginpassword ;
-	 $dbh = mysql_connect('127.0.0.1', 'plans', $dbloginpassword); //$dbloginpassword);
-	 mysql_select_db('plans');
+	 $dbh = mysql_connect(MYSQL_HOST, MYSQL_USER, MYSQL_PASS);
+	 mysql_select_db(MYSQL_DB);
 	 if (!$dbh)
 	 {
 		 print "Obviously, the above messages suggest that the database connection failed. It's not a bad idea to report this error to grinnellplans@gmail.com";

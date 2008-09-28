@@ -19,10 +19,16 @@ class User {
 					$_SESSION['userid'] = $idcookie;
 					$sql = "insert into js_status set userid = " . addslashes($idcookie) . ", status = '" . addslashes($_POST['js_test_value']) . "'";
 					mysql_query($sql);
+				} else {
+					return false;
 				}
+			} else {
+				return false;
 			}
 			if (!$_SESSION['is_logged_in']) {
 				return false;
+			} else {
+				return true;
 			}
 		} else {
 			return false;

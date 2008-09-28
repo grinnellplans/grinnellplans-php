@@ -1,0 +1,28 @@
+Undocumented dependencies:
+Install xdiff
+Create clickstream table or remove clickstream
+
+--
+Branch Goals before merging
+(Ian? Can you help me here?)
+
+
+--
+Avram's Working Copy Goals before committing:
+Minimal:
+done 	Rewrite autoread_list(..) to spit out complete list.
+done 	Write JS toggles, add to interface code.
+done 	Add refresh button (auto refresh?) that recalls and repops autoread_list(..)
+	Fix broken things (mark_as_read, many links)
+done	Clean and repair styles
+	Clean and doc new code
+	
+Probable:
+Add to autofinger asynchronously?
+Rework autoread spaghetti
+Add new unread plans -- tack them on as they come?
+	(incremental autofinger updates)
+
+Maybes:
+Subscribing?
+More details in autofinger list -- hovers, things like that.

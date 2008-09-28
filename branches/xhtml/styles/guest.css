@@ -1,0 +1,34 @@
+/* A stylesheet for the guest view.  Currently copied almost verbatim
+ * from the head of the old version.
+ */
+body {  color: #000000; background-color: #ffffff}
+a:link {  text-decoration: none; color: #a9aaec; font-variant: small-caps;
+font-family: times; background: #ffffff}
+a:visited {  text-decoration: none; color: #a9aaec; font variant:
+small-caps;
+font-weight: bold; background-color:
+#ffffff;
+font-family: times;}
+a:hover {  color: #ffffff; text-decoration: underline; background-color:
+#a9aaec}
+#nav {display:block; color: #A9AAEC; font-variant: small-caps; float:left}
+
+#wrapper { clear:right; float:none;}
+#footer { clear:both; }
+#legal { text-align: center; }
+
+#main p { background: #f1f1f1; color: #000000; border-style: solid solid
+solid solid; border-width: 
+thin; border-color: #a9aaec; margin-bottom: 2px; font-variant: none}
+
+a.logo {
+  display:block;
+  background: url("./default/plans2.jpg") no-repeat;
+  width: 155px;
+  height: 39px;
+}
+/*
+p.main2 {margin-left: 1cm; color: #99DC9A; font-variant: small-caps}
+p.main3 {margin-left: 2cm; color: #DC999A; font-variant: small-caps}
+p.main4 {margin-left: 3cm; color: #DC9ADC; font-variant: small-caps}
+*/

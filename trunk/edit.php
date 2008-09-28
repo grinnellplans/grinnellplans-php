@@ -48,7 +48,8 @@ if (!User::logged_in()) {
 		name="plan" wrap="virtual" onkeyup="javascript:countlen();"><?php
 		echo $plan . "</textarea><input type=\"hidden\" name=\"part\" value=\"1\">";
 		echo "<input type=\"hidden\" name=\"myprivl\" value=\"" . $myprivl . "\"><br>
-		<img src=\"left.gif\" width=\"2\" height=\"16\"><img id=\"filled\" src=\"filled.gif\" width=\"0\" height=\"16\"><img id=\"unfilled\" src=\"img\\unfilled.gif\" width=\"100\" height=\"16\"><img src=\"right.gif\" width=\"2\" height=\"16\"> <input type=\"text\" name=\"perc\" value=\"0%\" size=\"4\" style=\"border: 0px\" readonly>
+		<img src=\"left.gif\" width=\"2\" height=\"16\"><img id=\"filled\" src=\"filled.gif\" width=\"0\" height=\"16\"><img id=\"unfilled\" src=\"img\\
+		unfilled.gif\" width=\"100\" height=\"16\"><img src=\"right.gif\" width=\"2\" height=\"16\"> <input type=\"text\" name=\"perc\" value=\"0%\" size=\"4\" style=\"border: 0px\" readonly>
 		&nbsp;&nbsp;&nbsp;<input type=\"submit\" value=\"Change Plan\"></form>";
 		mdisp_end($dbh, $idcookie, $HTTP_HOST . $REQUEST_URI, $myprivl);
 	} //if (!$part)

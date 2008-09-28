@@ -1,27 +1,24 @@
-<?
-
-
-
-function disp_begin($dbh,$idcookie,$myurl,$myprivl,$cssloc,$jsfile)
+<?php
+function disp_begin($dbh, $idcookie, $myurl, $myprivl, $cssloc, $jsfile)
 {
-if (!$myprivl == 2 or !$myprivl == 3)
- {$myprivl = 1;}
-
- $searchname = $_GET['searchname'];
- if ($searchname) {
-    $title = "[$searchname]'s Plan";
-} else {
-    $title = "Plans Version 2.3";
- }
+	if (!$myprivl == 2 or !$myprivl == 3) {
+		$myprivl = 1;
+	}
+	$searchname = $_GET['searchname'];
+	if ($searchname) {
+		$title = "[$searchname]'s Plan";
+	} else {
+		$title = "Plans Version 2.3";
+	}
 ?>
 <html>
 <head>
-<title><?php echo $title ?></title>
+<title><?php
+	echo $title ?></title>
 <link rel=stylesheet
-href="<?=$cssloc?>">
-<?
-if ( !is_null( $jsfile ) )
-    echo "<script language=\"javascript\" type=\"text/javascript\" src=\"$jsfile\"></script>";
+href="<?php echo $cssloc ?>">
+<?php
+	if (!is_null($jsfile)) echo "<script language=\"javascript\" type=\"text/javascript\" src=\"$jsfile\"></script>";
 ?>
   <script type="text/javascript" src="overlib.js"><!-- overLIB (c) Erik Bosrup --></script>
 </head>
@@ -35,30 +32,33 @@ class="main">
 <p class="logo">&nbsp;</p>
 <Form action="read.php" method="get">
 <input name="searchname" type="text"><br>
-<input type="hidden" name="myprivl" value="<? echo $myprivl; ?>">
+<input type="hidden" name="myprivl" value="<?php
+	echo $myprivl; ?>">
 <input type="submit" value="Read"></form>
 
 <table class="lowerpanel"><tr>
 <td><p class="imagelev1">&nbsp;</p></td><td></td><td></td>
-<td><a href="edit.php?myprivl=<? echo $myprivl;?>" class="main">edit 
+<td><a href="edit.php?myprivl=<?php
+	echo $myprivl; ?>" class="main">edit 
 plan</a></td>
 </tr>
 
 <tr>
 <td><p class="imagelev1">&nbsp;</p></td><td></td><td></td>
-<td><a href="search.php?myprivl=<? echo $myprivl;?>"
+<td><a href="search.php?myprivl=<?php
+	echo $myprivl; ?>"
 class="main">search plans</a></td>
 </tr>
 
 <tr>
 <td><p class="imagelev1">&nbsp;</p></td><td></td><td></td>
-<td><a href="customize.php?myprivl=<? echo $myprivl;?>"
+<td><a href="customize.php?myprivl=<?php
+	echo $myprivl; ?>"
 class="main">preferences</a></td>
 </tr>
-<?
-
-$buf = '<td><p class="imagelev1">&nbsp;</p></td><td></td><td></td>';
-show_opt_links($idcookie, $buf);
+<?php
+	$buf = '<td><p class="imagelev1">&nbsp;</p></td><td></td><td></td>';
+	show_opt_links($idcookie, $buf);
 ?>
 
 <tr>
@@ -79,41 +79,31 @@ show_opt_links($idcookie, $buf);
 
 <tr><td>
 
-<?
-
-} 
-
-
+<?php
+}
 function priority_link($myurl, $notprivl)
 {
-
-if (ereg("myprivl", $myurl))
-{$myurlx = ereg_replace("myprivl=[0-9]{0,1}", "myprivl=" . $notprivl,
-$myurl);
-}//if already has privl
-else { //if doesn't already have privl
-if (ereg("\?", $myurl)) // if has ? but not privl
-{$myurlx = $myurl . "&myprivl=" . $notprivl;}
-else  //must add on extra info
-{$myurlx= $myurl . "?myprivl=" . $notprivl;}
-}//else, if doesn't already have privl
- 
-echo "<tr><td></td><td><p class=\"imagelev2\">&nbsp;</p></td><td></td>";  
-echo "<td><a href=\"http://" . $myurlx . "\" class=\"lev2\">level " .
-$notprivl .
-"</a></td></tr>";
-}//function priority_link
-
-
-
-function mdisp_end($dbh,$idcookie,$myurl,$myprivl)
+	if (ereg("myprivl", $myurl)) {
+		$myurlx = ereg_replace("myprivl=[0-9]{0,1}", "myprivl=" . $notprivl, $myurl);
+	} //if already has privl
+	else { //if doesn't already have privl
+		if (ereg("\?", $myurl)) // if has ? but not privl
+		{
+			$myurlx = $myurl . "&myprivl=" . $notprivl;
+		} else
+		//must add on extra info
+		{
+			$myurlx = $myurl . "?myprivl=" . $notprivl;
+		}
+	} //else, if doesn't already have privl
+	echo "<tr><td></td><td><p class=\"imagelev2\">&nbsp;</p></td><td></td>";
+	echo "<td><a href=\"http://" . $myurlx . "\" class=\"lev2\">level " . $notprivl . "</a></td></tr>";
+} //function priority_link
+function mdisp_end($dbh, $idcookie, $myurl, $myprivl)
 {
-
-if (!$myprivl == 2 or !$myprivl == 3)
- {$myprivl = 1;}
-
-
-
+	if (!$myprivl == 2 or !$myprivl == 3) {
+		$myprivl = 1;
+	}
 ?>
 </td></tr></table></td><td 
 valign="top" align="left" class="right" 
@@ -126,21 +116,17 @@ class="imagelev1">&nbsp;</p></td><td></td><td></td>
 <td><p class="main">auto read list</p></td>
 </tr>
 
-<?
-
-autoread_list ($myurl, $idcookie, $myprivl);
+<?php
+	autoread_list($myurl, $idcookie, $myprivl);
 ?>
 </table>
 </td></tr></table>
 </td></tr></table>
-<?
-disclaimer();
+<?php
+	disclaimer();
 ?>
 
 </body></html>
-<?
+<?php
 }
-
-
-
 ?>

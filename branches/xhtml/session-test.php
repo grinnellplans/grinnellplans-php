@@ -1,5 +1,3 @@
 <?php
-
 session_start();
-
 ?>

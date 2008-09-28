@@ -1,17 +1,13 @@
-<?
-
+<?php
 session_start();
-require("functions-main.php");//load main functions
-$idcookie = $_SESSION['userid']; 
+require ("functions-main.php"); //load main functions
+$idcookie = $_SESSION['userid'];
 $userid = $idcookie;
 $auth = $_SESSION['is_logged_in'];
-
-
-$dbh = db_connect();//connect to database
-
+$dbh = db_connect(); //connect to database
 if ($auth) {
-	mdisp_begin($dbh,$idcookie,$HTTP_HOST . $REQUEST_URI,$myprivl);
-} else { 
+	mdisp_begin($dbh, $idcookie, $HTTP_HOST . $REQUEST_URI, $myprivl);
+} else {
 	gdisp_begin($dbh);
 }
 if (!$auth) {
@@ -19,7 +15,7 @@ if (!$auth) {
 } else {
 	$poll_question_id = $_GET['poll_question_id'];
 	$submitted = $_GET['submitted'];
-	if (! $poll_question_id) {
+	if (!$poll_question_id) {
 		$sql = "select max(poll_question_id) as max from poll_questions; ";
 		$res = mysql_query($sql);
 		$new_row = mysql_fetch_array($res);
@@ -33,13 +29,11 @@ if (!$auth) {
 	$res = mysql_query($sql);
 	$question;
 	$type;
-	while($new_row = mysql_fetch_array($res)) {
+	while ($new_row = mysql_fetch_array($res)) {
 		$responses[] = $new_row['choice'];
 		$question = $new_row['question'];
 		$type = $new_row['type'];
 	}
-	
-
 	if ($submitted) {
 		$poll_choice_ids = array();
 		$poll_choice_id = $_GET['poll_choice_id'];
@@ -52,12 +46,11 @@ if (!$auth) {
 		} else {
 			$poll_choice_ids = $poll_choice_id;
 		}
-		
 		$sql = "delete from poll_votes
 		where poll_choice_id in (" . implode(", ", $responses) . ")
 		and userid = $userid";
 		mysql_query($sql);
-		foreach ($poll_choice_ids as $poll_choice_id) {
+		foreach($poll_choice_ids as $poll_choice_id) {
 			$sql = "insert into poll_votes set userid = $userid,
 												created = now(),
 												poll_choice_id = $poll_choice_id";
@@ -68,7 +61,7 @@ if (!$auth) {
 	echo '<form method="GET" action="">';
 	echo '<table style="text-align:center">';
 	echo "<tr><th>Options</th><th>Yes! I want to pick this one</th><th>Votes so far</th></tr>\n";
-	foreach ($responses as $response) {
+	foreach($responses as $response) {
 		$sql = "select html from poll_choices c
 			where c.poll_choice_id = $response";
 		$res = mysql_query($sql);
@@ -77,7 +70,7 @@ if (!$auth) {
 		echo "<tr><td>$html</td>\n<td>";
 		if ($type == 'single') {
 			echo '<input type="radio" name="poll_choice_id" value="' . $response . '"></td><td>';
-			} else {
+		} else {
 			echo '<input type="checkbox" name="poll_choice_id[]" value="' . $response . '"></td><td>';
 		}
 		$sql = "select count(*) as popularity from  poll_votes v
@@ -87,7 +80,7 @@ if (!$auth) {
 		$popularity = $new_row['popularity'];
 		echo "$popularity";
 		echo "</td></tr>\n";
-		}
+	}
 	echo "</table>\n";
 	echo '<input type="hidden" name="poll_question_id" value="' . $poll_question_id . '">';
 	echo '<input type="hidden" name="submitted" value="1">';
@@ -99,31 +92,30 @@ if (!$auth) {
 	$voted = $new_row['voted'];
 	if ($voted) {
 		echo "<br />You have voted in this poll, but you may change your mind.<br/>\n";
-		} else {
-
+	} else {
 		echo "<br /><br/>\n";
-		}
+	}
 }
-  ?>
+?>
   <p> <b>All Polls</b>
 
 
 <?php
-	list_polls();
-	?>
+list_polls();
+?>
 
 	<p>
 <span style="font-size:.7em"> Poll ideas?  <a href="mailto:grinnellplans@gmail.com">Email</a>.  </span>
 	</p>
 	<?php
-  if ($auth)
-    {
-      mdisp_end($dbh,$idcookie,$HTTP_HOST . $REQUEST_URI,$myprivl); //and send closing display data
-    }
-  else
-    {gdisp_end();}//if guest send guest closing display data
+if ($auth) {
+	mdisp_end($dbh, $idcookie, $HTTP_HOST . $REQUEST_URI, $myprivl); //and send closing display data
+	
+} else {
+	gdisp_end();
+} //if guest send guest closing display data
 
-	?>
+?>
   </p>
 
   </body>
@@ -131,22 +123,21 @@ if (!$auth) {
 
 
   <?php
-
-	  function list_polls() {
-		  $sql = "select html, poll_question_id from poll_questions where poll_question_id not in (16, 17) order by poll_question_id desc";
-		  $res = mysql_query($sql);
-		  echo '<table>';
-		  while($new_row = mysql_fetch_array($res)) { 
-			  echo '<tr><td>';
-			  echo ' <a href="?poll_question_id=';
-			  echo $new_row['poll_question_id'];
-			  echo '">';
-			  echo $new_row['html'];
-			  echo '</a>';
-			  echo '</td></tr>';
-			  echo "\n";
-		  }
-		  echo '</table>';
-
-	  }  
-	  ?>
+function list_polls()
+{
+	$sql = "select html, poll_question_id from poll_questions where poll_question_id not in (16, 17) order by poll_question_id desc";
+	$res = mysql_query($sql);
+	echo '<table>';
+	while ($new_row = mysql_fetch_array($res)) {
+		echo '<tr><td>';
+		echo ' <a href="?poll_question_id=';
+		echo $new_row['poll_question_id'];
+		echo '">';
+		echo $new_row['html'];
+		echo '</a>';
+		echo '</td></tr>';
+		echo "\n";
+	}
+	echo '</table>';
+}
+?>

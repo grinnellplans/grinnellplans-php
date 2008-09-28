@@ -90,7 +90,7 @@ function js_test ()
 	<?php
 if (isset($_GET['noimage'])) {
 } else {
-echo '<img src="logo.jpg">';
+echo '<img src="img/logo.jpg">';
 }
 ?>
 		</td>

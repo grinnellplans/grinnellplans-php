@@ -1,25 +1,17 @@
 <?php
 	require_once("Plans.php");
-/* =====================================================
-    The below code should always run for a logged in user.  We need a 
-    file for this so we don't have to keep adding stuff to the top of each 
-    file.
-    Will move this into that file when we decide on how to do it.
-*/
 
-
-header ('Content-type: text/html; charset=utf-8'); 
+if (isset($_GET['jumbled'])) {
 if($_GET['jumbled'] == 'no') {
 	setcookie('jumbled', 'no');
 }
 if($_GET['jumbled'] == 'yes') {
 	setcookie('jumbled', 'yes');
-}    
-
+}
+} else {
+}
 //Load Configuration settings - let's increase our level of abstraction here....
-require("Configuration.php");
-$TZ=TZ;
-putenv ("TZ=$TZ");
+require_once("Configuration.php");
 
 //Load the legal disclaimer file (Your needs may differ!)
 require("legal.php");
@@ -46,7 +38,4 @@ require("functions-edit.php");
 require("functions-core.php");
 
 require("core-perms.php");
-
-
-
 ?>

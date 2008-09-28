@@ -1,4 +1,6 @@
 <?php
+	require_once("Plans.inc");
+
 require_once('dbfunctions.php');
 
 if($_GET['jumbled'] == 'no') {

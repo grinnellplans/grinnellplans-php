@@ -1,4 +1,5 @@
 <?
+	require_once("Plans.inc");
 	require_once('cookie_session.php');
 	$b = (int) $_GET['b'];
 	if (file_exists("buckets/$b.php")) {

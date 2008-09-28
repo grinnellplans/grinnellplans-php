@@ -1,4 +1,5 @@
 <?
+	require_once("Plans.inc");
 require_once("cookie_session.php");
   require("functions-main.php");//load main functions
 

@@ -1,8 +1,5 @@
 <?php
-/*
-	GrinnellPlans - autofingerplansfunctions functions
-	Version Nov-11-05-1 (Laiu-Draft-1)
-*/
+	require_once("Plans.inc");
 
 //////////
 

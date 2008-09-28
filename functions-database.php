@@ -1,4 +1,5 @@
-<?
+<?php
+	require_once("Plans.inc");
 	require_once('Configuration.php');
 
 /*

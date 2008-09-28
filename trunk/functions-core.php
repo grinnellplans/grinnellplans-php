@@ -1,18 +1,8 @@
 <?php
 require_once ("Plans.php");
 require_once ('dbfunctions.php');
-if ($_GET['jumbled'] == 'no') {
-	setcookie('jumbled', 'no');
-}
-if ($_GET['jumbled'] == 'yes') {
-	setcookie('jumbled', 'yes');
-}
-/*
-echo "Session started";
-print_r($_SESSION);
-$idcookie = $_SESSION['idcookie'];
-echo "Got idcookie as $idcookie";
-*/
+
+
 $dbh = db_connect();
 log_click();
 function log_click()

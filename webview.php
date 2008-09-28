@@ -1,5 +1,5 @@
 <?php
-session_start();
+require_once("cookie_session.php");
 require("functions-main.php");//load main functions
 $dbh = db_connect();
 

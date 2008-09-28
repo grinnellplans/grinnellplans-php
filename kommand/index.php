@@ -1,5 +1,5 @@
 <?
-session_start();
+require_once("../cookie_session.php");
 require("dbfunctions.php");
 $dbh = db_connect();
 

@@ -14,6 +14,8 @@
     file.
     Will move this into that file when we decide on how to do it.
 */
+require_once("cookie_session.php");
+
 header ('Content-type: text/html; charset=utf-8'); 
 if($_GET['jumbled'] == 'no') {
 	setcookie('jumbled', 'no');
@@ -21,7 +23,6 @@ if($_GET['jumbled'] == 'no') {
 if($_GET['jumbled'] == 'yes') {
 	setcookie('jumbled', 'yes');
 }    
-
 
 //Load Configuration settings - let's increase our level of abstraction here....
 require("config.php");

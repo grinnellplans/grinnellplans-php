@@ -70,7 +70,7 @@ js_test();
 	  <tr>
 		<td align=center colspan=2>
 <?php
-	if (isset($msg))
+	if (isset($msg)) {
 ?>
 		<font face=verdana>
 		<p><?=$msg?>

@@ -44,7 +44,7 @@ function js_test ()
 	  </tr>
 	  <tr class="boxes">
 		<td colspan=2 align=center class="boxes">
-			<form name="post" action="login.php" method="POST">
+			<form name="post" action="index.php" method="POST">
 			<div class="boxes">
 				Username: <input type="text" name="username"><br>
 				Password: <input type="password" name="password"><br>
@@ -61,7 +61,7 @@ js_test();
 -->
 </script>  
 			</form></td>
-		<form action="login.php" method="POST"> <!--gimmick to make the buttons display at the same height-->
+		<form action="index.php" method="POST"> <!--gimmick to make the buttons display at the same height-->
 		<td align=left width="50%">
 			<input type="hidden" value="1" name="guest">
 			<input type="submit" value="Guest">

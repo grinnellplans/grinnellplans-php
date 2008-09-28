@@ -1,8 +1,24 @@
 <?php
 require_once ("Plans.php");
+new SessionBroker();
+
 if (isset($_GET['logout'])) {
 	User::logout();
+	$msg = 'You have been successfully logged out.';
 }
+
+require ("functions-main.php");
+$dbh = db_connect();
+
+if (isset($_POST['username']) && isset($_POST['password'])) {
+	if (!User::login($_POST['username'], $_POST['password'])) {
+		$msg = "Invalid username or password.";
+	}
+}
+
+if (isset($_POST['submit']) {
+	Redirect('home.php');	
+} else {
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">   
 <html dir="ltr">
@@ -23,12 +39,7 @@ function js_test ()
 	  <table cellpadding=0 width="100%">
 	  <tr>
 		<td colspan=2 align=center>
-	<?php
-	if (isset($_GET['noimage'])) {
-	} else {
 		echo '<img src="img/logo.jpg">';
-	}
-?>
 		</td>
 	  </tr>
 	  <tr class="boxes">
@@ -58,10 +69,15 @@ js_test();
 	  </tr>
 	  <tr>
 		<td align=center colspan=2>
+<?php
+	if (isset($msg))
+?>
 		<font face=verdana>
-			<p><?php
-	echo $show_form
-?></p>
+		<p><?=$msg?>
+		</p>
+		<?php
+	}
+		?>
 		<br>
 		<br>Need a plan? <a href="register.php">Register</a> if you have an @grinnell.edu email address.
 <br />  

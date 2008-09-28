@@ -1,5 +1,5 @@
 <?php
-	require_once("Plans.inc");
+	require_once("Plans.php");
 /*
 Grinnell Plans. A web-based version of social .plans.
 Copyright (C) 2002 by Jonathan Kensler

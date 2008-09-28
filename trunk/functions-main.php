@@ -1,5 +1,5 @@
 <?php
-	require_once("Plans.inc");
+	require_once("Plans.php");
 /* =====================================================
     The below code should always run for a logged in user.  We need a 
     file for this so we don't have to keep adding stuff to the top of each 

@@ -1,5 +1,5 @@
 <?php
-	require_once("Plans.inc");
+	require_once("Plans.php");
 
 function microtime_float()
 {

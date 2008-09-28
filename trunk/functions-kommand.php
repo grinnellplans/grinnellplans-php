@@ -1,5 +1,5 @@
 <?php
-	require_once("Plans.inc");
+	require_once("Plans.php");
 function insert_user($added_name, $password, $gradyear, $email, $type, $status = '') {
 	if (!$password) {
 		srand(time());

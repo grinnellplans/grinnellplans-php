@@ -1,5 +1,5 @@
 <?php
-	require_once("Plans.inc");
+	require_once("Plans.php");
 
 
 require("dbfunctions.php");//load up the set of functions that deals with the database

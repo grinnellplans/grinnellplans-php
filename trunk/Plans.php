@@ -15,6 +15,6 @@ function __autoload($classname)
 	require_once("inc/$classname.php");
 }
 
-require_once ("inc/SessionBroker.php");
+new SessionBroker();
 header('Content-Type: text/html; charset=UTF-8');
 ?>

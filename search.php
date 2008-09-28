@@ -4,7 +4,7 @@ new SessionBroker();
 
 require ("functions-main.php"); //load main functions
 $dbh = db_connect(); //connect to the database
-$idcookie = $_SESSION['userid'];
+$idcookie = User::id();
 $context = 100; //set the number of characters around found item
 if (User::logged_in()) {
 	mdisp_begin($dbh, $idcookie, $HTTP_HOST . $REQUEST_URI, $myprivl);

@@ -3,7 +3,7 @@ require_once ("Plans.php");
 new SessionBroker();
 
 require ("functions-main.php"); //load main functions
-$idcookie = $_SESSION['userid'];
+$idcookie = User::id();
 $dbh = db_connect(); //connect to database
 $auth = $_SESSION['is_logged_in'];
 $myprivl = setpriv($myprivl, $HTTP_COOKIE_VARS["thepriv"]);

@@ -4,7 +4,7 @@ new SessionBroker();
 
 require ("functions-main.php"); //load main functions
 require ("functions-kommand.php"); //load main functions
-$idcookie = $_SESSION['userid'];
+$idcookie = User::id();
 $userid = $idcookie;
 $dbh = db_connect(); //connect to database
 $admin_email = "grinnellplans@gmail.com";

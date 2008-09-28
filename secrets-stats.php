@@ -4,7 +4,7 @@ new SessionBroker();
 
 require ("functions-main.php"); //load main functions
 $dbh = db_connect(); //connect to database
-$idcookie = $_SESSION['userid'];
+$idcookie = User::id();
 $myprivl = setpriv($myprivl, $HTTP_COOKIE_VARS["thepriv"]);
 if (User::logged_in()) {
 	mdisp_begin($dbh, $idcookie, $HTTP_HOST . $REQUEST_URI, $myprivl);

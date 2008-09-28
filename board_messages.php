@@ -3,7 +3,7 @@ require_once ("Plans.php");
 require ("functions-main.php"); //load main functions
 $dbh = db_connect(); //establish the database handler
 $messagesperpage = messagesperpage();
-$idcookie = $_SESSION['userid'];
+$idcookie = User::id();
 if (!User::logged_in()) {
 	gdisp_begin($dbh); //begin guest display
 	echo ("You are not allowed to edit as a guest."); //tell person they can't log in

@@ -4,7 +4,7 @@ new SessionBroker();
 
 require ("functions-main.php"); //load main functions
 $dbh = db_connect(); //connect to the database
-$idcookie = $_SESSION['userid'];
+$idcookie = User::id();
 $auth = $_SESSION['is_logged_in'];
 if (!$auth) {
 	gdisp_begin($dbh); //begin guest display

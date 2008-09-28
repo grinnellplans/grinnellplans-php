@@ -4,7 +4,7 @@ new SessionBroker();
 
 require ("functions-main.php"); //load main functions
 $dbh = db_connect();
-$idcookie = $_SESSION['userid'];
+$idcookie = User::id();
 if (!User::logged_in()) {
 	gdisp_begin($dbh);
 	echo ("You are not allowed to edit as a guest.");

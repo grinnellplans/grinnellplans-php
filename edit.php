@@ -2,7 +2,7 @@
 require_once ("Plans.php");
 require ("functions-main.php"); //load main functions
 $dbh = db_connect(); ///connect to the database
-$idcookie = $_SESSION['userid'];
+$idcookie = User::id();
 $noedit = $_GET['noedit'];
 if (!User::logged_in()) {
 	gdisp_begin($dbh); //begin guest display

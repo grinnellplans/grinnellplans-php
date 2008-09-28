@@ -2,7 +2,7 @@
 require_once ("Plans.php");
 require ("functions-main.php"); //load main functions
 $dbh = db_connect(); //establish the database handler
-$idcookie = $_SESSION['userid'];
+$idcookie = User::id();
 $threadsperpage = threadsperpage();
 if (!User::logged_in()) {
 	gdisp_begin($dbh); //begin guest display

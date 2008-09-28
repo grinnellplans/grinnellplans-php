@@ -4,7 +4,7 @@ new SessionBroker();
 
 require ("functions-main.php"); //load main functions
 $dbh = db_connect(); //get database connections
-$idcookie = $_SESSION['userid'];
+$idcookie = User::id();
 $auth = $_SESSION['is_logged_in'];
 if (!$auth) //if not logged in
 {

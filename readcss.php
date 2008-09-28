@@ -4,7 +4,7 @@ new SessionBroker();
 
 require ("functions-main.php"); //load main functions
 $dbh = db_connect(); //connect to database
-$idcookie = $_SESSION['userid'];
+$idcookie = User::id();
 $auth = $_SESSION['is_logged_in'];
 $myprivl = setpriv($myprivl, $HTTP_COOKIE_VARS["thepriv"]);
 if (!$searchnum) //if no search number given

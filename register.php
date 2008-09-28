@@ -1,6 +1,6 @@
 <?php
 	require_once("Plans.php");
-require_once("cookie_session.php");
+
 require("functions-main.php");//load main functions
 require("functions-kommand.php");//load main functions
 $idcookie = $_SESSION['userid']; 

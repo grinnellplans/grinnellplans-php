@@ -1,8 +1,10 @@
 <?php
-require_once ("Plans.php");
+require_once('Plans.php');
+require_once('Configuration.php')
+
 require ("functions-main.php"); //load main functions
 $dbh = db_connect(); //establish the database handler
-$messagesperpage = messagesperpage();
+
 $idcookie = User::id();
 if (!User::logged_in()) {
 	gdisp_begin($dbh); //begin guest display
@@ -138,15 +140,15 @@ else
 		}
 		$my_result = mysql_query("Select COUNT(*) From subboard WHERE created >= \"" . $messagevals[0][1] . "\" and threadid=\"" . $threadid . "\"");
 		$pagefind = mysql_fetch_row($my_result);
-		$pagenumber = floor($pagefind[0] / messagesperpage());
+		$pagenumber = floor($pagefind[0] / NOTES_MSGS_PER_PAGE);
 	}
 	$my_result = mysql_query("Select COUNT(*) From subboard WHERE threadid=\"" . $threadid . "\"");
 	$totalmessages = mysql_fetch_row($my_result);
 	if (!($pagenumber > 0)) {
 		$pagenumber = 0;
 	}
-	if ($pagenumber > floor($totalmessages[0] / $messagesperpage)) {
-		$pagenumber = floor($totalmessages[0] / $messagesperpage);
+	if ($pagenumber > floor($totalmessages[0] / NOTES_MSGS_PER_PAGE) {
+		$pagenumber = floor($totalmessages[0] / NOTES_MSGS_PER_PAGE);
 	}
 	echo "<center>";
 	if ($pagenumber > 0) {
@@ -167,43 +169,37 @@ else
 		echo "_ ";
 	}
 	echo "[" . $pagenumber . "] ";
-	if ($totalmessages[0] > ($pagenumber + 1) * $messagesperpage) {
+	if ($totalmessages[0] > ($pagenumber + 1) * NOTES_MSGS_PER_PAGE) {
 		$tempnum = $pagenumber + 1;
 		echo "<a href=\"board_messages.php?pagenumber=" . $tempnum . "&threadid=" . $threadid . "\">" . $tempnum . "</a> ";
 	} else {
 		echo "_ ";
 	}
-	if ($totalmessages[0] > ($pagenumber + 2) * $messagesperpage) {
+	if ($totalmessages[0] > ($pagenumber + 2) * NOTES_MSGS_PER_PAGE) {
 		$tempnum = $pagenumber + 1;
 		echo "<a href=\"board_messages.php?pagenumber=" . $tempnum . "&threadid=" . $threadid . "\">" . $tempnum . "</a> ";
 	} else {
 		echo "_ ";
 	}
-	if (floor($totalmessages[0] / $messagesperpage) > $pagenumber) {
-		echo "<a href=\"board_messages.php?pagenumber=" . floor($totalmessages[0] / $messagesperpage) . "&threadid=" . $threadid . "\">&gt;&gt;</a></center>";
+	if (floor($totalmessages[0] / NOTES_MSGS_PER_PAGE) > $pagenumber) {
+		echo "<a href=\"board_messages.php?pagenumber=" . floor($totalmessages[0] / NOTES_MSGS_PER_PAGE) . "&threadid=" . $threadid . "\">&gt;&gt;</a></center>";
 	} else {
 		echo "&gt;&gt;</center>";
 	}
-	$rowoffset = $messagesperpage * $pagenumber;
-	/*
-	echo "<table border=\"1\"><tr bgcolor=\"#999999\"><td><center><b>Title</b></center></td><td><center><b>Newest
-	Message</b></center></td><td><center><b># of Messages</b></center></td></tr>";
-	*/
-	echo "\n\n <!-- rowoffset = $rowoffset, messagesperpage = $messagesperpage, pagenumber = $pagenumber -->\n";
+	$rowoffset = NOTES_MSGS_PER_PAGE * $pagenumber;
+
 	$thread_title = get_item($dbh, "title", "mainboard", "threadid", $threadid);
 	echo ' <br /> <p style="font-weight:bold; text-align:center"> ' . stripslashes($thread_title) . " </p> \n";
 	echo "<table class=\"boardmessages\">";
 	$notes_pref = get_item($dbh, "notes_asc", "accounts", "userid", $userid);
 	echo "<!-- $notes_pref -->";
 	if ($notes_pref) {
-		$rowoffset = $totalmessages[0] - $messagesperpage * ($pagenumber + 1);
+		$rowoffset = $totalmessages[0] - NOTES_MSGS_PER_PAGE * ($pagenumber + 1);
 		if ($rowoffset < 0) {
-			//$messagesperpage = -1 * $rowoffset;
 			$rowoffset = 0;
 		}
 	}
-	echo "\n\n <!-- totalmessages[0] = $totalmessages[0], rowoffset = $rowoffset, messagesperpage = $messagesperpage, pagenumber = $pagenumber -->\n";
-	//echo "\n\n <!-- " . $messagesperpage * $pagenumber . " --> \n";
+
 	$query = "Select subboard.messageid, 
                 DATE_FORMAT(subboard.created, ' %l:%i %p, %a %M %D, %Y'),
                 subboard.userid, accounts.username, subboard.title ,subboard.contents, ifnull(vts.votes,0), mv.vote, ifnull(vts.num_votes,0)
@@ -217,7 +213,7 @@ else
                      on mv.messageid = subboard.messageid
                 where subboard.threadid = " . $threadid . " 
                 ORDER BY subboard.messageid DESC 
-                LIMIT " . $rowoffset . "," . $messagesperpage;
+                LIMIT " . $rowoffset . "," . NOTES_MSGS_PER_PAGE;
 	$my_result = mysql_query($query);
 	$colorlight = "<table class=\"noteslight\" width=\"100%\">";
 	$colordark = "<table class=\"notesdark\" width=\"100%\">";

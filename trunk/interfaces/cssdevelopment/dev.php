@@ -154,7 +154,7 @@ if ( !is_null( $jsfile ) )
 ?>
 	<p id="disclaimer">
 	<?
-	disclaimer();
+	footer();
 	?>
 	</p>
 

@@ -1,5 +1,5 @@
 <?php
-require_once ("Plans.php");
+require_once('Plans.php');
 function Redirect($url) {
 	Header("Location: $url");
 }

@@ -1,14 +1,14 @@
 <?php
-require_once ("Plans.php");
-require ("functions-main.php"); //load main functions
-$dbh = db_connect(); //connect to database
+require_once('Plans.php');
+require('functions-main.php');
+$dbh = db_connect();
 $idcookie = User::id();
 if (!User::logged_in()) {
-	gdisp_begin($dbh); //begin guest display
+	gdisp_begin($dbh); 
 	echo ("You are not allowed to edit as a guest."); //tell guest they can't use page
 	gdisp_end();
 } else {
-	mdisp_begin($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], $myprivl); //begin valid user display
+	mdisp_begin($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], get_myprivl()); //begin valid user display
 	$real_pass = get_item($mydbh, "guest_password", "accounts", "userid", $idcookie);
 	$username = get_item($mydbh, "username", "accounts", "userid", $idcookie);
 	if ($changed && ($checknumb != $idcookie)) {
@@ -44,8 +44,6 @@ if (!User::logged_in()) {
 <table>
 	<tr><td>New Password:</td><td><input type="password" name="mypassword"></td></tr>
 		<tr><td>Confirm: </td><td><input type="password" name="mypassword2"></td></tr></table> <br />
-		<input type="hidden" name="myprivl" value="<?php
-	echo $myprivl; ?>">
 		<input type="hidden" name="changed" value="pass">
 		<input type="hidden" name="checknumb" value="<?php
 	echo $idcookie; ?>">
@@ -82,16 +80,13 @@ http://www.grinnellplans.com/read.php?searchname=<?php
 		<input type="text" name="guest_password" value="<?php
 	echo $real_pass
 ?>">
-		<input type="hidden" name="myprivl" value="<?php
-	echo $myprivl; ?>">
 		<input type="hidden" name="changed" value="guest_pass">
-		<input type="hidden" name="checknumb" value="<?php
-	echo $idcookie; ?>">
+		<input type="hidden" name="checknumb" value="<?php echo $idcookie; ?>">
 		<input type="submit" value="Set Guest Password">
 		</form>
 		</center>
 		<?php
-	mdisp_end($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], $myprivl); //end valid user display
+	mdisp_end($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], get_myprivl()); //end valid user display
 	
 }
 db_disconnect($dbh);

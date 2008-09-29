@@ -2,19 +2,19 @@
 require_once('Plans.php');
 require_once('Configuration.php');
 
-require ("functions-main.php"); //load main functions
+require('functions-main.php');
 $dbh = db_connect(); //establish the database handler
 
 $idcookie = User::id();
 if (!User::logged_in()) {
-	gdisp_begin($dbh); //begin guest display
+	gdisp_begin($dbh); 
 	echo ("You are not allowed to edit as a guest."); //tell person they can't log in
 	gdisp_end();
-} //end guest display
+} 
 else
 //elseallowed to edit
 {
-	mdisp_begin($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], $myprivl); //begin user display
+	mdisp_begin($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], get_myprivl()); //begin user display
 	
 ?>
 
@@ -135,7 +135,7 @@ else
 		$threadid = $messagevals[0][0];
 		if (!$threadid) {
 			echo "The message you requested has been deleted or does not exist.";
-			mdisp_end($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], $myprivl); //gets user display
+			mdisp_end($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], get_myprivl()); //gets user display
 			stop();
 		}
 		$my_result = mysql_query("Select COUNT(*) From subboard WHERE created >= \"" . $messagevals[0][1] . "\" and threadid=\"" . $threadid . "\"");
@@ -249,7 +249,7 @@ else
 		echo "</td></tr>";
 	}
 	echo "</table>";
-	mdisp_end($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], $myprivl); //gets user display
+	mdisp_end($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], get_myprivl()); //gets user display
 	
 }
 db_disconnect($dbh);

@@ -1,8 +1,8 @@
 <?php
-require_once ("Plans.php");
+require_once('Plans.php');
 new SessionBroker();
 
-require ("functions-main.php"); //load main functions
+require('functions-main.php');
 $dbh = db_connect();
 $idcookie = User::id();
 if (!User::logged_in()) {
@@ -10,19 +10,19 @@ if (!User::logged_in()) {
 	echo ("You are not allowed to edit as a guest.");
 	gdisp_end();
 } else
-//allowed to edit
+
 {
 	if ($part) {
 		if ($webview != 1) {
 			$webview = 0;
 		}
 		set_item($dbh, "accounts", "webview", $webview, "userid", $idcookie);
-		mdisp_begin($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], $myprivl);
+		mdisp_begin($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], get_myprivl());
 ?>
 		<center><h2>Guest Viewable:</h2>  
 		<table><tr><Td>Preference set.</td></tr></table></center><?php
 	} else {
-		mdisp_begin($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], $myprivl);
+		mdisp_begin($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], get_myprivl());
 		if (get_item($dbh, "webview", "accounts", "userid", $idcookie) == 1) {
 			$viewable = " checked";
 		} else {
@@ -43,7 +43,7 @@ if (!User::logged_in()) {
 		</center>
 		<?php
 	}
-	mdisp_end($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], $myprivl);
+	mdisp_end($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], get_myprivl());
 } //if is a valid user
 db_disconnect($dbh);
 ?>

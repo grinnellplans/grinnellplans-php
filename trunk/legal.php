@@ -1,10 +1,8 @@
 <?php
-require_once ("Plans.php");
+require_once('Plans.php');
 
 function last_updated_plan() {
-	if (!($mytime > 0 and $mytime < 100)) {
-		$mytime = 12;
-	} 
+	$mytime = 12;
 	$my_planwatch = mysql_query("select userid,username,DATE_FORMAT(changed,
 				  '%l:%i %p, %a %M %D ') from accounts where
 				    changed > DATE_SUB(NOW(), INTERVAL $mytime HOUR) and username != 'test'
@@ -12,7 +10,7 @@ function last_updated_plan() {
 	//do the query with specifying date format to be returned
 	//display the results of the query
 	while ($new_plans = mysql_fetch_row($my_planwatch)) {
-?>Do you read <a href="read.php?myprivl=<?= $myprivl ?>&searchname=<?=$new_plans[1]?>"><?=$new_plans[1]?></a>, who just updated? <hr><?php
+?>Do you read <a href="read.php?searchname=<?=$new_plans[1]?>"><?=$new_plans[1]?></a>, who just updated? <hr><?php
 	}
 }
 

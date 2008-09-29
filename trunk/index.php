@@ -1,24 +1,26 @@
 <?php
-require_once ("Plans.php");
-new SessionBroker();
+require_once('Plans.php');
 
 if (isset($_GET['logout'])) {
 	User::logout();
 	$msg = 'You have been successfully logged out.';
-}
-
-require ("functions-main.php");
-$dbh = db_connect();
-
-if (isset($_POST['username']) && isset($_POST['password'])) {
-	if (!User::login($_POST['username'], $_POST['password'])) {
-		$msg = "Invalid username or password.";
+} else if (User::logged_in()) {
+	Redirect('home.php');
+} else if (isset($_POST['submit'])) {
+	if (isset($_POST['guest'])) {
+		Redirect('home.php');
+	} else {
+		$user = User::login($_POST['username'], $_POST['password']);
+		if (!$user) {
+			$msg = "Invalid username or password.";
+		} else {
+			print_r($user->JsStatus);
+			//->status = $_POST['js_test_value'];
+			$user->save();
+			Redirect('home.php');
+		}
 	}
 }
-
-if (!isset($msg) && (isset($_POST['submit']) || User::logged_in())) {
-	Redirect('home.php');	
-} else {
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">   
 <html dir="ltr">
@@ -119,6 +121,3 @@ Use of the GrinnellPlans service means you have accepted the <a href="http://www
 </p>
 </body>
 </html>
-<?php
-	}
-?>

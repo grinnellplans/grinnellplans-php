@@ -8,7 +8,7 @@ function disp_begin($dbh,$idcookie,$myurl,$myprivl,$cssloc,$jsfile)
 if (!$myprivl == 2 or !$myprivl == 3)
  {$myprivl = 1;}
 
-  $searchname = $_GET['searchname'];
+  $searchname = (isset($_GET['searchname']) ? $_GET['searchname'] : false);
   if ($searchname) {
       $title = "[$searchname]'s Plan";
   } else {
@@ -110,7 +110,7 @@ $o=0;
 while ($autoreadlist[$o][0])
 {
 echo "<tr><td></td><td></td><td><p class=\"imagelev3\">&nbsp;</p></td>";
-echo "<td><a href=\"read.php?myprivl=" . $myprivl . "&searchname=" .
+echo "<td><a href=\"read.php?searchname=" .
 $autoreadlist[$o][1] . "\" class=\"lev3\">" .
 $autoreadlist[$o][1] . "</a></td></tr>\n";
 

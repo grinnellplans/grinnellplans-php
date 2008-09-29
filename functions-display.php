@@ -29,11 +29,10 @@ function mdisp_begin($dbh, $idcookie, $myurl, $myprivl, $jsfile = NULL)
 		$sql = "Select style.path from style, display where display.userid = '$idcookie' and display.style = style.style";
 		$my_result = mysql_query($sql); 
 		while ($new_row = mysql_fetch_row($my_result)) {
-			$mydisplayar[] = $new_row;
+			$myar[] = $new_row;
 		}
-		$mycss = $mydisplayar[0][0];
+		$mycss = $myar[0][0];
 	}
-
 	disp_begin($dbh, $idcookie, $myurl, $myprivl, $mycss, $jsfile);
 
 	if (isset($_SESSION['b'])) {

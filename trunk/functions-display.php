@@ -7,7 +7,7 @@ function Redirect($url) {
 function mdisp_begin($dbh, $idcookie, $myurl, $myprivl, $jsfile = NULL)
 {
 	$css = get_item($dbh, "stylesheet", "stylesheet", "userid", $idcookie);
-
+		
 	$sql = "Select interface.path,style.path From
 	interface interface, style style,display display where
 	display.userid = '$idcookie' and display.interface = interface.interface and display.style=style.style";
@@ -22,16 +22,18 @@ function mdisp_begin($dbh, $idcookie, $myurl, $myprivl, $jsfile = NULL)
 	}
 	
 	require_once($interface);
+	
 	if ($css) {
 		$mycss = $css;
 	} else {
-		$sql = "Select style.path from style, display where display.userid = '$idcookie' display.style = style.style";
+		$sql = "Select style.path from style, display where display.userid = '$idcookie' and display.style = style.style";
 		$my_result = mysql_query($sql); 
 		while ($new_row = mysql_fetch_row($my_result)) {
 			$mydisplayar[] = $new_row;
 		}
 		$mycss = $mydisplayar[0][0];
 	}
+
 	disp_begin($dbh, $idcookie, $myurl, $myprivl, $mycss, $jsfile);
 
 	if (isset($_SESSION['b'])) {

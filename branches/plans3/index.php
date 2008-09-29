@@ -4,6 +4,8 @@ require_once('Plans.php');
 if (isset($_GET['logout'])) {
 	User::logout();
 	$msg = 'You have been successfully logged out.';
+} else if (User::logged_in()) {
+	Redirect('home.php');
 } else if (isset($_POST['submit'])) {
 	if (isset($_POST['guest'])) {
 		Redirect('home.php');

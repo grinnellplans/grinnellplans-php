@@ -2,7 +2,10 @@
 require_once('Plans.php');
 new SessionBroker();
 
-$mysearch = $_GET['mysearch'];
+$mysearch = (isset($_GET['mysearch']) ? $_GET['mysearch'] : false);
+$planlove = (isset($_GET['planlove']) ? $_GET['planlove'] : false);
+$donotsearch = (isset($_GET['donotsearch']) ? $_GET['donotsearch'] : false);
+$regexp = (isset($_GET['regexp']) ? $_GET['regexp'] : false);
 
 require('functions-main.php');
 $dbh = db_connect(); //connect to the database
@@ -56,11 +59,11 @@ if (!$mysearch) //if no search query, give search form
 				$mysearch = preg_replace("/\</", "&lt;", $mysearch);
 				$mysearch = preg_replace("/\>/", "&gt;", $mysearch);
 				$mysearch = preg_quote($mysearch);
-				if ($mynamedsearch) {
-					$likeclause = "(plan LIKE '%$mysearch%' OR plan LIKE '%$mynamedsearch%')";
-				} else {
-					$likeclause = "plan LIKE '%$mysearch%'";
-				}
+	  			if ($mynamedsearch) {
+	  				$likeclause = "(plan LIKE '%$mysearch%' OR plan LIKE '%$mynamedsearch%')";
+	  			} else {
+	  				$likeclause = "plan LIKE '%$mysearch%'";
+	  			}
 				$querytext = "SELECT username, plan, userid FROM accounts
 			where $likeclause $guest ORDER BY username";
 				echo "<!--- $querytext --->";

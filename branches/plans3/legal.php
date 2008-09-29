@@ -2,9 +2,7 @@
 require_once('Plans.php');
 
 function last_updated_plan() {
-	if (!($mytime > 0 and $mytime < 100)) {
-		$mytime = 12;
-	} 
+	$mytime = 12;
 	$my_planwatch = mysql_query("select userid,username,DATE_FORMAT(changed,
 				  '%l:%i %p, %a %M %D ') from accounts where
 				    changed > DATE_SUB(NOW(), INTERVAL $mytime HOUR) and username != 'test'

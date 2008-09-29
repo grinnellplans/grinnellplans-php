@@ -188,11 +188,7 @@ function basicSearch($idcookie, $dbh, $_auth, $context, $mysearch)
 			$mysearch = preg_replace("/\</", "&lt;", $mysearch);
 			$mysearch = preg_replace("/\>/", "&gt;", $mysearch);
 			$mysearch = preg_quote($mysearch);
-			if ($mynamedsearch) {
-				$likeclause = "(plan LIKE '%$mysearch%' OR plan LIKE '%$mynamedsearch%')";
-			} else {
-				$likeclause = "plan LIKE '%$mysearch%'";
-			}
+			$likeclause = "plan LIKE '%$mysearch%'";
 			$querytext = "SELECT username, plan, userid FROM accounts
 				where $likeclause $guest ORDER BY username";
 			echo "<!--- $querytext --->";

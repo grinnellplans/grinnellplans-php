@@ -8,7 +8,7 @@ function disp_begin($dbh,$idcookie,$myurl,$myprivl,$cssloc,$jsfile)
 if (!$myprivl == 2 or !$myprivl == 3)
  {$myprivl = 1;}
 
-  $searchname = $_GET['searchname'];
+  $searchname = (isset($_GET['searchname']) ? $_GET['searchname'] : false);
   if ($searchname) {
       $title = "[$searchname]'s Plan";
   } else {

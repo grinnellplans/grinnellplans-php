@@ -65,6 +65,17 @@ CREATE TABLE `autofinger` (
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
+-- Table structure for table `autoread_groups`
+--
+
+DROP TABLE IF EXISTS `autoread_groups`;
+CREATE TABLE `autoread_groups` (
+  `id` int(11) NOT NULL default '0',
+  `user_id` int(11) NOT NULL default '0',
+  `name` varchar(32) NOT NULL default ''
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+--
 -- Table structure for table `avail_links`
 --
 
@@ -107,18 +118,7 @@ CREATE TABLE `clickstream` (
   `ip` varchar(15) default NULL,
   `extra_data` text,
   PRIMARY KEY  (`clickstream_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=49822511 DEFAULT CHARSET=latin1;
-
---
--- Table structure for table `criminal`
---
-
-DROP TABLE IF EXISTS `criminal`;
-CREATE TABLE `criminal` (
-  `id` int(11) NOT NULL auto_increment,
-  `username` varchar(50) default NULL,
-  PRIMARY KEY  (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=4558 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=49822629 DEFAULT CHARSET=latin1;
 
 --
 -- Table structure for table `diffs`
@@ -173,6 +173,18 @@ CREATE TABLE `expenses` (
 ) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
 --
+-- Table structure for table `interface`
+--
+
+DROP TABLE IF EXISTS `interface`;
+CREATE TABLE `interface` (
+  `interface` tinyint(3) unsigned NOT NULL auto_increment,
+  `path` varchar(128) default NULL,
+  `descr` varchar(255) default NULL,
+  PRIMARY KEY  (`interface`)
+) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+
+--
 -- Table structure for table `js_status`
 --
 
@@ -181,6 +193,21 @@ CREATE TABLE `js_status` (
   `userid` int(11) default NULL,
   `status` char(3) default NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+--
+-- Table structure for table `location`
+--
+
+DROP TABLE IF EXISTS `location`;
+CREATE TABLE `location` (
+  `user_id` bigint(20) unsigned NOT NULL default '0',
+  `country` char(2) default NULL,
+  `region` varchar(64) default NULL,
+  `city` varchar(64) default NULL,
+  `latitude` varchar(64) default NULL,
+  `longitude` varchar(64) default NULL,
+  PRIMARY KEY  (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Table structure for table `mainboard`
@@ -195,6 +222,15 @@ CREATE TABLE `mainboard` (
   `userid` smallint(5) unsigned NOT NULL default '0',
   PRIMARY KEY  (`threadid`)
 ) ENGINE=MyISAM AUTO_INCREMENT=2140 DEFAULT CHARSET=latin1;
+
+--
+-- Table structure for table `migration_version`
+--
+
+DROP TABLE IF EXISTS `migration_version`;
+CREATE TABLE `migration_version` (
+  `version` int(11) default NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Table structure for table `opt_links`
@@ -217,6 +253,16 @@ CREATE TABLE `perms` (
   `status` varchar(32) default NULL,
   PRIMARY KEY  (`userid`)
 ) ENGINE=MyISAM AUTO_INCREMENT=4902 DEFAULT CHARSET=latin1;
+
+--
+-- Table structure for table `plans`
+--
+
+DROP TABLE IF EXISTS `plans`;
+CREATE TABLE `plans` (
+  `user_id` int(10) unsigned NOT NULL default '0',
+  `plan` longblob
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Table structure for table `poll_choices`
@@ -333,17 +379,6 @@ CREATE TABLE `tentative_accounts` (
   `session` varchar(200) default NULL,
   PRIMARY KEY  (`tentative_accounts_id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=1225 DEFAULT CHARSET=latin1;
-
---
--- Table structure for table `test`
---
-
-DROP TABLE IF EXISTS `test`;
-CREATE TABLE `test` (
-  `a` int(11) NOT NULL default '0',
-  `b` varchar(20) default NULL,
-  PRIMARY KEY  (`a`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
 -- Table structure for table `viewed_secrets`

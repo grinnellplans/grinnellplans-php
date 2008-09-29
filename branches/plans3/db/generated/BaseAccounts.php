@@ -35,5 +35,8 @@ abstract class BaseAccounts extends Doctrine_Record
   {
     $this->hasOne('JsStatus', array('local' => 'userid',
                                     'foreign' => 'userid'));
+
+    $this->hasOne('Location', array('local' => 'userid',
+                                    'foreign' => 'user_id'));
   }
 }

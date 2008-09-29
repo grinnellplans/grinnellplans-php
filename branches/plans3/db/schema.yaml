@@ -49,6 +49,23 @@ Accounts:
     JsStatus:
       foreign: userid
       local: userid
+    Location:
+      foreign: user_id
+      local: userid
+
+Location:
+  tableName: location
+  columns:
+    user_id:
+        type: integer(11)
+        unsigned: 1
+        primary: true
+    country: string(2)
+    region: string(64)
+    city: string(64)
+    latitude: string(64)
+    longitude: string(64)
+
 Autofinger:
   tableName: autofinger
   columns:
@@ -144,14 +161,6 @@ Clickstream:
     query_string: string(2147483647)
     ip: string(15)
     extra_data: string(2147483647)
-Criminal:
-  tableName: criminal
-  columns:
-    id:
-      type: integer(4)
-      primary: true
-      autoincrement: true
-    username: string(50)
 Diffs:
   tableName: diffs
   columns:
@@ -361,30 +370,6 @@ System:
       primary: true
     motd: string(2147483647)
     poll: string(2147483647)
-TempCreated:
-  tableName: temp_created
-  columns:
-    id:
-      type: integer(20)
-      autoincrement: true
-      primary: true
-    created: timestamp(25)
-TempIp:
-  tableName: temp_ip
-  columns:
-    id:
-      type: integer(20)
-      autoincrement: true
-      primary: true
-    ip: string(15)
-TempPath:
-  tableName: temp_path
-  columns:
-    id:
-      type: integer(20)
-      autoincrement: true
-      primary: true
-    path: string(2147483647)
 TentativeAccounts:
   tableName: tentative_accounts
   columns:
@@ -395,13 +380,6 @@ TentativeAccounts:
     created: timestamp(25)
     token: string(16)
     session: string(200)
-Test:
-  tableName: test
-  columns:
-    a:
-      type: integer(4)
-      primary: true
-    b: string(20)
 ViewedSecrets:
   tableName: viewed_secrets
   columns:

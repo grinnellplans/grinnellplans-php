@@ -45,7 +45,7 @@ if ($_POST['secret_submitted']) {
 	mysql_query($sql);
 }
 if (User::logged_in()) {
-	$count = 300;
+	$count = 100;
 	$offset = $_GET['offset'];
 	if (!is_numeric($offset)) {
 		$offset = 0;

@@ -12,7 +12,7 @@ if (!$myprivl == 2 or !$myprivl == 3)
   if ($searchname) {
       $title = "[$searchname]'s Plan";
   } else {
-      $title = "Plans 2.2";
+      $title = "Plans 2.5";
   }  
 ?>
 <html>

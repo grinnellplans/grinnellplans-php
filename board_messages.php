@@ -1,6 +1,6 @@
 <?php
 require_once('Plans.php');
-require_once('Configuration.php')
+require_once('Configuration.php');
 
 require ("functions-main.php"); //load main functions
 $dbh = db_connect(); //establish the database handler
@@ -147,7 +147,7 @@ else
 	if (!($pagenumber > 0)) {
 		$pagenumber = 0;
 	}
-	if ($pagenumber > floor($totalmessages[0] / NOTES_MSGS_PER_PAGE) {
+	if ($pagenumber > floor($totalmessages[0] / NOTES_MSGS_PER_PAGE)) {
 		$pagenumber = floor($totalmessages[0] / NOTES_MSGS_PER_PAGE);
 	}
 	echo "<center>";

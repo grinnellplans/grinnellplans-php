@@ -1,18 +1,18 @@
 <?php
-require_once ("Plans.php");
+require_once('Plans.php');
 new SessionBroker();
 
-require ("functions-main.php"); //load main functions
+require('functions-main.php');
 $dbh = db_connect(); //connect to the database
 $idcookie = User::id();
 
 if (!User::logged_in()) {
-	gdisp_begin($dbh); //begin guest display
+	gdisp_begin($dbh); 
 	echo ("You do not have an autoread list as a guest."); //tell guest they can't do anything on thsi page
-	gdisp_end(); //end guest display
+	gdisp_end(); 
 	
 } else
-//allowed to edit
+
 {
 	mdisp_begin($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], $myprivl); //begin valid user display
 	//get old autofinger list

@@ -1,8 +1,8 @@
 <?php
-require_once ("Plans.php");
+require_once('Plans.php');
 new SessionBroker();
 
-require ("functions-main.php"); //load main functions
+require('functions-main.php');
 $dbh = db_connect(); //get the database connection
 $idcookie = User::id();
 

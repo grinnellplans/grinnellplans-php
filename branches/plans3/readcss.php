@@ -1,9 +1,9 @@
 <?php
-require_once ("Plans.php");
+require_once('Plans.php');
 new SessionBroker();
 
-require ("functions-main.php"); //load main functions
-$dbh = db_connect(); //connect to database
+require('functions-main.php');
+$dbh = db_connect();
 $idcookie = User::id();
 
 $myprivl = setpriv($myprivl, $HTTP_COOKIE_VARS["thepriv"]);

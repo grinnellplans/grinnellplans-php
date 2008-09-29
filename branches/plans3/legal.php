@@ -1,5 +1,5 @@
 <?php
-require_once ("Plans.php");
+require_once('Plans.php');
 
 function last_updated_plan() {
 	if (!($mytime > 0 and $mytime < 100)) {

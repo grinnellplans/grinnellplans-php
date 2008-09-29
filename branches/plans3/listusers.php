@@ -1,9 +1,9 @@
 <?php
-require_once ("Plans.php");
+require_once('Plans.php');
 new SessionBroker();
 
-require ("functions-main.php"); //load main functions
-$dbh = db_connect(); //connect to database
+require('functions-main.php');
+$dbh = db_connect();
 $idcookie = User::id();
 if (User::logged_in()) {
 	mdisp_begin($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], $myprivl); //begin valid user display

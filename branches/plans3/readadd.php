@@ -1,8 +1,8 @@
 <?php
-require_once ("Plans.php");
+require_once('Plans.php');
 new SessionBroker();
 
-require ("functions-main.php"); //load main functions
+require('functions-main.php');
 $dbh = db_connect(); //connect to the database
 $idcookie = User::id();
 
@@ -138,6 +138,6 @@ WHERE owner = '$idcookie' AND interest = '$searchnum'"); //otherwise person just
 	
 } else {
 	gdisp_end();
-} //end guest display
+} 
 db_disconnect($dbh);
 ?>

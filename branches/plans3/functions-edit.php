@@ -1,5 +1,5 @@
 <?php
-require_once ("Plans.php");
+require_once('Plans.php');
 //////////
 /*
 *Set the time when the plan was updated

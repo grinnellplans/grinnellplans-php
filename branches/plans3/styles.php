@@ -1,16 +1,16 @@
 <?php
-require_once ("Plans.php");
+require_once('Plans.php');
 new SessionBroker();
 
-require ("functions-main.php"); //load main functions
+require('functions-main.php');
 $dbh = db_connect(); //connect to the database
 $idcookie = User::id();
 
 if (!User::logged_in()) {
-	gdisp_begin($dbh); //begin guest display
+	gdisp_begin($dbh); 
 	echo ("You are not allowed to edit as a guest."); //tell them they can't do anything here
 	gdisp_end();
-} //end guest display
+} 
 else {
 	$custom_style_form = '';
 	if ($_POST['part']) //if they are submitting the form

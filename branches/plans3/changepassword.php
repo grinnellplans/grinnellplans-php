@@ -1,10 +1,10 @@
 <?php
-require_once ("Plans.php");
-require ("functions-main.php"); //load main functions
-$dbh = db_connect(); //connect to database
+require_once('Plans.php');
+require('functions-main.php');
+$dbh = db_connect();
 $idcookie = User::id();
 if (!User::logged_in()) {
-	gdisp_begin($dbh); //begin guest display
+	gdisp_begin($dbh); 
 	echo ("You are not allowed to edit as a guest."); //tell guest they can't use page
 	gdisp_end();
 } else {

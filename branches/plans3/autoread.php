@@ -1,24 +1,27 @@
 <?php
-require_once ("Plans.php");
+require_once('Plans.php');
+require ("functions-main.php"); 
 
-require ("functions-main.php"); //load main functions
 $dbh = db_connect();
 $idcookie = User::id();
 if (!User::logged_in()) {
-	gdisp_begin($dbh); //begin guestdisplay
-	echo ("You do not have an autoread list as a guest."); //tell them nothing to see
-	gdisp_end(); //send end guestdisplay
-	
-} else
-//allowed to edit
-{
-	mdisp_begin($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], $myprivl); //is a valid user, send beginning display
-	echo "\n<form method=\"post\" action=\"proc_autoread.php\">\n"; //start form
+	gdisp_begin($dbh);
+	echo ("You do not have an autoread list as a guest.");
+	gdisp_end();
+} else {
+	mdisp_begin($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], $myprivl);
+?>
+<form method="post" action="proc_autoread.php">
+<?php
 	$arlist = get_items($dbh, "interest,priority", "autofinger", "owner", $idcookie); //get their autoread info
 	$o = 0;
 	while ($arlist[$o][0]) {
-		$autolist[$arlist[$o][0]][0] = 1; //set up an array with the first index value being the id number of the plan the person is interested in, the second index number being 0, and the actual value being the boolean true, 1
-		$autolist[$arlist[$o][0]][1] = $arlist[$o][1]; //set it so that if the second index number is 1, then value contained will be the priority level
+		$autolist[$arlist[$o][0]][0] = 1;
+		//set up an array with the first index value being the id number of the
+		// plan the person is interested in, the second index number being 0, and
+		// the actual value being the boolean true, 1
+		$autolist[$arlist[$o][0]][1] = $arlist[$o][1];
+		//set it so that if the second index number is 1, then value contained will be the priority level
 		$o++;
 	}
 	//////////////////////////////////////////////////////////////////
@@ -83,7 +86,3 @@ if (!User::logged_in()) {
 }
 db_disconnect($dbh);
 ?>
-
-
-
-

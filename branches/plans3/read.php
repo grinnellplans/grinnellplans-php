@@ -1,10 +1,13 @@
 <?php
-require_once ("Plans.php");
+require_once('Plans.php');
 new SessionBroker();
 
-require ("functions-main.php"); //load main functions
+require('functions-main.php');
 $idcookie = User::id();
-$dbh = db_connect(); //connect to database
+$dbh = db_connect();
+
+$searchnum = (isset($_GET['searchnum']) ? $_GET['searchnum'] : false);
+$searchname = (isset($_GET['searchname']) ? $_GET['searchname'] : false);
 
 $myprivl = setpriv($myprivl, $HTTP_COOKIE_VARS["thepriv"]);
 if (!$searchnum) //if no search number given

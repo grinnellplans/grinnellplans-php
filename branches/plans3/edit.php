@@ -1,6 +1,6 @@
 <?php
-require_once ("Plans.php");
-require ("functions-main.php"); //load main functions
+require_once('Plans.php');
+require('functions-main.php');
 $dbh = db_connect(); ///connect to the database
 $idcookie = User::id();
 $noedit = (isset($_GET['noedit']) ? $_GET['noedit'] : 0);
@@ -8,12 +8,12 @@ $myprivl = (isset($_GET['myprivl']) ? $_GET['myprivl'] : 1);
 $part = $_POST['part'];
 
 if (!User::logged_in()) {
-	gdisp_begin($dbh); //begin guest display
+	gdisp_begin($dbh); 
 	echo ("You are not allowed to edit as a guest."); //tell guest they can't edit
-	gdisp_end(); //end guest display
+	gdisp_end(); 
 	
 } else
-//allowed to edit
+
 {
 	mdisp_begin($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], $_GET['myprivl'], "edit.js"); //begin valid user display
 	if (!$part || $noedit) //if nothing submitted yet

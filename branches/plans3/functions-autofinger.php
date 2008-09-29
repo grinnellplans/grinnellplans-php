@@ -1,5 +1,5 @@
 <?php
-require_once ("Plans.php");
+require_once('Plans.php');
 //////////
 /*
 setpriv - This function sets priviledge level

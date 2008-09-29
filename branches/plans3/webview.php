@@ -1,8 +1,8 @@
 <?php
-require_once ("Plans.php");
+require_once('Plans.php');
 new SessionBroker();
 
-require ("functions-main.php"); //load main functions
+require('functions-main.php');
 $dbh = db_connect();
 $idcookie = User::id();
 if (!User::logged_in()) {
@@ -10,7 +10,7 @@ if (!User::logged_in()) {
 	echo ("You are not allowed to edit as a guest.");
 	gdisp_end();
 } else
-//allowed to edit
+
 {
 	if ($part) {
 		if ($webview != 1) {

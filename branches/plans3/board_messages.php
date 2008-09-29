@@ -2,15 +2,15 @@
 require_once('Plans.php');
 require_once('Configuration.php');
 
-require ("functions-main.php"); //load main functions
+require('functions-main.php');
 $dbh = db_connect(); //establish the database handler
 
 $idcookie = User::id();
 if (!User::logged_in()) {
-	gdisp_begin($dbh); //begin guest display
+	gdisp_begin($dbh); 
 	echo ("You are not allowed to edit as a guest."); //tell person they can't log in
 	gdisp_end();
-} //end guest display
+} 
 else
 //elseallowed to edit
 {

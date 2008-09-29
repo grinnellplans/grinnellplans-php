@@ -1,6 +1,6 @@
 <?php
-require_once ("Plans.php");
-require ("functions-main.php"); //load main functions
+require_once('Plans.php');
+require('functions-main.php');
 $dbh = db_connect();
 $idcookie = User::id();
 if (User::logged_in()) {

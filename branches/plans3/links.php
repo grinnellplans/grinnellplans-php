@@ -1,17 +1,17 @@
 <?php
-require_once ("Plans.php");
+require_once('Plans.php');
 new SessionBroker();
 
-require ("functions-main.php"); //load main functions
+require('functions-main.php');
 $dbh = db_connect(); //set up database connections
 $idcookie = User::id();
 if (!User::logged_in()) {
-	gdisp_begin($dbh); //begin guest display
+	gdisp_begin($dbh); 
 	echo ("You are not allowed to edit as a guest."); //tell user they can't edit
-	gdisp_end(); //end guest display
+	gdisp_end(); 
 	
 } else
-//allowed to edit
+
 {
 	if ($submit) //if form has been submitted
 	{

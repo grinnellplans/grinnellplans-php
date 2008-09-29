@@ -1,10 +1,10 @@
 <?php
-require_once ("Plans.php");
+require_once('Plans.php');
 new SessionBroker();
 
 $mysearch = $_GET['mysearch'];
 
-require ("functions-main.php"); //load main functions
+require('functions-main.php');
 $dbh = db_connect(); //connect to the database
 $idcookie = User::id();
 $context = 100; //set the number of characters around found item

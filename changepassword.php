@@ -8,7 +8,7 @@ if (!User::logged_in()) {
 	echo ("You are not allowed to edit as a guest."); //tell guest they can't use page
 	gdisp_end();
 } else {
-	mdisp_begin($dbh, $idcookie, $HTTP_HOST . $REQUEST_URI, $myprivl); //begin valid user display
+	mdisp_begin($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], $myprivl); //begin valid user display
 	$real_pass = get_item($mydbh, "guest_password", "accounts", "userid", $idcookie);
 	$username = get_item($mydbh, "username", "accounts", "userid", $idcookie);
 	if ($changed && ($checknumb != $idcookie)) {
@@ -91,7 +91,7 @@ http://www.grinnellplans.com/read.php?searchname=<?php
 		</form>
 		</center>
 		<?php
-	mdisp_end($dbh, $idcookie, $HTTP_HOST . $REQUEST_URI, $myprivl); //end valid user display
+	mdisp_end($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], $myprivl); //end valid user display
 	
 }
 db_disconnect($dbh);

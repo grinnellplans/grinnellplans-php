@@ -10,7 +10,7 @@ $dbh = db_connect(); //connect to database
 $admin_email = "grinnellplans@gmail.com";
 $myprivl = setpriv($myprivl, $HTTP_COOKIE_VARS["thepriv"]);
 if (User::logged_in()) {
-	mdisp_begin($dbh, $idcookie, $HTTP_HOST . $REQUEST_URI, $myprivl);
+	mdisp_begin($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], $myprivl);
 } else {
 	gdisp_begin($dbh);
 }
@@ -84,8 +84,8 @@ if ($_GET['submitted']) {
 
 
 	<?php
-if ($auth) {
-	mdisp_end($dbh, $idcookie, $HTTP_HOST . $REQUEST_URI, $myprivl); //and send closing display data
+if (User::logged_in()) {
+	mdisp_end($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], $myprivl); //and send closing display data
 	
 } else {
 	gdisp_end();

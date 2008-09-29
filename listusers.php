@@ -6,7 +6,7 @@ require ("functions-main.php"); //load main functions
 $dbh = db_connect(); //connect to database
 $idcookie = User::id();
 if (User::logged_in()) {
-	mdisp_begin($dbh, $idcookie, $HTTP_HOST . $REQUEST_URI, $myprivl); //begin valid user display
+	mdisp_begin($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], $myprivl); //begin valid user display
 	
 } else {
 	gdisp_begin($dbh); //begin guest user display
@@ -44,7 +44,7 @@ while ($arraylist[$j][0]) {
 	$j++;
 }
 if (User::logged_in()) {
-	mdisp_end($dbh, $idcookie, $HTTP_HOST . $REQUEST_URI, $myprivl);
+	mdisp_end($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], $myprivl);
 } else {
 	gdisp_end();
 }

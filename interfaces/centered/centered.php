@@ -4,21 +4,20 @@
 
 function disp_begin($dbh,$idcookie,$myurl,$myprivl,$cssloc,$jsfile)
 {
-
 if (!$myprivl == 2 or !$myprivl == 3)
  {$myprivl = 1;}
 
-  $searchname = $_GET['searchname'];
-  if ($searchname) {
-      $title = "[$searchname]'s Plan";
-  } else {
-      $title = "Plans 2.2";
-  }  
+ $searchname = $_GET['searchname'];
+ if ($searchname) {
+    $title = "[$searchname]'s Plan";
+} else {
+    $title = "Plans Version 2.3";
+ }
 ?>
 <html>
 <head>
 <META NAME="ROBOTS" CONTENT="NOARCHIVE">
-<title><?php echo $title ?></title>  
+<title><?php echo $title ?></title>
 <link rel=stylesheet
 href="<?=$cssloc?>">
 <?
@@ -27,7 +26,6 @@ if ( !is_null( $jsfile ) )
 ?>
 </head>
 <body>
-<div id="april">
 
 <table width="100%" cellspacing="0" cellpadding="0"
 class="main">
@@ -59,14 +57,9 @@ class="main">preferences</a></td>
 </tr>
 <?
 
-
 $buf = '<td><p class="imagelev1">&nbsp;</p></td><td></td><td></td>';
-
 show_opt_links($idcookie, $buf);
-
-
 ?>
-
 
 <tr>
 <td><p class="imagelev1">&nbsp;</p></td><td></td><td></td>
@@ -75,65 +68,13 @@ show_opt_links($idcookie, $buf);
 
 <tr><td><br></td><td><br></td><td><br></td><td><br></td></tr>
 
-<tr><td><p class="imagelev1">&nbsp;</p></td><td></td><td></td>
-<td><p class="main">auto read list</p></td>
-</tr>
-
-<?
-autoread_list ($myurl, $idcookie, $myprivl);
-/*
-//get autoread list
-if (ereg("index.php", $myurl)) // if has ? but not privl
-{$myurl = ereg_replace("index.php", "blank.php", $myurl);}
-
-
-if (!($myprivl == 1))
-{priority_link($myurl, 1);
-if (!($myprivl == 2))
-{priority_link($myurl, 2);}
-}
-
-echo "<tr><td></td><td><p
-class=\"imagelev2\">&nbsp;</p></td><td></td><td><p 
-class=\"lev2\">level " . $myprivl . "</p></td></tr>";
-
-
-$privarray = mysql_query("Select autofinger.interest,accounts.username
-From autofinger, accounts where owner = '$idcookie' and priority =
-'$myprivl' and updated = '1' and autofinger.interest=accounts.userid");
-
-    while($new_row = mysql_fetch_row($privarray)) {
-      $autoreadlist[] = $new_row;
-    }
-
-$o=0;
-while ($autoreadlist[$o][0])
-{
-echo "<tr><td></td><td></td><td><p class=\"imagelev3\">&nbsp;</p></td>";
-echo "<td><a href=\"read.php?myprivl=" . $myprivl . "&searchname=" .
-$autoreadlist[$o][1] . "\" class=\"lev3\">" .
-$autoreadlist[$o][1] . "</a></td></tr>\n";
-
- $o++;}
-
-if (!($myprivl == 3))
- {if (!($myprivl == 2))
- {priority_link($myurl, 2);}
- priority_link($myurl, 3);
-}
-*/
-
-?>
-
-
-
 </table>
 </td></tr></table>
 </td>
 <td valign="top">
 
-<br />
 
+<br />
 <table>
 
 <tr><td>
@@ -166,16 +107,44 @@ $notprivl .
 
 
 function mdisp_end($dbh,$idcookie,$myurl,$myprivl)
-{echo "</td></tr></table></td></tr></table>";
+{
+
+if (!$myprivl == 2 or !$myprivl == 3)
+ {$myprivl = 1;}
+
+
+
+?>
+</td></tr></table></td><td 
+valign="top" align="left" class="right" 
+width="22%">
+<table class="mainpanel"><tr><td>
+<table class="lowerpanel">
+
+<tr><td><p 
+class="imagelev1">&nbsp;</p></td><td></td><td></td>
+<td><p class="main">auto read list</p></td>
+</tr>
+
+<?
+
+autoread_list ($myurl, $idcookie, $myprivl);
+?>
+</table>
+</td></tr></table>
+</td></tr></table>
+<?
 disclaimer();
 ?>
+
 </body>
 
 
 
 </html>
-
-<?php
+<?
 }
+
+
 
 ?>

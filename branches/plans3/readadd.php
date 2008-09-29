@@ -16,7 +16,7 @@ if (!$searchnum) //if no search number given
 		{
 			if (User::logged_in()) //if is valid user, begin user display
 			{
-				mdisp_begin($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], $myprivl);
+				mdisp_begin($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], get_myprivl());
 			} else
 			//otherwise is a guest, so beging guest display
 			{
@@ -36,13 +36,13 @@ the term in them.";
 				$o = 0;
 				while ($partial_list[$o][0]) //loop through the array of usernames that contain string, printing each one nicely.
 				{
-					echo "<li><a href=\"read.php?myprivl=" . $myprivl . "&searchnum=" . $partial_list[$o][0] . "\">" . $partial_list[$o][1] . "</a>";
+					echo "<li><a href=\"read.php?searchnum=" . $partial_list[$o][0] . "\">" . $partial_list[$o][1] . "</a>";
 					$o++;
 				} //while ($partial_list [$o][0])
 				echo "</ul>";
 			} //if partial names
 			if (User::logged_in()) {
-				mdisp_end($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], $myprivl);
+				mdisp_end($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], get_myprivl());
 			} //end valid user display
 			else {
 				gdisp_end();
@@ -54,14 +54,14 @@ the term in them.";
 		//user has submitted form, but with no user number or username
 		{
 			if (User::logged_in()) {
-				mdisp_begin($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], $myprivl);
+				mdisp_begin($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], get_myprivl());
 			} //begin valid user display
 			else {
 				gdisp_begin($dbh);
 			} //
 			echo "Must enter a name";
 			if (User::logged_in()) {
-				mdisp_end($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], $myprivl);
+				mdisp_end($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], get_myprivl());
 			} else {
 				gdisp_end();
 			}
@@ -74,7 +74,7 @@ the term in them.";
 } //$if (!$searchnum)
 //if we are at this point, we've determined a valid user number
 if (User::logged_in()) {
-	mdisp_begin($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], $myprivl);
+	mdisp_begin($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], get_myprivl());
 } //begin valid user display
 else {
 	gdisp_begin($dbh);
@@ -134,7 +134,7 @@ WHERE owner = '$idcookie' AND interest = '$searchnum'"); //otherwise person just
 			}
 		}
 	}
-	mdisp_end($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], $myprivl); //end valid user display
+	mdisp_end($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], get_myprivl()); //end valid user display
 	
 } else {
 	gdisp_end();

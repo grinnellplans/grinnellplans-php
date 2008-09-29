@@ -31,4 +31,9 @@ abstract class BaseAccounts extends Doctrine_Record
     $this->hasColumn('guest_password', 'string', 30, array('type' => 'string', 'length' => '30'));
   }
 
+  public function setUp()
+  {
+    $this->hasOne('JsStatus', array('local' => 'userid',
+                                    'foreign' => 'userid'));
+  }
 }

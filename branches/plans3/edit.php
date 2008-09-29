@@ -4,7 +4,6 @@ require('functions-main.php');
 $dbh = db_connect(); ///connect to the database
 $idcookie = User::id();
 $noedit = (isset($_GET['noedit']) ? $_GET['noedit'] : 0);
-$myprivl = (isset($_GET['myprivl']) ? $_GET['myprivl'] : 1);
 $part = $_POST['part'];
 
 if (!User::logged_in()) {
@@ -15,7 +14,7 @@ if (!User::logged_in()) {
 } else
 
 {
-	mdisp_begin($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], $_GET['myprivl'], "edit.js"); //begin valid user display
+	mdisp_begin($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], get_myprivl(), "edit.js"); //begin valid user display
 	if (!$part || $noedit) //if nothing submitted yet
 	{
 		$myedit = get_items($dbh, "plan,edit_cols,edit_rows", "accounts", "userid", $idcookie); //get plan as well as what the size of the plan should be
@@ -49,12 +48,9 @@ if (!User::logged_in()) {
 		echo $myedit[0][2] ?>" cols="<?php
 		echo $myedit[0][1] ?>" 
 		name="plan" wrap="virtual" onkeyup="javascript:countlen();"><?php
-		echo $plan . "</textarea><input type=\"hidden\" name=\"part\" value=\"1\">";
-		echo "<input type=\"hidden\" name=\"myprivl\" value=\"" . $myprivl . "\"><br>
-		<img src=\"left.gif\" width=\"2\" height=\"16\"><img id=\"filled\" src=\"img\\filled.gif\" width=\"0\" height=\"16\"><img id=\"unfilled\" src=\"img\\
-		unfilled.gif\" width=\"100\" height=\"16\"><img src=\"right.gif\" width=\"2\" height=\"16\"> <input type=\"text\" name=\"perc\" value=\"0%\" size=\"4\" style=\"border: 0px\" readonly>
-		&nbsp;&nbsp;&nbsp;<input type=\"submit\" value=\"Change Plan\"></form>";
-		mdisp_end($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], $myprivl);
+		echo $plan . "</textarea><br/><input type=\"hidden\" name=\"part\" value=\"1\">";
+		echo "<img src=\"left.gif\" width=\"2\" height=\"16\"><img id=\"filled\" src=\"img\\filled.gif\" width=\"0\" height=\"16\"><img id=\"unfilled\" src=\"img\\unfilled.gif\" width=\"100\" height=\"16\"><img src=\"right.gif\" width=\"2\" height=\"16\"> <input type=\"text\" name=\"perc\" value=\"0%\" size=\"4\" style=\"border: 0px\" readonly>&nbsp;&nbsp;&nbsp;<input type=\"submit\" value=\"Change Plan\"></form>";
+		mdisp_end($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], get_myprivl());
 	} //if (!$part)
 	else
 	//if form info submitted, process
@@ -74,7 +70,7 @@ if (!User::logged_in()) {
 		echo "<center><h2>Plan Changed To: </h2></center><p class=\"sub\">";
 		echo $plan; //display new plan for user
 		echo "</p>";
-		mdisp_end($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], $myprivl); //end valid user display
+		mdisp_end($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], get_myprivl()); //end valid user display
 		
 	} //if (!$part) else
 	

@@ -45,6 +45,10 @@ Accounts:
     edit_text: string(2147483647)
     user_type: string(128)
     guest_password: string(30)
+  relations:
+    JsStatus:
+      foreign: userid
+      local: userid
 Autofinger:
   tableName: autofinger
   columns:
@@ -195,14 +199,12 @@ Expenses:
 JsStatus:
   tableName: js_status
   columns:
-    id:
-      type: integer(20)
-      autoincrement: true
-      primary: true
     status:
       type: string(3)
       fixed: true
-    userid: integer(4)
+    userid:
+      type: integer(4)
+      primary: true
 Mainboard:
   tableName: mainboard
   columns:

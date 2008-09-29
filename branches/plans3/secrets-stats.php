@@ -5,9 +5,8 @@ new SessionBroker();
 require('functions-main.php');
 $dbh = db_connect();
 $idcookie = User::id();
-$myprivl = setpriv($myprivl, $HTTP_COOKIE_VARS["thepriv"]);
 if (User::logged_in()) {
-	mdisp_begin($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], $myprivl);
+	mdisp_begin($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], get_myprivl());
 	$sql = 'select date, yes, no, 
     substr(concat("  ",100*no/(yes+no),"%"), -7) as percent_no 
     from (select date(date) as date, sum(if(display="yes",1,0)) as yes,
@@ -22,7 +21,7 @@ if (User::logged_in()) {
 }
 if (User::logged_in()) //if is a valid user, give them the option of putting the plan on their autoread list, or taking it off, and also if plan is on their autoread list, mark as read and mark time
 {
-	mdisp_end($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], $myprivl);
+	mdisp_end($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], get_myprivl());
 } else {
 	gdisp_end();
 }

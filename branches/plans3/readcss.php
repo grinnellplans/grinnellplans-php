@@ -6,7 +6,6 @@ require('functions-main.php');
 $dbh = db_connect();
 $idcookie = User::id();
 
-$myprivl = setpriv($myprivl, $HTTP_COOKIE_VARS["thepriv"]);
 if (!$searchnum) //if no search number given
 {
 	if (isvaliduser($dbh, $searchname)) //if valid username, change to num
@@ -18,7 +17,7 @@ if (!$searchnum) //if no search number given
 		if ($searchname) //if a searchname has been given
 		{
 			if (User::logged_in()) {
-				mdisp_begin($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], $myprivl);
+				mdisp_begin($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], get_myprivl());
 			} else
 			//begin guest user display
 			{
@@ -39,7 +38,7 @@ if (!$searchnum) //if no search number given
 					$o = 0;
 					while ($partial_list[$o][0]) //loop through displaying the usernames as links
 					{
-						echo "<li><a href=\"read.php?myprivl=" . $myprivl . "&searchnum=" . $partial_list[$o][0] . "\">" . $partial_list[$o][1] . "</a>";
+						echo "<li><a href=\"read.php?searchnum=" . $partial_list[$o][0] . "\">" . $partial_list[$o][1] . "</a>";
 						$o++;
 					} //while ($partial_list [$o][0])
 					echo "</ul>";
@@ -51,7 +50,7 @@ if (!$searchnum) //if no search number given
 				echo "There is either no plan with that name or it is not viewable to guests.";
 			}
 			if (User::logged_in()) {
-				mdisp_end($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], $myprivl);
+				mdisp_end($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], get_myprivl());
 			} else {
 				gdisp_end();
 			}
@@ -59,13 +58,13 @@ if (!$searchnum) //if no search number given
 			exit();
 		} else {
 			if (User::logged_in()) {
-				mdisp_begin($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], $myprivl);
+				mdisp_begin($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], get_myprivl());
 			} else {
 				gdisp_begin($dbh);
 			}
 			echo "Must enter a name";
 			if (User::logged_in()) {
-				mdisp_end($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], $myprivl);
+				mdisp_end($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], get_myprivl());
 			} else {
 				gdisp_end();
 			}
@@ -77,7 +76,7 @@ if (!$searchnum) //if no search number given
 } //$if (!$searchnum)
 //begin displaying if there is a user with name or number given
 if (User::logged_in()) {
-	mdisp_begin($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], $myprivl);
+	mdisp_begin($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], get_myprivl());
 } else {
 	gdisp_begin($dbh);
 }
@@ -153,7 +152,7 @@ type="submit" value="Set Priority">&nbsp;&nbsp;
     <?php
 		echo "</div>";
 	}
-	mdisp_end($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], $myprivl);
+	mdisp_end($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], get_myprivl());
 } else {
 	gdisp_end();
 }
@@ -198,7 +197,7 @@ function basicSearch($idcookie, $dbh, User::logged_in(), $context, $mysearch)
 				$new_row[1] = stripslashes($new_row[1]);
 				$matchcount = preg_match_all("/(" . $mysearch . ")/si", $new_row[1], $matcharray);
 				$new_row[1] = preg_replace("/(" . $mysearch . ")/si", "<b>\\1</b>", $new_row[1]);
-				echo "<li>[<a href=\"read.php?myprivl=" . $myprivl . "&searchname=" . $new_row[0] . "\">" . $new_row[0] . "</a>] (" . $matchcount . ")<br>";
+				echo "<li>[<a href=\"read.php?searchname=" . $new_row[0] . "\">" . $new_row[0] . "</a>] (" . $matchcount . ")<br>";
 				$start_array = array();
 				$end_array = array();
 				$o = 0;

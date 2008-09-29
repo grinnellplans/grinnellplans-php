@@ -7,9 +7,9 @@ $idcookie = User::id();
 $userid = $idcookie;
 
 $dbh = db_connect();
-$myprivl = setpriv($myprivl, $HTTP_COOKIE_VARS["thepriv"]);
+
 if (User::logged_in()) {
-	mdisp_begin($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], $myprivl);
+	mdisp_begin($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], get_myprivl());
 } else {
 	gdisp_begin($dbh);
 }
@@ -115,7 +115,7 @@ list_polls();
 	</p>
 	<?php
 if (User::logged_in()) {
-	mdisp_end($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], $myprivl); //and send closing display data
+	mdisp_end($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], get_myprivl()); //and send closing display data
 	
 } else {
 	gdisp_end();

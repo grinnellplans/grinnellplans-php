@@ -9,7 +9,7 @@ $dbh = db_connect(); //connect to the database
 $idcookie = User::id();
 $context = 100; //set the number of characters around found item
 if (User::logged_in()) {
-	mdisp_begin($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], $myprivl);
+	mdisp_begin($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], get_myprivl());
 } //begin user display
 else {
 	gdisp_begin($dbh);
@@ -21,8 +21,6 @@ if (!$mysearch) //if no search query, give search form
 	<input type="text" name="mysearch">
 	<input type="checkbox" name="regexp" value="1">Reg. Exp.
 	<input type="checkbox" name="planlove" value="1">Planlove
-	<input type="hidden" name="myprivl" value="<?php
-	echo $myprivl; ?>">
 	<input type="submit" value="Search">
 	</form>
 	<?php
@@ -91,7 +89,7 @@ if (!$mysearch) //if no search query, give search form
 
 				echo "<!--- " . $mysearch . "--->";
 				echo "<!--- " . preg_quote($mysearch, "/") . "--->";
-				echo "<li>[<a href=\"read.php?myprivl=" . $myprivl . "&searchname=" . $new_row[0] . "\">" . $new_row[0] . "</a>] (" . $matchcount . ")<br>";
+				echo "<li>[<a href=\"read.php?searchname=" . $new_row[0] . "\">" . $new_row[0] . "</a>] (" . $matchcount . ")<br>";
 				$start_array = array();
 				$end_array = array();
 				$o = 0;
@@ -161,8 +159,6 @@ if (!$mysearch) //if no search query, give search form
 		<input type="text" name="mysearch">
 		<input type="checkbox" name="regexp" value="1">Reg. Exp.
 		<input type="checkbox" name="planlove" value="1">Planlove   
-		<input type="hidden" name="myprivl" value="<?php
-			echo $myprivl; ?>">
 		<input type="submit" value="Search">
 		</form>
 		<?php
@@ -172,7 +168,7 @@ if (!$mysearch) //if no search query, give search form
 	
 } //if something is entered to search for
 if (User::logged_in()) {
-	mdisp_end($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], $myprivl);
+	mdisp_end($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], get_myprivl());
 } else {
 	gdisp_end();
 }

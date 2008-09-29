@@ -12,7 +12,6 @@ if (!($mytime > 0 and $mytime < 100)) {
 ?>
 <form action="planwatch.php" method="POST">
 <input type="text" name="mytime" value="<?=$mytime?>">
-<input type="hidden" name="myprivl" value="<?=$myprivl?>">
 <input type="submit" value="See Plans">
 </form>
 <?php
@@ -29,7 +28,7 @@ $my_planwatch = mysql_query("select userid,username,DATE_FORMAT(changed, '%l:%i 
 while ($new_plans = mysql_fetch_row($my_planwatch)) {
 ?>
 <tr>
-	<td><a href="read.php?myprivl=<?=$myprivl?>&searchname=<?=$new_plans[1]?>"><?=$new_plans[1]?></a></td>
+	<td><a href="read.php?searchname=<?=$new_plans[1]?>"><?=$new_plans[1]?></a></td>
 	<td><?=$new_plans[2]?></td>
 </tr>
 <?php } ?>

@@ -12,7 +12,7 @@ function last_updated_plan() {
 	//do the query with specifying date format to be returned
 	//display the results of the query
 	while ($new_plans = mysql_fetch_row($my_planwatch)) {
-?>Do you read <a href="read.php?myprivl=<?= $myprivl ?>&searchname=<?=$new_plans[1]?>"><?=$new_plans[1]?></a>, who just updated? <hr><?php
+?>Do you read <a href="read.php?searchname=<?=$new_plans[1]?>"><?=$new_plans[1]?></a>, who just updated? <hr><?php
 	}
 }
 

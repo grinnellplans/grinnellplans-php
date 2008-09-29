@@ -5,8 +5,6 @@ require ("functions-main.php");
 $dbh = db_connect();
 $idcookie = User::id();
 
-$myprivl = setpriv($myprivl, $HTTP_COOKIE_VARS["thepriv"]);
-
 if (User::logged_in()) {
 	$db = new Database();
 	$db->query("delete from viewed_secrets where userid = $idcookie");

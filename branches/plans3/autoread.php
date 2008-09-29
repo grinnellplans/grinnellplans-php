@@ -9,7 +9,7 @@ if (!User::logged_in()) {
 	echo ("You do not have an autoread list as a guest.");
 	gdisp_end();
 } else {
-	mdisp_begin($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], $myprivl);
+	mdisp_begin($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], get_myprivl());
 ?>
 <form method="post" action="proc_autoread.php">
 <?php
@@ -40,7 +40,7 @@ if (!User::logged_in()) {
 		} else
 		//if not selected letter, make letter link to select that letter
 		{
-			echo " <a href= \"autoread.php?myprivl=" . $myprivl . "&letternum=" . $i . "\">" . chr($i) . "</a> ";
+			echo " <a href= \"autoread.php?&letternum=" . $i . "\">" . chr($i) . "</a> ";
 		}
 		$i++; //go on to next letter
 		
@@ -78,7 +78,6 @@ if (!User::logged_in()) {
 	//pass on other info
 	echo "<input type=\"hidden\" name=\"set_autoreadlist\" value=\"" . $idcookie . "\">";
 	echo "<input type=\"hidden\" name=\"letternum\" value=\"" . $letternum . "\">";
-	echo "<input type=\"hidden\" name=\"myprivl\" value=\"" . $myprivl . "\">";
 	echo "<input type=\"submit\" value=\"Submit\"></form>";
 	/////endform here
 	mdisp_end($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], $myprivl); //end display

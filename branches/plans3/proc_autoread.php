@@ -14,7 +14,7 @@ if (!User::logged_in()) {
 } else
 
 {
-	mdisp_begin($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], $myprivl); //begin valid user display
+	mdisp_begin($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], get_myprivl()); //begin valid user display
 	//get old autofinger list
 	$arlist = get_items($dbh, "interest,priority", "autofinger", "owner", $idcookie); //get the contents of a person's autofinger list
 	$arraylist = get_letters($dbh, chr($letternum), chr($letternum + 1), $idcookie); //get usernames that start with that letter
@@ -84,12 +84,12 @@ owner = '$idcookie' and interest = '$val'");
 			echo "[" . chr($i) . "]"; //show that the letter is selected
 			
 		} else {
-			echo " <a href= \"autoread.php?myprivl=" . $myprivl . "&letternum=" . $i . "\">" . chr($i) . "</a> ";
+			echo " <a href= \"autoread.php?letternum=" . $i . "\">" . chr($i) . "</a> ";
 		}
 		$i++;
 	}
 	echo "<HR>" . "AutoRead List Changed.";
-	mdisp_end($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], $myprivl);
+	mdisp_end($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], get_myprivl());
 }
 db_disconnect($dbh);
 ?>

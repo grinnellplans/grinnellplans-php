@@ -16,7 +16,7 @@ else
 	if ($part) //if form has been submitted		 
 	{		 
 		set_item($dbh, "display", "interface", $interface, "userid", $idcookie); //set which interface they selected		 
-		mdisp_begin($dbh, $idcookie, $HTTP_HOST . $REQUEST_URI, $myprivl); //begin valid user display		 
+		mdisp_begin($dbh, $idcookie, $HTTP_HOST . $REQUEST_URI, get_myprivl()); //begin valid user display		 
 		//Let user know the interface has been set		 
 		 
 ?>		 
@@ -25,7 +25,7 @@ else
 	} else		 
 	//if not submitted, give form		 
 	{		 
-		mdisp_begin($dbh, $idcookie, $HTTP_HOST . $REQUEST_URI, $myprivl); //begin valid user display		 
+		mdisp_begin($dbh, $idcookie, $HTTP_HOST . $REQUEST_URI, get_myprivl()); //begin valid user display		 
 		$my_result = mysql_query("Select interface,descr From		 
 interface"); //get the current interfaces and descriptions		 
 		while ($new_row = mysql_fetch_row($my_result)) {		 
@@ -56,7 +56,7 @@ value=\"";
               </center>		 
               <?php		 
 	}		 
-	mdisp_end($dbh, $idcookie, $HTTP_HOST . $REQUEST_URI, $myprivl); //end valid user display		 
+	mdisp_end($dbh, $idcookie, $HTTP_HOST . $REQUEST_URI, get_myprivl()); //end valid user display		 
 		 
 } //if is a valid user		 
 db_disconnect($dbh);		 

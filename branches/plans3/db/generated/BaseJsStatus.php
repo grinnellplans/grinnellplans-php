@@ -8,9 +8,13 @@ abstract class BaseJsStatus extends Doctrine_Record
   public function setTableDefinition()
   {
     $this->setTableName('js_status');
-    $this->hasColumn('id', 'integer', 20, array('type' => 'integer', 'autoincrement' => true, 'primary' => true, 'length' => '20'));
     $this->hasColumn('status', 'string', 3, array('type' => 'string', 'fixed' => 1, 'length' => '3'));
-    $this->hasColumn('userid', 'integer', 4, array('type' => 'integer', 'length' => '4'));
+    $this->hasColumn('userid', 'integer', 4, array('type' => 'integer', 'primary' => true, 'length' => '4'));
   }
 
+  public function setUp()
+  {
+    $this->hasMany('Accounts', array('local' => 'userid',
+                                     'foreign' => 'userid'));
+  }
 }

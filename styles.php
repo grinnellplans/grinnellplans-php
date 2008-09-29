@@ -13,24 +13,24 @@ if (!User::logged_in()) {
 } //end guest display
 else {
 	$custom_style_form = '';
-	if ($part) //if they are submitting the form
+	if ($_POST['part']) //if they are submitting the form
 	{
-		if ($style == "custom") {
-			if (!$urcss) {
+		if ($_POST['style'] == "custom") {
+			if (!$_POST['urcss']) {
 				$custom_style_form = 'Custom Stylesheet URL: <br />';
 				$custom_style_form.= '<form action="styles.php" method="post">';
 				$custom_style_form.= '<input type="text" size="60" name="urcss" value="' . get_item($dbh, "stylesheet", "stylesheet", "userid", $idcookie) . '">';
 				$custom_style_form.= '<input type="hidden" name="style" value="custom"><input type="hidden" name="part" value="1"><input type="submit" value="Submit"></form>';
 			} else {
 				if (get_item($dbh, "stylesheet", "stylesheet", "userid", $idcookie)) {
-					set_item($dbh, "stylesheet", "stylesheet", $urcss, "userid", $idcookie);
+					set_item($dbh, "stylesheet", "stylesheet", $_POST['urcss'], "userid", $idcookie);
 				} else {
-					add_row($dbh, "stylesheet", array($idcookie, $urcss));
+					add_row($dbh, "stylesheet", array($idcookie, $_POST['urcss']));
 				}
 			}
 		} else {
 			delete_item($dbh, "stylesheet", "userid", $idcookie);
-			set_item($dbh, "display", "style", $style, "userid", $idcookie); //set the style that they selected
+			set_item($dbh, "display", "style", $_POST['style'], "userid", $idcookie); //set the style that they selected
 			$custom_style_form = ' <center><h2><i>Style Set</i></h2>  </center> ';
 		} //if $style=custome, else
 		

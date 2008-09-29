@@ -1,22 +1,17 @@
 <?php
-require_once ("Plans.php");
-require ("functions-main.php"); //load main functions
+require_once('Plans.php');
+require('functions-main.php');
 $dbh = db_connect(); ///connect to the database
 $idcookie = User::id();
-$noedit = (isset($_GET['noedit']) ? $_GET['noedit'] : 0);
-$myprivl = (isset($_GET['myprivl']) ? $_GET['myprivl'] : 1);
-$part = $_POST['part'];
+$part = (isset($_POST['part']) ? $_POST['part'] : false);
 
 if (!User::logged_in()) {
-	gdisp_begin($dbh); //begin guest display
+	gdisp_begin($dbh); 
 	echo ("You are not allowed to edit as a guest."); //tell guest they can't edit
-	gdisp_end(); //end guest display
-	
-} else
-//allowed to edit
-{
-	mdisp_begin($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], $_GET['myprivl'], "edit.js"); //begin valid user display
-	if (!$part || $noedit) //if nothing submitted yet
+	gdisp_end(); 
+} else {
+	mdisp_begin($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], get_myprivl(), "edit.js"); //begin valid user display
+	if (!$part) //if nothing submitted yet
 	{
 		$myedit = get_items($dbh, "plan,edit_cols,edit_rows", "accounts", "userid", $idcookie); //get plan as well as what the size of the plan should be
 		$plan = $myedit[0][0]; //put the contents of the plan into the plan variable for easier use.
@@ -45,20 +40,17 @@ if (!User::logged_in()) {
 		
 ?>
 		<form action="edit.php" method="post" id="editform" name="editform">
-		<textarea rows="<?php
-		echo $myedit[0][2] ?>" cols="<?php
-		echo $myedit[0][1] ?>" 
-		name="plan" wrap="virtual" onkeyup="javascript:countlen();"><?php
-		echo $plan . "</textarea><input type=\"hidden\" name=\"part\" value=\"1\">";
-		echo "<input type=\"hidden\" name=\"myprivl\" value=\"" . $myprivl . "\"><br>
-		<img src=\"left.gif\" width=\"2\" height=\"16\"><img id=\"filled\" src=\"img\\filled.gif\" width=\"0\" height=\"16\"><img id=\"unfilled\" src=\"img\\
-		unfilled.gif\" width=\"100\" height=\"16\"><img src=\"right.gif\" width=\"2\" height=\"16\"> <input type=\"text\" name=\"perc\" value=\"0%\" size=\"4\" style=\"border: 0px\" readonly>
-		&nbsp;&nbsp;&nbsp;<input type=\"submit\" value=\"Change Plan\"></form>";
-		mdisp_end($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], $myprivl);
-	} //if (!$part)
-	else
-	//if form info submitted, process
-	{
+		<textarea rows="<?=$myedit[0][2] ?>" cols="<?=$myedit[0][1] ?>" name="plan" wrap="virtual" onkeyup="javascript:countlen();"><?= $plan ?></textarea><br/>
+		<input type="hidden" name="part" value="1">
+		<img src="img/left.gif" width="2" height="16"><img id="filled" src="img/filled.gif" width="0" height="16">
+		<img id="unfilled" src="img/unfilled.gif" width="100" height="16">
+		<img src="right.gif" width="2" height="16"> 
+		<input type="text" name="perc" value="0%" size="4" style="border: 0px" readonly>&nbsp;&nbsp;&nbsp;
+		<input type="submit" value="Change Plan"></form>
+<?php
+		mdisp_end($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], get_myprivl());
+	} else {
+		//if form info submitted, process
 		$diff_data = get_items($dbh, "edit_text", "accounts", "userid", $idcookie); //get plan as well as what the size of the plan should be
 		$old_plan = $diff_data[0][0]; //put the contents of the plan into the plan variable for easier use.
 		$diff = xdiff_string_diff($old_plan, $plan);
@@ -74,7 +66,7 @@ if (!User::logged_in()) {
 		echo "<center><h2>Plan Changed To: </h2></center><p class=\"sub\">";
 		echo $plan; //display new plan for user
 		echo "</p>";
-		mdisp_end($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], $myprivl); //end valid user display
+		mdisp_end($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], get_myprivl()); //end valid user display
 		
 	} //if (!$part) else
 	

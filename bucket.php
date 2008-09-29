@@ -1,5 +1,5 @@
 <?php
-require_once ("Plans.php");
+require_once('Plans.php');
 
 $b = (int)$_GET['b'];
 if (file_exists("buckets/$b.php")) {

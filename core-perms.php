@@ -1,5 +1,5 @@
 <?php
-require_once ("Plans.php");
+require_once('Plans.php');
 
 require_once ("dbfunctions.php");
 $dbh = db_connect();

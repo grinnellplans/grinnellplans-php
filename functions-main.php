@@ -1,5 +1,5 @@
 <?php
-require_once ("Plans.php");
+require_once('Plans.php');
 if (isset($_GET['jumbled'])) {
 	if ($_GET['jumbled'] == 'no') {
 		setcookie('jumbled', 'no');
@@ -17,5 +17,6 @@ require_once ("functions-autofinger.php");
 require_once ("functions-display.php");
 require_once ("functions-edit.php");
 require_once ("functions-core.php");
+require_once ("functions-transition.php");
 require ("core-perms.php");
 ?>

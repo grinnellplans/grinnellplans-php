@@ -1,5 +1,5 @@
 <?php
-require_once ("Plans.php");
+require_once('Plans.php');
 require_once ('Configuration.php');
 /*
 *Connects to the Database and returns the database handler.

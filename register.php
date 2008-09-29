@@ -1,16 +1,16 @@
 <?php
-require_once ("Plans.php");
+require_once('Plans.php');
 new SessionBroker();
 
-require ("functions-main.php"); //load main functions
+require('functions-main.php');
 require ("functions-kommand.php"); //load main functions
 $idcookie = User::id();
 $userid = $idcookie;
-$dbh = db_connect(); //connect to database
+$dbh = db_connect();
 $admin_email = "grinnellplans@gmail.com";
-$myprivl = setpriv($myprivl, $HTTP_COOKIE_VARS["thepriv"]);
+
 if (User::logged_in()) {
-	mdisp_begin($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], $myprivl);
+	mdisp_begin($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], get_myprivl());
 } else {
 	gdisp_begin($dbh);
 }
@@ -85,7 +85,7 @@ if ($_GET['submitted']) {
 
 	<?php
 if (User::logged_in()) {
-	mdisp_end($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], $myprivl); //and send closing display data
+	mdisp_end($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], get_myprivl()); //and send closing display data
 	
 } else {
 	gdisp_end();

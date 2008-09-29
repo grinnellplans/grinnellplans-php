@@ -1,19 +1,12 @@
 <?php
-require_once ("Plans.php");
+require_once('Plans.php');
 //////////
 /*
 setpriv - This function sets priviledge level
 */
 function setpriv($myprivl, $cookpriv)
 {
-	if ($myprivl) {
-		if ($myprivl != $cookpriv) {
-			setcookie("thepriv", $myprivl, 0, "");
-		}
-		return $myprivl;
-	} else {
-		return $cookpriv;
-	}
+	$_SESSION['lvl'] = $myprivl;
 }
 //////////
 /*
@@ -34,10 +27,7 @@ function setReadTime($dbh, $idcookie, $interest)
 function mark_as_read($dbh, $owner, $myprivl)
 {
 	$query = "UPDATE autofinger set updated = 0 where owner ='$owner' and priority = '$myprivl'";
-	//echo $query;
 	mysql_query($query);
-	//echo $myprivl;
-	
 }
 function add_param($url, $name, $value)
 {
@@ -62,27 +52,28 @@ function autoread_list($myurl, $idcookie, $myprivl)
 	//echo '<!-- JLW ' . $myurl . "-->\n\n";
 	echo "</table>\n";
 	echo "<table>\n";
-	$mark_as_read = $_GET['mark_as_read'];
+	$mark_as_read = (isset($_GET['mark_as_read']) ? $_GET['mark_as_read'] : false);
 	if ($mark_as_read) {
-		//       echo $mark_as_read;
 		mark_as_read($dbh, $idcookie, $myprivl);
 	}
 	for ($priority = 1; $priority < 4; $priority++) {
-		$new_url = add_param($myurl, 'myprivl', $priority);
-		$new_url = remove_param($new_url, 'mark_as_read');
+//		$new_url = add_param('setpriv.php', 'myprivl', $priority);
+//		$new_url = remove_param($new_url, 'mark_as_read');
+		$new_url = "setpriv.php?myprivl=$priority";
 		echo '<tr><td></td><td><p class="imagelev2' . '">&nbsp;</p></td><td></td>' . "\n";
-		echo '<td><a href="http://' . $new_url . '" class="lev2' . '">level ' . $priority . '</a>' . "\n";
+		echo '<td><a href="' . $new_url . '" class="lev2' . '">level ' . $priority . '</a>' . "\n";
 		echo '</td>' . "\n";
 		if ($priority == $myprivl) {
 			$privarray = mysql_query("Select autofinger.interest,accounts.username
 			From autofinger, accounts where owner = '$idcookie' and priority =
 			'$myprivl' and updated = '1' and autofinger.interest=accounts.userid");
+			$autoreadlist = array();
 			while ($new_row = mysql_fetch_row($privarray)) {
 				$autoreadlist[] = $new_row;
 			}
 			echo '<td><a onClick =" ' . " return confirm('Are you sure you\'d like to mark all the Plans on level " . $priority . " as read?')" . '" href="http://' . add_param($new_url, 'mark_as_read', 1) . '">X</a></td></tr>' . "\n";
 			$o = 0;
-			while ($autoreadlist[$o][0]) {
+			while (isset($autoreadlist[$o]) && ($autoreadlist[$o][0])) {
 				$read_url = 'read.php';
 				$read_url = add_param($read_url, 'myprivl', $myprivl);
 				$read_url = add_param($read_url, 'searchname', $autoreadlist[$o][1]);

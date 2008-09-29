@@ -1,12 +1,14 @@
 <?php
-require_once ("Plans.php");
+require_once('Plans.php');
 new SessionBroker();
 
-require ("functions-main.php"); //load main functions
+require('functions-main.php');
 $idcookie = User::id();
-$dbh = db_connect(); //connect to database
+$dbh = db_connect();
 
-$myprivl = setpriv($myprivl, $HTTP_COOKIE_VARS["thepriv"]);
+$searchnum = (isset($_GET['searchnum']) ? $_GET['searchnum'] : false);
+$searchname = (isset($_GET['searchname']) ? $_GET['searchname'] : false);
+
 if (!$searchnum) //if no search number given
 {
 	if (isvaliduser($dbh, $searchname)) //if valid username, change to num
@@ -19,7 +21,7 @@ if (!$searchnum) //if no search number given
 		{
 			$searchname = htmlentities($searchname);
 			if (User::logged_in()) {
-				mdisp_begin($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], $myprivl);
+				mdisp_begin($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], get_myprivl());
 			} else
 			//begin guest user display
 			{
@@ -40,7 +42,7 @@ if (!$searchnum) //if no search number given
 					$o = 0;
 					while ($partial_list[$o][0]) //loop through displaying the usernames as links
 					{
-						echo "<li><a href=\"read.php?myprivl=" . $myprivl . "&searchnum=" . $partial_list[$o][0] . "\">" . $partial_list[$o][1] . "</a>";
+						echo "<li><a href=\"read.php?searchnum=" . $partial_list[$o][0] . "\">" . $partial_list[$o][1] . "</a>";
 						$o++;
 					} //while ($partial_list [$o][0])
 					echo "</ul>";
@@ -53,7 +55,7 @@ if (!$searchnum) //if no search number given
 				echo 'Please  <a href="index.php">Log in</a> or <a href="register.php">Register</a>.';
 			}
 			if (User::logged_in()) {
-				mdisp_end($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], $myprivl);
+				mdisp_end($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], get_myprivl());
 			} else {
 				gdisp_end();
 			}
@@ -61,13 +63,13 @@ if (!$searchnum) //if no search number given
 			exit();
 		} else {
 			if (User::logged_in()) {
-				mdisp_begin($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], $myprivl);
+				mdisp_begin($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], get_myprivl());
 			} else {
 				gdisp_begin($dbh);
 			}
 			echo "Must enter a name";
 			if (User::logged_in()) {
-				mdisp_end($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], $myprivl);
+				mdisp_end($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], get_myprivl());
 			} else {
 				gdisp_end();
 			}
@@ -91,7 +93,7 @@ if (User::logged_in()) {
 		$myonlist[0] = "checked"; //if not on autoread list, show is not on priority list
 		
 	}
-	mdisp_begin($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], $myprivl);
+	mdisp_begin($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], get_myprivl());
 } else {
 	gdisp_begin($dbh);
 }
@@ -159,7 +161,7 @@ if (User::logged_in()) //if is a valid user, give them the option of putting the
 		</form></p></td></tr></table></center>
 			<?php
 	}
-	mdisp_end($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], $myprivl);
+	mdisp_end($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], get_myprivl());
 } else {
 	gdisp_end();
 }
@@ -186,11 +188,7 @@ function basicSearch($idcookie, $dbh, $_auth, $context, $mysearch)
 			$mysearch = preg_replace("/\</", "&lt;", $mysearch);
 			$mysearch = preg_replace("/\>/", "&gt;", $mysearch);
 			$mysearch = preg_quote($mysearch);
-			if ($mynamedsearch) {
-				$likeclause = "(plan LIKE '%$mysearch%' OR plan LIKE '%$mynamedsearch%')";
-			} else {
-				$likeclause = "plan LIKE '%$mysearch%'";
-			}
+			$likeclause = "plan LIKE '%$mysearch%'";
 			$querytext = "SELECT username, plan, userid FROM accounts
 				where $likeclause $guest ORDER BY username";
 			echo "<!--- $querytext --->";
@@ -204,7 +202,7 @@ function basicSearch($idcookie, $dbh, $_auth, $context, $mysearch)
 				$new_row[1] = stripslashes($new_row[1]);
 				$matchcount = preg_match_all("/(" . preg_quote($mysearch, "/") . ")/si", $new_row[1], $matcharray);
 				$new_row[1] = preg_replace("/(" . preg_quote($mysearch, "/") . ")/si", "<b>\\1</b>", $new_row[1]);
-				echo "<li>[<a href=\"read.php?myprivl=" . $myprivl . "&searchname=" . $new_row[0] . "\">" . $new_row[0] . "</a>] (" . $matchcount . ")<br>";
+				echo "<li>[<a href=\"read.php?searchname=" . $new_row[0] . "\">" . $new_row[0] . "</a>] (" . $matchcount . ")<br>";
 				$start_array = array();
 				$end_array = array();
 				$o = 0;

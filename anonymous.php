@@ -5,20 +5,17 @@ require ("functions-main.php");
 $dbh = db_connect();
 $idcookie = User::id();
 
-$myprivl = setpriv($myprivl, $HTTP_COOKIE_VARS["thepriv"]);
-
 if (User::logged_in()) {
 	$db = new Database();
 	$db->query("delete from viewed_secrets where userid = $idcookie");
 	$db->query("insert into viewed_secrets (userid, date) values($idcookie, now())");
-	mdisp_begin($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], $myprivl);
-} else {
-	gdisp_begin($dbh);
 }
 ?>
+
+<?php display_header(); ?>
+
 <p>Here you can post anonymously.  This page was created to help give wgemigh his plan back, and to make it possible to paginate an increasing number of secrets.  Please add this page as an optional link under 'preferences'.</p>
 <p>Secrets cannot be tracked by any Plans administrator.  If you're still worried, you may log out before posting. We can exercise editorial discretion as to what shows up. <a href="#" onClick ="document.getElementById('secrets').style.display = 'block';">Post a Secret</a></p>
-
 <div id="secrets">
 	<form method="POST">
 		<textarea name="secret" rows=10 cols=50></textarea>
@@ -37,13 +34,14 @@ if ($_POST['secret_submitted']) {
 	$secret = cleanText($secret);
 	mysql_query("insert into secrets(secret_text, date, display) values (substring('$secret',1,4000), now(), 'no')");
 }
+?>
+<?php
 if (User::logged_in()) {
 	$count = 100;
 	$offset = $_GET['offset'];
 	if (!is_numeric($offset)) {
 		$offset = 0;
 	}
-	echo "<!--- $offset --->";
 	echo '<p><a href="anonymous.php?offset=' . ($offset + $count) . '">Older Secrets</a></p>';
 	if ($_GET['show_all']) {
 		$select_query = "select * from secrets order by date desc limit $offset, $count";
@@ -64,10 +62,6 @@ if (User::logged_in()) {
 		echo '</p>';
 	}
 }
-if (User::logged_in()) {
-	mdisp_end($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], $myprivl);
-} else {
-	gdisp_end();
-}
-db_disconnect($dbh);
+
+display_footer();
 ?>

@@ -23,9 +23,20 @@ ini_set('register_argc_argv', TRUE);
 
 ini_set('track_errors', FALSE);
 
-function __autoload($classname) {
+// Doctrine setup
+require_once('lib/doctrine/lib/Doctrine.php');
+spl_autoload_register(array('Doctrine', 'autoload'));
+Doctrine_Manager::getInstance()->setAttribute('model_loading', 'conservative');
+Doctrine::loadModels('db'); // This call will not require the found .php files
+Doctrine_Manager::connection(DB_URI);
+
+// Simple functions
+require_once('functions.php');
+
+function plans_autoload($classname) {
 	require_once("inc/$classname.php");
 }
+spl_autoload_register('plans_autoload');
 
 new ResourceCounter();
 new SessionBroker();

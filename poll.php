@@ -1,15 +1,15 @@
 <?php
-require_once ("Plans.php");
+require_once('Plans.php');
 new SessionBroker();
 
-require ("functions-main.php"); //load main functions
+require('functions-main.php');
 $idcookie = User::id();
 $userid = $idcookie;
 
-$dbh = db_connect(); //connect to database
-$myprivl = setpriv($myprivl, $HTTP_COOKIE_VARS["thepriv"]);
+$dbh = db_connect();
+
 if (User::logged_in()) {
-	mdisp_begin($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], $myprivl);
+	mdisp_begin($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], get_myprivl());
 } else {
 	gdisp_begin($dbh);
 }
@@ -115,7 +115,7 @@ list_polls();
 	</p>
 	<?php
 if (User::logged_in()) {
-	mdisp_end($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], $myprivl); //and send closing display data
+	mdisp_end($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], get_myprivl()); //and send closing display data
 	
 } else {
 	gdisp_end();

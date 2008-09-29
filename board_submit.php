@@ -1,13 +1,13 @@
 <?php
-require_once ("Plans.php");
-require ("functions-main.php"); //load main functions
+require_once('Plans.php');
+require('functions-main.php');
 $dbh = db_connect(); //establish the database handler
 $idcookie = User::id();
 if (!User::logged_in()) {
-	gdisp_begin($dbh); //begin guest display
+	gdisp_begin($dbh); 
 	echo ("You are not allowed to edit as a guest."); //tell person they can't log in
 	gdisp_end();
-} //end guest display
+} 
 else
 //elseallowed to edit
 {
@@ -55,7 +55,7 @@ else
 		}
 	} //if submit
 	if ($error_message || $showform) {
-		mdisp_begin($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], $myprivl); //begin user display
+		mdisp_begin($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], get_myprivl()); //begin user display
 		echo $error_message;
 	} else {
 		header('Location: http://www.grinnellplans.com/board_messages.php?threadid=' . $threadid);
@@ -91,7 +91,7 @@ else
 	<input type="hidden" name="submit" value="1"><input type="submit" value="Submit Message"></form>
 	<?php
 	} //if showform
-	mdisp_end($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], $myprivl); //gets user display
+	mdisp_end($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], get_myprivl()); //gets user display
 	
 } //if valid user
 db_disconnect($dbh);

@@ -110,4 +110,4 @@ mv GeoLiteCity.dat geo.dat
 If everything's worked, you should be all set. Make sure your web server is running, fire up a web browser and point it towards the server you've just set up (for example, if it's your PC, you might try [http://127.0.0.1/] or [http://127.0.0.1/plans] or something like that, depending on how you've configured it).
 If you run into problems, feel free to email the devel list, hosted as the !GrinnellPlans-Development [http://groups.google.com/group/grinnellplans-development list]
 
-If would like to see more information added to any section of this guide, please do so (you will need to be a member of this SourceForge group first).
+If would like to see more information added to any section of this guide, please edit this page (you will need to be a developer in this group) or leave a comment in the box below.

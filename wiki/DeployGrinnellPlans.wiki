@@ -17,7 +17,7 @@ You'll also need a MySQL database dump. To download the basic database dump, see
 ==Install software==
 I can't provide all the details of setting everything up, but with a little looking you can find nice instructions for most of these programs. You'll need MySQL, PHP, and some software to serve http requests to your computer (I used lighttpd, apache is also popular).
 
-The /trunk code requires PHP4 or higher. To use the /branches/xhtml code, you'll need PHP5.
+The /trunk code requires PHP5, the PDO MySQL Driver, and mcrypt.  
 
 Your default settings for PHP will probably work fine, with a couple of small exceptions:
 1) The current code includes diff-based plan archiving, which is not revealed through the front-end. This feature requires the xdiff library for PHP. To disable this behavior and avoid errors when working without the xdiff library, place the following code snippet in functions-base.php or config.php.
@@ -47,7 +47,21 @@ if (!ini_get('register_globals')) {
 
 Set up your webserver of choice to accept incoming http requests, and make sure it's pointing to the folder where you have all the Plans code (you'll want it to be able to find index.php).
 
+If you get errors about mcrypt functions, check phpinfo() to make sure you have the mcript module loaded.
+
+If you get errors about a Doctrine MySQL adaptor missing make sure you have PHP's PDO module installed AND the MySQL adaptor for it.  If you are using OS X you will need to either download the PHP source and compile the modules necessary or switch away from the stock PHP/Apache installation and use a 3rd party version.  Here is a helpful link which discusses one way of compiling a specific php module for OS X, but depending on your architecture may require modification:  http://gidden.net/tom/2008/06/30/mysql-and-pdo-on-os-x-leopard-intel/ 
+
 Finally, let's set up a MySQL database for plans to use.
+
+===Setting up the database===
+If you downloaded the sample database dump, unpack it with:
+{{{
+gunzip grinnellplans_xhtml_sample_dbdump.sql.gz
+}}}
+Now, let's import this into MYSQL:
+{{{
+mysql -u plans -p plansdb < grinnellplans_xhtml_sample_dbdump.sql
+}}}
 
 ===Creating a plans account===
 This sets up privileges for a plans account in mysql (running Plans through the root account could be dangerous). We use "plansdb" for the database name and "plans" for the username, but you may change these if you like. Instead of "foobar", use whatever password you prefer (remember, this is a separate password from the machine account).
@@ -59,26 +73,38 @@ GRANT all ON plansdb.* TO plans@localhost IDENTIFIED BY "foobar";
 quit
 
 }}}
-===Setting up the database===
-If you downloaded the sample database dump, unpack it with:
-{{{
-tar -xjf grinnellplans_sample_dbdump.sql.tar.bz2
-}}}
-Now, let's import this into MYSQL:
-{{{
-mysql -u plans -p plansdb < grinnellplans_sample_dbdump.sql
-}}}
-
-===Finally===
-Finally, if you've checked out the trunk version of the code, you'll need to change the default interface for users so that things don't immediately break when you login:
-{{{
-mysql -u plans -p plansdb
-UPDATE display SET interface=1;
-quit
-}}}
 
 ==Set up Plans configuration==
-You'll need to change the database name and password in the Plans code so that it can connect to MySQL. Currently it is found in functions-db.php. (TODO: more detailed explanation of this part).
+You'll need to define a few variables used by plans so that it can connect to MySQL and encrypt the user sessions. No passwords are stored in source control.  First, rename Configuration.php.tmpl to Configuration.php
+
+{{{
+mv Configuration.php.tmpl Configuration.php
+}}}
+
+Next, open it up and look for the values being set to '' with need to be edited.  For example:
+
+{{{
+define('TZ', 'America/Chicago');
+define('MYSQL_DB', 'plansdb');
+define('MYSQL_USER', 'plans');
+define('MYSQL_PASS', 'foobar');
+define('MYSQL_HOST', 'localhost');
+
+define('DB_URI', 'mysql://plans:foobar@localhost/plansdb');
+
+define('COOKIE_DOMAIN', ''); 
+define('COOKIE_PAYLOAD', 'pe');
+define('SESSION_ENCRYPTION_KEY', 'SECRETENCRYPTIONKEY!!!!');
+}}}
+
+==GeoIP==
+The Geo IP library is included with plans, but the location database is not.  In the geo/ folder there is a file called INSTALL which lists where to download the database.  Once downloaded, it needs to be uncompressed and renamed so plans can find and use it.
+
+{{{
+wget http://www.maxmind.com/download/geoip/database/GeoLiteCity.dat.gz
+gunzip GeoLiteCity.dat.gz
+mv GeoLiteCity.dat geo.dat
+}}}
 
 ==Done!==
 If everything's worked, you should be all set. Make sure your web server is running, fire up a web browser and point it towards the server you've just set up (for example, if it's your PC, you might try [http://127.0.0.1/] or [http://127.0.0.1/plans] or something like that, depending on how you've configured it).

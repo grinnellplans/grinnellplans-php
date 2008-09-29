@@ -5,8 +5,8 @@ new SessionBroker();
 require ("functions-main.php"); //load main functions
 $dbh = db_connect(); //get the database connection
 $idcookie = User::id();
-$auth = $_SESSION['is_logged_in'];
-if ($auth) {
+
+if (User::logged_in()) {
 	$theusername = get_item($dbh, "username", "accounts", "userid", $idcookie);
 	if ($myprivl) {
 		$myprivl = "&myprivl=" . $myprivl;

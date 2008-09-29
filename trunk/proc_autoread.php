@@ -5,8 +5,8 @@ new SessionBroker();
 require ("functions-main.php"); //load main functions
 $dbh = db_connect(); //connect to the database
 $idcookie = User::id();
-$auth = $_SESSION['is_logged_in'];
-if (!$auth) {
+
+if (!User::logged_in()) {
 	gdisp_begin($dbh); //begin guest display
 	echo ("You do not have an autoread list as a guest."); //tell guest they can't do anything on thsi page
 	gdisp_end(); //end guest display
@@ -14,7 +14,7 @@ if (!$auth) {
 } else
 //allowed to edit
 {
-	mdisp_begin($dbh, $idcookie, $HTTP_HOST . $REQUEST_URI, $myprivl); //begin valid user display
+	mdisp_begin($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], $myprivl); //begin valid user display
 	//get old autofinger list
 	$arlist = get_items($dbh, "interest,priority", "autofinger", "owner", $idcookie); //get the contents of a person's autofinger list
 	$arraylist = get_letters($dbh, chr($letternum), chr($letternum + 1), $idcookie); //get usernames that start with that letter
@@ -89,7 +89,7 @@ owner = '$idcookie' and interest = '$val'");
 		$i++;
 	}
 	echo "<HR>" . "AutoRead List Changed.";
-	mdisp_end($dbh, $idcookie, $HTTP_HOST . $REQUEST_URI, $myprivl);
+	mdisp_end($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], $myprivl);
 }
 db_disconnect($dbh);
 ?>

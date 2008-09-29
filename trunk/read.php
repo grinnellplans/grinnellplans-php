@@ -5,7 +5,7 @@ new SessionBroker();
 require ("functions-main.php"); //load main functions
 $idcookie = User::id();
 $dbh = db_connect(); //connect to database
-$auth = $_SESSION['is_logged_in'];
+
 $myprivl = setpriv($myprivl, $HTTP_COOKIE_VARS["thepriv"]);
 if (!$searchnum) //if no search number given
 {
@@ -18,8 +18,8 @@ if (!$searchnum) //if no search number given
 		if ($searchname) //if a searchname has been given
 		{
 			$searchname = htmlentities($searchname);
-			if ($auth) {
-				mdisp_begin($dbh, $idcookie, $HTTP_HOST . $REQUEST_URI, $myprivl);
+			if (User::logged_in()) {
+				mdisp_begin($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], $myprivl);
 			} else
 			//begin guest user display
 			{
@@ -46,28 +46,28 @@ if (!$searchnum) //if no search number given
 					echo "</ul>";
 				} //if partial names
 				echo "<br><br>A search of this term found:";
-				basicSearch($idcookie, $dbh, $auth, 100, $searchname);
+				basicSearch($idcookie, $dbh, User::logged_in(), 100, $searchname);
 			} else {
 				echo "There is either no plan with that name or it is not viewable to guests. ";
 				echo "Note that you must have cookies enabled to log in to Plans.  You may want to check that cookies are enabled if you have tried to log in and continue to see this message. ";
 				echo 'Please  <a href="index.php">Log in</a> or <a href="register.php">Register</a>.';
 			}
-			if ($auth) {
-				mdisp_end($dbh, $idcookie, $HTTP_HOST . $REQUEST_URI, $myprivl);
+			if (User::logged_in()) {
+				mdisp_end($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], $myprivl);
 			} else {
 				gdisp_end();
 			}
 			mysql_close($dbh);
 			exit();
 		} else {
-			if ($auth) {
-				mdisp_begin($dbh, $idcookie, $HTTP_HOST . $REQUEST_URI, $myprivl);
+			if (User::logged_in()) {
+				mdisp_begin($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], $myprivl);
 			} else {
 				gdisp_begin($dbh);
 			}
 			echo "Must enter a name";
-			if ($auth) {
-				mdisp_end($dbh, $idcookie, $HTTP_HOST . $REQUEST_URI, $myprivl);
+			if (User::logged_in()) {
+				mdisp_end($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], $myprivl);
 			} else {
 				gdisp_end();
 			}
@@ -78,7 +78,7 @@ if (!$searchnum) //if no search number given
 	
 } //$if (!$searchnum)
 //begin displaying if there is a user with name or number given
-if ($auth) {
+if (User::logged_in()) {
 	$my_result = mysql_query("Select priority From autofinger where
 			owner = '$idcookie' and interest = '$searchnum'");
 	$onlist = mysql_fetch_array($my_result);
@@ -91,7 +91,7 @@ if ($auth) {
 		$myonlist[0] = "checked"; //if not on autoread list, show is not on priority list
 		
 	}
-	mdisp_begin($dbh, $idcookie, $HTTP_HOST . $REQUEST_URI, $myprivl);
+	mdisp_begin($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], $myprivl);
 } else {
 	gdisp_begin($dbh);
 }
@@ -102,7 +102,7 @@ if ($guest_pass = $_GET['guest-pass']) {
 	if ($real_pass == '') {
 		$guest_auth = false;
 	} else if ($real_pass == $guest_pass) {
-		$guest_auth = true;
+		$guest_pass = true;
 	} else {
 		$guest_auth = false;
 	}
@@ -129,7 +129,7 @@ else {
 		echo "<p class=\"sub\">";
 		if ($_GET['jumbled'] == 'yes' || ($_COOKIE['jumbled'] == 'yes' && $_GET['jumbled'] != 'no')) {
 			echo (jumble($planinfo[0][4]));
-			//    $REQUEST_URI = add_param($REQUEST_URI, 'jumbled', '1');
+			//    $_SERVER['REQUEST_URI'] = add_param($_SERVER['REQUEST_URI'], 'jumbled', '1');
 			
 		} else {
 			echo $planinfo[0][4];
@@ -137,7 +137,7 @@ else {
 		echo "</p>";
 	}
 }
-if ($auth) //if is a valid user, give them the option of putting the plan on their autoread list, or taking it off, and also if plan is on their autoread list, mark as read and mark time
+if (User::logged_in()) //if is a valid user, give them the option of putting the plan on their autoread list, or taking it off, and also if plan is on their autoread list, mark as read and mark time
 {
 	if (!($searchnum == $idcookie)) //if person is not looking at their own plan, give them a small form to set the priority of the persons plan on their autoread list
 	{
@@ -159,13 +159,13 @@ if ($auth) //if is a valid user, give them the option of putting the plan on the
 		</form></p></td></tr></table></center>
 			<?php
 	}
-	mdisp_end($dbh, $idcookie, $HTTP_HOST . $REQUEST_URI, $myprivl);
+	mdisp_end($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], $myprivl);
 } else {
 	gdisp_end();
 }
 db_disconnect($dbh);
 echo "<!-- $username -->";
-function basicSearch($idcookie, $dbh, $auth, $context, $mysearch)
+function basicSearch($idcookie, $dbh, $_auth, $context, $mysearch)
 {
 	if (strlen($mysearch) < 3) {
 		echo "<br>The term you entered was less than 3 characters long, so could not be searched for.";

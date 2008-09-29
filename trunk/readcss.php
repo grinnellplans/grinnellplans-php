@@ -5,7 +5,7 @@ new SessionBroker();
 require ("functions-main.php"); //load main functions
 $dbh = db_connect(); //connect to database
 $idcookie = User::id();
-$auth = $_SESSION['is_logged_in'];
+
 $myprivl = setpriv($myprivl, $HTTP_COOKIE_VARS["thepriv"]);
 if (!$searchnum) //if no search number given
 {
@@ -18,7 +18,7 @@ if (!$searchnum) //if no search number given
 		if ($searchname) //if a searchname has been given
 		{
 			if (User::logged_in()) {
-				mdisp_begin($dbh, $idcookie, $HTTP_HOST . $REQUEST_URI, $myprivl);
+				mdisp_begin($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], $myprivl);
 			} else
 			//begin guest user display
 			{
@@ -45,27 +45,27 @@ if (!$searchnum) //if no search number given
 					echo "</ul>";
 				} //if partial names
 				echo "<br><br>A search of this term found:";
-				basicSearch($idcookie, $dbh, $auth, 100, $searchname);
+				basicSearch($idcookie, $dbh, User::logged_in(), 100, $searchname);
 			} //if ($idcookie)
 			else {
 				echo "There is either no plan with that name or it is not viewable to guests.";
 			}
-			if ($auth) {
-				mdisp_end($dbh, $idcookie, $HTTP_HOST . $REQUEST_URI, $myprivl);
+			if (User::logged_in()) {
+				mdisp_end($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], $myprivl);
 			} else {
 				gdisp_end();
 			}
 			mysql_close($dbh);
 			exit();
 		} else {
-			if ($auth) {
-				mdisp_begin($dbh, $idcookie, $HTTP_HOST . $REQUEST_URI, $myprivl);
+			if (User::logged_in()) {
+				mdisp_begin($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], $myprivl);
 			} else {
 				gdisp_begin($dbh);
 			}
 			echo "Must enter a name";
-			if ($auth) {
-				mdisp_end($dbh, $idcookie, $HTTP_HOST . $REQUEST_URI, $myprivl);
+			if (User::logged_in()) {
+				mdisp_end($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], $myprivl);
 			} else {
 				gdisp_end();
 			}
@@ -76,8 +76,8 @@ if (!$searchnum) //if no search number given
 	
 } //$if (!$searchnum)
 //begin displaying if there is a user with name or number given
-if ($auth) {
-	mdisp_begin($dbh, $idcookie, $HTTP_HOST . $REQUEST_URI, $myprivl);
+if (User::logged_in()) {
+	mdisp_begin($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], $myprivl);
 } else {
 	gdisp_begin($dbh);
 }
@@ -109,7 +109,7 @@ else {
 		echo "<p class=\"sub\">";
 		if ($_GET['jumbled'] == 'yes' || ($_COOKIE['jumbled'] == 'yes' && $_GET['jumbled'] != 'no')) {
 			echo (jumble($planinfo[0][4]));
-			//    $REQUEST_URI = add_param($REQUEST_URI, 'jumbled', '1');
+			//    $_SERVER['REQUEST_URI'] = add_param($_SERVER['REQUEST_URI'], 'jumbled', '1');
 			
 		} else {
 			echo $planinfo[0][4];
@@ -117,7 +117,7 @@ else {
 		echo "</p></div>";
 	}
 }
-if ($auth) //if is a valid user, give them the option of putting the plan on their autoread list, or taking it off, and also if plan is on their autoread list, mark as read and mark time
+if (User::logged_in()) //if is a valid user, give them the option of putting the plan on their autoread list, or taking it off, and also if plan is on their autoread list, mark as read and mark time
 {
 	$my_result = mysql_query("Select priority From autofinger where
 owner = '$idcookie' and interest = '$searchnum'");
@@ -153,13 +153,13 @@ type="submit" value="Set Priority">&nbsp;&nbsp;
     <?php
 		echo "</div>";
 	}
-	mdisp_end($dbh, $idcookie, $HTTP_HOST . $REQUEST_URI, $myprivl);
+	mdisp_end($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], $myprivl);
 } else {
 	gdisp_end();
 }
 db_disconnect($dbh);
 echo "<!-- $username -->";
-function basicSearch($idcookie, $dbh, $auth, $context, $mysearch)
+function basicSearch($idcookie, $dbh, User::logged_in(), $context, $mysearch)
 {
 	if (strlen($mysearch) < 3) {
 		echo "<br>The term you entered was less than 3 characters long, so could not be searched for.";

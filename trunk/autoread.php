@@ -11,7 +11,7 @@ if (!User::logged_in()) {
 } else
 //allowed to edit
 {
-	mdisp_begin($dbh, $idcookie, $HTTP_HOST . $REQUEST_URI, $myprivl); //is a valid user, send beginning display
+	mdisp_begin($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], $myprivl); //is a valid user, send beginning display
 	echo "\n<form method=\"post\" action=\"proc_autoread.php\">\n"; //start form
 	$arlist = get_items($dbh, "interest,priority", "autofinger", "owner", $idcookie); //get their autoread info
 	$o = 0;
@@ -77,7 +77,7 @@ if (!User::logged_in()) {
 	echo "<input type=\"hidden\" name=\"myprivl\" value=\"" . $myprivl . "\">";
 	echo "<input type=\"submit\" value=\"Submit\"></form>";
 	/////endform here
-	mdisp_end($dbh, $idcookie, $HTTP_HOST . $REQUEST_URI, $myprivl); //end display
+	mdisp_end($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], $myprivl); //end display
 	
 }
 db_disconnect($dbh);

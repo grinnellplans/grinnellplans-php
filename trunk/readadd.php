@@ -5,7 +5,7 @@ new SessionBroker();
 require ("functions-main.php"); //load main functions
 $dbh = db_connect(); //connect to the database
 $idcookie = User::id();
-$auth = $_SESSION['is_logged_in'];
+
 if (!$searchnum) //if no search number given
 {
 	if (isvaliduser($dbh, $searchname)) //if valid username, change to number
@@ -14,9 +14,9 @@ if (!$searchnum) //if no search number given
 	} else {
 		if ($searchname) //if there is no user number given, but there is a name, but not an exact one of a user, try to search for similar ones
 		{
-			if ($auth) //if is valid user, begin user display
+			if (User::logged_in()) //if is valid user, begin user display
 			{
-				mdisp_begin($dbh, $idcookie, $HTTP_HOST . $REQUEST_URI, $myprivl);
+				mdisp_begin($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], $myprivl);
 			} else
 			//otherwise is a guest, so beging guest display
 			{
@@ -41,8 +41,8 @@ the term in them.";
 				} //while ($partial_list [$o][0])
 				echo "</ul>";
 			} //if partial names
-			if ($auth) {
-				mdisp_end($dbh, $idcookie, $HTTP_HOST . $REQUEST_URI, $myprivl);
+			if (User::logged_in()) {
+				mdisp_end($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], $myprivl);
 			} //end valid user display
 			else {
 				gdisp_end();
@@ -53,15 +53,15 @@ the term in them.";
 		else
 		//user has submitted form, but with no user number or username
 		{
-			if ($auth) {
-				mdisp_begin($dbh, $idcookie, $HTTP_HOST . $REQUEST_URI, $myprivl);
+			if (User::logged_in()) {
+				mdisp_begin($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], $myprivl);
 			} //begin valid user display
 			else {
 				gdisp_begin($dbh);
 			} //
 			echo "Must enter a name";
-			if ($auth) {
-				mdisp_end($dbh, $idcookie, $HTTP_HOST . $REQUEST_URI, $myprivl);
+			if (User::logged_in()) {
+				mdisp_end($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], $myprivl);
 			} else {
 				gdisp_end();
 			}
@@ -73,8 +73,8 @@ the term in them.";
 	
 } //$if (!$searchnum)
 //if we are at this point, we've determined a valid user number
-if ($auth) {
-	mdisp_begin($dbh, $idcookie, $HTTP_HOST . $REQUEST_URI, $myprivl);
+if (User::logged_in()) {
+	mdisp_begin($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], $myprivl);
 } //begin valid user display
 else {
 	gdisp_begin($dbh);
@@ -98,7 +98,7 @@ else { //if data was successfully retrieved
 	echo $planinfo[0][4]; //display the plan
 	echo "</p>";
 }
-if ($auth) //if valid user, check to see if plan is on their autoread list, if so update appropriately
+if (User::logged_in()) //if valid user, check to see if plan is on their autoread list, if so update appropriately
 {
 	$my_result = mysql_query("Select owner From autofinger where
 owner = '$idcookie' and interest = '$searchnum'"); //try to get data of if plan is on users autoread list
@@ -134,7 +134,7 @@ WHERE owner = '$idcookie' AND interest = '$searchnum'"); //otherwise person just
 			}
 		}
 	}
-	mdisp_end($dbh, $idcookie, $HTTP_HOST . $REQUEST_URI, $myprivl); //end valid user display
+	mdisp_end($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], $myprivl); //end valid user display
 	
 } else {
 	gdisp_end();

@@ -8,7 +8,7 @@ if (!User::logged_in()) {
 	echo ("You are not allowed to edit as a guest."); //tell guest they can't edit
 	gdisp_end();
 } else {
-	mdisp_begin($dbh, $idcookie, $HTTP_HOST . $REQUEST_URI, $myprivl); //begin valid user display
+	mdisp_begin($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], $myprivl); //begin valid user display
 	//Give list of links of types of customization
 	
 ?>
@@ -65,7 +65,7 @@ if (!User::logged_in()) {
 	</table>
 	</center>
 	<?php
-	mdisp_end($dbh, $idcookie, $HTTP_HOST . $REQUEST_URI, $myprivl); //end display
+	mdisp_end($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], $myprivl); //end display
 	
 } //if is a valid user
 db_disconnect($dbh);

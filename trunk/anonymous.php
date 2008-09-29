@@ -7,7 +7,7 @@ $myprivl = setpriv($myprivl, $HTTP_COOKIE_VARS["thepriv"]);
 if (User::logged_in()) {
 	mysql_query("delete from viewed_secrets where userid = $idcookie");
 	mysql_query("insert into viewed_secrets (userid, date) values($idcookie, now())");
-	mdisp_begin($dbh, $idcookie, $HTTP_HOST . $REQUEST_URI, $myprivl);
+	mdisp_begin($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], $myprivl);
 } else
 //begin guest user display
 {
@@ -71,9 +71,8 @@ if (User::logged_in()) {
 		echo '</p>';
 	}
 }
-if ($auth) //begin valid user display
-{
-	mdisp_end($dbh, $idcookie, $HTTP_HOST . $REQUEST_URI, $myprivl);
+if (User::logged_in()) {
+	mdisp_end($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], $myprivl);
 } else {
 	gdisp_end();
 }

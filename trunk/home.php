@@ -7,7 +7,7 @@ $idcookie = User::id();
 $myprivl = setpriv($myprivl, $HTTP_COOKIE_VARS["thepriv"]);
 
 if (User::logged_in()) {
-	mdisp_begin($dbh, $idcookie, $HTTP_HOST . $REQUEST_URI, $myprivl); //send beginning display info
+	mdisp_begin($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], $myprivl); //send beginning display info
 } else {
 	gdisp_begin($dbh);
 }
@@ -21,7 +21,7 @@ echo '</pre>';
 echo stripslashes(stripslashes($my_row[0])); //display the main Plans message
 
 if (User::logged_in()) {
-	mdisp_end($dbh, $idcookie, $HTTP_HOST . $REQUEST_URI, $myprivl); //and send closing display data
+	mdisp_end($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], $myprivl); //and send closing display data
 } else {
 	gdisp_end();
 }

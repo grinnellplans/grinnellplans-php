@@ -5,15 +5,15 @@ new SessionBroker();
 require ("functions-main.php"); //load main functions
 $idcookie = User::id();
 $userid = $idcookie;
-$auth = $_SESSION['is_logged_in'];
+
 $dbh = db_connect(); //connect to database
 $myprivl = setpriv($myprivl, $HTTP_COOKIE_VARS["thepriv"]);
-if ($auth) {
-	mdisp_begin($dbh, $idcookie, $HTTP_HOST . $REQUEST_URI, $myprivl);
+if (User::logged_in()) {
+	mdisp_begin($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], $myprivl);
 } else {
 	gdisp_begin($dbh);
 }
-if (!$auth) {
+if (!User::logged_in()) {
 	echo "Please log in";
 } else {
 	$poll_question_id = $_GET['poll_question_id'];
@@ -114,8 +114,8 @@ list_polls();
 <span style="font-size:.7em"> Poll ideas?  <a href="mailto:grinnellplans@gmail.com">Email</a>.  </span>
 	</p>
 	<?php
-if ($auth) {
-	mdisp_end($dbh, $idcookie, $HTTP_HOST . $REQUEST_URI, $myprivl); //and send closing display data
+if (User::logged_in()) {
+	mdisp_end($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], $myprivl); //and send closing display data
 	
 } else {
 	gdisp_end();

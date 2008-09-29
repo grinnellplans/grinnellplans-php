@@ -5,13 +5,13 @@ new SessionBroker();
 require ("functions-main.php"); //load main functions
 $dbh = db_connect(); //get database connections
 $idcookie = User::id();
-$auth = $_SESSION['is_logged_in'];
-if (!$auth) //if not logged in
+
+if (!User::logged_in()) //if not logged in
 {
 	gdisp_begin($dbh); //begin guest display
 	
 } else {
-	mdisp_begin($dbh, $idcookie, $HTTP_HOST . $REQUEST_URI, $myprivl); //otherwise begin valid user display
+	mdisp_begin($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], $myprivl); //otherwise begin valid user display
 	
 }
 if (!($mytime > 0 and $mytime < 100)) {
@@ -30,7 +30,7 @@ echo $myprivl
 <input type="submit" value="See Plans">
 </form>
 <?php
-if ($auth) {
+if (User::logged_in()) {
 	$webview = '';
 } else {
 	$webview = 'and webview = 1';
@@ -47,12 +47,12 @@ while ($new_plans = mysql_fetch_row($my_planwatch)) {
 	echo "<tr><td><a href=\"read.php?myprivl=" . $myprivl . "&searchname=" . $new_plans[1] . "\">" . $new_plans[1] . "</a></td><td>" . $new_plans[2] . "</td></tr>";
 }
 echo "</table>";
-if (!$auth) //if not logged in
+if (!User::logged_in()) //if not logged in
 {
 	gdisp_end(); //end guest display
 	
 } else {
-	mdisp_end($dbh, $idcookie, $HTTP_HOST . $REQUEST_URI, $myprivl); //end valid user display
+	mdisp_end($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], $myprivl); //end valid user display
 	
 }
 db_disconnect($dbh);

@@ -9,7 +9,7 @@ if (!User::logged_in()) {
 	echo ("You are not allowed to edit as a guest."); //tell person they can't log in
 	gdisp_end();
 } else {
-	mdisp_begin($dbh, $idcookie, $HTTP_HOST . $REQUEST_URI, $myprivl); //begin user display
+	mdisp_begin($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], $myprivl); //begin user display
 	echo "<center><a href=\"board_submit.php?newthread=1\" class=\"lev2\">New Thread</a>";
 	$my_result = mysql_query("Select COUNT(*) From mainboard");
 	$totalthreads = mysql_fetch_row($my_result);
@@ -110,7 +110,7 @@ LIMIT " . $rowoffset . "," . NOTES_THREADS_PER_PAGE;
 		echo "<td><a href=\"board_messages.php?threadid=" . $new_row[0] . "\">" . stripslashes($new_row[1]) . "</a></td><td>" . $new_row[2] . "</td><td><center>" . $new_row[3] . "</center></td><td>" . $display_planlove . "</td><td>" . $display_planlove2 . "</td></tr>";
 	}
 	echo "</table>";
-	mdisp_end($dbh, $idcookie, $HTTP_HOST . $REQUEST_URI, $myprivl); //gets user display
+	mdisp_end($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], $myprivl); //gets user display
 	
 }
 db_disconnect($dbh);

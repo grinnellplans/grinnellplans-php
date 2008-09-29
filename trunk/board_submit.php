@@ -55,7 +55,7 @@ else
 		}
 	} //if submit
 	if ($error_message || $showform) {
-		mdisp_begin($dbh, $idcookie, $HTTP_HOST . $REQUEST_URI, $myprivl); //begin user display
+		mdisp_begin($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], $myprivl); //begin user display
 		echo $error_message;
 	} else {
 		header('Location: http://www.grinnellplans.com/board_messages.php?threadid=' . $threadid);
@@ -91,7 +91,7 @@ else
 	<input type="hidden" name="submit" value="1"><input type="submit" value="Submit Message"></form>
 	<?php
 	} //if showform
-	mdisp_end($dbh, $idcookie, $HTTP_HOST . $REQUEST_URI, $myprivl); //gets user display
+	mdisp_end($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], $myprivl); //gets user display
 	
 } //if valid user
 db_disconnect($dbh);

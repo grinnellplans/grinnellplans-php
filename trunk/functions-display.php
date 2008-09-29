@@ -4,17 +4,21 @@ function Redirect($url) {
 	Header("Location: $url");
 }
 
-function microtime_float()
-{
-	list($utime, $time) = explode(" ", microtime());
-	return ((float)$utime + (float)$time);
-}
-$starttime__ = microtime_float();
-
 function mdisp_begin($dbh, $idcookie, $myurl, $myprivl, $jsfile = NULL)
 {
 	$css = get_item($dbh, "stylesheet", "stylesheet", "userid", $idcookie);
 	$interface = 'interfaces/default/defaultinterface.php';
+		
+	$sql = "Select interface.path,style.path From
+	interface interface, style style,display display where
+	display.userid = '$idcookie' and display.interface = interface.interface and display.style=style.style";
+	//echo '<!-- ' . $sql . ' -->';
+	$my_result = mysql_query($sql); //get the paths of the interface and style files that the user indicated as wanting to use
+	while ($new_row = mysql_fetch_row($my_result)) {
+				$mydisplayar[] = $new_row;
+			} //gets contents from query
+	$interface = $mydisplayar[0][0];
+
 	require_once($interface);
 	if ($css) {
 		$mycss = $css;

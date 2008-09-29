@@ -13,7 +13,7 @@ if (!User::logged_in()) {
 else
 //elseallowed to edit
 {
-	mdisp_begin($dbh, $idcookie, $HTTP_HOST . $REQUEST_URI, $myprivl); //begin user display
+	mdisp_begin($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], $myprivl); //begin user display
 	if ($part) //if form has been submitted
 	{
 		if ($cols > 150 or $cols < 25) //check to make sure that columns are a reasonable size
@@ -78,7 +78,7 @@ else
             </center>
             <?php
 	}
-	mdisp_end($dbh, $idcookie, $HTTP_HOST . $REQUEST_URI, $myprivl); //gets user display
+	mdisp_end($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], $myprivl); //gets user display
 	
 }
 db_disconnect($dbh);

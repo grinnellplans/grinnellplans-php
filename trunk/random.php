@@ -5,7 +5,7 @@ new SessionBroker();
 require ("functions-main.php"); //load main functions
 $dbh = db_connect(); //get the database connection
 $idcookie = User::id();
-$auth = $_SESSION['is_logged_in'];
+
 $result = mysql_query("select username from accounts order by rand() limit 1");
 $result_row = mysql_fetch_array($result);
 $random_user = $result_row[0];

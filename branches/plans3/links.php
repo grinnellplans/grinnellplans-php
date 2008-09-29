@@ -29,14 +29,14 @@ if (!User::logged_in()) {
 				
 			}
 		} //added values if any
-		mdisp_begin($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], $myprivl); //begin valid user display, done later in the page than usual so that the changes will take affect before page is displayed
+		mdisp_begin($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], get_myprivl()); //begin valid user display, done later in the page than usual so that the changes will take affect before page is displayed
 		echo "<center><h2>Optional Links</h2></center>";
 		echo "Optional links changed.";
 	} //if submit
 	else
 	//give form
 	{
-		mdisp_begin($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], $myprivl); //begin valid user display
+		mdisp_begin($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], get_myprivl()); //begin valid user display
 		echo "<center><h2>Optional Links</h2></center>";
 		$selected_links = get_items($dbh, "linknum", "opt_links", "userid", $idcookie); //get the current set of links that the user has selected
 		$o = 0;
@@ -61,7 +61,7 @@ if (!User::logged_in()) {
 		echo "<input type=\"hidden\" name=\"submit\" value=\"1\"><center><input
 		type=\"submit\"></center></form>";
 	}
-	mdisp_end($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], $myprivl); //end valid user display
+	mdisp_end($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], get_myprivl()); //end valid user display
 	
 } //if is a valid user
 db_disconnect($dbh);

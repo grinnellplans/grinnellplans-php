@@ -35,7 +35,7 @@ else {
 		} //if $style=custome, else
 		
 	}
-	mdisp_begin($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], $myprivl); //begin valid user display
+	mdisp_begin($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], get_myprivl()); //begin valid user display
 	echo $custom_style_form;
 	$my_result = mysql_query("Select style,descr From 
 				  style"); //get currently available styles and their descriptions
@@ -70,7 +70,7 @@ else {
 			  </form>
 			  </center>
 			  <?php
-	mdisp_end($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], $myprivl); //end valid user display
+	mdisp_end($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], get_myprivl()); //end valid user display
 	
 } //if is a valid user
 db_disconnect($dbh);

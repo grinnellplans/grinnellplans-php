@@ -17,12 +17,12 @@ if (!User::logged_in()) {
 			$webview = 0;
 		}
 		set_item($dbh, "accounts", "webview", $webview, "userid", $idcookie);
-		mdisp_begin($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], $myprivl);
+		mdisp_begin($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], get_myprivl());
 ?>
 		<center><h2>Guest Viewable:</h2>  
 		<table><tr><Td>Preference set.</td></tr></table></center><?php
 	} else {
-		mdisp_begin($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], $myprivl);
+		mdisp_begin($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], get_myprivl());
 		if (get_item($dbh, "webview", "accounts", "userid", $idcookie) == 1) {
 			$viewable = " checked";
 		} else {
@@ -43,7 +43,7 @@ if (!User::logged_in()) {
 		</center>
 		<?php
 	}
-	mdisp_end($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], $myprivl);
+	mdisp_end($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], get_myprivl());
 } //if is a valid user
 db_disconnect($dbh);
 ?>

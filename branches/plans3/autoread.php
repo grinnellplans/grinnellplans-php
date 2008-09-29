@@ -80,7 +80,7 @@ if (!User::logged_in()) {
 	echo "<input type=\"hidden\" name=\"letternum\" value=\"" . $letternum . "\">";
 	echo "<input type=\"submit\" value=\"Submit\"></form>";
 	/////endform here
-	mdisp_end($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], $myprivl); //end display
+	mdisp_end($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], get_myprivl()); //end display
 	
 }
 db_disconnect($dbh);

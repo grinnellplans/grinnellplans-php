@@ -110,7 +110,7 @@ $o=0;
 while ($autoreadlist[$o][0])
 {
 echo "<tr><td></td><td></td><td><p class=\"imagelev3\">&nbsp;</p></td>";
-echo "<td><a href=\"read.php?myprivl=" . $myprivl . "&searchname=" .
+echo "<td><a href=\"read.php?searchname=" .
 $autoreadlist[$o][1] . "\" class=\"lev3\">" .
 $autoreadlist[$o][1] . "</a></td></tr>\n";
 

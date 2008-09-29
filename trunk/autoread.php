@@ -1,5 +1,6 @@
 <?php
 require_once ("Plans.php");
+
 require ("functions-main.php"); //load main functions
 $dbh = db_connect();
 $idcookie = User::id();

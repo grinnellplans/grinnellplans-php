@@ -1,0 +1,366 @@
+-- MySQL dump 10.9
+--
+-- Host: localhost    Database: plans
+-- ------------------------------------------------------
+-- Server version	4.1.22
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8 */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Table structure for table `accounts`
+--
+
+DROP TABLE IF EXISTS `accounts`;
+CREATE TABLE `accounts` (
+  `userid` smallint(5) unsigned NOT NULL auto_increment,
+  `username` varchar(16) NOT NULL default '',
+  `created` datetime default NULL,
+  `password` varchar(20) default NULL,
+  `email` varchar(64) default NULL,
+  `pseudo` varchar(64) default NULL,
+  `login` datetime default NULL,
+  `changed` datetime default NULL,
+  `plan` text,
+  `poll` tinyint(3) unsigned default NULL,
+  `group_bit` char(1) default NULL,
+  `spec_message` varchar(255) default NULL,
+  `grad_year` varchar(4) default NULL,
+  `edit_cols` tinyint(3) unsigned default NULL,
+  `edit_rows` tinyint(3) unsigned default NULL,
+  `webview` char(1) default '0',
+  `edit_text` text,
+  `notes_asc` char(1) default NULL,
+  `user_type` varchar(128) default NULL,
+  `show_images` tinyint(1) NOT NULL default '0',
+  `guest_password` varchar(30) default NULL,
+  PRIMARY KEY  (`userid`),
+  UNIQUE KEY `username` (`username`),
+  KEY `changed` (`changed`),
+  FULLTEXT KEY `password` (`password`),
+  FULLTEXT KEY `password_2` (`password`),
+  FULLTEXT KEY `username_2` (`username`)
+) ENGINE=MyISAM AUTO_INCREMENT=4902 DEFAULT CHARSET=latin1;
+
+--
+-- Table structure for table `autofinger`
+--
+
+DROP TABLE IF EXISTS `autofinger`;
+CREATE TABLE `autofinger` (
+  `owner` smallint(5) unsigned NOT NULL default '0',
+  `interest` smallint(5) unsigned NOT NULL default '0',
+  `priority` tinyint(3) unsigned default NULL,
+  `updated` char(1) default NULL,
+  `updtime` datetime default NULL,
+  `readtime` datetime default NULL,
+  KEY `owner` (`owner`),
+  KEY `interest` (`interest`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+--
+-- Table structure for table `avail_links`
+--
+
+DROP TABLE IF EXISTS `avail_links`;
+CREATE TABLE `avail_links` (
+  `linknum` tinyint(3) unsigned NOT NULL auto_increment,
+  `linkname` varchar(128) default NULL,
+  `descr` text,
+  `html_code` tinytext,
+  `static` tinytext,
+  PRIMARY KEY  (`linknum`)
+) ENGINE=MyISAM AUTO_INCREMENT=17 DEFAULT CHARSET=latin1;
+
+--
+-- Table structure for table `boardvotes`
+--
+
+DROP TABLE IF EXISTS `boardvotes`;
+CREATE TABLE `boardvotes` (
+  `voteid` int(10) unsigned NOT NULL auto_increment,
+  `userid` smallint(5) unsigned NOT NULL default '0',
+  `threadid` smallint(5) unsigned NOT NULL default '0',
+  `messageid` smallint(5) unsigned NOT NULL default '0',
+  `vote` smallint(2) default NULL,
+  `vote_date` timestamp NOT NULL default CURRENT_TIMESTAMP,
+  PRIMARY KEY  (`voteid`)
+) ENGINE=MyISAM AUTO_INCREMENT=9245 DEFAULT CHARSET=latin1;
+
+--
+-- Table structure for table `clickstream`
+--
+
+DROP TABLE IF EXISTS `clickstream`;
+CREATE TABLE `clickstream` (
+  `clickstream_id` int(10) unsigned NOT NULL auto_increment,
+  `userid` int(10) unsigned default NULL,
+  `created` datetime default NULL,
+  `script_uri` text,
+  `query_string` text,
+  `ip` varchar(15) default NULL,
+  `extra_data` text,
+  PRIMARY KEY  (`clickstream_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=49822511 DEFAULT CHARSET=latin1;
+
+--
+-- Table structure for table `criminal`
+--
+
+DROP TABLE IF EXISTS `criminal`;
+CREATE TABLE `criminal` (
+  `id` int(11) NOT NULL auto_increment,
+  `username` varchar(50) default NULL,
+  PRIMARY KEY  (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=4558 DEFAULT CHARSET=latin1;
+
+--
+-- Table structure for table `diffs`
+--
+
+DROP TABLE IF EXISTS `diffs`;
+CREATE TABLE `diffs` (
+  `userid` int(11) default NULL,
+  `text` mediumtext,
+  `date` datetime default NULL,
+  `diff_id` int(11) NOT NULL auto_increment,
+  PRIMARY KEY  (`diff_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=1580329 DEFAULT CHARSET=latin1;
+
+--
+-- Table structure for table `display`
+--
+
+DROP TABLE IF EXISTS `display`;
+CREATE TABLE `display` (
+  `userid` smallint(5) unsigned NOT NULL default '0',
+  `interface` tinyint(3) unsigned default NULL,
+  `style` tinyint(3) unsigned default NULL,
+  PRIMARY KEY  (`userid`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+--
+-- Table structure for table `donations`
+--
+
+DROP TABLE IF EXISTS `donations`;
+CREATE TABLE `donations` (
+  `donation_id` int(11) NOT NULL auto_increment,
+  `donor` varchar(255) default NULL,
+  `amount` decimal(10,2) default NULL,
+  `comment` varchar(255) default NULL,
+  `date` datetime default NULL,
+  PRIMARY KEY  (`donation_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=47 DEFAULT CHARSET=latin1;
+
+--
+-- Table structure for table `expenses`
+--
+
+DROP TABLE IF EXISTS `expenses`;
+CREATE TABLE `expenses` (
+  `expense_id` int(11) NOT NULL auto_increment,
+  `expense` varchar(255) default NULL,
+  `amount` decimal(10,2) default NULL,
+  `date` datetime default NULL,
+  PRIMARY KEY  (`expense_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+
+--
+-- Table structure for table `js_status`
+--
+
+DROP TABLE IF EXISTS `js_status`;
+CREATE TABLE `js_status` (
+  `userid` int(11) default NULL,
+  `status` char(3) default NULL
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+--
+-- Table structure for table `mainboard`
+--
+
+DROP TABLE IF EXISTS `mainboard`;
+CREATE TABLE `mainboard` (
+  `threadid` smallint(5) unsigned NOT NULL auto_increment,
+  `title` varchar(128) default NULL,
+  `created` datetime default NULL,
+  `lastupdated` datetime default NULL,
+  `userid` smallint(5) unsigned NOT NULL default '0',
+  PRIMARY KEY  (`threadid`)
+) ENGINE=MyISAM AUTO_INCREMENT=2140 DEFAULT CHARSET=latin1;
+
+--
+-- Table structure for table `opt_links`
+--
+
+DROP TABLE IF EXISTS `opt_links`;
+CREATE TABLE `opt_links` (
+  `userid` smallint(5) unsigned NOT NULL default '0',
+  `linknum` tinyint(3) unsigned default NULL,
+  KEY `userid` (`userid`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+--
+-- Table structure for table `perms`
+--
+
+DROP TABLE IF EXISTS `perms`;
+CREATE TABLE `perms` (
+  `userid` smallint(5) unsigned NOT NULL auto_increment,
+  `status` varchar(32) default NULL,
+  PRIMARY KEY  (`userid`)
+) ENGINE=MyISAM AUTO_INCREMENT=4902 DEFAULT CHARSET=latin1;
+
+--
+-- Table structure for table `poll_choices`
+--
+
+DROP TABLE IF EXISTS `poll_choices`;
+CREATE TABLE `poll_choices` (
+  `poll_choice_id` int(10) unsigned NOT NULL auto_increment,
+  `poll_question_id` int(10) unsigned default NULL,
+  `html` text,
+  `created` datetime default NULL,
+  PRIMARY KEY  (`poll_choice_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=287 DEFAULT CHARSET=latin1;
+
+--
+-- Table structure for table `poll_questions`
+--
+
+DROP TABLE IF EXISTS `poll_questions`;
+CREATE TABLE `poll_questions` (
+  `poll_question_id` int(10) unsigned NOT NULL auto_increment,
+  `html` text,
+  `type` varchar(20) default NULL,
+  `created` datetime default NULL,
+  PRIMARY KEY  (`poll_question_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=56 DEFAULT CHARSET=latin1;
+
+--
+-- Table structure for table `poll_votes`
+--
+
+DROP TABLE IF EXISTS `poll_votes`;
+CREATE TABLE `poll_votes` (
+  `poll_vote_id` int(10) unsigned NOT NULL auto_increment,
+  `poll_choice_id` int(11) default NULL,
+  `userid` int(11) default NULL,
+  `created` datetime default NULL,
+  PRIMARY KEY  (`poll_vote_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=25735 DEFAULT CHARSET=latin1;
+
+--
+-- Table structure for table `secrets`
+--
+
+DROP TABLE IF EXISTS `secrets`;
+CREATE TABLE `secrets` (
+  `secret_id` int(11) NOT NULL auto_increment,
+  `secret_text` text,
+  `date` datetime default NULL,
+  `display` varchar(5) default NULL,
+  `date_approved` datetime default NULL,
+  PRIMARY KEY  (`secret_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=19906 DEFAULT CHARSET=latin1;
+
+--
+-- Table structure for table `style`
+--
+
+DROP TABLE IF EXISTS `style`;
+CREATE TABLE `style` (
+  `style` tinyint(3) unsigned NOT NULL auto_increment,
+  `path` varchar(128) default NULL,
+  `descr` varchar(255) default NULL,
+  PRIMARY KEY  (`style`)
+) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
+
+--
+-- Table structure for table `stylesheet`
+--
+
+DROP TABLE IF EXISTS `stylesheet`;
+CREATE TABLE `stylesheet` (
+  `userid` smallint(5) unsigned NOT NULL default '0',
+  `stylesheet` tinytext,
+  PRIMARY KEY  (`userid`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+--
+-- Table structure for table `subboard`
+--
+
+DROP TABLE IF EXISTS `subboard`;
+CREATE TABLE `subboard` (
+  `messageid` smallint(5) unsigned NOT NULL auto_increment,
+  `threadid` smallint(5) unsigned NOT NULL default '0',
+  `created` datetime default NULL,
+  `userid` smallint(5) unsigned NOT NULL default '0',
+  `title` varchar(128) default NULL,
+  `contents` text NOT NULL,
+  PRIMARY KEY  (`messageid`),
+  KEY `threadid` (`threadid`),
+  KEY `userid` (`userid`)
+) ENGINE=MyISAM AUTO_INCREMENT=41797 DEFAULT CHARSET=latin1;
+
+--
+-- Table structure for table `system`
+--
+
+DROP TABLE IF EXISTS `system`;
+CREATE TABLE `system` (
+  `motd` text,
+  `poll` text
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+--
+-- Table structure for table `tentative_accounts`
+--
+
+DROP TABLE IF EXISTS `tentative_accounts`;
+CREATE TABLE `tentative_accounts` (
+  `tentative_accounts_id` int(11) NOT NULL auto_increment,
+  `created` datetime default NULL,
+  `token` varchar(16) default NULL,
+  `session` varchar(200) default NULL,
+  PRIMARY KEY  (`tentative_accounts_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=1225 DEFAULT CHARSET=latin1;
+
+--
+-- Table structure for table `test`
+--
+
+DROP TABLE IF EXISTS `test`;
+CREATE TABLE `test` (
+  `a` int(11) NOT NULL default '0',
+  `b` varchar(20) default NULL,
+  PRIMARY KEY  (`a`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+--
+-- Table structure for table `viewed_secrets`
+--
+
+DROP TABLE IF EXISTS `viewed_secrets`;
+CREATE TABLE `viewed_secrets` (
+  `userid` int(11) NOT NULL default '0',
+  `date` datetime default NULL,
+  PRIMARY KEY  (`userid`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+

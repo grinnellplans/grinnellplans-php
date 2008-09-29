@@ -11,15 +11,19 @@ if ((strstr($_SERVER['REQUEST_URI'], '/dev/') != FALSE) ||
 	ini_set('display_errors', TRUE);
 	ini_set('display_startup_errors', TRUE);
 	ini_set('html_errors', TRUE);
+	
+	ini_set('register_globals', FALSE);
+	ini_set('register_long_arrays', FALSE);
+	ini_set('register_argc_argv', FALSE);
 }
 
-ini_set('register_globals', FALSE);
-ini_set('register_long_arrays', FALSE);
-ini_set('register_argc_argv', FALSE);
+ini_set('register_globals', TRUE);
+ini_set('register_long_arrays', TRUE);
+ini_set('register_argc_argv', TRUE);
+
 ini_set('track_errors', FALSE);
 
-function __autoload($classname)
-{
+function __autoload($classname) {
 	require_once("inc/$classname.php");
 }
 

@@ -1,11 +1,5 @@
 <?php
-// Boilerplate code for _all_ Plans scripts
-define('__ROOT__', dirname(__FILE__));
-require_once('Configuration.php');
-ini_set('include_path', '.:' . __ROOT__ . ':' . __ROOT__ . '/inc');
-putenv('TZ=' . TZ);
-
-// Set some testings only for when we're called through /beta/.
+// Set some settings only for when we're called through /beta/.
 if ((strstr($_SERVER['REQUEST_URI'], '/dev/') != FALSE) ||
  	(strstr($_SERVER['SERVER_NAME'], 'localhost') != FALSE) ||
 	(strstr($_SERVER['REQUEST_URI'], '/trunk/') != FALSE)) {
@@ -27,6 +21,12 @@ if ((strstr($_SERVER['REQUEST_URI'], '/dev/') != FALSE) ||
 
 	ini_set('track_errors', FALSE);
 }
+
+// Boilerplate code for _all_ Plans scripts
+define('__ROOT__', dirname(__FILE__));
+require_once('Configuration.php');
+ini_set('include_path', '.:' . __ROOT__ . ':' . __ROOT__ . '/inc');
+putenv('TZ=' . TZ);
 
 // Doctrine setup
 require_once('lib/doctrine/lib/Doctrine.php');

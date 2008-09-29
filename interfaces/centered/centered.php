@@ -134,7 +134,7 @@ autoread_list ($myurl, $idcookie, $myprivl);
 </td></tr></table>
 </td></tr></table>
 <?
-disclaimer();
+footer();
 ?>
 
 </body>

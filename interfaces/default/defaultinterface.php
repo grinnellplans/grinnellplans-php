@@ -167,7 +167,7 @@ $notprivl .
 
 function mdisp_end($dbh,$idcookie,$myurl,$myprivl)
 {echo "</td></tr></table></td></tr></table>";
-disclaimer();
+footer();
 ?>
 </body>
 

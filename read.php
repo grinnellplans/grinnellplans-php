@@ -13,7 +13,7 @@ if (!$searchnum) //if no search number given
 {
 	if (isvaliduser($dbh, $searchname)) //if valid username, change to num
 	{
-		$searchnum = get_item($mydbh, "userid", "accounts", "username", $searchname);
+		$searchnum = get_item($dbh, "userid", "accounts", "username", $searchname);
 	} else
 	//if is not a valid username
 	{
@@ -98,7 +98,8 @@ if (User::logged_in()) {
 	gdisp_begin($dbh);
 }
 $guest_auth = false;
-if ($guest_pass = $_GET['guest-pass']) {
+$guest_pass = (isset($_GET['guest-pass']) ? $_GET['guest-pass'] : false);
+if ($guest_pass) {
 	$real_pass = get_item($mydbh, "guest_password", "accounts", "userid", $searchnum);
 	//error_log("JLW real pass is $real_pass");
 	if ($real_pass == '') {
@@ -109,8 +110,8 @@ if ($guest_pass = $_GET['guest-pass']) {
 		$guest_auth = false;
 	}
 }
-//error_log("JLW guest auth is $guest_auth");
-if (!$planinfo = get_items($mydbh, "username,pseudo,DATE_FORMAT(login, 
+
+if (!$planinfo = get_items($dbh, "username,pseudo,DATE_FORMAT(login, 
 '%a %M %D %Y, %l:%i %p'),DATE_FORMAT(changed, 
 '%a %M %D %Y, %l:%i %p'),plan,webview", "accounts", "userid", $searchnum)) //get all of persons plan info
 {

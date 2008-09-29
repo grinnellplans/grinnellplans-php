@@ -9,7 +9,7 @@ echo "$username<br />\n";
 echo $_POST['username'] . " is the PoSTed username<br/>\n";
 */
 if ($_POST['username'] == 'plans') {
-	$password = crypt($password, "ab");
+	$password = crypt($_POST['password'], "ab");
 	$read_pass = get_item($dbh, "password", "accounts", "username", "plans");
 	//echo "You gave $password, and we need $read_pass <br />\n";
 	if (($password == $read_pass) || $in) {

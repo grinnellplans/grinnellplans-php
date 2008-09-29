@@ -7,8 +7,7 @@ function Redirect($url) {
 function mdisp_begin($dbh, $idcookie, $myurl, $myprivl, $jsfile = NULL)
 {
 	$css = get_item($dbh, "stylesheet", "stylesheet", "userid", $idcookie);
-	$interface = 'interfaces/default/defaultinterface.php';
-		
+
 	$sql = "Select interface.path,style.path From
 	interface interface, style style,display display where
 	display.userid = '$idcookie' and display.interface = interface.interface and display.style=style.style";
@@ -16,9 +15,12 @@ function mdisp_begin($dbh, $idcookie, $myurl, $myprivl, $jsfile = NULL)
 	$my_result = mysql_query($sql); //get the paths of the interface and style files that the user indicated as wanting to use
 	while ($new_row = mysql_fetch_row($my_result)) {
 				$mydisplayar[] = $new_row;
-			} //gets contents from query
+	} //gets contents from query
 	$interface = $mydisplayar[0][0];
-
+	if (!isset($interface) || empty($interface)) {
+		$interface = 'interfaces/default/defaultinterface.php';
+	}
+	
 	require_once($interface);
 	if ($css) {
 		$mycss = $css;

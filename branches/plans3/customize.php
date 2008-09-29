@@ -46,8 +46,6 @@ if (!User::logged_in()) {
 
 	<tr><td><p class="main">customize</p></td></tr>
 
-	<tr><td><a href="interfaces.php?myprivl=<?php echo $myprivl ?>"class="lev2">interfaces</a></td></tr>
-
 	<tr><td><a href="styles.php?myprivl=<?php
 	echo $myprivl
 ?>"

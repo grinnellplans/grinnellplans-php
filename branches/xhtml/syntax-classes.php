@@ -35,16 +35,16 @@ class PlansPage
 	public $url;
 	/* the current priority level of the autoread list */
 	public $autoreadpriority;
-	function __construct($_group, $_id, $_title, $_url)
+	function __construct($_group, $_id, $_title, $_url) 
 	{
 		$this->group = $_group;
 		$this->identifier = $_id;
 		$this->title = $_title;
 		$this->url = $_url;
 	}
-	public function append(Widget & $widge)
+	public function append(Widget&$widge) 
 	{
-		$this->contents[] = & $widge;
+		$this->contents[] = $widge;
 	}
 }
 /**
@@ -91,42 +91,51 @@ class Widget
 	convert to HTML, this field serves as a convenience.  Should only
 	be set by the interface. */
 	public $html_attributes;
-	function __construct($_id, $_title)
+	function __construct($_id, $_title) 
 	{
 		$this->identifier = $_id;
 		$this->title = $_title;
 	}
-	function toHTML()
+	function toHTML() 
 	{
 		/* we should never get this high, return a warning */
 		return "Warning: toHTML() has been called on an object that " . "does not provide it. Please report this as a bug.";
 	}
 }
 /**
- * A list of widgets. May serve as a structural sub-category.
+ * A list of widgets somehow thematically related. May serve as a structural sub-category.
  */
-class WidgetList extends Widget
+class WidgetGroup extends Widget
 {
 	/* An array of widgets */
 	public $contents;
-	function __construct($identifier, $title)
+	function __construct($identifier, $title) 
 	{
 		parent::__construct($identifier, $title);
 		$this->contents = array();
 	}
-	public function append(Widget & $widge)
+	//TODO pass by reference? here and in PlansPage
+	public function append(Widget $widge) 
 	{
-		$this->contents[] = & $widge;
+		$this->contents[] = &$widge;
 	}
-	public function toHTML()
+	public function toHTML($callback = null) 
 	{
 		$str = '<!--WidgetList start-->';
 		foreach($this->contents as $item) {
-			$str = $str . "\n" . $item->toHTML();
+			if ($callback == null) {
+				$str = $str . "\n" . $item->toHTML();
+			} else {
+				$str.= $callback($item);
+			}
 		}
 		$str = $str . "\n" . '<!--WidgetList end-->';
 		return $str;
 	}
+}
+// TODO is this a good distinction?
+class WidgetList extends WidgetGroup
+{
 }
 /**
  * An autoread list. Stores its own priority level.
@@ -136,7 +145,7 @@ class AutoRead extends WidgetList
 	/* a number designating the "priority" level */
 	public $priority;
 	// $contents contains PlanLinks
-	function __construct($p)
+	function __construct($p) 
 	{
 		parent::__construct("autoreadlev$p", "Level $p");
 		$this->priority = $p;
@@ -152,13 +161,13 @@ class Hyperlink extends Widget
 	public $href;
 	/* the text of the link */
 	public $description;
-	function __construct($_id, $_href, $_desc)
+	function __construct($_id, $_href, $_desc) 
 	{
 		parent::__construct($_id, NULL);
 		$this->href = $_href;
 		$this->description = $_desc;
 	}
-	function toHTML()
+	function toHTML() 
 	{
 		return "<a href=\"$this->href\"$this->html_attributes>$this->description</a>";
 	}
@@ -168,7 +177,7 @@ class Hyperlink extends Widget
  */
 class PlanLink extends Hyperlink
 {
-	function __construct($_id, $username)
+	function __construct($_id, $username) 
 	{
 		parent::__construct($_id, NULL, $username);
 		$this->href = "read.php?searchname=$username"; //TODO hmmm...
@@ -178,7 +187,7 @@ class PlanLink extends Hyperlink
 /**
  * A web form.
  */
-class Form extends Widget
+class Form extends WidgetGroup
 {
 	/* These constants apply to XForms or something. Avram knows. */
 	const FIELD_NUMERIC = 10;
@@ -188,32 +197,31 @@ class Form extends Widget
 	public $method;
 	/* an array containing the fields in the form, as FormItems */
 	public $fields;
-	public function __construct($identifier, $title)
+	public function __construct($identifier, $title) 
 	{
 		parent::__construct($identifier, $title);
-		$this->fields = array();
+		$this->contents = array();
 	}
-	public function appendField($item)
+	// DEPRECATED
+	public function appendField(FormItem $f) 
 	{
-		$this->fields[] = $item;
+		return $this->append($f);
 	}
-	public function toHTML()
+	public function toHTML($callback = null) 
 	{
 		$str = '<form method="' . $this->method . '" action="' . $this->action . '">';
-		foreach($this->fields as $item) {
-			$str = $str . "\n\t" . $item->toHTML();
-		}
-		$str = $str . "\n</form>";
+		$str.= parent::toHTML($callback);
+		$str.= "\n</form>";
 		return $str;
 	}
 }
 /**
  * An item (field) within a form. May also be other Widgets inside a form.
  */
-class FormItem
+class FormItem extends Widget
 {
 	/* $type may be one of the following strings:
-	* radio, checkbox, hidden, textarea, //TODO, widget.
+	* radio, checkbox, hidden, textarea
 	* If $type is 'widget', $value points to a Widget object which contains
 	* the widget. This type allows other types of info to exist inside forms.
 	*/
@@ -228,38 +236,39 @@ class FormItem
 	public $value;
 	/* Is it checked (checkboxes and radio buttons)? */
 	public $checked;
-	public function __construct($_type, $_name, $_value)
+	public function __construct($_type, $_name, $_value = null) 
 	{
 		$this->type = $_type;
 		$this->name = $_name;
+		$this->id = $_name;
 		$this->value = $_value;
 		$this->description = NULL;
 		$this->identifier = NULL;
 	}
-	public function toHTML()
+	public function toHTML() 
 	{
 		$str = '';
 		switch ($this->type) {
-		case 'widget':
-			//TODO do something particular
-			break;
+			case 'widget':
+				$str = $this->value->toHTML();
+				break;
 
-		case 'textarea':
-			$str = $str . "<textarea name=\"$this->name\">" . $this->description . '</textarea>';
-			break;
+			case 'textarea':
+				$str = $str . "<textarea name=\"$this->name\">" . $this->description . '</textarea>';
+				break;
 
-		case 'radio':
-		case 'checkbox':
-			$str = $str . "<input type=\"$this->type\" name=\"$this->name\"" . "value=\"$this->value\"" . (($this->checked) ? ' checked' : '') . ">$this->description";
-			break;
+			case 'radio':
+			case 'checkbox':
+				$str = $str . "<input type=\"$this->type\" name=\"$this->name\"" . "value=\"$this->value\"" . (($this->checked) ? ' checked' : '') . ">$this->description";
+				break;
 
-		default:
-			$str = $str . "<input type=\"$this->type\"";
-			if ($this->name) $str.= " name=\"$this->name\"";
-			$str.= " value=\"$this->value\">$this->description";
-			break;
-		}
-		return $str;
+			default:
+				$str = $str . "<input type=\"$this->type\"";
+				if ($this->name) $str.= " name=\"$this->name\"";
+				$str.= " value=\"$this->value\">$this->description";
+				break;
+			}
+			return $str;
 	}
 }
 class EditBox extends Form
@@ -268,7 +277,7 @@ class EditBox extends Form
 	public $text; // A PlanText object
 	public $rows;
 	public $columns;
-	public function __construct($username, $text, $rows, $cols)
+	public function __construct($username, $text, $rows, $cols) 
 	{
 		parent::__construct('editbox', "Editing [$username]'s Plan");
 		$this->username = $username;
@@ -276,7 +285,7 @@ class EditBox extends Form
 		$this->columns = $cols;
 		$this->text = $text;
 	}
-	public function toHTML()
+	public function toHTML() 
 	{
 		$txta = new FormItem('textarea', 'plan', '');
 		$txta->description = $this->text;
@@ -294,7 +303,7 @@ class PlanContent extends Widget
 	public $lastlogin;
 	public $lastupdate;
 	public $addform; // form to add this plan to autoread
-	public function __construct($username, $planname, $lastlogin, $lastupdate, $text)
+	public function __construct($username, $planname, $lastlogin, $lastupdate, $text) 
 	{
 		parent::__construct('plan', "[$username]'s Plan");
 		$this->username = $username;
@@ -303,7 +312,7 @@ class PlanContent extends Widget
 		$this->planname = $planname;
 		$this->text = $text;
 	}
-	public function toHTML()
+	public function toHTML() 
 	{
 		return "Warning: toHTML() unimplemented for this object (PlanContent).";
 	}
@@ -315,14 +324,22 @@ class Text extends Widget
 	/* Please note: this string may contain some basic HTML in it,
 	* namely <i> and <b> tags, and hyperlinks. */
 	public $message;
-	function toHTML()
+	function toHTML() 
 	{
 		return $this->message;
 	}
 }
+class RegularText extends Text
+{
+	public function __construct($_message, $title) 
+	{
+		parent::__construct('text', $title);
+		$this->message = $_message;
+	}
+}
 class InfoText extends Text
 {
-	public function __construct($_message, $title)
+	public function __construct($_message, $title) 
 	{
 		parent::__construct('infomessage', $title);
 		$this->message = $_message;
@@ -332,7 +349,7 @@ class AlertText extends Text
 {
 	/* boolean, is this alert a critical error (such as a crash)? */
 	public $error;
-	public function __construct($_message, $_error)
+	public function __construct($_message, $_error) 
 	{
 		parent::__construct('alertmessage', 'Alert');
 		$this->message = $_message;
@@ -340,17 +357,17 @@ class AlertText extends Text
 }
 class RequestText extends Text
 {
-	public function __construct($_message)
+	public function __construct($_message) 
 	{
 		parent::__construct('requestmessage', 'Question');
 		$this->message = $_message;
 	}
 }
 class HeadingText extends Text
-{ //TODO decide if we need this or are going with built-in titles instead
+{
 	/* int representing the nesting level of the heading (1 is a top level heading) */
 	public $sublevel;
-	public function __construct($_message, $_level)
+	public function __construct($_message, $_level) 
 	{
 		parent::__construct('heading' . $sublevel, NULL);
 		$this->message = $_message;
@@ -364,7 +381,7 @@ class PlanText extends Text
 	/* A boolean: true if the text is in plans markup (i.e. [b] for
 	* bold text), and false if text is in HTML form. */
 	public $planmarkup;
-	public function __construct($_message, $_planmarkup)
+	public function __construct($_message, $_planmarkup) 
 	{
 		parent::__construct('plantext', "Plan Text");
 		$this->message = $_message;

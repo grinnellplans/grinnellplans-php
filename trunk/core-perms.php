@@ -7,7 +7,7 @@ $dbh = db_connect();
 $userid = User::id();
 
 $status = get_item($dbh, "status", "perms", "userid", $userid);
-$write_only_access = array('edit.php' => 1, 'index.php' => 1, 'quicklove.php' => 1, 'search.php' => 1,);
+$write_only_access = array('edit.php' => 1, 'index.php' => 1, 'quicklove.php' => 1, 'search.php' => 1, 'home.php' => 1);
 if ($status) {
 	if ($status == 'write-only') {
 		//		error_log("JLW: $userid, $status");

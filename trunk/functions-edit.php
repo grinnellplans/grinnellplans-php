@@ -70,8 +70,10 @@ function cleanText($plan)
 				}
 				if (strrpos($mycheck, ":")) {
 					if (strrpos($mycheck, "|")) {
-						preg_match("/(.+?)\|(.+)/si", $mycheck, $love_replace);
-						$plan = preg_replace("/\[" . preg_quote($mycheck, "/") . "\]/s", "<a href=\"$love_replace[1]\" class=\"onplan\">$love_replace[2]</a>", $plan);
+ 						preg_match("/(.+?)\|(.+)/si",$mycheck,$love_replace);
+ 						// Here, we need to escape $'s so they don't get treated as back-references
+ 						$love_replace[2]=addcslashes($love_replace[2],"$");
+ 						$plan=preg_replace("/\[" . preg_quote($mycheck,"/") . "\]/s", "<a href=\"$love_replace[1]\" class=\"onplan\">$love_replace[2]</a>",$plan);
 					} else {
 						$plan = preg_replace("/\[" . preg_quote($mycheck, "/") . "\]/s", "<a href=\"$mycheck\" class=\"onplan\">$mycheck</a>", $plan);
 					}

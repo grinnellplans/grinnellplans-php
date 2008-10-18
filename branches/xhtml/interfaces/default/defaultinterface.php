@@ -13,14 +13,15 @@
 //DEPRECATED
 include (realpath(dirname(__FILE__) . '/../common.php'));
 //DEPRECATED
-function interface_disp_begin($foo1, $foo2, $foo3, $foo4, $foo5, $foo6, $foo7)
+function interface_disp_begin($foo1, $foo2, $foo3, $foo4, $foo5, $foo6, $foo7) 
 {
 }
 //DEPRECATED
-function interface_disp_end($foo1)
+function interface_disp_end($foo1) 
 {
+	echo '';
 }
-function interface_disp_page(PlansPage $page)
+function interface_disp_page(PlansPage $page) 
 {
 ?>
 <html>
@@ -65,14 +66,14 @@ class="main">
 * Examines the page identifier and prints includes for any javascript we
 * traditionally use on the page.
 */
-function disp_local_jsfiles($page)
+function disp_local_jsfiles($page) 
 {
 	$jsfile_arr = array();
 	// Populate the array with any files we need
 	switch ($page->identifier) {
-	case 'edit':
-		$jsfile_arr[] = 'edit.js';
-		break;
+		case 'edit':
+			$jsfile_arr[] = 'edit.js';
+			break;
 	}
 	// Now print them to the page
 	foreach($jsfile_arr as $jsfile) {
@@ -80,46 +81,70 @@ function disp_local_jsfiles($page)
 	}
 }
 //TODO
-function disp_widget($value, $key)
+function disp_widget($value, $key) 
 {
 	switch (get_class($value)) {
-	case 'Form':
-		print ($value->toHTML() . "\n");
-		break;
+		case 'Form':
+			$str = '<table><form method="' . $value->method . '" action="' . $value->action . '">';
+			foreach($value->fields as $item) {
+				$str.= "\n\t<tr><td>" . $item->toHTML() . "</td></tr>";
+			}
+			$str = $str . "\n</form></table>";
+			print ($str);
+			break;
 
-	case 'InfoText':
-		print ("\t<span class=\"info\">\n");
-		if ($value->title && $value->title != '') print ("\t<span class=\"infotitle\">" . $value->title . "</span>\n");
-		print ("\t" . $value->toHTML() . "\n");
-		print ("\t</span>\n");
-		break;
+		case 'Hyperlink':
+			print (strtolower($value->toHTML()) . "\n");
+			break;
 
-	case 'RequestText':
-		print ("\t<span class=\"question\">\n");
-		print ("\t" . $value->toHTML() . "\n");
-		print ("\t</span>\n");
-		break;
+		case 'InfoText':
+			print ("\t<span class=\"info\">\n");
+			if ($value->title && $value->title != '') print ("\t<span class=\"infotitle\">" . $value->title . "</span>\n");
+			print ("\t" . $value->toHTML() . "\n");
+			print ("\t</span>\n");
+			break;
 
-	case 'AlertText':
-		print ("\t<span class=\"alert\">\n");
-		print ("\t" . $value->toHTML() . "\n");
-		print ("\t</span>\n");
-		break;
+		case 'RequestText':
+			print ("\t<span class=\"question\">\n");
+			print ("\t" . $value->toHTML() . "\n");
+			print ("\t</span>\n");
+			break;
 
-	case 'EditBox':
-		disp_editbox($value);
-		break;
+		case 'HeadingText':
+			print ('<h' . ($value->sublevel+1) . '>' . $value->message . '</h' . ($value->sublevel+1) . '>');
+			break;
 
-	case 'PlanContent':
-		disp_plan($value);
-		break;
+		case 'AlertText':
+			print ("\t<span class=\"alert\">\n");
+			print ("\t" . $value->toHTML() . "\n");
+			print ("\t</span>\n");
+			break;
 
-	default:
-		//foobar
-		break;
-	}
+		case 'EditBox':
+			disp_editbox($value);
+			break;
+
+		case 'PlanContent':
+			disp_plan($value);
+			break;
+
+		case 'WidgetGroup':
+		case 'WidgetList':
+			print ("\n<ul id='" . $value->identifier . ($value->class ? "' class=" . $value->class : "'") . ">");
+			foreach($value->contents as $widg) {
+				print ("\n<li>");
+				disp_widget($widg, null);
+				print ("</li>");
+			}
+			print ("\n</ul>\n");
+			break;
+
+		default:
+			//foobar
+			break;
+		}
 }
-function disp_footer($footer)
+function disp_footer($footer) 
 {
 	//TODO
 	if ($footer->doyouread) {
@@ -130,7 +155,7 @@ function disp_footer($footer)
 		echo "" . $footer->legal->toHTML() . "\n";
 	}
 }
-function disp_mainpanel($page)
+function disp_mainpanel($page) 
 {
 ?>
 <tr>
@@ -170,7 +195,7 @@ function disp_mainpanel($page)
 </td>
 <?php
 }
-function disp_links($panel)
+function disp_links($panel) 
 {
 	$front = "\n<tr>\n<td><p class=\"imagelev1\">&nbsp;</p></td><td></td><td></td>\n<td>";
 	$end = "</td>\n</tr>\n"; // TODO do we want a class div around these?
@@ -191,7 +216,7 @@ function disp_links($panel)
 
 <?php
 }
-function disp_autoread($autoreads, $myurl, $privl)
+function disp_autoread($autoreads, $myurl, $privl) 
 {
 ?>
 <tr><td><p class="imagelev1">&nbsp;</p></td><td></td><td></td>
@@ -259,7 +284,7 @@ disclaimer();
 echo "</body></html>";}
 
 */
-function disp_plan($plan)
+function disp_plan($plan) 
 {
 ?>
 <table><tr><td><p class="main">Username: </p></td><td><b><?php echo $plan->username
@@ -277,7 +302,7 @@ function disp_plan($plan)
 		disp_widget($plan->addform, NULL);
 	}
 }
-function disp_editbox($box)
+function disp_editbox($box) 
 {
 ?>
 		<form action="<?php echo $box->action

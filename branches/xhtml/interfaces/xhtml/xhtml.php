@@ -15,7 +15,7 @@
 // include the common function file //TODO deprecated?
 include (realpath(dirname(__FILE__) . '/../common.php'));
 /* DEPRECATED */
-function interface_disp_begin($searchname, $linkarr, $autofingerarr, $myurl, $myprivl, $cssloc, $jsfile)
+function interface_disp_begin($searchname, $linkarr, $autofingerarr, $myurl, $myprivl, $cssloc, $jsfile) 
 {
 	if ($searchname) {
 		$title = "[$searchname]'s Plan";
@@ -70,7 +70,7 @@ function interface_disp_begin($searchname, $linkarr, $autofingerarr, $myurl, $my
 	$end = "</li>\n";
 	$new_url = remove_param($myurl, 'mark_as_read');
 	for ($i = 0; $autofingerarr[$i][0]; $i++) {
-		$priority = $i + 1;
+		$priority = $i+1;
 		$new_url = add_param($new_url, 'myprivl', $priority);
 		if ($priority == $privl) {
 			echo "\t\t" . '<div id="current"><li class="autoread">';
@@ -103,7 +103,7 @@ function interface_disp_begin($searchname, $linkarr, $autofingerarr, $myurl, $my
 <?php
 }
 //TODO needed?
-function priority_link($myurl, $notprivl)
+function priority_link($myurl, $notprivl) 
 {
 	if (ereg("myprivl", $myurl)) {
 		$myurlx = ereg_replace("myprivl=[0-9]{0,1}", "myprivl=" . $notprivl, $myurl);
@@ -122,12 +122,12 @@ function priority_link($myurl, $notprivl)
 	echo "<td><a href=\"http://" . $myurlx . "\" class=\"lev2\">level " . $notprivl . "</a></td></tr>";
 } //function priority_link
 /* DEPRECATED */
-function interface_disp_end($myurl)
+function interface_disp_end($myurl) 
 {
 	echo "\n</div>\n</body></html>";
 }
 /* DEPRECATED */
-function interface_disp_header($username, $pseudo, $lastlogin, $lastupdate)
+function interface_disp_header($username, $pseudo, $lastlogin, $lastupdate) 
 {
 ?>
 	<div id="header">
@@ -142,7 +142,7 @@ function interface_disp_header($username, $pseudo, $lastlogin, $lastupdate)
 <?php
 }
 /* DEPRECATED */
-function interface_disp_plantext($text)
+function interface_disp_plantext($text) 
 {
 ?>
 	<div id="plan">
@@ -152,7 +152,7 @@ function interface_disp_plantext($text)
 	</div>
 <?php
 }
-function interface_disp_editbox($text, $rows, $cols)
+function interface_disp_editbox($text, $rows, $cols) 
 {
 ?>
 		<form action="edit.php" method="post" id="editform" name="editform">
@@ -170,7 +170,7 @@ function interface_disp_editbox($text, $rows, $cols)
 <?php
 }
 /* DEPRECATED */
-function interface_disp_footer($showaddform, $searchnum, $justupdated)
+function interface_disp_footer($showaddform, $searchnum, $justupdated) 
 {
 ?>
 
@@ -212,7 +212,7 @@ function interface_disp_footer($showaddform, $searchnum, $justupdated)
 	</div>
 <?php
 }
-function interface_disp_page(PlansPage $page)
+function interface_disp_page(PlansPage $page) 
 {
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
@@ -249,7 +249,7 @@ function interface_disp_page(PlansPage $page)
 	if ($page->footer) disp_footer($page->footer);
 	echo "</body></html>";
 }
-function disp_mainpanel($page)
+function disp_mainpanel($page) 
 {
 	$panel = $page->mainpanel;
 	// print the logo
@@ -260,26 +260,23 @@ function disp_mainpanel($page)
 	}
 	// print the finger form
 	if ($panel->fingerbox) {
-?>
-	<div id="finger">
-	<form method="<?php echo $panel->fingerbox->method
-?>" action="<?php echo $panel->fingerbox->action
-?>">
-<?php
-		foreach($panel->fingerbox->fields as $item) {
-			print ("\t\t" . $item->toHTML() . "\n");
+		echo '<div id="finger">';
+		echo $panel->fingerbox->toHTML();
+		/*
+		<form method="<?=$panel->fingerbox->method ?>" action="<?=$panel->fingerbox->action?>">
+		foreach($panel->fingerbox->contents as $item) {
+		print("\t\t".$item->toHTML()."\n");
 		}
-?>
-	</form>
-	</div>
-<?php
+		</form>
+		*/
+		echo "</div>";
 	}
 	// print the user's links
 	if ($panel->requiredlinks) disp_links($panel);
 	// print the autoread
 	if ($panel->autoreads) disp_autoread($panel->autoreads, $page->url, $page->autoreadpriority);
 }
-function disp_footer($footer)
+function disp_footer($footer) 
 {
 	echo "<div id=\"footer\">\n";
 	if ($footer->doyouread) {
@@ -294,7 +291,7 @@ function disp_footer($footer)
 	}
 	echo "</div>\n";
 }
-function disp_autoread($autoreads, $myurl, $privl)
+function disp_autoread($autoreads, $myurl, $privl) 
 {
 ?>
 	<div id="autofingerlist"><span class="autofinger">autofinger list</span>
@@ -334,7 +331,7 @@ function disp_autoread($autoreads, $myurl, $privl)
 	</ul></div>
 <?php
 }
-function disp_links($panel)
+function disp_links($panel) 
 {
 ?>
 	<div id="links">
@@ -345,61 +342,93 @@ function disp_links($panel)
 	// print out the links
 	if ($panel->requiredlinks) for ($i = 0; ($l = $panel->requiredlinks[$i]); $i++) {
 		if (strtolower($l->description) == 'log out') $logout = $l;
-		else echo $front . $l->toHTML() . $end;
+		else echo $front . strtolower($l->toHTML()) . $end;
 	}
 	if ($panel->optionallinks) for ($i = 0; ($l = $panel->optionallinks[$i]); $i++) {
-		echo $front . $l->toHTML() . $end;
+		echo $front . strtolower($l->toHTML()) . $end;
 	}
-	if ($logout) echo $front . $logout->toHTML() . $end;
+	if ($logout) echo $front . strtolower($logout->toHTML()) . $end;
 ?>
 		</ul>
 	</div>
 <?php
 }
-function disp_widget($value, $key)
+function disp_widget($value, $key = null) 
 {
 	switch (get_class($value)) {
-	case 'Form':
-		print ($value->toHTML() . "\n");
-		break;
+		case 'Form':
+			$value->description = strtolower($value->description);
+			print ($value->toHTML('disp_widget') . "\n");
+			break;
 
-	case 'InfoText':
-		print ("\t<span class=\"info\">\n");
-		if ($value->title && $value->title != '') print ("\t<span class=\"infotitle\">" . $value->title . "</span>\n");
-		print ("\t" . $value->toHTML() . "\n");
-		print ("\t</span>\n");
-		break;
+		case 'FormItem':
+			print ("\t" . $value->toHTML() . "\n");
+			break;
 
-	case 'RequestText':
-		print ("\t<span class=\"question\">\n");
-		print ("\t" . $value->toHTML() . "\n");
-		print ("\t</span>\n");
-		break;
+		case 'Hyperlink':
+			print (strtolower($value->toHTML()) . "\n");
+			break;
 
-	case 'AlertText':
-		print ("\t<span class=\"alert\">\n");
-		print ("\t" . $value->toHTML() . "\n");
-		print ("\t</span>\n");
-		break;
+		case 'InfoText':
+			print ("\t<span class=\"info\">\n");
+			if ($value->title && $value->title != '') print ("\t<span class=\"infotitle\">" . $value->title . "</span>\n");
+			print ("\t" . $value->toHTML() . "\n");
+			print ("\t</span>\n");
+			break;
 
-	case 'HeadingText':
-		print ('<h' . $value->sublevel . '>' . $value->message . '</h' . $value->sublevel . '>');
-		break;
+		case 'RequestText':
+			print ("\t<span class=\"question\">\n");
+			print ("\t" . $value->toHTML() . "\n");
+			print ("\t</span>\n");
+			break;
 
-	case 'EditBox':
-		disp_editbox($value);
-		break;
+		case 'AlertText':
+			print ("\t<span class=\"alert\">\n");
+			print ("\t" . $value->toHTML() . "\n");
+			print ("\t</span>\n");
+			break;
 
-	case 'PlanContent':
-		disp_plan($value);
-		break;
+		case 'HeadingText':
+			print ('<h' . $value->sublevel . '>' . $value->message . '</h' . $value->sublevel . '>');
+			break;
 
-	default:
-		//foobar
-		break;
-	}
+		case 'RegularText':
+			print ("\t<span>" . $value->toHTML() . "</span>\n");
+			break;
+
+		case 'EditBox':
+			disp_editbox($value);
+			break;
+
+		case 'PlanContent':
+			disp_plan($value);
+			break;
+
+		case 'WidgetGroup':
+			//TODO are we still using ->class?
+			print ("\n<div id='" . $value->identifier . ($value->class ? "' class=" . $value->class : "'") . ">");
+			foreach($value->contents as $widg) {
+				disp_widget($widg, null);
+			}
+			print ("\n</div>\n");
+			break;
+
+		case 'WidgetList':
+			print ("\n<ul id='" . $value->identifier . ($value->class ? "' class=" . $value->class : "'") . ">");
+			foreach($value->contents as $widg) {
+				print ("\n<li>");
+				disp_widget($widg, null);
+				print ("</li>");
+			}
+			print ("\n</ul>\n");
+			break;
+
+		default:
+			//foobar
+			break;
+		}
 }
-function disp_plan($plan)
+function disp_plan($plan) 
 {
 ?>
 	<div id="header">
@@ -430,7 +459,7 @@ function disp_plan($plan)
 		disp_widget($plan->addform, NULL);
 	}
 }
-function disp_editbox($box)
+function disp_editbox($box) 
 {
 ?><div id="editform">
 	<form action="<?php echo $box->action
@@ -453,7 +482,7 @@ function disp_editbox($box)
 	
 }
 /* DEPRECATED */
-function interface_disp_preferences($linkarray)
+function interface_disp_preferences($linkarray) 
 {
 	print ("\t<ul id=i\"prefs\"><h2>Preferences</h2>\n");
 	foreach($linkarray as $index => $value) {
@@ -467,7 +496,7 @@ function interface_disp_preferences($linkarray)
 	print ("\t</ul>");
 }
 /* DEPRECATED */
-function interface_disp_preferences_list($page)
+function interface_disp_preferences_list($page) 
 {
 	print ("\t<div id=\"pref_list\">\n");
 	foreach($page->content as $item) {
@@ -478,38 +507,38 @@ function interface_disp_preferences_list($page)
 	print ("\t</div>\n");
 }
 /* DEPRECATED */
-function parse_chunks($list, $prepend)
+function parse_chunks($list, $prepend) 
 {
 	foreach($list as $chunk) {
 		switch ($chunk->type) {
-		case 'head':
-			print ("$prepend<h3>$chunk->source</h3>");
-			break;
+			case 'head':
+				print ("$prepend<h3>$chunk->source</h3>");
+				break;
 
-		case 'info':
-			print ("$prepend<span>$chunk->source</span>");
-			break;
+			case 'info':
+				print ("$prepend<span>$chunk->source</span>");
+				break;
 
-		case 'form':
-			//print($chunk->source);
-			parse_chunks($chunk->source, $prepend);
-			break;
+			case 'form':
+				//print($chunk->source);
+				parse_chunks($chunk->source, $prepend);
+				break;
 
-		case 'formd':
-			print ("$prepend<span>");
-			print ($chunk->source);
-			print ("</span>");
-			break;
+			case 'formd':
+				print ("$prepend<span>");
+				print ($chunk->source);
+				print ("</span>");
+				break;
 
-		case 'formh':
-			print ($prepend);
-			print ($chunk->source);
-			break;
-			//TODO add others
-			
+			case 'formh':
+				print ($prepend);
+				print ($chunk->source);
+				break;
+				//TODO add others
+				
 		}
 		print ("\n");
-	}
+}
 }
 /*
 function interface_disp_preferences_list($list) {

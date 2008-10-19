@@ -71,7 +71,7 @@ function autoread_list($myurl, $idcookie, $myprivl)
 			while ($new_row = mysql_fetch_row($privarray)) {
 				$autoreadlist[] = $new_row;
 			}
-			echo '<td><a onClick =" ' . " return confirm('Are you sure you\'d like to mark all the Plans on level " . $priority . " as read?')" . '" href="http://' . add_param($new_url, 'mark_as_read', 1) . '">X</a></td></tr>' . "\n";
+			echo '<td><a onClick =" ' . " return confirm('Are you sure you\'d like to mark all the Plans on level " . $priority . " as read?')" . '" href="' . add_param($new_url, 'mark_as_read', 1) . '">X</a></td></tr>' . "\n";
 			$o = 0;
 			while (isset($autoreadlist[$o]) && ($autoreadlist[$o][0])) {
 				$read_url = 'read.php';

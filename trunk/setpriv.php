@@ -9,5 +9,9 @@ if (isset($_GET['myprivl'])) {
 
 $_SESSION['lvl'] = $level;
 
+if (isset($_GET["mark_as_read"]) && $_GET["mark_as_read"] == 1 && User::logged_in()) {
+    mark_as_read($dbh, User::id(), $_SESSION['lvl']);
+}
+
 Redirect($_SERVER['HTTP_REFERER']);
 ?>

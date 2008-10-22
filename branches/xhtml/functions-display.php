@@ -130,18 +130,18 @@ function get_autoread($idcookie, $p)
 function get_req_links()
 {
 	$newarr = array();
-	$newarr[] = new Hyperlink('mainlink_edit', 'edit.php', 'Edit Plan');
-	$newarr[] = new Hyperlink('mainlink_search', 'search.php', 'Search Plans');
-	$newarr[] = new Hyperlink('mainlink_prefs', 'customize.php', 'Preferences');
-	$newarr[] = new Hyperlink('mainlink_logout', 'index.php?logout=1', 'Log Out');
+	$newarr[] = new Hyperlink('mainlink_edit', true, 'edit.php', 'Edit Plan');
+	$newarr[] = new Hyperlink('mainlink_search', true, 'search.php', 'Search Plans');
+	$newarr[] = new Hyperlink('mainlink_prefs', true, 'customize.php', 'Preferences');
+	$newarr[] = new Hyperlink('mainlink_logout', true, 'index.php?logout=1', 'Log Out');
 	return $newarr;
 }
 function get_guest_links()
 {
 	$newarr = array();
-	$newarr[] = new Hyperlink('mainlink_search', 'search.php', 'Search Plans');
-	$newarr[] = new Hyperlink('mainlink_listusers', 'listusers.php', 'List Users');
-	$newarr[] = new Hyperlink('mainlink_logout', 'index.php?logout=1', 'Log Out');
+	$newarr[] = new Hyperlink('mainlink_search', true, 'search.php', 'Search Plans');
+	$newarr[] = new Hyperlink('mainlink_listusers', true, 'listusers.php', 'List Users');
+	$newarr[] = new Hyperlink('mainlink_logout', true, 'index.php?logout=1', 'Log Out');
 	return $newarr;
 }
 function get_opt_links($idcookie)
@@ -155,10 +155,10 @@ function get_opt_links($idcookie)
 			$foo = array();
 			preg_match("/href=\"([^\"]+)\"/", $new_row[1], &$foo);
 			$href = $foo[1]; // TODO this is silly, let's just store href in the db
-			$thislink = new Hyperlink(NULL, $href, $new_row[0]);
+			$thislink = new Hyperlink('opt_link', false, $href, $new_row[0]);
 		} else if ($new_row[0] == 'Secrets') {
 			$count = count_unread_secrets($idcookie);
-			$thislink = new Hyperlink('mainlink_secrets', 'anonymous.php', "Secrets ($count)");
+			$thislink = new Hyperlink('mainlink_secrets', true, 'anonymous.php', "Secrets ($count)");
 		} else if ($new_row[0] == 'Jumble') {
 			$url = $_SERVER['REQUEST_URI'];
 			if ($_GET['jumbled'] == 'yes' || ($_COOKIE['jumbled'] == 'yes' && $_GET['jumbled'] != 'no')) {
@@ -169,7 +169,7 @@ function get_opt_links($idcookie)
 				$url = add_param($url, 'jumbled', 'yes');
 				$linktext = 'jumble';
 			}
-			$thislink = new Hyperlink('mainlink_jumble', $url, $linktext);
+			$thislink = new Hyperlink('mainlink_jumble', true, $url, $linktext);
 		}
 		$newarr[] = $thislink;
 	}
@@ -177,21 +177,21 @@ function get_opt_links($idcookie)
 }
 function get_fingerbox()
 {
-	$f = new Form('finger', 'Finger Plan');
+	$f = new Form('finger', true, 'Finger Plan');
 	$f->action = 'read.php';
 	$f->method = 'GET';
 	$item = new FormItem('text', 'searchname', NULL);
 	$item->datatype = Form::FIELD_TEXT; //TODO avram?
-	$f->appendField($item);
+	$f->append($item);
 	$item = new FormItem('hidden', 'myprivl', $myprivl);
-	$f->appendField($item);
+	$f->append($item);
 	$item = new FormItem('submit', NULL, 'Read');
-	$f->appendField($item);
+	$f->append($item);
 	return $f;
 }
 function get_linkhome()
 {
-	$l = new Hyperlink('home', 'index.php', '');
+	$l = new Hyperlink('home', true, 'index.php', '');
 	return $l;
 }
 function get_just_updated()

@@ -161,5 +161,14 @@ background-color: #50BED6}
   border-color: #eee;
 }
 
-
-
+/* Settings for infoboxes */
+.info { display: block;
+        padding: 2px;
+        background: #eee;
+}
+.infotitle {
+        font-weight: bold;
+        display: block;
+        color: blue;
+            border: thin black solid;
+    }

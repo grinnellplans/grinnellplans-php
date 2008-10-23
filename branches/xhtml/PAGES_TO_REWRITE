@@ -1,35 +1,38 @@
-PAGE						REWRITTEN?
+Rewritten means using OO-based interface code. Legacy means producing
+code that is acceptably close to the current tables-based layout.
 
-anonymous.php				no
-autoread.php				no
-blank.php					no
-board_messages.php			no
-board_show.php				no
-board_submit.php			no
-changepassword.php			no
-customize.php				no
-edit.php					yes
-functions-display.php		no
-home.php					no
-index-blank.php				no
-index.php					no
-interfaces.php				no
-jlw-test.php				no
-lastcreated.php				no
-links.php					no
-listusers.php				no
-new-poll.php				no
-old-poll.php				no
-photo.php					no
-planwatch.php				no
-poll.php					no
-proc_autoread.php			no
-readadd.php					no
-readcss.php					no
-read.php					no
-register.php				no
-search.php					no
-secrets-stats.php			no
-styles.php					no
-textbox.php					no
-webview.php					yes
+PAGE						REWRITTEN?	LEGACY?
+
+anonymous.php				no			no
+autoread.php				partial		no
+blank.php					no			no
+board_messages.php			no			no
+board_show.php				no			no
+board_submit.php			no			no
+changepassword.php			no			no
+customize.php				no			no
+edit.php					yes			??
+functions-display.php		no			no
+home.php					no			no
+index-blank.php				no			no
+index.php					no			no
+interfaces.php				no			no
+jlw-test.php				no			no
+lastcreated.php				no			no
+links.php					no			no
+listusers.php				no			no
+new-poll.php				no			no
+old-poll.php				no			no
+photo.php					no			no
+planwatch.php				no			no
+poll.php					no			no
+proc_autoread.php			no			no
+readadd.php					no			no
+readcss.php					no			no
+read.php					partial		yes
+register.php				no			no
+search.php					no			no
+secrets-stats.php			no			no
+styles.php					no			no
+textbox.php					no			no
+webview.php					yes			??

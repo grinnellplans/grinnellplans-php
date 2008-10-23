@@ -227,7 +227,8 @@ class WidgetGroup extends Widget
 			if ($callback == null) {
 				$str = $str . "\n" . $item->toHTML();
 			} else {
-				$str.= $callback($item);
+				// Invoke the callback
+				$str.= call_user_func($callback, $item);
 			}
 		}
 		return $str;
@@ -461,7 +462,7 @@ class AlertText extends Text
 	public $error;
 	public function __construct($_message, $_error) 
 	{
-		parent::__construct('alertmessage', 'Alert');
+		parent::__construct('alertmessage', $_error);
 		$this->message = $_message;
 	}
 }

@@ -358,7 +358,7 @@ function disp_widget($value, $key = null)
 	switch (get_class($value)) {
 		case 'Form':
 			$value->description = strtolower($value->description);
-			print ($value->toHTML('disp_widget') . "\n");
+			print ($value->toHTML('disp_widget_str') . "\n");
 			break;
 
 		case 'FormItem':
@@ -427,6 +427,21 @@ function disp_widget($value, $key = null)
 			//foobar
 			break;
 		}
+}
+
+/**
+ * Poor foresight led to disp_widget printing everything directly instead of
+ * outputting a string.  This is a simple hack that uses output buffering to
+ * get around that fact.
+ * @param mixed $value See {@link disp_widget()}
+ * @return string The widget as HTML
+ */
+function disp_widget_str($value) {
+	ob_start();
+	disp_widget($value);
+	$retval = ob_get_contents();
+	ob_end_clean();
+	return $retval;
 }
 function disp_plan($plan) 
 {

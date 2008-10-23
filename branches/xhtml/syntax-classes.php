@@ -309,8 +309,8 @@ class Form extends WidgetGroup
 	/* basic settings for the form */
 	public $action;
 	public $method;
-	/* an array containing the fields in the form, as FormItems */
-	public $fields;
+        /* an array containing the fields in the form, as FormItems */
+        public $contents;
 
 	public function toHTML($callback = null) 
 	{

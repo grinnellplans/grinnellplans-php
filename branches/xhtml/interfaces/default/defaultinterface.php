@@ -173,7 +173,7 @@ function disp_mainpanel($page)
 ?>" method="<?php echo $panel->fingerbox->method
 ?>">
 <?php
-		foreach($panel->fingerbox->fields as $item) {
+		foreach($panel->fingerbox->contents as $item) {
 			print ($item->toHTML() . "\n");
 			if ($item->name == "searchname") echo "<br>\n";
 		}

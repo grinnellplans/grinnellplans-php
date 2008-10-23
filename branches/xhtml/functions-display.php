@@ -181,7 +181,7 @@ function get_fingerbox()
 	$f->action = 'read.php';
 	$f->method = 'GET';
 	$item = new FormItem('text', 'searchname', NULL);
-	$item->datatype = Form::FIELD_TEXT; //TODO avram?
+	$item->datatype = Form::FIELD_TEXT; // Setting expected datatype.
 	$f->append($item);
 	$item = new FormItem('hidden', 'myprivl', $myprivl);
 	$f->append($item);
@@ -194,22 +194,22 @@ function get_linkhome()
 	$l = new Hyperlink('home', true, 'index.php', '');
 	return $l;
 }
+/**
+ * Create a Hyperlink to the most recently updated plan. 
+ */
 function get_just_updated()
 {
-	//TODO eh? is this used?
-	//if time is out of acceptable period, set to 12
-	if (!($mytime > 0 and $mytime < 100)) {
-		$mytime = 12;
-	}
-	//TODO simplify?
-	//do the query with specifying date format to be returned
-	$my_planwatch = mysql_query("select userid,username,DATE_FORMAT(changed,
-		'%l:%i %p, %a %M %D ') from accounts where
-		changed > DATE_SUB(NOW(), INTERVAL $mytime HOUR) and username != 'test'
-		ORDER BY changed desc LIMIT 1");
-	//return the results of the query
-	$new_plans = mysql_fetch_row($my_planwatch);
-	return new PlanLink('justupdated', $new_plans[1]);
+    // Get the most recently updated plan
+    $my_planwatch = mysql_query("SELECT userid, username 
+                            FROM accounts
+                            WHERE username != 'test'
+		            ORDER BY changed DESC LIMIT 1");
+    //return the results of the query
+    $new_plans = mysql_fetch_row($my_planwatch);
+    // Get the appropriate URI for a plan link
+    $temp = new PlanLink($new_plans[1]);
+    // But we want a generic Hyperlink, so it can be styled separately.
+    return new Hyperlink('justupdated', true, $temp->href, $new_plans[1]);
 }
 /* DEPRECATED */
 function mdisp_end($dbh, $idcookie, $myurl, $myprivl)

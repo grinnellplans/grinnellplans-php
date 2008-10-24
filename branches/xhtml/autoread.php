@@ -32,7 +32,7 @@ if (!$auth) {
 	} //if not, set to a
 	$letternum = round($letternum); // round in case decimal exists from user messing around
 	$i = 97; //set begin letter to a
-	$alphabet = new WidgetGroup('autoread_alphabet', null);
+	$alphabet = new WidgetGroup('autoread_alphabet', true);
 	while ($i < 123) //do while before z
 	{
 		if ($i == $letternum) //if we've hit the desire letter
@@ -44,7 +44,7 @@ if (!$auth) {
 		//if not selected letter, make letter link to select that letter
 		{
 			$letter = null;
-			$letter = new Hyperlink('letterlink_' . chr($i), "autoread.php?letternum=$i", chr($i));
+			$letter = new Hyperlink('letterlink_' . chr($i), true, "autoread.php?letternum=$i", chr($i));
 		}
 		$alphabet->append($letter);
 		$i++; //go on to next letter
@@ -53,7 +53,7 @@ if (!$auth) {
 	$thispage->append($alphabet);
 	$arraylist = get_letters($dbh, chr($current_letter), chr($current_letter+1), $idcookie); //get usernames that start with that letter
 	// Make our form
-	$listform = new Form('autoreadlistform', 'Autoread List');
+	$listform = new Form('autoreadlistform', true);
 	$thispage->append($listform);
 	$listform->action = 'proc_autoread.php';
 	$listform->method = 'POST';
@@ -62,7 +62,7 @@ if (!$auth) {
 	$j = 0;
 	while ($arraylist[$j][0]) //do while there are names to display
 	{
-		$buttonlist = new WidgetGroup('autoreadbuttonlist', null);
+		$buttonlist = new WidgetGroup('autoreadbuttonlist', false);
 		if ($arraylist[$j][0] != $idcookie) //don't display name if the name is the user's name
 		{
 			$mypriority[0] = "";
@@ -75,8 +75,7 @@ if (!$auth) {
 			else {
 				$mypriority[0] = " checked";
 			}
-			//$buttons = new FormItem('group', null);
-			$buttons = new WidgetGroup($arraylist[$j][1].'_radio', null);
+			$buttons = new WidgetGroup('autoreadbuttons', false);
 			for ($a = 0; $a < 4; $a++) {
 				$item = new FormItem('radio', $arraylist[$j][0], $a);
 				$item->checked = (" checked" == $mypriority[$a]);
@@ -85,23 +84,21 @@ if (!$auth) {
 				//$listform->appendField($item);
 				$buttons->append($item);
 			}
-			// Append more text to the last radio button (kinda hacky)
-			//$item->description = $item->description . "  " . $arraylist[$j][1];
 			$letter = new RegularText($arraylist[$j][1], 'username');
-			//$listform->appendField($letter);
+			$buttons->append($letter);
+
 			$buttonlist->append($buttons);
-			//$listform->append(new FormItem('widget', 'autoreadbuttons', $buttons));
 		}
 		$listform->append($buttonlist);
 		$j++;
 	}
 	//pass on other info
 	$item = new FormItem('hidden', 'set_autoreadlist', $idcookie);
-	$listform->appendField($item);
+	$listform->append($item);
 	$item = new FormItem('hidden', 'letternum', $letternum);
-	$listform->appendField($item);
+	$listform->append($item);
 	$item = new FormItem('submit', NULL, 'Submit');
-	$listform->appendField($item);
+	$listform->append($item);
 }
 interface_disp_page($thispage);
 db_disconnect($dbh);

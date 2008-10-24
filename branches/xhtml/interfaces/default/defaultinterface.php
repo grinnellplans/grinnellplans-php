@@ -54,8 +54,16 @@ class="main">
 <tr><td>
 
 <?php
+	if ($page->group == 'Preferences' && $page->identifier != 'autoreadedit') {
+		echo '<center>';
+		$print_center = true;
+	}
 	// display the widgets in the contents of the page
 	array_walk($page->contents, 'disp_widget');
+
+	if ($print_center) {
+		echo '</center>';
+	}
 	echo "</td></tr></table></td></tr></table>";
 	if ($page->footer) disp_footer($page->footer);
 	echo "\n\t</body>\n\n\n\n</html>";
@@ -85,12 +93,29 @@ function disp_widget($value, $key)
 {
 	switch (get_class($value)) {
 		case 'Form':
-			$str = '<table><form method="' . $value->method . '" action="' . $value->action . '">';
-			foreach($value->fields as $item) {
-				$str.= "\n\t<tr><td>" . $item->toHTML() . "</td></tr>";
+			print('<table><form method="' . $value->method . '" action="' . $value->action . '">');
+			// treat certain forms differently
+			if ($value->identifier == 'autoreadlistform') {
+				foreach($value->contents as $item) {
+					$special = ($item->type == 'hidden' || $item->type == 'submit');
+					disp_widget($item, null);
+					if (!$special) print('<BR>');
+				}
+				break;
 			}
-			$str = $str . "\n</form></table>";
+
+			foreach($value->contents as $item) {
+				$special = ($item->type == 'hidden' || $item->type == 'submit');
+				if (!$special) print("\n\t<tr><td>");
+				disp_widget($item, null);
+				if (!$special) print("</td></tr>");
+			}
+			print("\n</form></table>");
 			print ($str);
+			break;
+
+		case 'FormItem':
+			print($value->toHTML() . ' ');
 			break;
 
 		case 'Hyperlink':
@@ -102,6 +127,10 @@ function disp_widget($value, $key)
 			if ($value->title && $value->title != '') print ("\t<span class=\"infotitle\">" . $value->title . "</span>\n");
 			print ("\t" . $value->toHTML() . "\n");
 			print ("\t</span>\n");
+			break;
+
+		case 'RegularText':
+			print ($value->toHTML());
 			break;
 
 		case 'RequestText':
@@ -129,14 +158,25 @@ function disp_widget($value, $key)
 			break;
 
 		case 'WidgetGroup':
-		case 'WidgetList':
-			print ("\n<ul id='" . $value->identifier . ($value->class ? "' class=" . $value->class : "'") . ">");
 			foreach($value->contents as $widg) {
-				print ("\n<li>");
 				disp_widget($widg, null);
-				print ("</li>");
 			}
-			print ("\n</ul>\n");
+			break;
+		case 'WidgetList':
+			// treat the alphabet on the autoread edit page differently
+			if ($value->identifier == 'autoread_alphabet') {
+				foreach($value->contents as $widg) {
+					disp_widget($widg, null);
+				}
+				break;
+			}
+			print ("\n<table" . get_id_or_class($widget) . ">");
+			foreach($value->contents as $widg) {
+				print ("\n<tr><td>");
+				disp_widget($widg, null);
+				print ("</td></tr>");
+			}
+			print ("\n</table>\n");
 			break;
 
 		default:
@@ -144,6 +184,28 @@ function disp_widget($value, $key)
 			break;
 		}
 }
+
+/**
+ * Get the string of id and/or class properties for a widget,
+ * depending on its settings.
+ *
+ * @param Widget
+ * @return string
+ * @todo move this somewhere common
+ */
+function get_id_or_class($widget) {
+	$id = $widget->identifier;
+	$class = $widget->group;
+	$str = '';
+	if ($id) {
+		$str .= " id='$id'";
+	}
+	if ($class) {
+		$str .= " class='$class'";
+	}
+	return $str;
+}
+
 function disp_footer($footer) 
 {
 	//TODO

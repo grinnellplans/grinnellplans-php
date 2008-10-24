@@ -22,7 +22,7 @@ if (!$auth) {
 	$arr = array('Change Auto List' => "autoread.php", 'Change Password' => "changepassword.php", 'Change Name' => "changename.php", 'Guest Readable' => "webview.php", 'Customize' => '', 'Interfaces' => "interfaces.php", 'Styles' => "styles.php", 'Edit Text Box Size' => "textbox.php", 'Optional Links' => "links.php");
 	foreach($arr as $name => $ref) {
 		if (strtolower($name) != 'customize') {
-			$alink = new Hyperlink(null, $ref, $name);
+			$alink = new Hyperlink('preflink', false, $ref, $name);
 			$preflist->append($alink);
 		} else {
 			$aheading = new HeadingText('Customize', 2);

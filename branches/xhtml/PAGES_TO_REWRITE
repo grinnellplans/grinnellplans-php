@@ -4,13 +4,13 @@ code that is acceptably close to the current tables-based layout.
 PAGE						REWRITTEN?	LEGACY?
 
 anonymous.php				no			no
-autoread.php				partial		no
+autoread.php				yes			yes
 blank.php					no			no
 board_messages.php			no			no
 board_show.php				no			no
 board_submit.php			no			no
 changepassword.php			no			no
-customize.php				no			no
+customize.php				yes			yes
 edit.php					yes			??
 functions-display.php		no			no
 home.php					no			no
@@ -35,4 +35,4 @@ search.php					no			no
 secrets-stats.php			no			no
 styles.php					no			no
 textbox.php					no			no
-webview.php					yes			??
+webview.php					yes			yes

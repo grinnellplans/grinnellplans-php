@@ -291,16 +291,16 @@ function disp_autoread($autoreads, $myurl, $privl)
 	echo "<table>\n";
 	$front = "<tr><td></td><td></td><td><p class=\"imagelev3\">&nbsp;</p></td>" . "\n<td>";
 	$end = "</td></tr>\n";
-	$new_url = remove_param($myurl, 'mark_as_read');
 	foreach($autoreads as $ar) {
-		$priority = $ar->priority;
+                $priority = $ar->priority;
+                $new_url = "setpriv.php";
 		$new_url = add_param($new_url, 'myprivl', $priority);
 		echo '<tr><td></td><td><p class="imagelev2' . '">&nbsp;</p></td><td></td>' . "\n";
 		echo '<td><a href="' . $new_url . '" class="lev2' . '">level ' . $priority . '</a>' . "\n</td>\n";
 		// If this is the current autoread level
 		if ($priority == $privl) {
 			// Print the clear button
-			echo '<td><a onClick =" ' . " return confirm('Are you sure you\'d like to mark all the Plans on level " . $priority . " as read?')" . '" href="' . add_param($new_url, 'mark_as_read', 1) . '">X</a></td></tr>' . "\n";
+			echo '<td><a onClick =" ' . " return confirm('Are you sure you\'d like to mark all the Plans on level " . $priority . " as read?')" . '" href="setpriv.php?mark_as_read=1">X</a></td></tr>' . "\n";
 			// now print the plans on this autoread level
 			foreach($ar->contents as $item) {
 				$item->html_attributes = ' class="lev3"';

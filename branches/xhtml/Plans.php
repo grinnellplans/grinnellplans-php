@@ -1,6 +1,9 @@
 <?php
 // Boilerplate code for _all_ Plans scripts
 require_once('Configuration.php');
+// Load all functions.
+require_once('functions-main.php');
+
 putenv('TZ=' . TZ);
 
 // Set some testings only for when we're called through /beta/.

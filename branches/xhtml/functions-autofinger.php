@@ -71,9 +71,9 @@ function autoread_list($myurl, $idcookie, $myprivl)
 		//       echo $mark_as_read;
 		mark_as_read($dbh, $idcookie, $myprivl);
 	}
-	for ($priority = 1; $priority < 4; $priority++) {
+        for ($priority = 1; $priority < 4; $priority++) {
+                $new_url = "setpriv.php";
 		$new_url = add_param($myurl, 'myprivl', $priority);
-		$new_url = remove_param($new_url, 'mark_as_read');
 		echo '<tr><td></td><td><p class="imagelev2' . '">&nbsp;</p></td><td></td>' . "\n";
 		echo '<td><a href="http://' . $new_url . '" class="lev2' . '">level ' . $priority . '</a>' . "\n";
 		echo '</td>' . "\n";
@@ -84,7 +84,7 @@ function autoread_list($myurl, $idcookie, $myprivl)
 			while ($new_row = mysql_fetch_row($privarray)) {
 				$autoreadlist[] = $new_row;
 			}
-			echo '<td><a onClick =" ' . " return confirm('Are you sure you\'d like to mark all the Plans on level " . $priority . " as read?')" . '" href="http://' . add_param($new_url, 'mark_as_read', 1) . '">X</a></td></tr>' . "\n";
+			echo '<td><a onClick =" ' . " return confirm('Are you sure you\'d like to mark all the Plans on level " . $priority . " as read?')" . '" href="setpriv.php?mark_as_read=1">X</a></td></tr>' . "\n";
 			$o = 0;
 			while ($autoreadlist[$o][0]) {
 				$read_url = 'read.php';

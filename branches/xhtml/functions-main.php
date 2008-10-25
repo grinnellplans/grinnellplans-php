@@ -37,5 +37,6 @@ require ("functions-authentication.php");
 //Load editing, updating, and other related functions
 require ("functions-edit.php");
 require ("functions-core.php");
+require ("functions-transition.php");
 require ("core-perms.php");
 ?>

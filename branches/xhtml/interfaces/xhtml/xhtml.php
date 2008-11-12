@@ -369,6 +369,14 @@ function disp_widget($value, $key = null)
 			print (strtolower($value->toHTML()) . "\n");
 			break;
 
+		case 'Secret':
+			print("<div class='secret'>\n");
+			print("\t<span class='secret_id'>$value->secret_id</span>\n");
+			print("\t<span class='date'>$value->date</span>\n");
+			print($value->message);
+			print("</div>");
+			break;
+
 		case 'InfoText':
 			print ("\t<span class=\"info\">\n");
 			if ($value->title && $value->title != '') print ("\t<span class=\"infotitle\">" . $value->title . "</span>\n");

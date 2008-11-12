@@ -347,6 +347,10 @@ class FormItem extends Widget
 	public $value;
 	/* Is it checked (checkboxes and radio buttons)? */
 	public $checked;
+	/* Rows for a textarea */
+	public $rows;
+	/* Cols for a textarea */
+	public $cols;
 
 	public function __construct($type, $name, $value = null) 
 	{
@@ -354,6 +358,11 @@ class FormItem extends Widget
 		$this->name = $name;
 		$this->type = $type;
 		$this->value = $value;
+		if ($type == 'textarea') {
+			// set some defaults
+			$this->rows = 3;
+			$this->cols = 40;
+		}
 	}
 	public function toHTML() 
 	{
@@ -364,7 +373,7 @@ class FormItem extends Widget
 				break;
 
 			case 'textarea':
-				$str = $str . "<textarea name=\"$this->name\">" . $this->description . '</textarea>';
+				$str = $str . "<textarea name=\"$this->name\" rows=\"$this->rows\" cols=\"$this->cols\">" . $this->description . '</textarea>';
 				break;
 
 			case 'radio':
@@ -461,7 +470,7 @@ class RegularText extends Text
 }
 class InfoText extends Text
 {
-	public function __construct($_message, $title) 
+	public function __construct($_message, $title='') 
 	{
 		parent::__construct('infomessage', $title);
 		$this->message = $_message;
@@ -471,10 +480,11 @@ class AlertText extends Text
 {
 	/* boolean, is this alert a critical error (such as a crash)? */
 	public $error;
-	public function __construct($_message, $_error) 
+	public function __construct($message, $title, $error=false) 
 	{
-		parent::__construct('alertmessage', $_error);
-		$this->message = $_message;
+		parent::__construct('alertmessage', $title);
+		$this->message = $message;
+		$this->error = $error;
 	}
 }
 class RequestText extends Text
@@ -494,6 +504,17 @@ class HeadingText extends Text
 		parent::__construct('heading' . $sublevel, NULL);
 		$this->message = $_message;
 		$this->sublevel = $_level;
+	}
+}
+class Secret extends Text
+{
+	public $date;
+	public $secret_id;
+
+	public function __construct($text) 
+	{
+		parent::__construct('secret', '');
+		$this->message = $text;
 	}
 }
 /* For storing the contents of a user's plan. */

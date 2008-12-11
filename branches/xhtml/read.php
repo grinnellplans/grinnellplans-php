@@ -162,7 +162,7 @@ if (!$planinfo = get_items($mydbh, "username,pseudo,DATE_FORMAT(login,
 }
 interface_disp_page($page);
 db_disconnect($dbh);
-echo "<!-- $username -->";
+echo "<!-- $idcookie -->";
 //TODO for the love of god why is this separate from the other search stuff?
 function basicSearch($idcookie, $dbh, $auth, $context, $mysearch)
 {

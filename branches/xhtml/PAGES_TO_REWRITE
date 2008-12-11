@@ -3,7 +3,7 @@ code that is acceptably close to the current tables-based layout.
 
 PAGE						REWRITTEN?	LEGACY?
 
-anonymous.php				no			no
+anonymous.php				yes			no
 autoread.php				yes			yes
 blank.php					no			no
 board_messages.php			no			no

@@ -146,18 +146,18 @@ if (!$planinfo = get_items($mydbh, "username,pseudo,DATE_FORMAT(login,
 		$addform->action = 'readadd.php';
 		$addform->method = 'POST';
 		$item = new FormItem('hidden', 'addtolist', 1);
-		$addform->appendField($item);
+		$addform->append($item);
 		$item = new FormItem('hidden', 'searchnum', $searchnum);
-		$addform->appendField($item);
+		$addform->append($item);
 		for ($i = 0; $i < 4; $i++) {
 			$item = new FormItem('radio', 'privlevel', $i);
 			if ($i == 0) $item->description = 'X';
 			else $item->description = "$i";
 			$item->checked = $myonlist[$i];
-			$addform->appendField($item);
+			$addform->append($item);
 		}
 		$item = new FormItem('submit', NULL, 'Set Priority');
-		$addform->appendField($item);
+		$addform->append($item);
 	}
 }
 interface_disp_page($page);

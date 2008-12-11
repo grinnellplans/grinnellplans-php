@@ -23,8 +23,7 @@ links.php					no			no
 listusers.php				no			no
 new-poll.php				no			no
 old-poll.php				no			no
-photo.php					no			no
-planwatch.php				no			no
+planwatch.php				yes			??
 poll.php					no			no
 proc_autoread.php			no			no
 readadd.php					no			no

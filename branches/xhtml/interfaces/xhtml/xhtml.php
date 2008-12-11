@@ -366,6 +366,7 @@ function disp_widget($value, $key = null)
 			break;
 
 		case 'Hyperlink':
+		case 'PlanLink':
 			print (strtolower($value->toHTML()) . "\n");
 			break;
 

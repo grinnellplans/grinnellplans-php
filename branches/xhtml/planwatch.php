@@ -1,31 +1,37 @@
 <?php
 session_start();
 require ("functions-main.php"); //load main functions
+require ("syntax-classes.php"); //load main functions
 $dbh = db_connect(); //get database connections
 $idcookie = $_SESSION['userid'];
 $auth = $_SESSION['is_logged_in'];
+$thispage = new PlansPage('Utilities', 'planwatch', PLANSVNAME . ' - New Plans', 'planwatch.php');
+
 if (!$auth) //if not logged in
 {
-	gdisp_begin($dbh); //begin guest display
-	
+	get_guest_interface();
+	populate_guest_page($thispage);
 } else {
-	mdisp_begin($dbh, $idcookie, $HTTP_HOST . $REQUEST_URI, $myprivl); //otherwise begin valid user display
-	
+	get_interface($idcookie);
+	populate_page($thispage, $dbh, $idcookie);
 }
+
+$mytime = $_POST['mytime'];
 if (!($mytime > 0 and $mytime < 100)) {
 	$mytime = 12;
 } //if time is out of acceptable period, set to 12
 //give form to set how many hours back to look
 
-?>
-<form action="planwatch.php" method="POST">
-<input type="text" name="mytime" value="<?php echo $mytime
-?>">
-<input type="hidden" name="myprivl" value="<?php echo $myprivl
-?>">
-<input type="submit" value="See Plans">
-</form>
-<?php
+$timeform = new Form('planwatchtimeform', true);
+$timeform->action = 'planwatch.php';
+$timeform->method = 'POST';
+$thispage->append($timeform);
+
+$item = new FormItem('text', 'mytime', 12);
+$timeform->append($item);
+$item = new FormItem('submit', NULL, 'See Plans');
+$timeform->append($item);
+
 if ($auth) {
 	$webview = '';
 } else {
@@ -37,19 +43,18 @@ changed > DATE_SUB(NOW(), INTERVAL $mytime HOUR)
 $webview
 ORDER BY changed desc");
 //do the query with specifying date format to be returned
-echo "<table>";
+$newplanslist = new WidgetList('new_plan_list', true);
+$thispage->append($newplanslist);
 //display the results of the query
 while ($new_plans = mysql_fetch_row($my_planwatch)) {
-	echo "<tr><td><a href=\"read.php?searchname=" . $new_plans[1] . "\">" . $new_plans[1] . "</a></td><td>" . $new_plans[2] . "</td></tr>";
+	$entry = new WidgetGroup('newplan', false);
+	$plan = new PlanLink($new_plans[1]);
+	$time = new RegularText($new_plans[2], 'Date Created');
+	$entry->append($plan);
+	$entry->append($time);
+	$newplanslist->append($entry);
 }
-echo "</table>";
-if (!$auth) //if not logged in
-{
-	gdisp_end(); //end guest display
-	
-} else {
-	mdisp_end($dbh, $idcookie, $HTTP_HOST . $REQUEST_URI, $myprivl); //end valid user display
-	
-}
+
+interface_disp_page($thispage);
 db_disconnect($dbh);
 ?> 

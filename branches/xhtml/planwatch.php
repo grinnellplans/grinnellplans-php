@@ -1,11 +1,11 @@
 <?php
 session_start();
 require ("functions-main.php"); //load main functions
-require ("syntax-classes.php"); //load main functions
+require ("syntax-classes.php"); //load display classes
 $dbh = db_connect(); //get database connections
 $idcookie = $_SESSION['userid'];
 $auth = $_SESSION['is_logged_in'];
-$thispage = new PlansPage('Utilities', 'planwatch', PLANSVNAME . ' - New Plans', 'planwatch.php');
+$thispage = new PlansPage('Utilities', 'planwatch', PLANSVNAME . ' - Recently Changed Plans', 'planwatch.php');
 
 if (!$auth) //if not logged in
 {

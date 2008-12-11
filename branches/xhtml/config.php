@@ -4,6 +4,7 @@
 * webserver, and changing dbconfig.php to simply point to the new location.
 * For example, require("../dbconfig.php").
 */
+function xdiff_string_diff() {}
 require_once('Configuration.php');
 // Database login and password
 $dblogin = MYSQL_USER;

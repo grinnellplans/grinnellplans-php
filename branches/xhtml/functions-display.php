@@ -70,7 +70,7 @@ function populate_page(PlansPage $page, $dbh, $idcookie)
 	} else {
 		$page->stylesheet = $mydisplayar[0][1];
 	}
-	global $myprivl;
+	$myprivl = get_myprivl();
 	$page->autoreadpriority = $myprivl;
 	$mp = new MainPanel();
 	$page->mainpanel = $mp;
@@ -121,7 +121,7 @@ function get_autoread($idcookie, $p)
 	$ar = new AutoRead($p);
 	$o = 0;
 	while ($autoreadlist[$o][0]) {
-		$ar->append(new PlanLink(NULL, $autoreadlist[$o][1]));
+		$ar->append(new PlanLink($autoreadlist[$o][1]));
 		$o++;
 	}
 	return $ar;

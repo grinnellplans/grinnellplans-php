@@ -373,18 +373,23 @@ class FormItem extends Widget
 				break;
 
 			case 'textarea':
-				$str = $str . "<textarea name=\"$this->name\" rows=\"$this->rows\" cols=\"$this->cols\">" . $this->description . '</textarea>';
+				$str = $str . "<textarea name=\"$this->name\" rows=\"$this->rows\" cols=\"$this->cols\">" . $this->value . '</textarea>';
+				break;
+
+			case 'text':
+				$rowstr = ($this->rows ? 'size="'.$this->rows.'"' : '');
+				$str .= "<input type=\"$this->type\" name=\"$this->name\" value=\"$this->value\" $rowstr>";
 				break;
 
 			case 'radio':
 			case 'checkbox':
-				$str = $str . "<input type=\"$this->type\" name=\"$this->name\"" . "value=\"$this->value\"" . (($this->checked) ? ' checked' : '') . ">$this->description";
+				$str = $str . "<input type=\"$this->type\" name=\"$this->name\"" . "value=\"$this->value\"" . (($this->checked) ? ' checked' : '') . ">";
 				break;
 
 			default:
 				$str = $str . "<input type=\"$this->type\"";
 				if ($this->name) $str.= " name=\"$this->name\"";
-				$str.= " value=\"$this->value\">$this->description";
+				$str.= " value=\"$this->value\">";
 				break;
 			}
 			return $str;

@@ -362,7 +362,19 @@ function disp_widget($value, $key = null)
 			break;
 
 		case 'FormItem':
-			print ("\t" . $value->toHTML() . "\n");
+			$str = "\t" . '<div class="form_prompt">';
+			if ($value->title != null) {
+				$str .= '<span class="prompt_label">';
+				$str .= $value->title;
+				$str .= '</span>';
+			}
+			$str .= $value->toHTML();
+			if ($value->description != null) {
+				$str .= '<span class="prompt_description">';
+				$str .= $value->description;
+				$str .= '</span>';
+			}
+			print($str . "\n");
 			break;
 
 		case 'Hyperlink':

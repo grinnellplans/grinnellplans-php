@@ -20,7 +20,7 @@ interfaces.php				no			no
 jlw-test.php				no			no
 lastcreated.php				yes			??
 links.php					no			no
-listusers.php				no			no
+listusers.php				yes			no
 new-poll.php				no			no
 old-poll.php				no			no
 planwatch.php				yes			??

@@ -1,7 +1,7 @@
 <?php
 session_start();
 require ("functions-main.php"); //load main functions
-require ("syntax-classes.php"); //load main functions
+require ("syntax-classes.php"); //load display functions
 $dbh = db_connect();
 $idcookie = $_SESSION['userid'];
 $auth = $_SESSION['is_logged_in'];

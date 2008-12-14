@@ -16,7 +16,7 @@ functions-display.php		no			no
 home.php					no			no
 index-blank.php				no			no
 index.php					no			no
-interfaces.php				no			no
+interfaces.php				yes			no
 jlw-test.php				no			no
 lastcreated.php				yes			??
 links.php					no			no

@@ -92,8 +92,8 @@ class PlansPage
 	{
 		// If it's a form, we can set some defaults
 		if ($widget instanceof Form) {
-			if ($widget->action = null) $widget->action = $this->url;
-			if ($widget->method = null) $widget->method = 'POST';
+			if ($widget->action == null) $widget->action = $this->url;
+			if ($widget->method == null) $widget->method = 'POST';
 		}
 
 		// Add it to the list

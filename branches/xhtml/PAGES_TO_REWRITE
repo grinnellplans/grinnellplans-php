@@ -14,10 +14,8 @@ customize.php				yes			yes
 edit.php					yes			??
 functions-display.php		no			no
 home.php					no			no
-index-blank.php				no			no
-index.php					no			no
+index.php					yes			no
 interfaces.php				yes			no
-jlw-test.php				no			no
 lastcreated.php				yes			??
 links.php					no			no
 listusers.php				yes			no
@@ -27,11 +25,10 @@ planwatch.php				yes			??
 poll.php					no			no
 proc_autoread.php			no			no
 readadd.php					no			no
-readcss.php					no			no
 read.php					partial		yes
 register.php				yes			no
 search.php					no			no
-secrets-stats.php			no			no
+secrets-stats.php			--			--
 styles.php					yes			no
 textbox.php					yes			no
 webview.php					yes			yes

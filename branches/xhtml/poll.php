@@ -1,5 +1,4 @@
 <?php
-//TODO which of this, old-poll, and new-poll are actually used?
 session_start();
 require ("functions-main.php"); //load main functions
 $idcookie = $_SESSION['userid'];

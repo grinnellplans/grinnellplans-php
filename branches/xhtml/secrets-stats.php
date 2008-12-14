@@ -1,4 +1,7 @@
 <?php
+/**
+ * @todo this page needs to go!
+ */
 session_start();
 require ("functions-main.php"); //load main functions
 $dbh = db_connect(); //connect to database

@@ -29,9 +29,14 @@ proc_autoread.php			no			no
 readadd.php					no			no
 readcss.php					no			no
 read.php					partial		yes
-register.php				no			no
+register.php				yes			no
 search.php					no			no
 secrets-stats.php			no			no
 styles.php					yes			no
 textbox.php					yes			no
 webview.php					yes			yes
+
+PAGES THAT USE JAVASCRIPT
+
+anonymous.php
+register.php

@@ -90,6 +90,13 @@ class PlansPage
 	 */
 	public function append(Widget &$widget) 
 	{
+		// If it's a form, we can set some defaults
+		if ($widget instanceof Form) {
+			if ($widget->action = null) $widget->action = $this->url;
+			if ($widget->method = null) $widget->method = 'POST';
+		}
+
+		// Add it to the list
 		$this->contents[] = $widget;
 	}
 }
@@ -311,8 +318,15 @@ class Form extends WidgetGroup
 	const FIELD_NUMERIC = 10;
 	const FIELD_TEXT = 15;
 
-        /* basic settings for the form */
+	/**
+	 * The form's action. Defaults to containing page.
+	 * @var string a URL
+	 */
 	public $action;
+	/**
+	 * The form's method. Defaults to 'POST'.
+	 * @var string 'POST' or 'GET'
+	 */
 	public $method;
 
         /* an array containing the fields in the form, as FormItems */

@@ -374,6 +374,7 @@ function disp_widget($value, $key = null)
 				$str .= $value->description;
 				$str .= '</span>';
 			}
+			$str .= '</div>';
 			print($str . "\n");
 			break;
 
@@ -435,6 +436,12 @@ function disp_widget($value, $key = null)
 			break;
 
 		case 'WidgetList':
+			if ($value->title != null) {
+				$str .= '<span class="prompt_label">';
+				$str .= $value->title;
+				$str .= '</span>';
+				print($str);
+			}
 			print ("\n<ul id='" . $value->identifier . ($value->class ? "' class=" . $value->class : "'") . ">");
 			foreach($value->contents as $widg) {
 				print ("\n<li>");

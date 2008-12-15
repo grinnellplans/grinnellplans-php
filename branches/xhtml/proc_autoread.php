@@ -1,4 +1,7 @@
 <?php
+/**
+ * @todo collapse autoread.php and this one
+ */
 session_start();
 require ("functions-main.php"); //load main functions
 $dbh = db_connect(); //connect to the database

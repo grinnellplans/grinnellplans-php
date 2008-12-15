@@ -436,6 +436,7 @@ function disp_widget($value, $key = null)
 			break;
 
 		case 'WidgetList':
+		case 'FormItemSet':
 			if ($value->title != null) {
 				$str .= '<span class="prompt_label">';
 				$str .= $value->title;

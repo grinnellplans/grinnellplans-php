@@ -19,10 +19,8 @@ interfaces.php				yes			no
 lastcreated.php				yes			??
 links.php					no			no
 listusers.php				yes			no
-new-poll.php				no			no
-old-poll.php				no			no
 planwatch.php				yes			??
-poll.php					no			no
+poll.php					yes			no
 proc_autoread.php			no			no
 readadd.php					no			no
 read.php					partial		yes

@@ -260,6 +260,15 @@ class WidgetList extends WidgetGroup
 	}
 }
 /**
+ * A set of FormItems that are directly related.
+ * 
+ * This again implies a more direct relationship than simply being in the same
+ * form.  Layout speaking, items in a FormItemSet will generally be on the same
+ * line or will be visually grouped in some other manner.
+ */
+class FormItemSet extends WidgetList {
+}
+/**
  * An autoread list. Stores its own priority level.
  */
 class AutoRead extends WidgetList

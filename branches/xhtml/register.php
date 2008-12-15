@@ -130,7 +130,7 @@ function show_form()
 	$acct_type->title = 'What is your relation to Grinnell?';
 	$form->append($acct_type);
 
-	$group = new WidgetGroup('studenttype', true);
+	$group = new FormItemSet('studenttype', true);
 	$acct_type->append($group);
 	$item = new FormItem('radio', 'type', 'student');
 	$item->description = 'Student';

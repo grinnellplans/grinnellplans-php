@@ -1,0 +1,153 @@
+/* ###Main stuff */
+
+/* Set the text color and background */
+
+/*
+body {  color: #000000; background-color: #ffffff;
+background: #ffffff url("plans2.jpg")
+no-repeat fixed
+top}
+*/
+
+body {color: #000000; background-color: #ffffff; background: #ffffff}
+
+p.logo { background: #ffffff
+url("plans2.jpg")
+no-repeat; padding: 0.3cm 2.6cm}
+
+/* Set the main table */
+table.main {border-style: none none none none }
+
+/* Set the main panel */
+table.mainpanel {border-style: none none none none }
+
+/* Set the lower panel */
+table.lowerpanel {border-style: none none none none }
+
+/* Plan Display page stuff */
+
+/* Set the plan container text */
+p.sub { background: #f1f1f1; color: #000000; border-style: solid solid
+solid solid; border-width:
+thin; border-color: #a9aaec; margin-bottom: 2px; font-variant: none; 
+padding: 10px}
+
+/* Set the autoread container text */
+p.sub2 { background: #e1e1e1; color: #000000; border-style: solid solid
+solid  solid; border-width: thin; border-color: #ecaaa9; margin-bottom:
+2px; font-variant: none}
+
+/* Plan Of: Text */
+p.main {color: #A9AAEC; font-variant: small-caps}
+
+/* Last Login: Text */
+p.main2 {margin-left: 1cm; color: #99DC9A; font-variant: small-caps}
+
+/* Last Update: Text */
+p.main3 {margin-left: 2cm; color: #DC999A; font-variant: small-caps}
+
+/* Name: Text */
+p.main4 {margin-left: 3cm; color: #DC9ADC; font-variant: small-caps}
+
+
+
+
+/* ###Regular link stuff */
+
+/* Set the regular image */
+p.imagelev1 { background: #ffffff
+url("right.gif")
+no-repeat; padding: 0.0cm 0.2cm}
+
+/* Set regular links */
+a:link {  text-decoration: none; color: #a9aaec; font-variant: small-caps;
+font-family: times;}
+
+/* Set visited links */
+a:visited {  text-decoration: none; color: #a9aaec; font variant: small-caps;
+font-weight: bold; font-family: times;}
+
+/* Set onMouseOver type effects */
+a:hover {  color: #ffffff; text-decoration: underline; background-color:
+#a9aaec}
+
+
+
+/* Set on-plan, to outside links */
+a.onplan{  text-decoration: none; color: #0000ff; font-variant:
+small-caps;
+font-family: times; background: #f1f1f1}
+
+/* Set planlove links */
+a.planlove{  text-decoration: none; color: #0000ff; font-variant:
+small-caps;
+font-family: times; background: #f1f1f1}
+
+
+
+
+
+
+/* ###Sub category stuff */
+
+/* Set the sub image */
+p.imagelev2 { background: #ffffff
+url("right2.gif")
+no-repeat; padding: 0.0cm 0.2cm}
+
+/* Set the link for sub categories */
+a.lev2:link {  text-decoration: none; color: #50BED6; font-variant:
+small-caps; background-color: #ffffff; font-family: times}
+
+/* Set visited links for sub categories */
+a.lev2:visited {  text-decoration: none; color: #50BED6; font variant:
+small-caps;
+font-weight: bold; background-color: #ffffff;font-family: times;}
+
+/* Set hover links for subcategories */
+a.lev2:hover {  color: #ffffff; text-decoration: underline;
+background-color: #50BED6}
+
+/* Set non-click text for subcategories */
+p.lev2 {color: #D68080;font-variant: small-caps;}
+
+
+
+
+/* ###Sub-sub category stuff */
+
+/* Set the sub-sub image */
+p.imagelev3 { background: #ffffff
+url("right3.gif")
+no-repeat; padding: 0.0cm 0.2cm}
+
+/* Set regular links for sub-sub category */
+a.lev3:link {  text-decoration: none; color: #2EDFB4; font-variant:
+small-caps; background-color: #ffffff; font-family: times}
+
+/* Set visited links for sub-sub category */
+a.lev3:visited {  text-decoration: none; color: #2EDFB4; font variant:
+small-caps;
+font-weight: bold; background-color: #ffffff;font-family: times;}
+
+/* Set hover links for sub-sub category */
+a.lev3:hover {  color: #ffffff; text-decoration: underline;
+background-color: #2EDFB4}
+
+
+/***************
+ * Notes Board *
+ ***************/
+.noteslight {
+  background: #eee;   
+  border-style: solid;
+  border-width: 1px;
+  border-color: #a9aaec;
+}            
+.notesdark {
+  background: #e9eaff;   
+  border-style: solid;
+  border-width: 1px;  
+  border-color: #eee;
+}
+

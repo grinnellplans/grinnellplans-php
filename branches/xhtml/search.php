@@ -3,42 +3,54 @@
 // This version of search.php committed 13 June 2004 [nnadioge]
 session_start();
 require ("functions-main.php"); //load main functions
+require ("syntax-classes.php"); //load display functions
 $dbh = db_connect(); //connect to the database
 $idcookie = $_SESSION['userid'];
 $auth = $_SESSION['is_logged_in'];
 $context = 100; //set the number of characters around found item
+$thispage = new PlansPage('Utilities', 'search', PLANSVNAME . ' - Search Plans', 'search.php');
 if ($auth) //if is a valid user
 {
-	mdisp_begin($dbh, $idcookie, $HTTP_HOST . $REQUEST_URI, $myprivl);
+	get_interface($idcookie);
+	populate_page($thispage, $dbh, $idcookie);
 } //begin user display
 else {
-	gdisp_begin($dbh);
+	get_guest_interface();
+	populate_guest_page($thispage);
 } //otherwise begin guest display
-if (!$mysearch) //if no search query, give search form
-{
-?>
-	<form action="search.php" method="GET">
-	<input type="text" name="mysearch">
-	<input type="checkbox" name="regexp" value="1">Reg. Exp.
-	<input type="checkbox" name="planlove" value="1">Planlove
-	<input type="hidden" name="myprivl" value="<?php
-	echo $myprivl; ?>">
-	<input type="submit" value="Search">
-	</form>
-	<?php
-} else
+
+$searchform = new Form('searchform', true);
+$searchform->method = 'GET';
+$thispage->append($searchform);
+
+$searchprompt = new FormItemSet('search_opts', true);
+$searchform->append($searchprompt);
+$item = new FormItem('text', 'mysearch', $mysearch);
+$searchprompt->append($item);
+$item = new FormItem('checkbox', 'regexp', 1);
+$item->description = 'Reg. Exp.';
+$searchprompt->append($item);
+$item = new FormItem('checkbox', 'planlove', 1);
+$item->description = 'Planlove';
+$searchprompt->append($item);
+$item = new FormItem('submit', null, 'Search');
+$searchprompt->append($item);
+
+if ($mysearch) //if no search query, give search form
 //otherwise perform the search
 {
 	if ($mysearch == "_") //if they just searched for an underscore
 	{
-		echo "Invalid search term.";
+		$err = AlertText('Invalid search term.');
+		$thispage->append($err);
 	} //tell them it's an invalid search
 	else
 	//otherwise, go on with the search
 	{
 		if ($planlove) {
 			if (!$thesearchnum = get_item($dbh, "userid", "accounts", "username", $mysearch)) {
-				echo "Search could not be performed. There is no plan with that name.";
+				$err = AlertText('Search could not be performed. There is no plan with that name.');
+				$thispage->append($err);
 				$donotsearch = 1;
 			} else {
 				$plansearchname = "[" . $mysearch . "]";
@@ -65,16 +77,15 @@ if (!$mysearch) //if no search query, give search form
 				}
 				$querytext = "SELECT username, plan, userid FROM accounts
 			where $likeclause $guest ORDER BY username";
-				echo "<!--- $querytext --->";
 				$my_result = mysql_query($querytext);
 			} //if not regexp
 			else {
 				$querytext = "SELECT username, plan, userid FROM accounts
 			where plan RLIKE '$mysearch' $guest ORDER BY username";
-				echo "<!--- $querytext --->";
 				$my_result = mysql_query($querytext);
 			}
-			echo "<ul>";
+			$result_list = new WidgetList('search_results', true);
+			$thispage->append($result_list);
 			while ($new_row = mysql_fetch_row($my_result)) {
 				//$new_row[1] is the plan content
 				$new_row[1] = preg_replace("/<br>/", "|br|", $new_row[1]);
@@ -103,9 +114,13 @@ if (!$mysearch) //if no search query, give search form
 				$matchcount = preg_match_all("/(" . $mysearch . ")/si", $new_row[1], $matcharray);
 				$new_row[1] = preg_replace("/(" . $mysearch . ")/si", "<b>\\1</b>", $new_row[1]);
 				*/
-				echo "<!--- " . $mysearch . "--->";
-				echo "<!--- " . preg_quote($mysearch, "/") . "--->";
-				echo "<li>[<a href=\"read.php?searchname=" . $new_row[0] . "\">" . $new_row[0] . "</a>] (" . $matchcount . ")<br>";
+				$result = new WidgetGroup('result_user_group', false);
+				$thispage->append($result);
+				$name = new PlanLink($new_row[0]);
+				$result->append($name);
+				$count = new RegularText($matchcount);
+				$result->append($count);
+
 				$start_array = array();
 				$end_array = array();
 				$o = 0;
@@ -127,7 +142,8 @@ if (!$mysearch) //if no search query, give search form
 						$num++;
 					}
 				} //while $o<$matchcount-1
-				echo "<ul>";
+				$sublist = new WidgetList('result_sublist', false);
+				$result->append($sublist);
 				$endsize = strlen($new_row[1]) - 1;
 				for ($num = 0; $num < count($start_array); $num++) {
 					//Produce excerpts
@@ -161,34 +177,20 @@ if (!$mysearch) //if no search query, give search form
 					}
 					//Don't try to read past the end of the plan.
 					$endof = min($endof, $endsize);
-					echo "<li>" . substr($new_row[1], $startof, $endof - $startof);
-					echo "<br><Br>";
+					$textitem = new InfoText(substr($new_row[1], $startof, $endof - $startof), false);
+					$sublist->append($textitem);
 				} //while still displaying parts of plan
-				echo "</ul>";
 			} //while dealing with one plan that has term
-			echo "</ul>";
 			if (!($matchcount > 0)) {
-				echo "No matches found.";
+				$ohwell = new InfoText('No matches found.');
+				$thispage->append($ohwell);
 			}
-?>
-		<form action="search.php" method="GET">
-		<input type="text" name="mysearch">
-		<input type="checkbox" name="regexp" value="1">Reg. Exp.
-		<input type="checkbox" name="planlove" value="1">Planlove   
-		<input type="hidden" name="myprivl" value="<?php
-			echo $myprivl; ?>">
-		<input type="submit" value="Search">
-		</form>
-		<?php
 		} //if is not marked as do not search
 		
 	} //if search is not an underscore
 	
 } //if something is entered to search for
-if ($auth) {
-	mdisp_end($dbh, $idcookie, $HTTP_HOST . $REQUEST_URI, $myprivl);
-} else {
-	gdisp_end();
-}
+
+interface_disp_page($thispage);
 db_disconnect($dbh);
 ?>

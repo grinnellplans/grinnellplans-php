@@ -5,7 +5,7 @@ PAGE						REWRITTEN?	LEGACY?
 
 anonymous.php				yes			no
 autoread.php				yes			yes
-blank.php					no			no
+blank.php					yes			no
 board_messages.php			no			no
 board_show.php				no			no
 board_submit.php			no			no
@@ -23,9 +23,9 @@ planwatch.php				yes			??
 poll.php					yes			no
 proc_autoread.php			no			no
 readadd.php					no			no
-read.php					partial		yes
+read.php					yes		yes
 register.php				yes			no
-search.php					no			no
+search.php					yes			no
 secrets-stats.php			--			--
 styles.php					yes			no
 textbox.php					yes			no

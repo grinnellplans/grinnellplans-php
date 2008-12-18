@@ -490,7 +490,7 @@ class Text extends Widget
 }
 class RegularText extends Text
 {
-	public function __construct($message, $title) 
+	public function __construct($message, $title='') 
 	{
 		parent::__construct('text', $title);
 		$this->message = $message;

@@ -113,7 +113,7 @@ if ($auth) {
 
 $thispage->append(list_polls());
 
-$ask = new InfoText('Poll ideas?  <a href="mailto:grinnellplans@gmail.com">Email</a>.', 'Feedback?');
+$ask = new RequestText('Poll ideas?  <a href="mailto:grinnellplans@gmail.com">Email</a>.', 'Feedback?');
 $thispage->append($ask);
 
 function list_polls()

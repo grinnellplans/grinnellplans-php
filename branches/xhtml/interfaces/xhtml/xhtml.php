@@ -41,7 +41,7 @@ function interface_disp_begin($searchname, $linkarr, $autofingerarr, $myurl, $my
 <div id="wrapper">
 
 <div id="nav">
-	<a href="index.php" class="logo">&nbsp;</a>
+	<a href="index.php" class="logo"><span>Home</span></a>
 	<div id="finger">
 
 		<form action="read.php" method="get">
@@ -254,7 +254,7 @@ function disp_mainpanel($page)
 	$panel = $page->mainpanel;
 	// print the logo
 	if ($panel->linkhome) {
-		$panel->linkhome->description = '&nbsp;';
+		$panel->linkhome->description = '<span>Home</span>';
 		$panel->linkhome->html_attributes = ' class="logo"';
 		echo ("\t" . $panel->linkhome->toHTML() . "\n");
 	}
@@ -426,6 +426,12 @@ function disp_widget($value, $key = null)
 			disp_plan($value);
 			break;
 
+		case 'PlanText':
+			print('<div class="plan_text">');
+			print $value->toHTML();
+			print('</div>');
+			break;
+
 		case 'WidgetGroup':
 			//TODO are we still using ->class?
 			print ("\n<div id='" . $value->identifier . ($value->class ? "' class=" . $value->class : "'") . ">");
@@ -485,20 +491,15 @@ function disp_plan($plan)
 		</ul>
 	</div>
 
-<div id="plan">
 <?php
-	print ($plan->text);
+	disp_widget($plan->text, null);
 	/*
 	if ($plan->text->markup)
 	print($plan->text->message);
 	else
 	print("Uh oh! Plan markup is screwy! This is a bug.\n");
 	*/
-?>
 
-</div>
-
-<?php
 	if ($plan->addform) {
 		disp_widget($plan->addform, NULL);
 	}

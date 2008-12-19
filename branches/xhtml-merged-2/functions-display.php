@@ -1,12 +1,23 @@
 <?php
+/*
+GrinnellPlans - Displayfunctions
+What this is: old parts of functions.php separated - in this page, those delaying with display to user controls.
+*/
 require_once('Plans.php');
 function Redirect($url) {
 	Header("Location: $url");
 }
 
+/**
+ * mdisp_beg- Looks up from the database what choices the user has for their interface and style,
+ * and gets the pathnames for the files associated with those choices. Loads the code contained in
+ * the interface page that the user basically selected, which is actually a set of a couple of functions.
+ * @deprecated
+ */
 function mdisp_begin($dbh, $idcookie, $myurl, $myprivl, $jsfile = NULL)
 {
 	$css = get_item($dbh, "stylesheet", "stylesheet", "userid", $idcookie);
+		//get the paths of the interface and style files that the user indicated as wanting to use
 		
 	$sql = "Select interface.path,style.path From
 	interface interface, style style,display display where
@@ -33,7 +44,7 @@ function mdisp_begin($dbh, $idcookie, $myurl, $myprivl, $jsfile = NULL)
 		}
 		$mycss = $myar[0][0];
 	}
-	disp_begin($dbh, $idcookie, $myurl, $myprivl, $mycss, $jsfile);
+	$searchname = $_GET['searchname'];
 
 	if (isset($_SESSION['b'])) {
 		$b = (int)$_SESSION['b'];
@@ -44,16 +55,199 @@ function mdisp_begin($dbh, $idcookie, $myurl, $myprivl, $jsfile = NULL)
 		}
 	}
 }
-/* Did text outline, did a gradiant with white and gray, with white being
-on top, but less of white. Did a neon glow thing, then did an invert, the
-messed with the color balance, to make it a light blue
-*/
-//////////
+
+function get_guest_interface()
+{
+	require ("interfaces/xhtml/xhtml.php"); //TODO hardcoding! bleh!
+	
+}
+//TODO comment
+function get_interface($idcookie)
+{
+	//TODO again, clean this up, it's ugly
+	//get the paths of the interface and style files that the user indicated as wanting to use
+	$my_result = mysql_query("Select interface.path,style.path From
+	interface interface, style style,display display where
+	display.userid = '$idcookie' and display.interface = interface.interface and display.style=style.style");
+	while ($new_row = mysql_fetch_row($my_result)) {
+		$mydisplayar[] = $new_row;
+	} //gets contents from query
+	require ($mydisplayar[0][0]); //loads up the interface functions
+	
+}
+//TODO comment
+function populate_page(PlansPage $page, $dbh, $idcookie)
+{
+	//TODO get rid of all this crap - it should be much simpler
+	//get the paths of the interface and style files that the user indicated as wanting to use
+	$my_result = mysql_query("Select interface.path,style.path From
+	interface interface, style style,display display where
+	display.userid = '$idcookie' and display.interface = interface.interface and display.style=style.style");
+	while ($new_row = mysql_fetch_row($my_result)) {
+		$mydisplayar[] = $new_row;
+	} //gets contents from query
+	//require ($mydisplayar[0][0]);//loads up the interface functions
+	$css = get_item($dbh, "stylesheet", "stylesheet", "userid", $idcookie);
+	if ($css) {
+		$page->stylesheet = $css;
+	} else {
+		$page->stylesheet = $mydisplayar[0][1];
+	}
+	$myprivl = get_myprivl();
+	$page->autoreadpriority = $myprivl;
+	$mp = new MainPanel();
+	$page->mainpanel = $mp;
+	$mp->fingerbox = get_fingerbox();
+	$mp->linkhome = get_linkhome();
+	$mp->requiredlinks = get_req_links();
+	$mp->optionallinks = get_opt_links($idcookie);
+	$mp->autoreads = array();
+	for ($i = 1; $i <= 3; $i++) { //TODO variable number
+		$mp->autoreads[] = get_autoread($idcookie, $i);
+	}
+	$footer = new Footer();
+	$footer->doyouread = get_just_updated();
+	$footer->legal = new InfoText(get_disclaimer(), NULL);
+	$page->footer = $footer;
+}
+function populate_guest_page(PlansPage $page)
+{
+	//$css=get_item($dbh,"stylesheet","stylesheet","userid", $idcookie);
+	//if ($css) {$page->stylesheet=$css;}
+	$css = "styles/guest.css"; //TODO hardcoding this is ugly
+	$page->stylesheet = $css;
+	$mp = new MainPanel();
+	$page->mainpanel = $mp;
+	$mp->fingerbox = get_fingerbox();
+	$mp->linkhome = get_linkhome();
+	$mp->requiredlinks = get_guest_links();
+	$mp->optionallinks = NULL;
+	$mp->autoreads = NULL;
+	$footer = new Footer();
+	$footer->doyouread = NULL;
+	$footer->legal = new InfoText(get_disclaimer(), NULL);
+	$page->footer = $footer;
+}
 /*
-*Simple beginning to guest display
+* Returns an AutoRead object for the given priority
 */
+function get_autoread($idcookie, $p)
+{
+	$newarr = array();
+	//TODO get a string for the level name from db
+	$privarray = mysql_query("Select autofinger.interest,accounts.username
+		From autofinger, accounts where owner = '$idcookie' and priority =
+		'$p' and updated = '1' and autofinger.interest=accounts.userid");
+	while ($new_row = mysql_fetch_row($privarray)) {
+		$autoreadlist[] = $new_row;
+	}
+	$ar = new AutoRead($p);
+	$o = 0;
+	while ($autoreadlist[$o][0]) {
+		$ar->append(new PlanLink($autoreadlist[$o][1]));
+		$o++;
+	}
+	return $ar;
+}
+//TODO comments
+function get_req_links()
+{
+	$newarr = array();
+	$newarr[] = new Hyperlink('mainlink_edit', true, 'edit.php', 'Edit Plan');
+	$newarr[] = new Hyperlink('mainlink_search', true, 'search.php', 'Search Plans');
+	$newarr[] = new Hyperlink('mainlink_prefs', true, 'customize.php', 'Preferences');
+	$newarr[] = new Hyperlink('mainlink_logout', true, 'index.php?logout=1', 'Log Out');
+	return $newarr;
+}
+function get_guest_links()
+{
+	$newarr = array();
+	$newarr[] = new Hyperlink('mainlink_search', true, 'search.php', 'Search Plans');
+	$newarr[] = new Hyperlink('mainlink_listusers', true, 'listusers.php', 'List Users');
+	$newarr[] = new Hyperlink('mainlink_logout', true, 'index.php?logout=1', 'Log Out');
+	return $newarr;
+}
+function get_opt_links($idcookie)
+{
+	$linkarray = mysql_query("Select avail_links.linkname, avail_links.html_code as html_code, static
+    From avail_links, opt_links where   
+    opt_links.userid = '$idcookie' and opt_links.linknum = avail_links.linknum");
+	$newarr = array();
+	while ($new_row = mysql_fetch_row($linkarray)) {
+		if ($new_row[2] == 'yes') {
+			$foo = array();
+			preg_match("/href=\"([^\"]+)\"/", $new_row[1], &$foo);
+			$href = $foo[1]; // TODO this is silly, let's just store href in the db
+			$thislink = new Hyperlink('opt_link', false, $href, $new_row[0]);
+		} else if ($new_row[0] == 'Secrets') {
+			$count = count_unread_secrets($idcookie);
+			$thislink = new Hyperlink('mainlink_secrets', true, 'anonymous.php', "Secrets ($count)");
+		} else if ($new_row[0] == 'Jumble') {
+			$url = $_SERVER['REQUEST_URI'];
+			if ($_GET['jumbled'] == 'yes' || ($_COOKIE['jumbled'] == 'yes' && $_GET['jumbled'] != 'no')) {
+				// TODO build add_param into Hyperlink class?
+				$url = add_param($url, 'jumbled', 'no');
+				$linktext = 'unjumble';
+			} else {
+				$url = add_param($url, 'jumbled', 'yes');
+				$linktext = 'jumble';
+			}
+			$thislink = new Hyperlink('mainlink_jumble', true, $url, $linktext);
+		}
+		$newarr[] = $thislink;
+	}
+	return $newarr;
+}
+function get_fingerbox()
+{
+	$f = new Form('finger', true, 'Finger Plan');
+	$f->action = 'read.php';
+	$f->method = 'GET';
+	$item = new FormItem('text', 'searchname', NULL);
+	$item->datatype = Form::FIELD_TEXT; // Setting expected datatype.
+	$f->append($item);
+	$item = new FormItem('hidden', 'myprivl', $myprivl);
+	$f->append($item);
+	$item = new FormItem('submit', NULL, 'Read');
+	$f->append($item);
+	return $f;
+}
+function get_linkhome()
+{
+	$l = new Hyperlink('home', true, 'index.php', '');
+	return $l;
+}
+/**
+ * Create a Hyperlink to the most recently updated plan. 
+ */
+function get_just_updated()
+{
+    // Get the most recently updated plan
+    $my_planwatch = mysql_query("SELECT userid, username 
+                            FROM accounts
+                            WHERE username != 'test'
+		            ORDER BY changed DESC LIMIT 1");
+    //return the results of the query
+    $new_plans = mysql_fetch_row($my_planwatch);
+    // Get the appropriate URI for a plan link
+    $temp = new PlanLink($new_plans[1]);
+    // But we want a generic Hyperlink, so it can be styled separately.
+    return new Hyperlink('justupdated', true, $temp->href, $new_plans[1]);
+}
+/* DEPRECATED */
+function mdisp_end($dbh, $idcookie, $myurl, $myprivl)
+{
+	// currently just calls the interface function
+	interface_disp_end($myurl);
+}
+/**
+ * Simple beginning to guest display
+ * @deprecated
+ */
 function gdisp_begin($dbh)
 {
+	//TODO fix this - does guest even need myprivl?
+	global $myprivl;
 	if (!$myprivl == 2 or !$myprivl == 3) {
 		$myprivl = 1;
 	}
@@ -67,8 +261,7 @@ function gdisp_begin($dbh)
 	<head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<title><?php
-	echo $title
-?></title>
+	echo $title ?></title>
 		<style type="text/css">
 		<!--
 		body {  color: #000000; background-color: #ffffff}
@@ -99,6 +292,14 @@ function gdisp_begin($dbh)
 		<body bgcolor="#ffffff" vlink="#696aac" link="#696aac">
 
 
+		<?php
+	/* The following disables guest access
+	echo "<p align=\"center\">Guest access is (most likely) temporarily disabled.<br><br><br>
+	<a href=\"http://grinnellplans.com/\">http://grinnellplans.com/</a></body></html>";
+	db_disconnect($dbh);
+	exit();
+	*/
+?>
 
 
 		<table width="100%" border="0" cellspacing="0" cellpadding="0">
@@ -143,12 +344,15 @@ function gdisp_begin($dbh)
 
 		<?php
 }
-
+/**
+* Even simpler end to guest display
+* @deprecated
+*/
 function gdisp_end()
 {
 	echo "</td></tr></table></td></tr></table></body></html>";
 }
-
+//TODO see what below here is deprecated
 function wants_secrets($idcookie)
 {
 	$wants_secrets = mysql_query("Select avail_links.linknum, avail_links.html_code
@@ -203,6 +407,7 @@ function jumble($text)
 		}
 	}
 }
+/* DEPRECATED */
 function show_opt_links($idcookie, $buf)
 {
 	$linkarray = mysql_query("Select avail_links.linkname, avail_links.html_code as html_code, static

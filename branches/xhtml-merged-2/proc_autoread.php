@@ -1,7 +1,9 @@
 <?php
 require_once('Plans.php');
 new SessionBroker();
-
+/**
+ * @todo collapse autoread.php and this one
+ */
 require('functions-main.php');
 $dbh = db_connect(); //connect to the database
 $idcookie = User::id();

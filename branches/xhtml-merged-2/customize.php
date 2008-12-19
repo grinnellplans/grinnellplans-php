@@ -1,6 +1,7 @@
 <?php
 require_once('Plans.php');
 require('functions-main.php');
+require('syntax-classes.php');
 $dbh = db_connect();
 $idcookie = User::id();
 // initialize page classes

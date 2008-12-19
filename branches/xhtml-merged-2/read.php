@@ -66,22 +66,16 @@ if (!$searchnum) //if no search number given
 			$err = new AlertText('Must enter a name', 'Input needed');
 			$page->append($err);
 		}
-	} //if not valid username
 
-	interface_disp_page($page);
-	db_disconnect($dbh);
-	exit();
+		interface_disp_page($page);
+		db_disconnect($dbh);
+		exit();
+	} //if not valid username
 	
 } //$if (!$searchnum)
 //begin displaying if there is a user with name or number given
 // Create the new page
 if (User::logged_in()) {
-	// If mark_as_read is set, do it and fix the url
-	// TODO I'm dubious about this - perhaps we should only allow this passed in POST? Also, can't the value of $mark_as_read indicate which level to mark?
-	$mark_as_read = $_GET['mark_as_read'];
-	if ($mark_as_read) {
-		mark_as_read($dbh, $idcookie, $myprivl);
-	}
 	//TODO add searchname instead?
 	$page->url = add_param($page->url, 'searchnum', $searchnum);
 	$my_result = mysql_query("Select priority From autofinger where
@@ -128,6 +122,7 @@ if (!$planinfo = get_items($mydbh, "username,pseudo,DATE_FORMAT(login,
 	} else {
 		$plantext = $planinfo[0][4];
 	}
+	$plantext = new PlanText($plantext, false);
 	$thisplan = new PlanContent($planinfo[0][0], $planinfo[0][1], $planinfo[0][2], $planinfo[0][3], $plantext);
 	$page->append($thisplan);
 	$page->title = '[' . $planinfo[0][0] . "]'s Plan";
@@ -156,5 +151,6 @@ if (User::logged_in()) //if is a valid user, give them the option of putting the
 }
 interface_disp_page($page);
 db_disconnect($dbh);
+}
 
 ?>

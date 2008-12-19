@@ -33,13 +33,13 @@ if (!User::logged_in()) {
 		/* add fields to the form */
 		$item = new FormItem('text', 'user_name', $old_name);
 		$item->datatype = Form::FIELD_TEXT;
-		$nameform->appendField($item);
+		$nameform->append($item);
 		$item = new FormItem('hidden', 'myprivl', $myprivl);
-		$nameform->appendField($item);
+		$nameform->append($item);
 		$item = new FormItem('hidden', 'changed', 1);
-		$nameform->appendField($item);
+		$nameform->append($item);
 		$item = new FormItem('submit', NULL, 'Change Name');
-		$nameform->appendField($item);
+		$nameform->append($item);
 	} //else, if not changing name, give form
 	get_interface($idcookie);
 	interface_disp_page($page);

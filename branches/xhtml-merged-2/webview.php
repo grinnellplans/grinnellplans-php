@@ -2,8 +2,8 @@
 require_once('Plans.php');
 new SessionBroker();
 
-require ("functions-main.php"); //load main functions
-require ("syntax-classes.php"); //load display functions
+require ('functions-main.php'); //load main functions
+require ('syntax-classes.php'); //load display functions
 $dbh = db_connect();
 $idcookie = User::id();
 // initialize page classes

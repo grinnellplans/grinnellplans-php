@@ -32,13 +32,13 @@ $infotext2 .= " you may log out before posting. We can exercise editorial discre
 $page->append(new InfoText($infotext2));
 
 $submitform = new Form('submitsecret', true);
-$hidden = new FormItem('hidden', 'secret_submitted', 1);
+$hidden = new HiddenInput('secret_submitted', 1);
 $submitform->append($hidden);
-$text = new FormItem('textarea', 'secret', null);
+$text = new TextareaInput('secret', null);
 $text->rows = 10;
 $text->cols = 50;
 $submitform->append($text);
-$submit = new FormItem('submit', null, 'Post');
+$submit = new SubmitInput('Post');
 $submitform->append($submit);
 
 $page->append($submitform);

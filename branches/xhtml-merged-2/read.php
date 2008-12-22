@@ -134,18 +134,18 @@ if (User::logged_in()) //if is a valid user, give them the option of putting the
 		$thisplan->addform = $addform;
 		$addform->action = 'readadd.php';
 		$addform->method = 'POST';
-		$item = new FormItem('hidden', 'addtolist', 1);
+		$item = new HiddenInput('addtolist', 1);
 		$addform->append($item);
-		$item = new FormItem('hidden', 'searchnum', $searchnum);
+		$item = new HiddenInput('searchnum', $searchnum);
 		$addform->append($item);
 		for ($i = 0; $i < 4; $i++) {
-			$item = new FormItem('radio', 'privlevel', $i);
+			$item = new RadioInput('privlevel', $i);
 			if ($i == 0) $item->description = 'X';
 			else $item->description = "$i";
 			$item->checked = $myonlist[$i];
 			$addform->append($item);
 		}
-		$item = new FormItem('submit', NULL, 'Set Priority');
+		$item = new SubmitInput('Set Priority');
 		$addform->append($item);
 	}
 }

@@ -80,7 +80,7 @@ if (!User::logged_in()) {
 			}
 			$buttons = new WidgetGroup('autoreadbuttons', false);
 			for ($a = 0; $a < 4; $a++) {
-				$item = new FormItem('radio', $arraylist[$j][0], $a);
+				$item = new RadioInput($arraylist[$j][0], $a);
 				$item->checked = (" checked" == $mypriority[$a]);
 				if ($a == 0) $item->description = "X";
 				else $item->description = $a;
@@ -96,11 +96,11 @@ if (!User::logged_in()) {
 		$j++;
 	}
 	//pass on other info
-	$item = new FormItem('hidden', 'set_autoreadlist', $idcookie);
+	$item = new HiddenInput('set_autoreadlist', $idcookie);
 	$listform->append($item);
-	$item = new FormItem('hidden', 'letternum', $letternum);
+	$item = new HiddenInput('letternum', $letternum);
 	$listform->append($item);
-	$item = new FormItem('submit', NULL, 'Submit');
+	$item = new SubmitInput('Submit');
 	$listform->append($item);
 }
 interface_disp_page($thispage);

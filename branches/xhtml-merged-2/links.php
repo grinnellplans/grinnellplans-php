@@ -59,16 +59,16 @@ if (!User::logged_in()) {
 		$thispage->append($linksform);
 		while ($all_links[$o][0]) {
 			//display each link
-			$item = new FormItem('checkbox', 'mylinks[]', $all_links[$o][0]);
+			$item = new CheckboxInput('mylinks[]', $all_links[$o][0]);
 			$item->checked = ($myselected[$all_links[$o][0]] == 'checked');
 			$item->title = $all_links[$o][1];
 			$item->description = $all_links[$o][2];
 			$linksform->append($item);
 			$o++;
 		}
-		$item = new FormItem('hidden', 'submit', 1);
+		$item = new HiddenInput('submit', 1);
 		$linksform->append($item);
-		$item = new FormItem('submit', null, 'Submit');
+		$item = new SubmitInput('Submit');
 		$linksform->append($item);
 	}
 	

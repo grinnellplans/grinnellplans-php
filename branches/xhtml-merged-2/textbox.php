@@ -65,19 +65,19 @@ else
 		$textboxform->method = 'POST';
 		$thispage->append($textboxform);
 
-		$item = new FormItem('hidden', 'part', 1);
+		$item = new HiddenInput('part', 1);
 		$textboxform->append($item);
-		$item = new FormItem('text', 'rows', $edsizes[0][1]);
+		$item = new TextInput('rows', $edsizes[0][1]);
 		$item->title = 'Rows:';
 		$textboxform->append($item);
-		$item = new FormItem('text', 'cols', $edsizes[0][0]);
+		$item = new TextInput('cols', $edsizes[0][0]);
 		$item->title = 'Columns:';
 		$textboxform->append($item);
-		$item = new FormItem('checkbox', 'notes_asc', 1);
+		$item = new CheckboxInput('notes_asc', 1);
 		$item->description = 'Notes posts in ascending order';
 		if ($edsizes[0][2] == "1") $item->checked = true;
 		$textboxform->append($item);
-		$item = new FormItem('submit', NULL, 'Change Edit Box');
+		$item = new SubmitInput('Change Edit Box');
 		$textboxform->append($item);
 	}
 	

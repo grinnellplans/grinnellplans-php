@@ -25,9 +25,9 @@ $timeform->action = 'planwatch.php';
 $timeform->method = 'POST';
 $thispage->append($timeform);
 
-$item = new FormItem('text', 'mytime', 12);
+$item = new TextInput('mytime', 12);
 $timeform->append($item);
-$item = new FormItem('submit', NULL, 'See Plans');
+$item = new SubmitInput('See Plans');
 $timeform->append($item);
 
 if (User::logged_in()) {

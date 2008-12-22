@@ -351,121 +351,99 @@ function disp_links($panel)
 	</div>
 <?php
 }
-function disp_widget($value, $key = null) 
+function disp_widget($obj, $key = null) 
 {
-	switch (get_class($value)) {
-		case 'Form':
-			$value->description = strtolower($value->description);
-			print ($value->toHTML('disp_widget_str') . "\n");
-			break;
+	if ($obj instanceof EditBox) {
+		disp_editbox($obj);
 
-		case 'FormItem':
-			if ($value->title != null) {
-				$title = '<span class="prompt_label">';
-				$title .= $value->title;
-				$title .= ' </span>';
-			}
-			$item .= $value->toHTML();
-			if ($value->description != null) {
-				$desc = '<span class="prompt_description">';
-				$desc .= $value->description;
-				$desc .= '</span>';
-			}
+	} else if ($obj instanceof Form) {
+		$obj->description = strtolower($obj->description);
+		print ($obj->toHTML('disp_widget_str') . "\n");
 
-			$str = "\t" . '<div class="form_prompt">';
-			if ($value->type == 'text' || $value->type == 'textarea') {
-				$str .= $title . $item . $desc;
-			} else {
-				$str .= $item . $title . $desc;
-			}
-			$str .= '</div>';
-			print($str . "\n");
-			break;
-
-		case 'Hyperlink':
-		case 'PlanLink':
-			print (strtolower($value->toHTML()) . "\n");
-			break;
-
-		case 'Secret':
-			print("<div class='secret'>\n");
-			print("\t<span class='secret_id'>$value->secret_id</span>\n");
-			print("\t<span class='date'>$value->date</span>\n");
-			print($value->message);
-			print("</div>");
-			break;
-
-		case 'InfoText':
-			print ("\t<span class=\"info\">\n");
-			if ($value->title && $value->title != '') print ("\t<span class=\"infotitle\">" . $value->title . "</span>\n");
-			print ("\t" . $value->toHTML() . "\n");
-			print ("\t</span>\n");
-			break;
-
-		case 'RequestText':
-			print ("\t<span class=\"question\">\n");
-			print ("\t" . $value->toHTML() . "\n");
-			print ("\t</span>\n");
-			break;
-
-		case 'AlertText':
-			print ("\t<span class=\"alert\">\n");
-			print ("\t" . $value->toHTML() . "\n");
-			print ("\t</span>\n");
-			break;
-
-		case 'HeadingText':
-			print ('<h' . $value->sublevel . '>' . $value->message . '</h' . $value->sublevel . '>');
-			break;
-
-		case 'RegularText':
-			print ("\t<span>" . $value->toHTML() . "</span>\n");
-			break;
-
-		case 'EditBox':
-			disp_editbox($value);
-			break;
-
-		case 'PlanContent':
-			disp_plan($value);
-			break;
-
-		case 'PlanText':
-			print('<div class="plan_text">');
-			print $value->toHTML();
-			print('</div>');
-			break;
-
-		case 'WidgetGroup':
-			//TODO are we still using ->class?
-			print ("\n<div id='" . $value->identifier . ($value->class ? "' class=" . $value->class : "'") . ">");
-			foreach($value->contents as $widg) {
-				disp_widget($widg, null);
-			}
-			print ("\n</div>\n");
-			break;
-
-		case 'WidgetList':
-		case 'FormItemSet':
-			if ($value->title != null) {
-				$str .= '<span class="prompt_label">';
-				$str .= $value->title;
-				$str .= '</span>';
-				print($str);
-			}
-			print ("\n<ul id='" . $value->identifier . ($value->class ? "' class=" . $value->class : "'") . ">");
-			foreach($value->contents as $widg) {
-				print ("\n<li>");
-				disp_widget($widg, null);
-				print ("</li>");
-			}
-			print ("\n</ul>\n");
-			break;
-
-		default:
-			//foobar
-			break;
+	} else if ($obj instanceof FormItem) {
+		if ($obj->title != null) {
+			$title = '<span class="prompt_label">';
+			$title .= $obj->title;
+			$title .= ' </span>';
 		}
+		$item .= $obj->toHTML();
+		if ($obj->description != null) {
+			$desc = '<span class="prompt_description">';
+			$desc .= $obj->description;
+			$desc .= '</span>';
+		}
+
+		$str = "\t" . '<div class="form_prompt">';
+		if ($obj instanceof TextInput || $obj instanceof TextareaInput) {
+			$str .= $title . $item . $desc;
+		} else {
+			$str .= $item . $title . $desc;
+		}
+		$str .= '</div>';
+		print($str . "\n");
+
+	} else if ($obj instanceof Hyperlink) {
+		print (strtolower($obj->toHTML()) . "\n");
+
+	} else if ($obj instanceof Secret) {
+		print("<div class='secret'>\n");
+		print("\t<span class='secret_id'>$obj->secret_id</span>\n");
+		print("\t<span class='date'>$obj->date</span>\n");
+		print($obj->message);
+		print("</div>");
+
+	} else if ($obj instanceof InfoText) {
+		print ("\t<span class=\"info\">\n");
+		if ($obj->title && $obj->title != '') print ("\t<span class=\"infotitle\">" . $obj->title . "</span>\n");
+		print ("\t" . $obj->toHTML() . "\n");
+		print ("\t</span>\n");
+
+	} else if ($obj instanceof RequestText) {
+		print ("\t<span class=\"question\">\n");
+		print ("\t" . $obj->toHTML() . "\n");
+		print ("\t</span>\n");
+
+	} else if ($obj instanceof AlertText) {
+		print ("\t<span class=\"alert\">\n");
+		print ("\t" . $obj->toHTML() . "\n");
+		print ("\t</span>\n");
+
+	} else if ($obj instanceof HeadingText) {
+		print ('<h' . $obj->sublevel . '>' . $obj->message . '</h' . $obj->sublevel . '>');
+
+	} else if ($obj instanceof RegularText) {
+		print ("\t<span>" . $obj->toHTML() . "</span>\n");
+
+	} else if ($obj instanceof PlanContent) {
+		disp_plan($obj);
+
+	} else if ($obj instanceof PlanText) {
+		print('<div class="plan_text">');
+		print $obj->toHTML();
+		print('</div>');
+
+	} else if ($obj instanceof WidgetList) {
+		if ($obj->title != null) {
+			$str .= '<span class="prompt_label">';
+			$str .= $obj->title;
+			$str .= '</span>';
+			print($str);
+		}
+		print ("\n<ul id='" . $obj->identifier . ($obj->class ? "' class=" . $obj->class : "'") . ">");
+		foreach($obj->contents as $widg) {
+			print ("\n<li>");
+			disp_widget($widg, null);
+			print ("</li>");
+		}
+		print ("\n</ul>\n");
+	} else if ($obj instanceof WidgetGroup) {
+		//TODO are we still using ->class?
+		print ("\n<div id='" . $obj->identifier . ($obj->class ? "' class=" . $obj->class : "'") . ">");
+		foreach($obj->contents as $widg) {
+			disp_widget($widg, null);
+		}
+		print ("\n</div>\n");
+	}
 }
 
 /**

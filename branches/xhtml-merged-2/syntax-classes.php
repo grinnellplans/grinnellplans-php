@@ -350,16 +350,10 @@ class Form extends WidgetGroup
 	}
 }
 /**
- * An item (field) within a form. May also be other Widgets inside a form.
+ * An item (field) within a form.
  */
 class FormItem extends Widget
 {
-	/* $type may be one of the following strings:
-	* radio, checkbox, hidden, textarea
-	* If $type is 'widget', $value points to a Widget object which contains
-	* the widget. This type allows other types of info to exist inside forms.
-	*/
-	public $type;
 	/* the name of the field */
 	public $name;
 	/* a constant as defined in the Form class */
@@ -368,56 +362,90 @@ class FormItem extends Widget
 	public $description;
 	/* the value of the item */
 	public $value;
-	/* Is it checked (checkboxes and radio buttons)? */
-	public $checked;
-	/* Rows for a textarea */
-	public $rows;
-	/* Cols for a textarea */
-	public $cols;
 
-	public function __construct($type, $name, $value = null) 
+	public function __construct($name, $value = null) 
 	{
 		parent::__construct($name, true);
 		$this->name = $name;
-		$this->type = $type;
 		$this->value = $value;
-		if ($type == 'textarea') {
-			// set some defaults
-			$this->rows = 3;
-			$this->cols = 40;
-		}
+	}
+	/**
+	 * Warning: this method ignores the title and description attributes entirely
+	 */
+	public function toHTML() 
+	{
+		$str = "<input type=\"$this->type\"";
+		if ($this->name) $str.= " name=\"$this->name\"";
+		$str.= " value=\"$this->value\">";
+
+		return $str;
+	}
+}
+
+class SubmitInput extends FormItem {
+	public function __construct($value = 'Submit')
+	{
+		parent::__construct(null, $value);
 	}
 	public function toHTML() 
 	{
-		$str = '';
-		switch ($this->type) {
-			case 'widget':
-				$str = $this->value->toHTML();
-				break;
-
-			case 'textarea':
-				$str = $str . "<textarea name=\"$this->name\" rows=\"$this->rows\" cols=\"$this->cols\">" . $this->value . '</textarea>';
-				break;
-
-			case 'text':
-				$rowstr = ($this->rows ? 'size="'.$this->rows.'"' : '');
-				$str .= "<input type=\"$this->type\" name=\"$this->name\" value=\"$this->value\" $rowstr>";
-				break;
-
-			case 'radio':
-			case 'checkbox':
-				$str = $str . "<input type=\"$this->type\" name=\"$this->name\"" . "value=\"$this->value\"" . (($this->checked) ? ' checked' : '') . ">";
-				break;
-
-			default:
-				$str = $str . "<input type=\"$this->type\"";
-				if ($this->name) $str.= " name=\"$this->name\"";
-				$str.= " value=\"$this->value\">";
-				break;
-			}
-			return $str;
+		$str = '<input type="submit" value="';
+		$str .= $this->value;
+		$str.= '">';
+		return $str;
 	}
 }
+class HiddenInput extends FormItem {
+	public function toHTML() 
+	{
+		$str = '<input type="hidden"';
+		if ($this->name) $str.= " name=\"$this->name\"";
+		$str.= " value=\"$this->value\">";
+	}
+}
+class RadioInput extends FormItem {
+	/* Is it checked? */
+	public $checked;
+
+	public function toHTML() 
+	{
+		$str = "<input type=\"radio\" name=\"$this->name\"" . "value=\"$this->value\"" . (($this->checked) ? ' checked' : '') . ">";
+		return $str;
+	}
+}
+class CheckboxInput extends FormItem {
+	/* Is it checked? */
+	public $checked;
+
+	public function toHTML() 
+	{
+		$str = "<input type=\"checkbox\" name=\"$this->name\"" . "value=\"$this->value\"" . (($this->checked) ? ' checked' : '') . ">";
+		return $str;
+	}
+}
+class TextInput extends FormItem {
+	public function toHTML() 
+	{
+		$rowstr = ($this->rows ? 'size="'.$this->rows.'"' : '');
+		echo "<input type=\"$this->type\" name=\"$this->name\" value=\"$this->value\" $rowstr>";
+	}
+}
+class TextareaInput extends FormItem {
+	public $rows;
+	public $cols;
+
+	public function __construct($name, $value = null, $rows = 3, $cols = 40)
+	{
+		$this->rows = $rows;
+		$this->cols = $cols;
+		parent::__construct($name, $value);
+	}
+	public function toHTML() 
+	{
+		echo "<textarea name=\"$this->name\" rows=\"$this->rows\" cols=\"$this->cols\">" . $this->value . '</textarea>';
+	}
+}
+
 class EditBox extends Form
 {
 	public $username;

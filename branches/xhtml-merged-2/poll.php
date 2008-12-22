@@ -76,9 +76,9 @@ if (User::logged_in()) {
 
 		$set = new FormItemSet('polloption', false);
 		if ($type == 'single') {
-			$item = new FormItem('radio', 'poll_choice_id', $poll_choice_id);
+			$item = new RadioInput('poll_choice_id', $poll_choice_id);
 		} else {
-			$item = new FormItem('checkbox', 'poll_choice_id[]', $poll_choice_id);
+			$item = new CheckboxInput('poll_choice_id[]', $poll_choice_id);
 		}
 		$item->title = $html;
 		$item->checked = $checked;
@@ -95,11 +95,11 @@ if (User::logged_in()) {
 		$votingform->append($set);
 	}
 
-	$item = new FormItem('hidden', 'poll_question_id', $poll_question_id);
+	$item = new HiddenInput('poll_question_id', $poll_question_id);
 	$votingform->append($item);
-	$item = new FormItem('hidden', 'submitted', 1);
+	$item = new HiddenInput('submitted', 1);
 	$votingform->append($item);
-	$item = new FormItem('submit', null, 'Vote!');
+	$item = new SubmitInput('Vote!');
 	$votingform->append($item);
 
 	$sql = "select count(*) as voted from poll_votes v join poll_choices c using (poll_choice_id) where userid = $userid and poll_question_id = $poll_question_id";

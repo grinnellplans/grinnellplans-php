@@ -203,12 +203,12 @@ function get_fingerbox()
 	$f = new Form('finger', true, 'Finger Plan');
 	$f->action = 'read.php';
 	$f->method = 'GET';
-	$item = new FormItem('text', 'searchname', NULL);
+	$item = new TextInput('searchname', NULL);
 	$item->datatype = Form::FIELD_TEXT; // Setting expected datatype.
 	$f->append($item);
-	$item = new FormItem('hidden', 'myprivl', $myprivl);
+	$item = new HiddenInput('myprivl', $myprivl);
 	$f->append($item);
-	$item = new FormItem('submit', NULL, 'Read');
+	$item = new SubmitInput('Read');
 	$f->append($item);
 	return $f;
 }

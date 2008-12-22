@@ -40,17 +40,17 @@ if (!User::logged_in()) {
 	} else {
 		$viewable = false;
 	}
-	$item = new FormItem('hidden', 'part', 1);
+	$item = new HiddenInput('part', 1);
 	$viewableform->append($item);
-	$item = new FormItem('radio', 'webview', 1);
+	$item = new RadioInput('webview', 1);
 	$item->checked = $viewable;
 	$item->description = "Make plan viewable to guests.";
 	$viewableform->append($item);
-	$item = new FormItem('radio', 'webview', 0);
+	$item = new RadioInput('webview', 0);
 	$item->checked = !($viewable);
 	$item->description = "Make plan unviewable to guests.";
 	$viewableform->append($item);
-	$item = new FormItem('submit', NULL, 'Change');
+	$item = new SubmitInput('Change');
 	$viewableform->append($item);
 } //if is a valid user
 interface_disp_page($thispage);

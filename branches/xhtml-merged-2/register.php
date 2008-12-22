@@ -122,7 +122,7 @@ function show_form()
 	$instruct = new InfoText('Enter your Grinnell username below (this is the part of your email address that comes before the \'@\', and click Register.  This will send you an email with a link that will complete your account creation.', 'Email needed');
 	$form->append($instruct);
 
-	$item = new FormItem('text', 'username', null);
+	$item = new TextInput('username', null);
 	$item->title = 'Grinnell email username:';
 	$form->append($item);
 
@@ -132,31 +132,31 @@ function show_form()
 
 	$group = new FormItemSet('studenttype', true);
 	$acct_type->append($group);
-	$item = new FormItem('radio', 'type', 'student');
+	$item = new RadioInput('type', 'student');
 	$item->description = 'Student';
 	$group->append($item);
 	/*<input type="radio" name="type" value="student" onClick ="toggle('year', 0);toggle('other', 4);">*/
-	$item = new FormItem('text', 'gradyear', null);
+	$item = new TextInput('gradyear', null);
 	$item->description = 'Grad Year';
 	$group->append($item);
 	/*<span id="year"> Grad Year: <input type="text" name="gradyear"> </span>*/
 
-	$item = new FormItem('radio', 'type', 'staff');
+	$item = new RadioInput('type', 'staff');
 	$item->description = 'Staff';
 	$acct_type->append($item);
 		
-	$item = new FormItem('radio', 'type', 'group');
+	$item = new RadioInput('type', 'group');
 	$item->description = 'Group';
 	$acct_type->append($item);
 		
-	$item = new FormItem('radio', 'type', 'faculty');
+	$item = new RadioInput('type', 'faculty');
 	$item->description = 'Faculty';
 	$acct_type->append($item);
 
-	$item = new FormItem('submit', null, 'Register');
+	$item = new SubmitInput('Register');
 	$acct_type->append($item);
 
-	$item = new FormItem('hidden', 'submitted', 1);
+	$item = new HiddenInput('submitted', 1);
 	$acct_type->append($item);
 
 	return $form;

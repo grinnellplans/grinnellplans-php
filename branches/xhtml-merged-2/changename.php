@@ -31,14 +31,14 @@ if (!User::logged_in()) {
 		$nameform->action = 'changename.php';
 		$nameform->method = 'POST';
 		/* add fields to the form */
-		$item = new FormItem('text', 'user_name', $old_name);
+		$item = new TextInput('user_name', $old_name);
 		$item->datatype = Form::FIELD_TEXT;
 		$nameform->append($item);
-		$item = new FormItem('hidden', 'myprivl', $myprivl);
+		$item = new HiddenInput('myprivl', $myprivl);
 		$nameform->append($item);
-		$item = new FormItem('hidden', 'changed', 1);
+		$item = new HiddenInput('changed', 1);
 		$nameform->append($item);
-		$item = new FormItem('submit', NULL, 'Change Name');
+		$item = new SubmitInput('Change Name');
 		$nameform->append($item);
 	} //else, if not changing name, give form
 	get_interface($idcookie);

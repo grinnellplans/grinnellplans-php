@@ -27,15 +27,15 @@ else {
 				$custom_style_form->method = 'POST';
 				$thispage->append($custom_style_form);
 
-				$item = new FormItem('text', 'urcss', get_item($dbh, "stylesheet", "stylesheet", "userid", $idcookie));
+				$item = new TextInput('urcss', get_item($dbh, "stylesheet", "stylesheet", "userid", $idcookie));
 				$item->title = 'Custom Stylesheet URL:';
 				$item->rows = 60;
 				$custom_style_form->append($item);
-				$item = new FormItem('hidden', 'style', 'custom');
+				$item = new HiddenInput('style', 'custom');
 				$custom_style_form->append($item);
-				$item = new FormItem('hidden', 'part', '1');
+				$item = new HiddenInput('part', '1');
 				$custom_style_form->append($item);
-				$item = new FormItem('submit', NULL, 'Submit');
+				$item = new SubmitInput('Submit');
 				$custom_style_form->append($item);
 			} else {
 				if (get_item($dbh, "stylesheet", "stylesheet", "userid", $idcookie)) {
@@ -71,13 +71,13 @@ else {
 	$custom_style_form->title = 'Style Options';
 	$thispage->append($custom_style_form);
 
-	$item = new FormItem('hidden', 'part', '1');
+	$item = new HiddenInput('part', '1');
 	$custom_style_form->append($item);
 
 	//begin the form
 	$o = 0;
 	while ($mystyles[$o][0]) {
-		$item = new FormItem('radio', 'style', $mystyles[$o][0]);
+		$item = new RadioInput('style', $mystyles[$o][0]);
 		$item->checked = (strtolower($intcheck[$mystyles[$o][0]]) == 'checked');
 		$name_and_desc =  $mystyles[$o][1];
 		$tmp_matches = array();
@@ -87,12 +87,12 @@ else {
 		$custom_style_form->append($item);
 		$o++;
 	}
-	$item = new FormItem('radio', 'style', 'custom');
+	$item = new RadioInput('style', 'custom');
 	$item->checked = ($customstyle == 'checked');
 	$item->description = 'Custom Style Sheet';
 	$custom_style_form->append($item);
 
-	$item = new FormItem('submit', NULL, 'Change');
+	$item = new SubmitInput('Change');
 	$custom_style_form->append($item);
 
 } //if is a valid user

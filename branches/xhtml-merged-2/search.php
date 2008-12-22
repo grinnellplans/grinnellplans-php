@@ -28,15 +28,15 @@ $thispage->append($searchform);
 
 $searchprompt = new FormItemSet('search_opts', true);
 $searchform->append($searchprompt);
-$item = new FormItem('text', 'mysearch', $mysearch);
+$item = new TextInput('mysearch', $mysearch);
 $searchprompt->append($item);
-$item = new FormItem('checkbox', 'regexp', 1);
+$item = new CheckboxInput('regexp', 1);
 $item->description = 'Reg. Exp.';
 $searchprompt->append($item);
-$item = new FormItem('checkbox', 'planlove', 1);
+$item = new CheckboxInput('planlove', 1);
 $item->description = 'Planlove';
 $searchprompt->append($item);
-$item = new FormItem('submit', null, 'Search');
+$item = new SubmitInput('Search');
 $searchprompt->append($item);
 
 if ($mysearch) //if no search query, give search form

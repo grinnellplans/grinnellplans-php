@@ -43,19 +43,19 @@ interface"); //get the current interfaces and descriptions
 		$interfaceform = new Form('interfacesform', true);
 		$thispage->append($interfaceform);
 
-		$item = new FormItem('hidden', 'part', 1);
+		$item = new HiddenInput('part', 1);
 		$interfaceform->append($item);
 
 		$o = 0;
 		while ($myinterfaces[$o][0]) //loop through the options
 		{
-			$item = new FormItem('radio', 'interface', $myinterfaces[$o][0]);
+			$item = new RadioInput('interface', $myinterfaces[$o][0]);
 			$item->checked = ($intcheck[$myinterfaces[$o][0]] == ' checked');
 			$item->description = $myinterfaces[$o][1];
 			$interfaceform->append($item);
 			$o++;
 		}
-		$item = new FormItem('submit', NULL, 'Change');
+		$item = new SubmitInput('Change');
 		$interfaceform->append($item);
 		//end form
 		

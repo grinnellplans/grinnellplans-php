@@ -2,17 +2,19 @@
 require_once('Plans.php');
 new SessionBroker();
 
-require('functions-main.php');
+require ('functions-main.php');
+require ('syntax-classes.php');
+
 $dbh = db_connect(); //set up database connections
 $idcookie = User::id();
-if (!User::logged_in()) {
-	gdisp_begin($dbh); 
-	echo ("You are not allowed to edit as a guest."); //tell user they can't edit
-	gdisp_end(); 
-	
-} else
+$thispage = new PlansPage('Preferences', 'links', PLANSVNAME . ' - Optional Links', 'links.php');
 
-{
+if (!User::logged_in()) {
+	get_guest_interface();
+	populate_guest_page($thispage);
+	$denied = new AlertText('You are not allowed to edit as a guest.', 'Access Denied');
+	$thispage->append($denied);
+} else {
 	if ($submit) //if form has been submitted
 	{
 		//if list of available links gets too long, may have to add code in to parse
@@ -23,21 +25,23 @@ if (!User::logged_in()) {
 		{ //if values to add
 			while (list($key, $items) = each($mylinks)) //for each link the user wants to add, do the loop
 			{
-				echo "<!-- $idcookie, $key, $items   " . " --> ";
 				$myrow = array($idcookie, $items); //set array to add to database
 				add_row($dbh, "opt_links", $myrow); //add new row in database
 				
 			}
 		} //added values if any
-		mdisp_begin($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], get_myprivl()); //begin valid user display, done later in the page than usual so that the changes will take affect before page is displayed
-		echo "<center><h2>Optional Links</h2></center>";
-		echo "Optional links changed.";
+		//begin valid user display, done later in the page than usual so that the changes will take affect before page is displayed
+		get_interface($idcookie);
+		populate_page($thispage, $dbh, $idcookie);
+		$thispage->append(new InfoText('Optional links changed.', 'Success'));
 	} //if submit
 	else
 	//give form
 	{
-		mdisp_begin($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], get_myprivl()); //begin valid user display
-		echo "<center><h2>Optional Links</h2></center>";
+		get_interface($idcookie);
+		populate_page($thispage, $dbh, $idcookie);
+		$thispage->append(new InfoText('Optional links changed.', 'Success'));
+
 		$selected_links = get_items($dbh, "linknum", "opt_links", "userid", $idcookie); //get the current set of links that the user has selected
 		$o = 0;
 		while ($selected_links[$o][0]) {
@@ -51,18 +55,24 @@ if (!User::logged_in()) {
 			
 		}
 		$o = 0;
-		echo "<form action=\"links.php\" method=\"POST\">"; //start form
+		$linksform = new Form('guestviewableform', true);
+		$thispage->append($linksform);
 		while ($all_links[$o][0]) {
 			//display each link
-			echo "<input type=\"checkbox\" name=\"mylinks[]\" value=\"" . $all_links[$o][0] . "\"" . $myselected[$all_links[$o][0]] . ">";
-			echo "<b>" . $all_links[$o][1] . "</b><Br>" . $all_links[$o][2] . "<BR><BR>";
+			$item = new FormItem('checkbox', 'mylinks[]', $all_links[$o][0]);
+			$item->checked = ($myselected[$all_links[$o][0]] == 'checked');
+			$item->title = $all_links[$o][1];
+			$item->description = $all_links[$o][2];
+			$linksform->append($item);
 			$o++;
 		}
-		echo "<input type=\"hidden\" name=\"submit\" value=\"1\"><center><input
-		type=\"submit\"></center></form>";
+		$item = new FormItem('hidden', 'submit', 1);
+		$linksform->append($item);
+		$item = new FormItem('submit', null, 'Submit');
+		$linksform->append($item);
 	}
-	mdisp_end($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], get_myprivl()); //end valid user display
 	
 } //if is a valid user
+interface_disp_page($thispage);
 db_disconnect($dbh);
 ?>

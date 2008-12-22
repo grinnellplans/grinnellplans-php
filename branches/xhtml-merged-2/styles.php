@@ -79,7 +79,11 @@ else {
 	while ($mystyles[$o][0]) {
 		$item = new FormItem('radio', 'style', $mystyles[$o][0]);
 		$item->checked = (strtolower($intcheck[$mystyles[$o][0]]) == 'checked');
-		$item->description =  $mystyles[$o][1];
+		$name_and_desc =  $mystyles[$o][1];
+		$tmp_matches = array();
+		preg_match('/<b>(.*)<\/b><br>(.*)/', $name_and_desc, $tmp_matches);
+		$item->title = $tmp_matches[1];
+		$item->description = $tmp_matches[2];
 		$custom_style_form->append($item);
 		$o++;
 	}

@@ -12,8 +12,6 @@
 * specified in syntax-classes.php.
 *
 */
-// include the common function file //TODO deprecated?
-include (realpath(dirname(__FILE__) . '/../common.php'));
 /* DEPRECATED */
 function interface_disp_begin($searchname, $linkarr, $autofingerarr, $myurl, $myprivl, $cssloc, $jsfile) 
 {
@@ -362,17 +360,23 @@ function disp_widget($value, $key = null)
 			break;
 
 		case 'FormItem':
-			$str = "\t" . '<div class="form_prompt">';
 			if ($value->title != null) {
-				$str .= '<span class="prompt_label">';
-				$str .= $value->title;
-				$str .= '</span>';
+				$title = '<span class="prompt_label">';
+				$title .= $value->title;
+				$title .= ' </span>';
 			}
-			$str .= $value->toHTML();
+			$item .= $value->toHTML();
 			if ($value->description != null) {
-				$str .= '<span class="prompt_description">';
-				$str .= $value->description;
-				$str .= '</span>';
+				$desc = '<span class="prompt_description">';
+				$desc .= $value->description;
+				$desc .= '</span>';
+			}
+
+			$str = "\t" . '<div class="form_prompt">';
+			if ($value->type == 'text' || $value->type == 'textarea') {
+				$str .= $title . $item . $desc;
+			} else {
+				$str .= $item . $title . $desc;
 			}
 			$str .= '</div>';
 			print($str . "\n");

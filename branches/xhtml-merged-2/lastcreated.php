@@ -6,7 +6,7 @@ $dbh = db_connect();
 $idcookie = User::id();
 $thispage = new PlansPage('Utilities', 'plangenesis', PLANSVNAME . ' - New Plans', 'lastcreated.php');
 
-if (User::logged_in()) {
+if (!User::logged_in()) {
 	get_guest_interface();
 	populate_guest_page($thispage);
 	$denied = new AlertText('You are not allowed to see this as a guest.', 'Access Denied');

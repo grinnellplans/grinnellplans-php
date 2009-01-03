@@ -2,10 +2,10 @@
 require_once('Plans.php');
 require ("functions-main.php");
 require ("syntax-classes.php");
-$idcookie = $_SESSION['userid'];
+$idcookie = User::id();
 $thispage = new PlansPage('Utilities', 'planwatch', PLANSVNAME . ' - Recently Changed Plans', 'planwatch.php');
 
-if (!$auth) //if not logged in
+if (!User::logged_in())
 {
 	get_guest_interface();
 	populate_guest_page($thispage);

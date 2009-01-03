@@ -138,11 +138,12 @@ if (User::logged_in()) //if is a valid user, give them the option of putting the
 		$addform->append($item);
 		$item = new HiddenInput('searchnum', $searchnum);
 		$addform->append($item);
-		for ($i = 0; $i < 4; $i++) {
-			$item = new RadioInput('privlevel', $i);
-			if ($i == 0) $item->description = 'X';
-			else $item->description = "$i";
-			$item->checked = $myonlist[$i];
+		echo "Foo $i";
+		for ($j = 0; $j < 4; $j++) {
+			$item = new RadioInput('privlevel', $j);
+			if ($j == 0) $item->description = 'X';
+			else $item->description = "$j";
+			$item->checked = $myonlist[$j];
 			$addform->append($item);
 		}
 		$item = new SubmitInput('Set Priority');

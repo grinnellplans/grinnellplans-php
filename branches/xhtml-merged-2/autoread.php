@@ -34,23 +34,23 @@ if (!User::logged_in()) {
 		$letternum = 97;
 	} //if not, set to a
 	$letternum = round($letternum); // round in case decimal exists from user messing around
-	$i = 97; //set begin letter to a
+	$j = 97; //set begin letter to a
 	$alphabet = new WidgetGroup('autoread_alphabet', true);
-	while ($i < 123) //do while before z
+	while ($j < 123) //do while before z
 	{
-		if ($i == $letternum) //if we've hit the desire letter
+		if ($j == $letternum) //if we've hit the desire letter
 		{
-			$letter = new RegularText("[" . chr($i) . "]", null);
-			//echo "[" . chr($i) . "]"; //show that the letter is selected
-			$current_letter = $i;
+			$letter = new RegularText("[" . chr($j) . "]", null);
+			//echo "[" . chr($j) . "]"; //show that the letter is selected
+			$current_letter = $j;
 		} else
 		//if not selected letter, make letter link to select that letter
 		{
 			$letter = null;
-			$letter = new Hyperlink('letterlink_' . chr($i), true, "autoread.php?letternum=$i", chr($i));
+			$letter = new Hyperlink('letterlink_' . chr($j), true, "autoread.php?letternum=$j", chr($j));
 		}
 		$alphabet->append($letter);
-		$i++; //go on to next letter
+		$j++; //go on to next letter
 		
 	}
 	$thispage->append($alphabet);

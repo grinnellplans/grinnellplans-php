@@ -232,7 +232,7 @@ class WidgetGroup extends Widget
 	public function toHTML($callback = null) 
 	{
 		foreach($this->contents as $item) {
-			if ($callback == null) {
+			if ($callback === null) {
 				$str = $str . "\n" . $item->toHTML();
 			} else {
 				// Invoke the callback
@@ -401,6 +401,7 @@ class HiddenInput extends FormItem {
 		$str = '<input type="hidden"';
 		if ($this->name) $str.= " name=\"$this->name\"";
 		$str.= " value=\"$this->value\">";
+		return $str;
 	}
 }
 class RadioInput extends FormItem {
@@ -427,7 +428,7 @@ class TextInput extends FormItem {
 	public function toHTML() 
 	{
 		$rowstr = ($this->rows ? 'size="'.$this->rows.'"' : '');
-		echo "<input type=\"$this->type\" name=\"$this->name\" value=\"$this->value\" $rowstr>";
+		return "<input type=\"$this->type\" name=\"$this->name\" value=\"$this->value\" $rowstr>";
 	}
 }
 class TextareaInput extends FormItem {
@@ -442,7 +443,7 @@ class TextareaInput extends FormItem {
 	}
 	public function toHTML() 
 	{
-		echo "<textarea name=\"$this->name\" rows=\"$this->rows\" cols=\"$this->cols\">" . $this->value . '</textarea>';
+		return "<textarea name=\"$this->name\" rows=\"$this->rows\" cols=\"$this->cols\">" . $this->value . '</textarea>';
 	}
 }
 

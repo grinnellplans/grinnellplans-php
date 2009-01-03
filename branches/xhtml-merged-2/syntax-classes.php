@@ -292,10 +292,13 @@ class Hyperlink extends Widget
 	public $href;
 	/* the text of the link */
 	public $description;
-	function __construct($id, $unique, $href, $desc) 
+	function __construct($id, $unique, $href, $desc=null) 
 	{
 		parent::__construct($id, $unique);
 		$this->href = $href;
+		if ($desc === null) {
+			$desc = $href;
+		}
 		$this->description = $desc;
 	}
 	function toHTML() 
@@ -429,6 +432,16 @@ class TextInput extends FormItem {
 	{
 		$rowstr = ($this->rows ? 'size="'.$this->rows.'"' : '');
 		return "<input type=\"$this->type\" name=\"$this->name\" value=\"$this->value\" $rowstr>";
+	}
+}
+class PasswordInput extends FormItem {
+	public function __construct($name) 
+	{
+		parent::__construct($name);
+	}
+	public function toHTML() 
+	{
+		return "<input type=\"password\" name=\"$this->name\">";
 	}
 }
 class TextareaInput extends FormItem {

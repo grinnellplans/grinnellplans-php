@@ -1,22 +1,33 @@
 <?php
 require_once('Plans.php');
 require('functions-main.php');
+require('syntax-classes.php');
 $dbh = db_connect();
 $idcookie = User::id();
+$thispage = new PlansPage('Preferences', 'password', PLANSVNAME . ' - Change Password', 'changepassword.php');
 if (!User::logged_in()) {
-	gdisp_begin($dbh); 
-	echo ("You are not allowed to edit as a guest."); //tell guest they can't use page
-	gdisp_end();
+	get_guest_interface();
+	populate_guest_page($thispage);
+	$denied = new AlertText('You are not allowed to edit as a guest.', 'Access Denied');
+	$thispage->append($denied);
 } else {
-	mdisp_begin($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], get_myprivl()); //begin valid user display
+	get_interface($idcookie);
+	populate_page($thispage, $dbh, $idcookie);
+
 	$real_pass = get_item($mydbh, "guest_password", "accounts", "userid", $idcookie);
 	$username = get_item($mydbh, "username", "accounts", "userid", $idcookie);
 	if ($changed && ($checknumb != $idcookie)) {
-		echo "Error: Checknumbers do not match.";
+		$denied = new AlertText('Checknumbers do not match.', 'Error', true);
+		$thispage->append($denied);
+		interface_disp_page($thispage);
+		db_disconnect($dbh);
 		exit(0);
 	}
 	if ($changed && ($mypassword != $mypassword2)) {
-		echo "Error: Passwords do not match.\n";
+		$denied = new AlertText('Passwords do not match.', 'Error', true);
+		$thispage->append($denied);
+		interface_disp_page($thispage);
+		db_disconnect($dbh);
 		exit(0);
 	}
 	if ($changed == 'pass') {
@@ -24,13 +35,16 @@ if (!User::logged_in()) {
 			if (strlen($mypassword) > 3) {
 				$crpassword = crypt($mypassword, "ab"); //encrypt the password,
 				set_item($dbh, "accounts", "password", $crpassword, "userid", $idcookie); //set the password
-				echo "Password changed to <b>" . $mypassword . "</b>."; //confirm changed password
-				
+				$success = new InfoText("Password changed to <b>$mypassword</b>.", 'Success');
+				$thispage->append($success);
+
 			} else {
-				echo "Could not change password. Your password must be 4 or more characters.";
+				$denied = new AlertText('Could not change password. Your password must be 4 or more characters.', 'Bad Password', true);
+				$thispage->append($denied);
 			}
 		} else {
-			echo "Illegal character in password. Please do not use \" or '.";
+				$denied = new AlertText('Illegal character in password. Please do not use " or \'.', 'Bad Password', true);
+				$thispage->append($denied);
 		}
 	}
 	if ($changed == 'guest_pass') {
@@ -38,56 +52,54 @@ if (!User::logged_in()) {
 		set_item($mydbh, "accounts", "guest_password", $guest_password, "userid", $idcookie);
 		$real_pass = $guest_password;
 	}
-?>
-		<center><h2>Change Login Password</h2>
-		<form method="POST" action="">
-<table>
-	<tr><td>New Password:</td><td><input type="password" name="mypassword"></td></tr>
-		<tr><td>Confirm: </td><td><input type="password" name="mypassword2"></td></tr></table> <br />
-		<input type="hidden" name="changed" value="pass">
-		<input type="hidden" name="checknumb" value="<?php
-	echo $idcookie; ?>">
-		<input type="submit" value="Change Password">
-		</form>
-		</center>
-		<center><h2>Set Guest Password</h2>
-		<p>
-		This is a password you can use to allow non-Plans users to read your plan.  They will not be able to edit your plan or use any other plans features. <br />
+
+	$heading = new HeadingText('Change Login Password', 2);
+	$thispage->append($heading);
+
+	$passwordform = new Form('passwordform', true);
+	$thispage->append($passwordform);
+	$pw1 = new PasswordInput('mypassword');
+	$pw1->title = 'New Password:';
+	$passwordform->append($pw1);
+	$pw2 = new PasswordInput('mypassword2');
+	$pw2->title = 'Confirm:';
+	$passwordform->append($pw2);
+	$changed = new HiddenInput('changed', 'pass');
+	$passwordform->append($changed);
+	$checknumb = new HiddenInput('checknumb', $idcookie);
+	$passwordform->append($checknumb);
+	$sub = new SubmitInput('Change Password');
+	$passwordform->append($sub);
+
+	$heading = new HeadingText('Set Guest Password', 2);
+	$thispage->append($heading);
+	$about = new InfoText('This is a password you can use to allow non-Plans users to read your plan.  They will not be able to edit your plan or use any other plans features. <br />
 This feature is intended to allow people to share their Plans with a small number of personal friends. 
-At any time, you may change this password to prevent people from accessing your plan using the old guest password.
-<br />
-<?php
-	if ($real_pass) { ?>
-You may give this link out to anyone who you would like to be able to read you plan and ask them to bookmark it: <br />
-<a href="http://www.grinnellplans.com/read.php?searchname=<?php
-		echo $username
-?>&amp;guest-pass=<?php
-		echo $real_pass
-?>">
-http://www.grinnellplans.com/read.php?searchname=<?php
-		echo $username
-?>&amp;guest-pass=<?php
-		echo $real_pass
-?>
-</a> <br />
-<?php
-	} else { ?>
-<b>Currently, your plan is completely private since you do not have a guest password set up.</b>
-<?php
-	} ?>
-		</p>
-		<form method="POST" action="">
-		<input type="text" name="guest_password" value="<?php
-	echo $real_pass
-?>">
-		<input type="hidden" name="changed" value="guest_pass">
-		<input type="hidden" name="checknumb" value="<?php echo $idcookie; ?>">
-		<input type="submit" value="Set Guest Password">
-		</form>
-		</center>
-		<?php
-	mdisp_end($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], get_myprivl()); //end valid user display
+At any time, you may change this password to prevent people from accessing your plan using the old guest password.');
+	$thispage->append($about);
+
+	if ($real_pass) {
+		$about = new InfoText('You may give this link out to anyone who you would like to be able to read you plan and ask them to bookmark it:');
+		$thispage->append($about);
+		$link = new Hyperlink('guestpass', true, "http://www.grinnellplans.com/read.php?searchname=$username&amp;guest-pass=$real_pass");
+		$thispage->append($link);
+	} else {
+		$about = new InfoText('Currently, your plan is completely private since you do not have a guest password set up.');
+		$thispage->append($about);
+	}
+
+	$passwordform = new Form('guestpasswordform', true);
+	$thispage->append($passwordform);
+	$pw1 = new TextInput('guest_password', $real_pass);
+	$passwordform->append($pw1);
+	$changed = new HiddenInput('changed', 'guest_pass');
+	$passwordform->append($changed);
+	$checknumb = new HiddenInput('checknumb', $idcookie);
+	$passwordform->append($checknumb);
+	$sub = new SubmitInput('Set Guest Password');
+	$passwordform->append($sub);
 	
 }
+interface_disp_page($thispage);
 db_disconnect($dbh);
 ?>

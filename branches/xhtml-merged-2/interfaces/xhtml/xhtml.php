@@ -357,7 +357,6 @@ function disp_widget($obj, $key = null)
 		disp_editbox($obj);
 
 	} else if ($obj instanceof Form) {
-		$obj->description = strtolower($obj->description);
 		print ($obj->toHTML('disp_widget_str') . "\n");
 
 	} else if ($obj instanceof FormItem) {
@@ -374,7 +373,7 @@ function disp_widget($obj, $key = null)
 		}
 
 		$str = "\t" . '<div class="form_prompt">';
-		if ($obj instanceof TextInput || $obj instanceof TextareaInput) {
+		if ($obj instanceof TextInput || $obj instanceof TextareaInput || $obj instanceof PasswordInput) {
 			$str .= $title . $item . $desc;
 		} else {
 			$str .= $item . $title . $desc;

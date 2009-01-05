@@ -9,59 +9,22 @@ function Redirect($url) {
 }
 
 /**
- * mdisp_beg- Looks up from the database what choices the user has for their interface and style,
- * and gets the pathnames for the files associated with those choices. Loads the code contained in
- * the interface page that the user basically selected, which is actually a set of a couple of functions.
- * @deprecated
+ * Get the guest interface file.
+ *
+ * Finds the interface we use for guests and loads up the required file.
  */
-function mdisp_begin($dbh, $idcookie, $myurl, $myprivl, $jsfile = NULL)
-{
-	$css = get_item($dbh, "stylesheet", "stylesheet", "userid", $idcookie);
-		//get the paths of the interface and style files that the user indicated as wanting to use
-		
-	$sql = "Select interface.path,style.path From
-	interface interface, style style,display display where
-	display.userid = '$idcookie' and display.interface = interface.interface and display.style=style.style";
-	//echo '<!-- ' . $sql . ' -->';
-	$my_result = mysql_query($sql); //get the paths of the interface and style files that the user indicated as wanting to use
-	while ($new_row = mysql_fetch_row($my_result)) {
-				$mydisplayar[] = $new_row;
-	} //gets contents from query
-	$interface = $mydisplayar[0][0];
-	if (!isset($interface) || empty($interface)) {
-		$interface = 'interfaces/default/defaultinterface.php';
-	}
-	
-	require_once($interface);
-	
-	if ($css) {
-		$mycss = $css;
-	} else {
-		$sql = "Select style.path from style, display where display.userid = '$idcookie' and display.style = style.style";
-		$my_result = mysql_query($sql); 
-		while ($new_row = mysql_fetch_row($my_result)) {
-			$myar[] = $new_row;
-		}
-		$mycss = $myar[0][0];
-	}
-	$searchname = $_GET['searchname'];
-
-	if (isset($_SESSION['b'])) {
-		$b = (int)$_SESSION['b'];
-		if (file_exists("buckets/$b.php")) {
-			include ("buckets/$b.php");
-		} else {
-			echo "Invalid bucket!";
-		}
-	}
-}
-
 function get_guest_interface()
 {
 	require ("interfaces/xhtml/xhtml.php"); //TODO hardcoding! bleh!
 	
 }
-//TODO comment
+/**
+ * Get the preferred interface for this user.
+ *
+ * Finds the interface the user has set in their preferences and loads up the required file.
+ *
+ * @param int $idcookie The user's id
+ */
 function get_interface($idcookie)
 {
 	//TODO again, clean this up, it's ugly
@@ -75,7 +38,17 @@ function get_interface($idcookie)
 	require ($mydisplayar[0][0]); //loads up the interface functions
 	
 }
-//TODO comment
+/**
+ * Populate a Plans page with all the usual stuff
+ *
+ * Fills up the PlansPage object with all the elements that are found on every page:
+ * the main panel (which holds the links, autoreads, finger form, etc), legal footer,
+ * and so on
+ *
+ * @param PlansPage $page The PlansPage object
+ * @param resource $dbh The database connection
+ * @param int $idcookie The user's id
+ */
 function populate_page(PlansPage $page, $dbh, $idcookie)
 {
 	//TODO get rid of all this crap - it should be much simpler
@@ -110,6 +83,13 @@ function populate_page(PlansPage $page, $dbh, $idcookie)
 	$footer->legal = new InfoText(get_disclaimer(), NULL);
 	$page->footer = $footer;
 }
+/**
+ * Populates a Plans page for a guest
+ *
+ * Like {@link populate_page()}, but for guest display
+ *
+ * @param PlansPage $page The PlansPage object
+ */
 function populate_guest_page(PlansPage $page)
 {
 	//$css=get_item($dbh,"stylesheet","stylesheet","userid", $idcookie);
@@ -128,9 +108,13 @@ function populate_guest_page(PlansPage $page)
 	$footer->legal = new InfoText(get_disclaimer(), NULL);
 	$page->footer = $footer;
 }
-/*
-* Returns an AutoRead object for the given priority
-*/
+/**
+ * Create an autoread list for the given priority
+ *
+ * @param int $p The priority level to retrieve
+ * @param int $idcookie The user's id
+ * @return Autoread
+ */
 function get_autoread($idcookie, $p)
 {
 	$newarr = array();
@@ -149,7 +133,13 @@ function get_autoread($idcookie, $p)
 	}
 	return $ar;
 }
-//TODO comments
+/**
+ * Get the required links
+ *
+ * These are the links that show up for every user
+ *
+ * @return array An array of Hyperlink objects
+ */
 function get_req_links()
 {
 	$newarr = array();
@@ -159,6 +149,11 @@ function get_req_links()
 	$newarr[] = new Hyperlink('mainlink_logout', true, 'index.php?logout=1', 'Log Out');
 	return $newarr;
 }
+/**
+ * Get the required links for a guest
+ *
+ * @return array An array of Hyperlink objects
+ */
 function get_guest_links()
 {
 	$newarr = array();
@@ -167,6 +162,15 @@ function get_guest_links()
 	$newarr[] = new Hyperlink('mainlink_logout', true, 'index.php?logout=1', 'Log Out');
 	return $newarr;
 }
+/**
+ * Get the optional links for a user
+ *
+ * These are the links that a user may enable or disable. 
+ * Gets the links that the given user has enabled.
+ *
+ * @param int $idcookie The user's id
+ * @return array An array of Hyperlink objects
+ */
 function get_opt_links($idcookie)
 {
 	$linkarray = mysql_query("Select avail_links.linkname, avail_links.html_code as html_code, static
@@ -198,6 +202,13 @@ function get_opt_links($idcookie)
 	}
 	return $newarr;
 }
+/**
+ * Gets the finger form
+ *
+ * This is the form that users may use to read a plan by typing a username
+ *
+ * @return Form
+ */
 function get_fingerbox()
 {
 	$f = new Form('finger', true, 'Finger Plan');
@@ -212,13 +223,18 @@ function get_fingerbox()
 	$f->append($item);
 	return $f;
 }
+/**
+ * Get a link to the Plans homepage
+ * @return Hyperlink
+ */
 function get_linkhome()
 {
 	$l = new Hyperlink('home', true, 'index.php', '');
 	return $l;
 }
 /**
- * Create a Hyperlink to the most recently updated plan. 
+ * Get a link to the most recently updated plan. 
+ * @return Hyperlink
  */
 function get_just_updated()
 {
@@ -234,124 +250,7 @@ function get_just_updated()
     // But we want a generic Hyperlink, so it can be styled separately.
     return new Hyperlink('justupdated', true, $temp->href, $new_plans[1]);
 }
-/* DEPRECATED */
-function mdisp_end($dbh, $idcookie, $myurl, $myprivl)
-{
-	// currently just calls the interface function
-	interface_disp_end($myurl);
-}
-/**
- * Simple beginning to guest display
- * @deprecated
- */
-function gdisp_begin($dbh)
-{
-	//TODO fix this - does guest even need myprivl?
-	global $myprivl;
-	if (!$myprivl == 2 or !$myprivl == 3) {
-		$myprivl = 1;
-	}
-	if ($username) {
-		$title = "$username's Plan";
-	} else {
-		$title = "Plans - Beta";
-	}
-?>
-	<html>
-	<head>
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-	<title><?php
-	echo $title ?></title>
-		<style type="text/css">
-		<!--
-		body {  color: #000000; background-color: #ffffff}
-		a:link {  text-decoration: none; color: #a9aaec; font-variant: small-caps;
-		font-family: times; background: #ffffff}
-		a:visited {  text-decoration: none; color: #a9aaec; font variant:
-		small-caps;
-		font-weight: bold; background-color:
-		#ffffff;
-		font-family: times;}
-		a:hover {  color: #ffffff; text-decoration: underline; background-color:
-		#a9aaec}
-		p.main {color: #A9AAEC; font-variant: small-caps}
 
-		p.sub { background: #f1f1f1; color: #000000; border-style: solid solid
-		solid solid; border-width: 
-		thin; border-color: #a9aaec; margin-bottom: 2px; font-variant: none}
-		p.main2 {margin-left: 1cm; color: #99DC9A; font-variant: small-caps}
-		p.main3 {margin-left: 2cm; color: #DC999A; font-variant: small-caps}
-		p.main4 {margin-left: 3cm; color: #DC9ADC; font-variant: small-caps}
-
-
-
-		-->
-		</style>
-
-		</head>
-		<body bgcolor="#ffffff" vlink="#696aac" link="#696aac">
-
-
-		<?php
-	/* The following disables guest access
-	echo "<p align=\"center\">Guest access is (most likely) temporarily disabled.<br><br><br>
-	<a href=\"http://grinnellplans.com/\">http://grinnellplans.com/</a></body></html>";
-	db_disconnect($dbh);
-	exit();
-	*/
-?>
-
-
-		<table width="100%" border="0" cellspacing="0" cellpadding="0">
-		<tr>
-		<td valign="top" align="left">
-		<img src="plans2.jpg">
-		<Form action="read.php" method="post">
-		<input name="searchname" type="text"><br>
-		<input type="hidden" name="myprivl" value="<?php
-	echo $myprivl; ?>">
-		<input type="submit" value="Read"></form>
-
-		<table>
-
-		<tr>
-		<td><img src="right.gif"></td>
-		<td><a href="home.php" class="main">home</a></td>
-		</tr>
-
-		<tr>
-		<td><img src="right.gif"></td>
-		<td><a href="listusers.php" class="main">list users</a></td>
-		</tr>
-
-		<tr>
-		<td><img src="right.gif"></td>
-		<td><a href="search.php" class="main">search plans</a></td>
-		</tr>
-
-		<tr>
-		<td><img src="right.gif"></td>
-		<td><a href="index.php" class="main">log out</a></td>
-		</tr>
-		</table>
-		</td>
-		<td>
-
-
-		<table>
-
-		<tr><td>
-
-		<?php
-}
-/**
-* Even simpler end to guest display
-* @deprecated
-*/
-function gdisp_end()
-{
-	echo "</td></tr></table></td></tr></table></body></html>";
-}
 //TODO see what below here is deprecated
 function wants_secrets($idcookie)
 {
@@ -404,58 +303,6 @@ function jumble($text)
 				echo (jumble_word($words[0][$j]));
 				echo "\n";
 			}
-		}
-	}
-}
-/* DEPRECATED */
-function show_opt_links($idcookie, $buf)
-{
-	$linkarray = mysql_query("Select avail_links.linkname, avail_links.html_code as html_code, static
-    From avail_links, opt_links where   
-    opt_links.userid = '$idcookie' and opt_links.linknum = avail_links.linknum");
-	while ($new_row = mysql_fetch_row($linkarray)) {
-		if ($new_row[2] == 'yes') {
-?>
-            <tr>
-           <?php
-			echo $buf
-?> 
-            <td><?php
-			echo $new_row[1] ?></td>
-            </tr>
-            <?php
-		} else if ($new_row[0] == 'Secrets') {
-			$count = count_unread_secrets($idcookie);
-?>
-            <tr>
-           <?php
-			echo $buf
-?> 
-            <td><a href="anonymous.php" class="main">Secrets (<?php
-			echo $count ?>)</a></td>
-            </tr>
-            <?php
-		} else if ($new_row[0] == 'Jumble') {
-			$url = $_SERVER['REQUEST_URI'];
-			if ($_GET['jumbled'] == 'yes' || ($_COOKIE['jumbled'] == 'yes' && $_GET['jumbled'] != 'no')) {
-				$url = add_param($url, 'jumbled', 'no');
-				$linktext = 'unjumble';
-			} else {
-				$url = add_param($url, 'jumbled', 'yes');
-				$linktext = 'jumble';
-			}
-?>
-            <tr>
-           <?php
-			echo $buf
-?> 
-            <td><a href="<?php
-			echo $url
-?>" class="main"><?php
-			echo $linktext
-?></a></td>
-                </tr>
-                <?php
 		}
 	}
 }

@@ -11,22 +11,38 @@ function Redirect($url) {
 /**
  * Get the guest interface file.
  *
+ * @deprecated
  * Finds the interface we use for guests and loads up the required file.
  */
 function get_guest_interface()
 {
-	require ("interfaces/xhtml/xhtml.php"); //TODO hardcoding! bleh!
-	
+	//STUB
 }
 /**
  * Get the preferred interface for this user.
  *
  * Finds the interface the user has set in their preferences and loads up the required file.
  *
+ * @deprecated
  * @param int $idcookie The user's id
  */
 function get_interface($idcookie)
 {
+	//STUB
+}
+/**
+ * Get the preferred interface for this user.
+ *
+ * Finds the interface the user has set in their preferences and loads up the required file.
+ *
+ * @param int $idcookie The user's id, or null if it's a guest
+ */
+function get_interface_for($idcookie)
+{
+	if (!$id) {
+		require_once("interfaces/xhtml/xhtml.php"); //TODO hardcoding! bleh!
+		return;
+	}
 	//TODO again, clean this up, it's ugly
 	//get the paths of the interface and style files that the user indicated as wanting to use
 	$my_result = mysql_query("Select interface.path,style.path From
@@ -35,8 +51,32 @@ function get_interface($idcookie)
 	while ($new_row = mysql_fetch_row($my_result)) {
 		$mydisplayar[] = $new_row;
 	} //gets contents from query
-	require ($mydisplayar[0][0]); //loads up the interface functions
+	require_once($mydisplayar[0][0]); //loads up the interface functions
 	
+}
+
+/**
+ * All interface objects for displaying pages must implement this (OO) interface.
+ */
+interface DisplayInterface {
+	/**
+	 * Displays a page of Plans
+	 *
+	 * Prints the page of Plans as displayed by this interface to stdout
+	 * @param PlansPage $page the page to be displayed
+	 */
+	public function display_page(PlansPage $page);
+}
+
+function interface_disp_page(PlansPage $page) 
+{
+	$id = User::id();
+	get_interface_for($id);
+
+	$interface = interface_construct();
+	if ($interface instanceof DisplayInterface) {
+		$interface->display_page($page);
+	}
 }
 /**
  * Populate a Plans page with all the usual stuff

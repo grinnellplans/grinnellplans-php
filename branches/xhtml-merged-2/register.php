@@ -10,10 +10,8 @@ $dbh = db_connect();
 $admin_email = "grinnellplans@gmail.com";
 $thispage = new PlansPage('Utilities', 'register', PLANSVNAME . ' - Registration', 'register.php');
 if (User::logged_in()) {
-	get_interface($idcookie);
 	populate_page($thispage, $dbh, $idcookie);
 } else {
-	get_guest_interface();
 	populate_guest_page($thispage);
 }
 

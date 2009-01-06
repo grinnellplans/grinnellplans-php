@@ -10,7 +10,6 @@ $idcookie = User::id();
 $thispage = new PlansPage('Preferences', 'links', PLANSVNAME . ' - Optional Links', 'links.php');
 
 if (!User::logged_in()) {
-	get_guest_interface();
 	populate_guest_page($thispage);
 	$denied = new AlertText('You are not allowed to edit as a guest.', 'Access Denied');
 	$thispage->append($denied);
@@ -31,14 +30,12 @@ if (!User::logged_in()) {
 			}
 		} //added values if any
 		//begin valid user display, done later in the page than usual so that the changes will take affect before page is displayed
-		get_interface($idcookie);
 		populate_page($thispage, $dbh, $idcookie);
 		$thispage->append(new InfoText('Optional links changed.', 'Success'));
 	} //if submit
 	else
 	//give form
 	{
-		get_interface($idcookie);
 		populate_page($thispage, $dbh, $idcookie);
 		$thispage->append(new InfoText('Optional links changed.', 'Success'));
 

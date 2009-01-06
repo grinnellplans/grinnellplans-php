@@ -8,11 +8,9 @@ $dbh = db_connect();
 $idcookie = User::id();
 $thispage = new PlansPage('Utilities', 'listusers', PLANSVNAME . ' - List All Plans', 'listusers.php');
 if (User::logged_in()) {
-	get_interface($idcookie);
 	populate_page($thispage, $dbh, $idcookie);
 	
 } else {
-	get_guest_interface();
 	populate_guest_page($thispage);
 	
 }

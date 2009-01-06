@@ -8,10 +8,8 @@ $idcookie = User::id();
 $thispage = new PlansPage('Main', 'home', PLANSVNAME, 'home.php');
 
 if (User::logged_in()) {
-	get_interface($idcookie);
 	populate_page($thispage, $dbh, $idcookie);
 } else {
-	get_guest_interface();
 	populate_guest_page($thispage);
 }
 

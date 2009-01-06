@@ -7,10 +7,8 @@ $thispage = new PlansPage('Utilities', 'planwatch', PLANSVNAME . ' - Recently Ch
 
 if (!User::logged_in())
 {
-	get_guest_interface();
 	populate_guest_page($thispage);
 } else {
-	get_interface($idcookie);
 	populate_page($thispage, $dbh, $idcookie);
 }
 

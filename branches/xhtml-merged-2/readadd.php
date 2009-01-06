@@ -13,12 +13,10 @@ $idcookie = User::id();
 $page = new PlansPage('Plan', 'readadd', PLANSVNAME, 'readdd.php');
 
 if (User::logged_in()) {
-	get_interface($idcookie);
 	populate_page($page, $dbh, $idcookie);
 } else
 	//begin guest user display
 {
-	get_guest_interface();
 	populate_guest_page($page);
 }
 

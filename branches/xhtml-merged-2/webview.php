@@ -10,14 +10,12 @@ $idcookie = User::id();
 $thispage = new PlansPage('Preferences', 'webview', PLANSVNAME . ' - Guest Viewable', 'webview.php');
 // If user is not authorized, turn them away.
 if (!User::logged_in()) {
-	get_guest_interface();
 	populate_guest_page($thispage);
 	$denied = new AlertText('You are not allowed to edit as a guest.', 'Access Denied');
 	$thispage->append($denied);
 } else {
 
 	//allowed to edit
-	get_interface($idcookie);
 	populate_page($thispage, $dbh, $idcookie);
 	$heading = new HeadingText('Guest Viewable', 1);
 	$thispage->append($heading);

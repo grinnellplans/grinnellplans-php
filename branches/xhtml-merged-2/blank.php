@@ -11,10 +11,8 @@ $dbh = db_connect();
 $idcookie = User::id();
 $thispage = new PlansPage('Utilities', 'blank', PLANSVNAME, 'blank.php');
 if (User::logged_in()) {
-	get_interface($idcookie);
 	populate_page($thispage, $dbh, $idcookie);
 } else {
-	get_guest_interface();
 	populate_guest_page($thispage);
 }
 interface_disp_page($thispage);

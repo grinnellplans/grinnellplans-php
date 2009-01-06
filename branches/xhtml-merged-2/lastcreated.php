@@ -7,13 +7,11 @@ $idcookie = User::id();
 $thispage = new PlansPage('Utilities', 'plangenesis', PLANSVNAME . ' - New Plans', 'lastcreated.php');
 
 if (!User::logged_in()) {
-	get_guest_interface();
 	populate_guest_page($thispage);
 	$denied = new AlertText('You are not allowed to see this as a guest.', 'Access Denied');
 	$thispage->append($denied);
 }
 else {
-	get_interface($idcookie);
 	populate_page($thispage, $dbh, $idcookie);
 
 	$heading = new HeadingText('Plans created within the last 5 days', 2);

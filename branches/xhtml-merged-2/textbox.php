@@ -11,7 +11,6 @@ $dbh = db_connect(); //establish the database handler
 $idcookie = User::id();
 $thispage = new PlansPage('Preferences', 'textbox', PLANSVNAME . ' - Text Box Size', 'textbox.php');
 if (!User::logged_in()) {
-	get_guest_interface();
 	populate_guest_page($thispage);
 	$denied = new AlertText('You are not allowed to edit as a guest.', 'Access Denied');
 	$thispage->append($denied);
@@ -19,7 +18,6 @@ if (!User::logged_in()) {
 else
 //elseallowed to edit
 {
-	get_interface($idcookie);
 	populate_page($thispage, $dbh, $idcookie);
 
 	$heading = new HeadingText('Change Edit Box Size:', 2);

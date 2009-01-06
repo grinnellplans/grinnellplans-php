@@ -14,11 +14,9 @@ $idcookie = User::id();
 $context = 100; //set the number of characters around found item
 $thispage = new PlansPage('Utilities', 'search', PLANSVNAME . ' - Search Plans', 'search.php');
 if (User::logged_in()) {
-	get_interface($idcookie);
 	populate_page($thispage, $dbh, $idcookie);
 } //begin user display
 else {
-	get_guest_interface();
 	populate_guest_page($thispage);
 } //otherwise begin guest display
 

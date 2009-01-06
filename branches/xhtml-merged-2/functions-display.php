@@ -9,37 +9,16 @@ function Redirect($url) {
 }
 
 /**
- * Get the guest interface file.
- *
- * @deprecated
- * Finds the interface we use for guests and loads up the required file.
- */
-function get_guest_interface()
-{
-	//STUB
-}
-/**
- * Get the preferred interface for this user.
- *
- * Finds the interface the user has set in their preferences and loads up the required file.
- *
- * @deprecated
- * @param int $idcookie The user's id
- */
-function get_interface($idcookie)
-{
-	//STUB
-}
-/**
  * Get the preferred interface for this user.
  *
  * Finds the interface the user has set in their preferences and loads up the required file.
  *
  * @param int $idcookie The user's id, or null if it's a guest
  */
-function get_interface_for($idcookie)
+function get_interface($idcookie)
 {
-	if (!$id) {
+	// If there's no id, it's a guest
+	if (!$idcookie) {
 		require_once("interfaces/xhtml/xhtml.php"); //TODO hardcoding! bleh!
 		return;
 	}
@@ -71,7 +50,7 @@ interface DisplayInterface {
 function interface_disp_page(PlansPage $page) 
 {
 	$id = User::id();
-	get_interface_for($id);
+	get_interface($id);
 
 	$interface = interface_construct();
 	if ($interface instanceof DisplayInterface) {

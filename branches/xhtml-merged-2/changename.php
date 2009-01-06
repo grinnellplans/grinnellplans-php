@@ -10,7 +10,6 @@ if (!User::logged_in()) {
 	populate_guest_page($page);
 	//tell them not able to use page
 	$page->append(new AlertText("You are not allowed to edit this option as a guest.", false));
-	get_guest_interface();
 	interface_disp_page($page);
 } else
 //allowed to edit
@@ -41,7 +40,6 @@ if (!User::logged_in()) {
 		$item = new SubmitInput('Change Name');
 		$nameform->append($item);
 	} //else, if not changing name, give form
-	get_interface($idcookie);
 	interface_disp_page($page);
 } //if is a valid user
 db_disconnect($dbh);

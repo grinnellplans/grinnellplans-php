@@ -12,12 +12,10 @@ $searchnum = (isset($_GET['searchnum']) ? $_GET['searchnum'] : false);
 $searchname = (isset($_GET['searchname']) ? $_GET['searchname'] : false);
 
 if (User::logged_in()) {
-	get_interface($idcookie);
 	populate_page($page, $dbh, $idcookie);
 } else
 	//begin guest user display
 {
-	get_guest_interface();
 	populate_guest_page($page);
 }
 
@@ -138,7 +136,6 @@ if (User::logged_in()) //if is a valid user, give them the option of putting the
 		$addform->append($item);
 		$item = new HiddenInput('searchnum', $searchnum);
 		$addform->append($item);
-		echo "Foo $i";
 		for ($j = 0; $j < 4; $j++) {
 			$item = new RadioInput('privlevel', $j);
 			if ($j == 0) $item->description = 'X';

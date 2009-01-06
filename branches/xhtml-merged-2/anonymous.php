@@ -13,12 +13,10 @@ if (User::logged_in()) {
 	$db = new Database();
 	$db->query("delete from viewed_secrets where userid = $idcookie");
 	$db->query("insert into viewed_secrets (userid, date) values($idcookie, now())");
-	get_interface($idcookie);
 	populate_page($page, $dbh, $idcookie);
 } else
 //begin guest user display
 {
-	get_guest_interface();
 	populate_guest_page($page);
 }
 

@@ -9,14 +9,12 @@ $idcookie = User::id();
 $page = new PlansPage('Main', 'edit', PLANSVNAME . ' - Edit Plan', 'edit.php');
 
 if (!User::logged_in()) {
-	get_guest_interface();
 	populate_guest_page($page);
 	//tell them not able to use page
 	$page->append(new AlertText("You are not allowed to edit as a guest.", false));
 } else
 //allowed to edit
 {
-	get_interface($idcookie);
 	populate_page($page, $dbh, $idcookie);
 	if (!isset($_POST["plan"])) //if nothing submitted yet
 	{

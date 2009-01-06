@@ -7,12 +7,10 @@ $idcookie = User::id();
 // initialize page classes
 $thispage = new PlansPage('Preferences', 'prefs', PLANSVNAME . ' - Preferences', 'customize.php');
 if (!User::logged_in()) {
-	get_guest_interface();
 	populate_guest_page($thispage);
 	$denied = new AlertText('You are not allowed to edit as a guest.', 'Access Denied');
 	$thispage->append($denied);
 } else {
-	get_interface($idcookie);
 	populate_page($thispage, $dbh, $idcookie);
 	$heading = new HeadingText('Preferences', 1);
 	$thispage->append($heading);

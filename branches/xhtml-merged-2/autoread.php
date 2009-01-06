@@ -7,14 +7,12 @@ $idcookie = User::id();
 // initialize page classes
 $thispage = new PlansPage('Preferences', 'autoreadedit', PLANSVNAME . ' - Change Autoread', 'autoread.php');
 if (!User::logged_in()) {
-	get_guest_interface();
 	populate_guest_page($thispage);
 	$denied = new AlertText('You do not have an autoread list as a guest.', 'Access Denied');
 	$thispage->append($denied);
 } else
 //allowed to edit
 {
-	get_interface($idcookie);
 	populate_page($thispage, $dbh, $idcookie);
 	$arlist = get_items($dbh, "interest,priority", "autofinger", "owner", $idcookie); //get their autoread info
 	$o = 0;

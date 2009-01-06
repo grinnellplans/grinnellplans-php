@@ -9,10 +9,8 @@ $userid = $idcookie;
 $dbh = db_connect(); //connect to database
 $thispage = new PlansPage('Utilities', 'poll', PLANSVNAME . ' - Polls', 'poll.php');
 if (User::logged_in()) {
-	get_interface($idcookie);
 	populate_page($thispage, $dbh, $idcookie);
 } else {
-	get_guest_interface();
 	populate_guest_page($thispage);
 	$denied = new AlertText('Please log in.', 'Access Denied');
 	$thispage->append($denied);

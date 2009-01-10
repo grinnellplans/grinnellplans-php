@@ -4,7 +4,7 @@ session_start();
 require ("functions-main.php"); //load main functions
 require ("syntax-classes.php"); //load display classes
 $dbh = db_connect(); //connect to database
-$idcookie = $_SESSION['userid'];
+$idcookie = User::id();
 
 // Create the new page
 $page = new PlansPage('Extras', 'secrets', PLANSVNAME . ' - Secrets', 'anonymous.php');

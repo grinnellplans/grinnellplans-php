@@ -1,3 +1,10 @@
+.strike {
+	text-decoration: line-through;
+}
+.underline {
+	text-decoration: underline;
+}
+
 /* Bugfix: avoid displaying multiple newlines inside a <pre> */
 .plan_text pre br {
 	display: none;

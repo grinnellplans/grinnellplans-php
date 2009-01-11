@@ -35,10 +35,21 @@ if (!User::logged_in()) {
                  * source. Another way to do this is to use the stored source.
                  * */
                 //change <br>'s into \n's
-		$plantext = preg_replace("/<br>/", "", $plantext);
+		$plantext = preg_replace("/<br>/", "", $plantext); //deprecated
+		$plantext = preg_replace("/<br \/>/", "", $plantext);
 		$plantext = preg_replace("/&amp;/s", "&", $plantext);
 		$plantext = preg_replace("/amp;/s", "", $plantext);
-		$plantext = preg_replace("/<hr><p.class=\"sub\">/", "<hr>", $plantext);
+		$plantext = preg_replace("/<hr><p.class=\"sub\">/", "<hr>", $plantext); //deprecated
+		$plantext = preg_replace("/<\/p><hr \/><p class=\"sub\">/", "<hr>", $plantext);
+		$plantext = preg_replace('/<pre class="sub">/', "<pre>", $plantext);
+		$plantext = preg_replace("/^<p.class=\"sub\">/", "", $plantext);
+		$plantext = preg_replace("/<\/p>$/", "", $plantext);
+		$plantext = preg_replace('/<\/pre><p class="sub">/', "</pre>", $plantext);
+		$plantext = preg_replace('/<\/p><pre>/', "<pre>", $plantext);
+		$plantext = preg_replace('/<span class="strike">/', "<strike>", $plantext);
+		$plantext = preg_replace('/<\/span><!--strike-->/', "</strike>", $plantext);
+		$plantext = preg_replace('/<span class="underline">/', "<u>", $plantext);
+		$plantext = preg_replace('/<\/span><!--u-->/', "</u>", $plantext);
 		//change plan links into regular form
 		$plantext = preg_replace("/\[\<a\shref=\"[^\"]*?\"\sclass=\"planlove\"\>(.*?)\<\/a\>\]/s", "[\\1]", $plantext);
 		$plantext = preg_replace("/\[\<a\shref=\"[^\"]*?\"\sclass=\"boardlink\"\>(.*?)\<\/a\>\]/s", "[\\1]", $plantext);

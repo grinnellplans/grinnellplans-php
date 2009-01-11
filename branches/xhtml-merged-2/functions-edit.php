@@ -33,14 +33,17 @@ function cleanText($plan)
 	//fix the dollar sign error- by josh
 	//$plan = preg_replace("(\|(\w\s)*)\$
 	$plan = preg_replace("/((\[\w*\],?){8})(?=[^ ,])/s", "$1 ", $plan);
-	$plan = preg_replace("/\n/s", "<br>", $plan);
-	$plan = preg_replace("/\&lt\;hr\&gt\;/si", "<hr><p class=\"sub\">", $plan);
+	$plan = preg_replace("/\n/s", "<br />", $plan);
+	$plan = preg_replace("/\&lt\;hr\&gt\;/si", "</p><hr /><p class=\"sub\">", $plan);
+	// replace the first </p> that we just inserted erroneously
+	//$plan = preg_replace("</p>", "", $plan, 1);
+	$plan = '<p class="sub">' . $plan . '</p>';
 	$plan = preg_replace("/\&lt\;b\&gt\;(.*?)\&lt\;\/b\&gt\;/si", "<b>\\1</b>", $plan); //allow stuff in the bold tag back in
 	$plan = preg_replace("/\&lt\;tt\&gt\;(.*?)\&lt\;\/tt\&gt\;/si", "<tt>\\1</tt>", $plan);
-	$plan = preg_replace("/\&lt\;pre\&gt\;(.*?)\&lt\;\/pre\&gt\;/si", "<pre>\\1</pre>", $plan);
-	$plan = preg_replace("/\&lt\;strike\&gt\;(.*?)\&lt\;\/strike\&gt\;/si", "<strike>\\1</strike>", $plan);
+	$plan = preg_replace("/\&lt\;pre\&gt\;(.*?)\&lt\;\/pre\&gt\;/si", "</p><pre class=\"sub\">\\1</pre><p class=\"sub\">", $plan);
+	$plan = preg_replace("/\&lt\;strike\&gt\;(.*?)\&lt\;\/strike\&gt\;/si", "<span class=\"strike\">\\1</span><!--strike-->", $plan);
 	$plan = preg_replace("/\&lt\;i\&gt\;(.*?)\&lt\;\/i\&gt\;/si", "<i>\\1</i>", $plan); //allow stuff in the italics tag back in
-	$plan = preg_replace("/\&lt\;u\&gt\;(.*?)\&lt\;\/u\&gt\;/si", "<u>\\1</u>", $plan); //allow stuff in the underline tag back in
+	$plan = preg_replace("/\&lt\;u\&gt\;(.*?)\&lt\;\/u\&gt\;/si", "<span class=\"underline\">\\1</span><!--u-->", $plan); //allow stuff in the underline tag back in
 	$plan = preg_replace("/\&lt\;a.+?href=.&quot\;(.+?).&quot\;&gt\;(.+?)&lt\;\/a&gt\;/si", "<a href=\"\\1\" class=\"onplan\">\\2</a>", $plan);
 	//$plan = preg_replace("/\&lt\;a.href=.&quot\;(.+).&quot\;/si", "EEE",$plan);
 	$somearray = preg_match_all("/.*?\[(.*?)\].*?/s", $plan, $mymatches); //get an array of everything in brackets

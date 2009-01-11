@@ -80,10 +80,14 @@ function populate_page(PlansPage $page, $dbh, $idcookie)
 	} //gets contents from query
 	//require ($mydisplayar[0][0]);//loads up the interface functions
 	$css = get_item($dbh, "stylesheet", "stylesheet", "userid", $idcookie);
+
+	// get the global stylesheet
+	$page->stylesheets[] = 'styles/global.css';
+
 	if ($css) {
-		$page->stylesheet = $css;
+		$page->stylesheets[] = $css;
 	} else {
-		$page->stylesheet = $mydisplayar[0][1];
+		$page->stylesheets[] = $mydisplayar[0][1];
 	}
 	$myprivl = get_myprivl();
 	$page->autoreadpriority = $myprivl;
@@ -235,8 +239,6 @@ function get_fingerbox()
 	$f->method = 'GET';
 	$item = new TextInput('searchname', NULL);
 	$item->datatype = Form::FIELD_TEXT; // Setting expected datatype.
-	$f->append($item);
-	$item = new HiddenInput('myprivl', $myprivl);
 	$f->append($item);
 	$item = new SubmitInput('Read');
 	$f->append($item);

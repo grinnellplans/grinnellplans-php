@@ -1,0 +1,4 @@
+/* Bugfix: avoid displaying multiple newlines inside a <pre> */
+.plan_text pre br {
+	display: none;
+}

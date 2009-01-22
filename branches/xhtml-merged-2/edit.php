@@ -90,7 +90,7 @@ if (!User::logged_in()) {
                 // display the one that was stored. This should make truncation
                 // obvious.
                 $plan = get_item($dbh, "plan", "accounts", "userid", $idcookie);
-		$page->append(new InfoText($plan, "Plan Changed To:"));
+		Redirect('read.php?edit_submit=1&searchname=' . User::name());
 	} //if (!$part) else
 	
 } //allow to edit if user

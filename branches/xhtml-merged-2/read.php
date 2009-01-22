@@ -118,6 +118,11 @@ if (!$planinfo = get_items($mydbh, "username, pseudo, UNIX_TIMESTAMP(login), UNI
 	} else {
 		$plantext = $planinfo[0][4];
 	}
+	// If we're redirecting from edit.php, assure the user that their change was applied
+	if ($_GET['edit_submit'] == 1) {
+		$changed_msg = new InfoText('Plan changed successfully.');
+		$page->append($changed_msg);
+	}
 	$plantext = new PlanText($plantext, false);
 	$thisplan = new PlanContent($planinfo[0][0], $planinfo[0][1], $planinfo[0][2], $planinfo[0][3], $plantext);
 	$page->append($thisplan);

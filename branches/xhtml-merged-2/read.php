@@ -103,9 +103,7 @@ if ($guest_pass = $_GET['guest-pass']) {
 	}
 }
 //error_log("JLW guest auth is $guest_auth");
-if (!$planinfo = get_items($mydbh, "username,pseudo,DATE_FORMAT(login, 
-'%a %M %D %Y, %l:%i %p'),DATE_FORMAT(changed, 
-'%a %M %D %Y, %l:%i %p'),plan,webview", "accounts", "userid", $searchnum)) //get all of persons plan info
+if (!$planinfo = get_items($mydbh, "username, pseudo, UNIX_TIMESTAMP(login), UNIX_TIMESTAMP(changed), plan, webview", "accounts", "userid", $searchnum)) //get all of persons plan info
 {
 	//if we failed, complain
 	$page->append(new AlertText("Could not retrieve plan.", 'DB Error', true));
@@ -136,12 +134,14 @@ if (User::logged_in()) //if is a valid user, give them the option of putting the
 		$addform->append($item);
 		$item = new HiddenInput('searchnum', $searchnum);
 		$addform->append($item);
+		$levels = new FormItemSet('readadd_levels', true);
+		$addform->append($levels);
 		for ($j = 0; $j < 4; $j++) {
 			$item = new RadioInput('privlevel', $j);
 			if ($j == 0) $item->description = 'X';
 			else $item->description = "$j";
 			$item->checked = $myonlist[$j];
-			$addform->append($item);
+			$levels->append($item);
 		}
 		$item = new SubmitInput('Set Priority');
 		$addform->append($item);

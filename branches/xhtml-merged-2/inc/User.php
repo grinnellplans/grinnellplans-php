@@ -10,8 +10,8 @@ class User {
 		if ($user) {
 			$user->login = timestamp();
 			$user->save();
-			$_SESSION['u'] = $user->username;
-			$_SESSION['i'] = $user->userid;
+			$_SESSION['session_username'] = $user->username;
+			$_SESSION['session_userid'] = $user->userid;
 			return $user;
 		} else {
 			return false;
@@ -20,27 +20,27 @@ class User {
 	
 	public static function get() {
 		if (logged_in()) {
-			return Doctrine::getTable('Accounts')->find($_SESSION['i']);			
+			return Doctrine::getTable('Accounts')->find($_SESSION['session_userid']);			
 		} else {
 			throw new Exception('dunno');
 		}
 	}
 	
 	public static function logged_in() {
-		return (isset($_SESSION['u']) && isset($_SESSION['i']));
+		return (isset($_SESSION['session_username']) && isset($_SESSION['session_userid']));
 	}
 	
 	public static function id() {
-		if (isset($_SESSION['i'])) {
-			return (int) $_SESSION['i'];
+		if (isset($_SESSION['session_userid'])) {
+			return (int) $_SESSION['session_userid'];
 		} else {
 			return false;
 		}
 	}
 	
 	public static function name() {
-		if (isset($_SESSION['u'])) {
-			return $_SESSION['u'];	
+		if (isset($_SESSION['session_username'])) {
+			return $_SESSION['session_username'];	
 		} else {
 			return USER_GUEST_NAME;
 		}

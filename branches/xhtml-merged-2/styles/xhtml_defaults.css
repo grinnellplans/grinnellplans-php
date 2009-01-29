@@ -1,0 +1,68 @@
+/**
+ * Some styling that almost all styles will want
+ */
+
+/* Display the long version of dates in the plan header */
+.value .short {
+	display: none;
+}
+
+/* Float items within a set next to each other */
+.formitemset .form_prompt {
+	float: left;
+}
+/* But in general, clear prompts to their own line */
+.formitemset, .form_prompt {
+	clear: left;
+}
+/* float the Read button next to the finger form */
+#finger .form_prompt {
+	float: left;
+}
+
+/* Styling for the fill meter when editing */
+#edit_fill_meter .fill_bar {
+	background: url("../images/old/unfilled.gif");
+	float: left;
+	width: 100px;
+	height: 16px;
+}
+#edit_fill_meter .full_amount {
+	background: url("../images/old/filled.gif");
+	height: 1em;
+	width: 0%;
+}
+#edit_fill_meter .fill_percent {
+	float: left;
+}
+#edit_fill_meter.danger .full_amount {
+	background: url("../images/old/danger.gif");
+}
+
+/* Some styling with small icons for various messages */
+.alertmessage, .infomessage, .requestmessage {
+	padding: 0.4em;
+}
+.alertmessage .title {
+	height: 16px;
+	display: block;
+	font-style: italic;
+	font-weight: bold;
+	padding-left: 20px;
+	padding-bottom: 0.3em;
+}
+.alertmessage .title {
+	background: url("../../images/icons/exclamation.png") no-repeat left center;
+}
+.infomessage .body, .requestmessage .body {
+	padding-left: 20px;
+}
+.infomessage .title, .requestmessage .title {
+	display: none;
+}
+.infomessage .body {
+	background: url("../../images/icons/information.png") no-repeat left center;
+}
+.requestmessage .body {
+	background: url("../../images/icons/help.png") no-repeat left center;
+}

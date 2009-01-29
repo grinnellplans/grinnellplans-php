@@ -7,7 +7,7 @@ require ('syntax-classes.php');
 
 $dbh = db_connect(); //set up database connections
 $idcookie = User::id();
-$thispage = new PlansPage('Preferences', 'links', PLANSVNAME . ' - Optional Links', 'links.php');
+$thispage = new PlansPage('Preferences', 'optional_links', PLANSVNAME . ' - Optional Links', 'links.php');
 
 if (!User::logged_in()) {
 	populate_guest_page($thispage);
@@ -37,7 +37,6 @@ if (!User::logged_in()) {
 	//give form
 	{
 		populate_page($thispage, $dbh, $idcookie);
-		$thispage->append(new InfoText('Optional links changed.', 'Success'));
 
 		$selected_links = get_items($dbh, "linknum", "opt_links", "userid", $idcookie); //get the current set of links that the user has selected
 		$o = 0;
@@ -57,7 +56,7 @@ if (!User::logged_in()) {
 		while ($all_links[$o][0]) {
 			//display each link
 			$item = new CheckboxInput('mylinks[]', $all_links[$o][0]);
-			$item->checked = ($myselected[$all_links[$o][0]] == 'checked');
+			$item->checked = (strtolower(trim($myselected[$all_links[$o][0]])) == 'checked');
 			$item->title = $all_links[$o][1];
 			$item->description = $all_links[$o][2];
 			$linksform->append($item);

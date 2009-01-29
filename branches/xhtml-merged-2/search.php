@@ -30,9 +30,11 @@ $item = new TextInput('mysearch', $mysearch);
 $searchprompt->append($item);
 $item = new CheckboxInput('regexp', 1);
 $item->description = 'Reg. Exp.';
+$item->checked = $regexp;
 $searchprompt->append($item);
 $item = new CheckboxInput('planlove', 1);
 $item->description = 'Planlove';
+$item->checked = $planlove;
 $searchprompt->append($item);
 $item = new SubmitInput('Search');
 $searchprompt->append($item);
@@ -116,7 +118,7 @@ if ($mysearch) //if no search query, give search form
 				$new_row[1] = preg_replace("/(" . $mysearch . ")/si", "<b>\\1</b>", $new_row[1]);
 				*/
 				$result = new WidgetGroup('result_user_group', false);
-				$thispage->append($result);
+				$result_list->append($result);
 				$name = new PlanLink($new_row[0]);
 				$result->append($name);
 				$count = new RegularText($matchcount);

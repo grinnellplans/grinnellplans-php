@@ -13,7 +13,6 @@ if (!User::logged_in()) {
 	$thispage->append($denied);
 } //end guest display
 else {
-	populate_page($thispage, $dbh, $idcookie);
 
 	$custom_style_form = '';
 	if ($_POST['part']) //if they are submitting the form
@@ -41,6 +40,8 @@ else {
 				} else {
 					add_row($dbh, "stylesheet", array($idcookie, $urcss));
 				}
+				$message = new InfoText('Style Set', 'Success');
+				$thispage->append($message);
 			}
 		} else {
 			delete_item($dbh, "stylesheet", "userid", $idcookie);
@@ -50,6 +51,7 @@ else {
 		} //if $style=custome, else
 		
 	}
+	populate_page($thispage, $dbh, $idcookie);
 	$my_result = mysql_query("Select style,descr From 
 				  style"); //get currently available styles and their descriptions
 	while ($new_row = mysql_fetch_row($my_result)) {

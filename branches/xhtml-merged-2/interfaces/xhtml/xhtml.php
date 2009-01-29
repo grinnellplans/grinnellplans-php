@@ -26,55 +26,53 @@ class XHTMLInterface implements DisplayInterface {
 <html xmlns="http://www.w3.org/1999/xhtml">
 
 <head>
-<title><?php
-		echo $page->title ?></title>
-			<link rel="stylesheet" type="text/css" href="<?php
-			echo $page->stylesheet ?>" />
+<title><?php echo $page->title ?></title>
 <?php
-			//TODO Javascript
+		foreach ($page->stylesheets as $css) {
+			echo '<link rel="stylesheet" type="text/css" href="' . $css . '" />';
+		}
+		// Add the length counter script if it's the edit page
+		if ($page->identifier == 'edit') {
+			echo '<script src="edit.js" type="text/javascript" language="javascript"></script>';
+		}
 
 ?>
 </head>
-<body>
+<body id="planspage_<?php echo strtolower($page->identifier) ?>" class="<?php echo strtolower($page->group) ?>">
 
 <div id="wrapper">
 
-<div id="nav">
+<div id="nav"><div>
 <?php
 			//print the mainpanel
 			if ($page->mainpanel) $this->disp_mainpanel($page);
 ?>
-</div>
+</div></div>
 
-<div id="main">
+<div id="main"><div>
 
 <?php
 		// display the widgets in the contents of the page
 		array_walk($page->contents, array($this, 'disp_widget'));
-		echo "\n</div>\n</div><!--wrapper-->\n";
+		echo "\n</div></div>"; // "main"
 		if ($page->footer) $this->disp_footer($page->footer);
-		echo "</body></html>";
+		echo "\n</div>"; // "wrapper"
+		echo "\n</body></html>";
 	}
 	protected function disp_mainpanel($page) 
 	{
 		$panel = $page->mainpanel;
 		// print the logo
 		if ($panel->linkhome) {
-			$panel->linkhome->description = '<span>Home</span>';
-			$panel->linkhome->html_attributes = ' class="logo"';
+			echo '<div id="logo">';
+			$panel->linkhome->description = 'Home';
 			echo ("\t" . $panel->linkhome->toHTML() . "\n");
+			echo "</div>";
 		}
 		// print the finger form
 		if ($panel->fingerbox) {
 			echo '<div id="finger">';
-			echo $panel->fingerbox->toHTML();
-		/*
-		<form method="<?=$panel->fingerbox->method ?>" action="<?=$panel->fingerbox->action?>">
-		foreach($panel->fingerbox->contents as $item) {
-		print("\t\t".$item->toHTML()."\n");
-		}
-		</form>
-		 */
+			echo $panel->fingerbox->toHTML(array($this, 'disp_widget_str'));
 			echo "</div>";
 		}
 		// print the user's links
@@ -86,52 +84,68 @@ class XHTMLInterface implements DisplayInterface {
 	{
 		echo "<div id=\"footer\">\n";
 		if ($footer->doyouread) {
-			echo "\t<div id=\"justupdated\">\n";
+			echo "\t<div id=\"justupdated\"><div>\n";
 			echo "\t\tDo you read " . $footer->doyouread->toHTML() . ", who just updated?\n";
-			echo "\t</div>\n";
+			echo "\t</div></div>\n";
 		}
 		if ($footer->legal) {
-			echo "\t<div id=\"legal\">\n";
+			echo "\t<div id=\"legal\"><div>\n";
 			echo "\t\t" . $footer->legal->toHTML() . "\n";
-			echo "\t</div>\n";
+			echo "\t</div></div>\n";
 		}
 		echo "</div>\n";
 	}
+	/**
+	 * @todo junk $myurl
+	 */
 	protected function disp_autoread($autoreads, $myurl, $privl) 
 	{
 ?>
-	<div id="autofingerlist"><span class="autofinger">autofinger list</span>
+	<div id="autoread"><h2>Autoread List</h2>
 		<ul>
 <?php
-		$front = "\t\t\t<li class=\"autoreadentry\">";
-		$end = "</li>\n";
-		$new_url = remove_param($myurl, 'mark_as_read');
-		foreach($autoreads as $ar) {
+		$length = count($autoreads);
+		foreach($autoreads as $i => $ar) {
 			$priority = $ar->priority;
-			$new_url = add_param($new_url, 'myprivl', $priority);
+			$class = 'autoreadlevel';
 			if ($priority == $privl) {
-				echo "\t\t" . '<div id="current"><li class="autoread">' . "\n";
+				$class .= ' current';
 			} else {
-				echo "\t\t<li class=\"autoread\">\n";
+				$class .= ' notcurrent';
 			}
-			// design decision: print a link and nolink option for each level, to give
-			// stylesheet creators the choice of what to display
-			echo "\t\t<span class=\"autoreadlevel\">" . $ar->title . "</span>\n" . "\t\t<a class=\"autoreadlink\" href=\"$new_url\">" . $ar->title . "</a>\n";
+			if ($i == 0) {
+				$class .= ' first';
+			}
+			if ($i == $length - 1) {
+				$class .= ' last';
+			}
+			echo "\t\t<li class=\"$class\">\n";
+			echo "\t\t<div class=\"autoreadname\">\n";
+			$link = $ar->link;
+			echo "\t\t\t<a class=\"autoreadlink\" href=\"$link->href\">" . $ar->title . "</a>\n";
 			// print the little X to mark all as read
-			echo "\t\t<a class=\"markasread\" onClick =\"return confirm(" . "'Are you sure you\'d like to mark all the Plans on level " . $priority . " as read?')\" href=\"http://" . add_param($new_url, 'mark_as_read', 1) . "\"><span>X</span></a>\n";
+			echo "\t\t\t<a class=\"markasread\" onclick =\"return confirm(" . "'Are you sure you\'d like to mark all the Plans on level " . $priority . " as read?')\" href=\"http://" . add_param($new_url, 'mark_as_read', 1) . "\">X</a>\n";
+			echo "\t\t</div>\n";
 			// now print the plans on this autoread level
 			echo "\t\t\t<ul>\n";
-			foreach($ar->contents as $item) {
+
+			$end = "</li>\n";
+			$innerlength = count($ar->contents);
+			foreach($ar->contents as $j => $item) {
+				$class = 'autoreadentry';
+				if ($j == 0) {
+					$class .= ' first';
+				}
+				if ($j == $innerlength - 1) {
+					$class .= ' last';
+				}
+				$front = "\t\t\t<li class=\"$class\">";
 				echo $front . $item->toHTML() . $end;
 			}
 ?>
 			</ul>
 <?php
-			if ($priority == $privl) {
-				echo "\t\t</li></div>\n";
-			} else {
-				echo "\t\t</li>\n";
-			}
+			echo "\t\t</li>\n";
 		}
 ?>
 	</ul></div>
@@ -140,39 +154,81 @@ class XHTMLInterface implements DisplayInterface {
 	protected function disp_links($panel) 
 	{
 ?>
-	<div id="links">
+	<div id="links"><h2>Links</h2>
 		<ul>
 <?php
-		$front = "\t\t<li>";
-		$end = "</li>\n"; // TODO do we want a class div around these?
+		// Just use this for the first one, then change it
+		$front = "\t\t<li class='first'>";
+		$end = "</li>\n";
 		// print out the links
 		if ($panel->requiredlinks) for ($i = 0; ($l = $panel->requiredlinks[$i]); $i++) {
 			if (strtolower($l->description) == 'log out') $logout = $l;
-			else echo $front . strtolower($l->toHTML()) . $end;
+			else echo $front . $l->toHTML() . $end;
+			$front = "\t\t<li>";
 		}
 		if ($panel->optionallinks) for ($i = 0; ($l = $panel->optionallinks[$i]); $i++) {
-			echo $front . strtolower($l->toHTML()) . $end;
+			echo $front . $l->toHTML() . $end;
 		}
-		if ($logout) echo $front . strtolower($logout->toHTML()) . $end;
+		if ($logout) echo "\t\t<li class='last'>" . $logout->toHTML() . "</li>\n";
 ?>
 		</ul>
 	</div>
 <?php
 	}
+
+	protected static function id_and_class($id, $class) {
+		$out = array();
+		if ($id != null) {
+			$out[] = 'id="'.$id.'"';
+		}
+
+		if (!is_array($class)) {
+			$class = array($class);
+		}
+		$class = array_filter($class);
+		$out[] = 'class="'.implode(' ', $class).'"';
+		return implode(' ', $out);
+	}
+
 	protected function disp_widget($obj, $key = null) 
 	{
 		if ($obj instanceof EditBox) {
 			$this->disp_editbox($obj);
 
 		} else if ($obj instanceof Form) {
-			print ($obj->toHTML(array($this, 'disp_widget_str')) . "\n");
+			$attrs = self::id_and_class($obj->identifier, array($obj->group, 'form'));
+			$str = "<div $attrs>";
+			$str .= $obj->toHTML(array($this, 'disp_widget_str')) . "\n";
+			$str .= '</div>';
+			print $str;
 
-		} else if ($obj instanceof FormItem) {
-			if ($obj->title != null) {
-				$title = '<span class="prompt_label">';
-				$title .= $obj->title;
-				$title .= ' </span>';
+		} else if ($obj instanceof SubmitInput) {
+			$attrs = 'type="submit" class="submitinput"';
+			if ($obj->name) {
+				$attrs .= " name=\"$obj->name\"";
 			}
+			echo "<button $attrs>$obj->value</button>";
+		} else if ($obj instanceof FormItem) {
+
+			if ($item->identifier) {
+				$item_id = $item->identifier;
+			} else {
+				$item_id = $obj->parent_form->identifier . '_' . $obj->name;
+			}
+			$item_id = str_replace('[]', '', $item_id);
+			// If it's possible there are multiple inputs with the same name, 
+			// append a number to the end to make it unique
+			if ($obj instanceof CheckboxInput || $obj instanceof RadioInput) {
+				$num = (int)$this->element_ids[$item_id]++;
+				$item_id = $item_id . $num;
+			}
+
+			if ($obj->title != null) {
+				$title = '<label class="prompt_label" for="' . $item_id . '">';
+				$title .= $obj->title;
+				$title .= ' </label>';
+			}
+			$obj->html_attributes = " id=\"$item_id\"";
 			$item .= $obj->toHTML();
 			if ($obj->description != null) {
 				$desc = '<span class="prompt_description">';
@@ -180,13 +236,16 @@ class XHTMLInterface implements DisplayInterface {
 				$desc .= '</span>';
 			}
 
-			$str = "\t" . '<div class="form_prompt">';
-			if ($obj instanceof TextInput || $obj instanceof TextareaInput || $obj instanceof PasswordInput) {
-				$str .= $title . $item . $desc;
+			$strbeg = "\t" . '<div class="form_prompt ' . strtolower(get_class($obj)) . '">';
+
+			$strend = '</div>';
+			if ($obj instanceof HiddenInput) {
+				$str = $item;
+			} else if ($obj instanceof TextInput || $obj instanceof TextareaInput || $obj instanceof PasswordInput) {
+				$str = $strbeg . $title . $item . $desc . $strend;
 			} else {
-				$str .= $item . $title . $desc;
+				$str = $strbeg . $item . $title . $desc . $strend;
 			}
-			$str .= '</div>';
 			print($str . "\n");
 
 		} else if ($obj instanceof Hyperlink) {
@@ -199,28 +258,6 @@ class XHTMLInterface implements DisplayInterface {
 			print($obj->message);
 			print("</div>");
 
-		} else if ($obj instanceof InfoText) {
-			print ("\t<span class=\"info\">\n");
-			if ($obj->title && $obj->title != '') print ("\t<span class=\"infotitle\">" . $obj->title . "</span>\n");
-			print ("\t" . $obj->toHTML() . "\n");
-			print ("\t</span>\n");
-
-		} else if ($obj instanceof RequestText) {
-			print ("\t<span class=\"question\">\n");
-			print ("\t" . $obj->toHTML() . "\n");
-			print ("\t</span>\n");
-
-		} else if ($obj instanceof AlertText) {
-			print ("\t<span class=\"alert\">\n");
-			print ("\t" . $obj->toHTML() . "\n");
-			print ("\t</span>\n");
-
-		} else if ($obj instanceof HeadingText) {
-			print ('<h' . $obj->sublevel . '>' . $obj->message . '</h' . $obj->sublevel . '>');
-
-		} else if ($obj instanceof RegularText) {
-			print ("\t<span>" . $obj->toHTML() . "</span>\n");
-
 		} else if ($obj instanceof PlanContent) {
 			$this->disp_plan($obj);
 
@@ -229,23 +266,58 @@ class XHTMLInterface implements DisplayInterface {
 			print $obj->toHTML();
 			print('</div>');
 
-		} else if ($obj instanceof WidgetList) {
+		} else if ($obj instanceof HeadingText) {
+			print ('<h' . $obj->sublevel . '>' . $obj->message . '</h' . $obj->sublevel . '>');
+
+		} else if ($obj instanceof RegularText) {
+			print ("\t<span>" . $obj->toHTML() . "</span>\n");
+
+		} else if ($obj instanceof Text) {
+			$class = strtolower($obj->group);
+			print ("\t<div class=\"$class\">\n");
+			print ("\t<span class=\"title\">" . $obj->title . "</span>\n");
+			print ("\t<span class=\"body\">" . $obj->toHTML() . "</span>\n");
+			print ("\t</div>\n");
+
+		} else if ($obj instanceof FormItemSet) {
+			$attrs = self::id_and_class($obj->identifier, array($obj->group, 'formitemset'));
+			print ("\n<div $attrs>");
 			if ($obj->title != null) {
-				$str .= '<span class="prompt_label">';
-				$str .= $obj->title;
-				$str .= '</span>';
-				print($str);
+				$title = '<span class="promptset_label">';
+				$title .= $obj->title;
+				$title .= ' </span>';
+				echo $title;
 			}
-			print ("\n<ul id='" . $obj->identifier . ($obj->class ? "' class=" . $obj->class : "'") . ">");
 			foreach($obj->contents as $widg) {
-				print ("\n<li>");
+				$this->disp_widget($widg, null);
+			}
+			print ("\n</div>\n");
+		} else if ($obj instanceof WidgetList) {
+			$attrs = self::id_and_class($obj->identifier, $obj->group);
+			print ("\n<ul $attrs>");
+			foreach($obj->contents as $i => $widg) {
+				$class = '';
+				if ($i == 0) {
+					$class = 'first';
+				}
+				if ($i == count($obj->contents) - 1) {
+					if ($class) $class .= ' ';
+					$class .= 'last';
+				}
+
+				if ($class) {
+					print ("\n<li class=\"$class\">");
+				} else {
+					print ("\n<li>");
+				}
+
 				$this->disp_widget($widg, null);
 				print ("</li>");
 			}
 			print ("\n</ul>\n");
 		} else if ($obj instanceof WidgetGroup) {
-			//TODO are we still using ->class?
-			print ("\n<div id='" . $obj->identifier . ($obj->class ? "' class=" . $obj->class : "'") . ">");
+			$attrs = self::id_and_class($obj->identifier, $obj->group);
+			print ("\n<div $attrs>");
 			foreach($obj->contents as $widg) {
 				$this->disp_widget($widg, null);
 			}
@@ -269,14 +341,26 @@ class XHTMLInterface implements DisplayInterface {
 	}
 	protected function disp_plan($plan) 
 	{
+		$dateformat1 = 'D F jS Y, g:i A';
+		$dateformat2 = 'm-d-Y';
 ?>
 	<div id="header">
 		<ul>
-		<li class="username">Username: <span class="username"><?php echo $plan->username ?></span></li>
-		<li class="lastupdated">Last Updated: <span class="lastupdated"><?php echo $plan->lastupdate ?></span></li>
-		<li class="lastlogin">Last Login: <span class="lastlogin"><?php echo $plan->lastlogin ?></span></li>
+		<li class="username"><span class="title">Username:</span> <span class="value"><?php echo $plan->username ?></span></li>
+		<li class="lastupdated"><span class="title">Last Updated:</span> 
+			<span class="value">
+				<span class="long"><?php echo date($dateformat1, $plan->lastupdate) ?></span>
+				<span class="short"><?php echo date($dateformat2, $plan->lastupdate) ?></span>
+			</span>
+		</li>
+		<li class="lastlogin"><span class="title">Last Login:</span> 
+			<span class="value">
+				<span class="long"><?php echo date($dateformat1, $plan->lastlogin) ?></span>
+				<span class="short"><?php echo date($dateformat2, $plan->lastlogin) ?></span>
+			</span>
+		</li>
 
-		<li class="name">Name: <span class="name"><?php echo $plan->planname ?></span></li>
+		<li class="planname"><span class="title">Name:</span> <span class="value"><?php echo $plan->planname ?></span></li>
 		</ul>
 	</div>
 
@@ -296,23 +380,25 @@ class XHTMLInterface implements DisplayInterface {
 	protected function disp_editbox($box) 
 	{
 ?><div id="editform">
-	<form action="<?php echo $box->action
-	?>" method="<?php echo $box->method
-?>">
-<textarea id="edittextarea" rows="<?php echo $box->rows
+	<form action="<?php echo strtolower($box->action)
+	?>" method="<?php echo strtolower($box->method)
+?>"><div>
+<textarea id="edit_textarea" rows="<?php echo $box->rows
 ?>" cols="<?php echo $box->columns
 ?>" 
-		name="plan" wrap="virtual" onkeyup="javascript:countlen();">
+		name="plan" onkeyup="javascript:checkPlanLength();">
 <?php
 print ($box->text->message);
 ?>
-		</textarea>
-		<input type="hidden" name="part" value="1"><br>
-		<img id="leftfill" src="left.gif" width="2" height="16"><img id="filled" src="filled.gif" width="0" height="16"><img id="unfilled" src="unfilled.gif" width="100" height="16"><img id="rightfill" src="right.gif" width="2" height="16"> <input type="text" name="perc" value="0%" size="4" style="border: 0px" readonly>
-		&nbsp;&nbsp;&nbsp;<input type="submit" value="Change Plan">
-	</form></div>
+		</textarea><br />
+		<input type="hidden" name="part" value="1" />
+		<div id="edit_fill_meter">
+			<div class="fill_bar"><div class="full_amount"></div></div>
+			<div class="fill_percent">0%</div>
+		</div>
+<?php $this->disp_widget(new SubmitInput('Change Plan'), null); ?>
+	</div></form></div>
 <?php
-//TODO ^^ that is ugly and not very styleable. Find something better.
 
 	}
 }

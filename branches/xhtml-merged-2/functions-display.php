@@ -148,7 +148,7 @@ function get_autoread($idcookie, $p)
 	while ($new_row = mysql_fetch_row($privarray)) {
 		$autoreadlist[] = $new_row;
 	}
-	$ar = new AutoRead($p);
+	$ar = new AutoRead($p, "setpriv.php?myprivl=$p");
 	$o = 0;
 	while ($autoreadlist[$o][0]) {
 		$ar->append(new PlanLink($autoreadlist[$o][1]));
@@ -220,6 +220,12 @@ function get_opt_links($idcookie)
 				$linktext = 'jumble';
 			}
 			$thislink = new Hyperlink('mainlink_jumble', true, $url, $linktext);
+		} else {
+			// the forum link needs this, really we just need a better system
+			$foo = array();
+			preg_match("/href=\"([^\"]+)\"/", $new_row[1], &$foo);
+			$href = $foo[1];
+			$thislink = new Hyperlink('opt_link', false, $href, $new_row[0]);
 		}
 		$newarr[] = $thislink;
 	}
@@ -272,7 +278,6 @@ function get_just_updated()
     return new Hyperlink('justupdated', true, $temp->href, $new_plans[1]);
 }
 
-//TODO see what below here is deprecated
 function wants_secrets($idcookie)
 {
 	$wants_secrets = mysql_query("Select avail_links.linknum, avail_links.html_code
@@ -308,6 +313,7 @@ function jumble_word($word)
 }
 function jumble($text)
 {
+	ob_start();
 	preg_match_all('/(<[^>]*>)|([^<>]*)/', $text, $matches);
 	$c = count($matches[0]);
 	for ($i = 0; $i < $c; $i++) {
@@ -326,5 +332,6 @@ function jumble($text)
 			}
 		}
 	}
+	return ob_get_clean();
 }
 ?>

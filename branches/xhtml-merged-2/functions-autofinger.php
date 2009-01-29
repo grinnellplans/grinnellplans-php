@@ -35,7 +35,7 @@ function add_param($url, $name, $value)
 		return ereg_replace("$name=[^&]*", $name . '=' . $value, $url);
 	} else {
 		if (ereg("\?", $url)) {
-			return $url . '&' . $name . '=' . $value;
+			return $url . '&amp;' . $name . '=' . $value;
 		} else {
 			return $url . '?' . $name . '=' . $value;
 		}

@@ -81,6 +81,7 @@ class PlansPage
 		$this->identifier = $id;
 		$this->title = $title;
 		$this->url = $url;
+		$this->stylesheets = array();
 	}
 
 	/**
@@ -93,7 +94,7 @@ class PlansPage
 		// If it's a form, we can set some defaults
 		if ($widget instanceof Form) {
 			if ($widget->action == null) $widget->action = $this->url;
-			if ($widget->method == null) $widget->method = 'POST';
+			if ($widget->method == null) $widget->method = 'post';
 		}
 
 		// Add it to the list
@@ -180,7 +181,7 @@ class Widget
 	/**
 	 * @param string $identifier An identifier for this widget. Should give a meaningful
 	 * name for the purpose of this widget.
-	 * @param boolean $unique is $identifier unique? In other words, will this widget
+	 * @param boolean $unique is <var>$identifier</var> unique? In other words, will this widget
 	 * be the only one with the given identifier on a given page?
 	 *
 	 * <b>Note:</b> While this identification scheme, incidentally, is quite similar to
@@ -209,7 +210,7 @@ class Widget
 	function toHTML() 
 	{
 		/* we should never get this high, return a warning */
-		return "Warning: toHTML() has been called on an object that " . "does not provide it. Please report this as a bug.";
+		return "Warning: toHTML() has been called on an object that does not provide it. Please report this as a bug.";
 	}
 }
 
@@ -275,12 +276,16 @@ class AutoRead extends WidgetList
 {
 	/* a number designating the "priority" level */
 	public $priority;
+	/* a Hyperlink to set this autoread as current */
+	public $link;
+
 	// $contents contains PlanLinks
-	function __construct($p) 
+	function __construct($p, $url) 
 	{
 		parent::__construct("autoreadlev$p", true, "Level $p");
 		$this->priority = $p;
 		$this->contents = array();
+		$this->link = new Hyperlink('set_' . $this->identifier, true, $url, $this->title);
 	}
 }
 /**
@@ -346,10 +351,18 @@ class Form extends WidgetGroup
 
 	public function toHTML($callback = null) 
 	{
-		$str = '<form method="' . $this->method . '" action="' . $this->action . '">';
-		$str.= parent::toHTML($callback);
-		$str.= "\n</form>";
+		$str = '<form method="' . strtolower($this->method) . '" action="' . $this->action . "\"$this->html_attributes>";
+		$str .= "<div>\n";
+		$str .= parent::toHTML($callback);
+		$str .= "\n</div></form>";
 		return $str;
+	}
+
+	public function append($item) {
+		if ($item instanceof FormItem) {
+			$item->parent_form = $this;
+		}
+		parent::append($item);
 	}
 }
 /**
@@ -374,12 +387,13 @@ class FormItem extends Widget
 	}
 	/**
 	 * Warning: this method ignores the title and description attributes entirely
+	 * @todo Should this exist?
 	 */
 	public function toHTML() 
 	{
 		$str = "<input type=\"$this->type\"";
 		if ($this->name) $str.= " name=\"$this->name\"";
-		$str.= " value=\"$this->value\">";
+		$str.= " value=\"$this->value\"$this->html_attributes>";
 
 		return $str;
 	}
@@ -394,7 +408,7 @@ class SubmitInput extends FormItem {
 	{
 		$str = '<input type="submit" value="';
 		$str .= $this->value;
-		$str.= '">';
+		$str.= "\"$this->html_attributes/>";
 		return $str;
 	}
 }
@@ -403,7 +417,7 @@ class HiddenInput extends FormItem {
 	{
 		$str = '<input type="hidden"';
 		if ($this->name) $str.= " name=\"$this->name\"";
-		$str.= " value=\"$this->value\">";
+		$str.= " value=\"$this->value\"$this->html_attributes/>";
 		return $str;
 	}
 }
@@ -413,7 +427,7 @@ class RadioInput extends FormItem {
 
 	public function toHTML() 
 	{
-		$str = "<input type=\"radio\" name=\"$this->name\"" . "value=\"$this->value\"" . (($this->checked) ? ' checked' : '') . ">";
+		$str = "<input type=\"radio\" name=\"$this->name\" value=\"$this->value\"" . (($this->checked) ? ' checked="checked"' : '') . "$this->html_attributes/>";
 		return $str;
 	}
 }
@@ -423,7 +437,7 @@ class CheckboxInput extends FormItem {
 
 	public function toHTML() 
 	{
-		$str = "<input type=\"checkbox\" name=\"$this->name\"" . "value=\"$this->value\"" . (($this->checked) ? ' checked' : '') . ">";
+		$str = "<input type=\"checkbox\" name=\"$this->name\" value=\"$this->value\"" . (($this->checked) ? ' checked' : '') . "$this->html_attributes/>";
 		return $str;
 	}
 }
@@ -431,7 +445,7 @@ class TextInput extends FormItem {
 	public function toHTML() 
 	{
 		$rowstr = ($this->rows ? 'size="'.$this->rows.'"' : '');
-		return "<input type=\"$this->type\" name=\"$this->name\" value=\"$this->value\" $rowstr>";
+		return "<input type=\"text\" name=\"$this->name\" value=\"$this->value\" $rowstr$this->html_attributes/>";
 	}
 }
 class PasswordInput extends FormItem {
@@ -441,7 +455,7 @@ class PasswordInput extends FormItem {
 	}
 	public function toHTML() 
 	{
-		return "<input type=\"password\" name=\"$this->name\">";
+		return "<input type=\"password\" name=\"$this->name\"$this->html_attributes/>";
 	}
 }
 class TextareaInput extends FormItem {
@@ -456,7 +470,7 @@ class TextareaInput extends FormItem {
 	}
 	public function toHTML() 
 	{
-		return "<textarea name=\"$this->name\" rows=\"$this->rows\" cols=\"$this->cols\">" . $this->value . '</textarea>';
+		return "<textarea name=\"$this->name\" rows=\"$this->rows\" cols=\"$this->cols\"$this->html_attributes>" . $this->value . '</textarea>';
 	}
 }
 
@@ -542,6 +556,9 @@ class InfoText extends Text
 {
 	public function __construct($_message, $title='') 
 	{
+		if (!$title) {
+			$title = 'Info';
+		}
 		parent::__construct('infomessage', $title);
 		$this->message = $_message;
 	}

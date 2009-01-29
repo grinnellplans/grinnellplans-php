@@ -61,9 +61,9 @@ if (!User::logged_in()) {
 	$arlist = get_items($dbh, "interest,priority", "autofinger", "owner", $idcookie); //get their autoread info
 	//display those usernames
 	$j = 0;
+	$buttonlist = new WidgetList('autoreadbuttonlist', false);
 	while ($arraylist[$j][0]) //do while there are names to display
 	{
-		$buttonlist = new WidgetGroup('autoreadbuttonlist', false);
 		if ($arraylist[$j][0] != $idcookie) //don't display name if the name is the user's name
 		{
 			$mypriority[0] = "";
@@ -76,7 +76,7 @@ if (!User::logged_in()) {
 			else {
 				$mypriority[0] = " checked";
 			}
-			$buttons = new WidgetGroup('autoreadbuttons', false);
+			$buttons = new FormItemSet('autoreadbuttons', false);
 			for ($a = 0; $a < 4; $a++) {
 				$item = new RadioInput($arraylist[$j][0], $a);
 				$item->checked = (" checked" == $mypriority[$a]);
@@ -85,14 +85,13 @@ if (!User::logged_in()) {
 				//$listform->appendField($item);
 				$buttons->append($item);
 			}
-			$letter = new RegularText($arraylist[$j][1], 'username');
-			$buttons->append($letter);
+			$buttons->title = $arraylist[$j][1];
 
 			$buttonlist->append($buttons);
 		}
-		$listform->append($buttonlist);
 		$j++;
 	}
+	$listform->append($buttonlist);
 	//pass on other info
 	$item = new HiddenInput('set_autoreadlist', $idcookie);
 	$listform->append($item);

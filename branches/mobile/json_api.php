@@ -45,7 +45,8 @@ $log = new ErrorConsoleLogger();
 if (isset($_GET['task'])) {
   $task = strtolower($_GET['task']);
   $dbh=db_connect();
-  
+  $mydbh=db_connect();
+
   $response = array("message" => "", "success" => false);
   
   /*
@@ -74,7 +75,7 @@ if (isset($_GET['task'])) {
   else if ($task == 'autofingerlist'){
     //This task requires login first
     if (User::logged_in()) {
-			$response['autofingerList'] = getAutofingerList($dbh, $idcookie);
+			$response['autofingerList'] = getAutofingerList($dbh, User::id());
 			$response['success'] = true;
     }
     else {
@@ -153,7 +154,8 @@ function doReadTask() {
     }
     else {
       $idcookie = User::id();
-    
+    	$mydbh = db_connect();
+	$dbh = $mydbh;
     	$searchnum = get_item($mydbh,"userid","accounts","username",$searchname);
   	
     	$my_result = mysql_query("Select priority From autofinger where
@@ -202,7 +204,7 @@ function doReadTask() {
   		$planinfo[0][4] = stripslashes($planinfo[0][4]);
   		
   		if ($limit_size) { //they requested a partial plan
-  		  $width = mb_strwidth($planinfo[0][4]); //we're preparing for multi byte characters
+  		  $width = strlen($planinfo[0][4]); //we're preparing for multi byte characters
   		  if ($width > $MAX_PLAN_LEN) {
   		    $width_remaining = $width - $MAX_PLAN_LEN;
   		    if ($width_remaining > $WIGGLE_PLAN_LEN) {
@@ -218,7 +220,7 @@ function doReadTask() {
   		    $response_info['partial'] = false;
 		      $response_info['plan'] =$planinfo[0][4];
   		  }
-  		  $log->addToLog("PLAN WIDTH: ". mb_strwidth($planinfo[0][4]) );
+  		  $log->addToLog("PLAN WIDTH: ". strlen($planinfo[0][4]) );
   		}
   		else if ($partial) { //they requested only the last part of the plan
   		  $response_info['remainingplan'] = mb_substr($planinfo[0][4], $MAX_PLAN_LEN);

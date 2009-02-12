@@ -4,7 +4,7 @@ require ("functions-main.php");
 ?>
 <?php display_header(); ?>
 <?php 
-$mytime = (isset($_GET['mytime']) ? $_GET['mytime'] : 12);
+$mytime = (isset($_POST['mytime']) ? $_POST['mytime'] : 12);
 
 if (!($mytime > 0 and $mytime < 100)) {
 	$mytime = 12;
@@ -13,8 +13,7 @@ if (!($mytime > 0 and $mytime < 100)) {
 
 ?>
 <form action="planwatch.php" method="POST">
-<input type="text" name="mytime" value="<?=$mytime?>">
-<input type="submit" value="See Plans">
+See plans that were changed in the past <input type="text" name="mytime" value="<?=$mytime?>"> hours. <input type="submit" value="Do it.">
 </form>
 <?php
 if (User::logged_in()) {

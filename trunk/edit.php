@@ -44,7 +44,7 @@ if (!User::logged_in()) {
 		<input type="hidden" name="part" value="1">
 		<img src="img/left.gif" width="2" height="16"><img id="filled" src="img/filled.gif" width="0" height="16">
 		<img id="unfilled" src="img/unfilled.gif" width="100" height="16">
-		<img src="right.gif" width="2" height="16"> 
+		<img src="img/right.gif" width="2" height="16"> 
 		<input type="text" name="perc" value="0%" size="4" style="border: 0px" readonly>&nbsp;&nbsp;&nbsp;
 		<input type="submit" value="Change Plan"></form>
 <?php

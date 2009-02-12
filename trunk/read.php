@@ -88,7 +88,6 @@ if (User::logged_in()) {
 		update_read($dbh, $idcookie, $searchnum); //mark as having been read
 		setReadTime($dbh, $idcookie, $searchnum); //and mark time that was read
 		$myonlist = $onlist[0];
-		
 	} else {
 		$myonlist = "X";	 //if not on autoread list, show is not on priority list
 	}
@@ -146,17 +145,19 @@ if (User::logged_in()) //if is a valid user, give them the option of putting the
 ?>
 			<BR><BR><BR><BR><BR><center><table><tr><td><p class="sub2"><form method="POST" action="readadd.php">
 			<input type="hidden" name="addtolist" value="1">
-<?php foreach(array('X', '1', '2', '3') as $value) {
-	$real_value = ($value == 'X' ? 0 : $value);
-	$checked = ($value == $myonlist ? "checked" : "");
+<?php $allopts = array('X', '1', '2', '3');
+ foreach ($allopts as $value) {
+	$real_value = (($value == 'X') ? 0 : $value);
+	$checked = (($value == $myonlist) ? "checked" : "");
 	echo '<input type="radio" name="privlevel" value="$real_value" $checked>$value</input>';
+}
 ?>
 			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 		<input type="hidden" name="searchnum" value="<?php
 		echo $searchnum; ?>"><input
 			type="submit" value="Set Priority">&nbsp;&nbsp;
 		</form></p></td></tr></table></center>
-			<?php
+<?php
 	}
 	mdisp_end($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], get_myprivl());
 } else {

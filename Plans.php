@@ -24,8 +24,20 @@ if ((strstr($_SERVER['REQUEST_URI'], '/dev/') != FALSE) ||
 }
 
 // Plans Revision
-$__svn_revision = '$Rev$';
-define('PLANS_REVISION', intval(substr(substr($__svn_revision, 6), 0, -2)));
+if (file_exists(APP . '.svn' . DS . 'entries')) {
+    $svn = file(APP . '.svn' . DS . 'entries');
+    if (is_numeric(trim($svn[3]))) {
+        $version = $svn[3];
+    } else { // pre 1.4 svn used xml for this file
+        $version = explode('"', $svn[4]);
+        $version = $version[1];    
+    }
+    define ('PLANS_REVISION', trim($version));
+    unset ($svn);
+    unset ($version);
+} else {
+    define ('PLANS_REVISION', 0); // default if no svn data avilable
+}
 
 // Boilerplate code for _all_ Plans scripts
 define('__ROOT__', dirname(__FILE__));

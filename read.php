@@ -148,7 +148,7 @@ if (User::logged_in()) //if is a valid user, give them the option of putting the
 <?php $allopts = array('X', '1', '2', '3');
  foreach ($allopts as $value) {
 	$real_value = (($value == 'X') ? 0 : $value);
-	$checked = (($value == $myonlist) ? "checked" : "");
+	$checked = (($value == $myonlist) ? "checked='checked'" : "");
 	echo "<input type=\"radio\" name=\"privlevel\" value=\"$real_value\" $checked>$value</input>";
 }
 ?>

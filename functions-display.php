@@ -57,10 +57,10 @@ function gdisp_begin($dbh)
 	if (!$myprivl == 2 or !$myprivl == 3) {
 		$myprivl = 1;
 	}
-	if ($username) {
+	if (isset($username)) {
 		$title = "$username's Plan";
 	} else {
-		$title = "Plans - Beta";
+		$title = "Plans";
 	}
 ?>
 	<html>
@@ -104,7 +104,7 @@ function gdisp_begin($dbh)
 		<table width="100%" border="0" cellspacing="0" cellpadding="0">
 		<tr>
 		<td valign="top" align="left">
-		<img src="plans2.jpg">
+		<img src="img/logo.jpg">
 		<Form action="read.php" method="post">
 		<input name="searchname" type="text"><br>
 		<input type="hidden" name="myprivl" value="<?php
@@ -134,6 +134,7 @@ function gdisp_begin($dbh)
 		</tr>
 		</table>
 		</td>
+
 		<td>
 
 

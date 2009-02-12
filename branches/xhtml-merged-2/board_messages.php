@@ -130,6 +130,7 @@ else
 
 
 	<?php
+	$messagenum = (isset($_GET['messagenum']) ? $_GET['messagenum'] : 0);
 	if ($messagenum > 0) {
 		$messagevals = get_items($dbh, "threadid, created", "subboard", "messageid", $messagenum);
 		$threadid = $messagevals[0][0];
@@ -138,12 +139,13 @@ else
 			mdisp_end($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], get_myprivl()); //gets user display
 			stop();
 		}
-		$my_result = mysql_query("Select COUNT(*) From subboard WHERE created >= \"" . $messagevals[0][1] . "\" and threadid=\"" . $threadid . "\"");
+		$my_result = mysql_query("Select COUNT(*) From subboard WHERE userid != 0 AND created >= \"" . $messagevals[0][1] . "\" and threadid=\"" . $threadid . "\"");
 		$pagefind = mysql_fetch_row($my_result);
 		$pagenumber = floor($pagefind[0] / NOTES_MSGS_PER_PAGE);
 	}
-	$my_result = mysql_query("Select COUNT(*) From subboard WHERE threadid=\"" . $threadid . "\"");
+	$my_result = mysql_query("Select COUNT(*) From subboard WHERE userid != 0 AND threadid=\"" . $threadid . "\"");
 	$totalmessages = mysql_fetch_row($my_result);
+	$pagenumber = (isset($_GET['pagenumber']) ? $_GET['pagenumber'] : 0);
 	if (!($pagenumber > 0)) {
 		$pagenumber = 0;
 	}
@@ -211,7 +213,8 @@ else
                 vts.messageid = subboard.messageid
                 left join (select messageid, vote from boardvotes where userid = " . $idcookie . ") as mv
                      on mv.messageid = subboard.messageid
-                where subboard.threadid = " . $threadid . " 
+                where subboard.threadid = " . $threadid . "
+		AND userid != 0 
                 ORDER BY subboard.messageid DESC 
                 LIMIT " . $rowoffset . "," . NOTES_MSGS_PER_PAGE;
 	$my_result = mysql_query($query);

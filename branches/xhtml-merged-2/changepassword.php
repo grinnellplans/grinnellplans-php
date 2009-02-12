@@ -12,8 +12,8 @@ if (!User::logged_in()) {
 } else {
 	populate_page($thispage, $dbh, $idcookie);
 
-	$real_pass = get_item($mydbh, "guest_password", "accounts", "userid", $idcookie);
-	$username = get_item($mydbh, "username", "accounts", "userid", $idcookie);
+	$real_pass = get_item($dbh, "guest_password", "accounts", "userid", $idcookie);
+	$username = get_item($dbh, "username", "accounts", "userid", $idcookie);
 	if ($changed && ($checknumb != $idcookie)) {
 		$denied = new AlertText('Checknumbers do not match.', 'Error', true);
 		$thispage->append($denied);
@@ -47,7 +47,7 @@ if (!User::logged_in()) {
 	}
 	if ($changed == 'guest_pass') {
 		$guest_password = $_POST['guest_password'];
-		set_item($mydbh, "accounts", "guest_password", $guest_password, "userid", $idcookie);
+		set_item($dbh, "accounts", "guest_password", $guest_password, "userid", $idcookie);
 		$real_pass = $guest_password;
 	}
 

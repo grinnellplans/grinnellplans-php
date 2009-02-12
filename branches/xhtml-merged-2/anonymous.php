@@ -41,7 +41,7 @@ $submitform->append($submit);
 
 $page->append($submitform);
 
-if ($_POST['secret_submitted']) {
+if (isset($_POST['secret_submitted'])) {
 	$secret = $_POST['secret'];
 	$secret = cleanText($secret);
 	$sql = "insert into secrets(secret_text, date, display) values (substring('$secret',1,4000), now(), 'no')";
@@ -49,13 +49,13 @@ if ($_POST['secret_submitted']) {
 }
 if (User::logged_in()) {
 	$count = 100;
-	$offset = $_GET['offset'];
+	$offset = (isset($_GET['offset']) ? $_GET['offset'] : 0);
 	if (!is_numeric($offset)) {
 		$offset = 0;
 	}
 	$link = new Hyperlink('older_secrets', true, 'anonymous.php?offset=' . ($offset + $count), 'Older Secrets');
 	$page->append($link);
-	if ($_SERVER['REMOTE_ADDR'] == '70.12.157.227' || $_GET['show_all']) {
+	if (isset($_GET['show_all'])) {
 		$select_query = "select * from secrets order by date desc limit $offset, $count";
 	} else {
 		$select_query = "select * from secrets where display = 'yes' or display = 'pref'  order by date desc limit $offset, $count";

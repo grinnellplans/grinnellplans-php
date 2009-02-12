@@ -6,7 +6,7 @@ setpriv - This function sets priviledge level
 */
 function setpriv($myprivl, $cookpriv)
 {
-	$_SESSION['lvl'] = $myprivl;
+	$_SESSION['glbs_lvl'] = $myprivl;
 }
 //////////
 /*

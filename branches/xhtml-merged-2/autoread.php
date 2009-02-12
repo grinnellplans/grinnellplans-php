@@ -16,7 +16,7 @@ if (!User::logged_in()) {
 	populate_page($thispage, $dbh, $idcookie);
 	$arlist = get_items($dbh, "interest,priority", "autofinger", "owner", $idcookie); //get their autoread info
 	$o = 0;
-	while ($arlist[$o][0]) {
+	while (isset($arlist[$o][0])) {
 		$autolist[$arlist[$o][0]][0] = 1;
 		//set up an array with the first index value being the id number of the
 		// plan the person is interested in, the second index number being 0, and
@@ -26,9 +26,9 @@ if (!User::logged_in()) {
 		$o++;
 	}
 	//////////////////////////////////////////////////////////////////
-	$letternum = $_GET['letternum'];
 	//check to make sure is a valid number
-	if (!(97 < $letternum) |!($letternum < 123)) {
+	$letternum = (isset($_GET['letternum']) ? $_GET['letternum'] : 0);
+	if (!(97 < $letternum) | !($letternum < 123)) {
 		$letternum = 97;
 	} //if not, set to a
 	$letternum = round($letternum); // round in case decimal exists from user messing around
@@ -62,7 +62,7 @@ if (!User::logged_in()) {
 	//display those usernames
 	$j = 0;
 	$buttonlist = new WidgetList('autoreadbuttonlist', false);
-	while ($arraylist[$j][0]) //do while there are names to display
+	while (isset($arraylist[$j][0])) //do while there are names to display
 	{
 		if ($arraylist[$j][0] != $idcookie) //don't display name if the name is the user's name
 		{
@@ -70,7 +70,7 @@ if (!User::logged_in()) {
 			$mypriority[1] = "";
 			$mypriority[2] = "";
 			$mypriority[3] = "";
-			if ($autolist[$arraylist[$j][0]][0] == 1) {
+			if (isset($autolist[$arraylist[$j][0]][0]) && ($autolist[$arraylist[$j][0]][0] == 1)) {
 				$mypriority[$autolist[$arraylist[$j][0]][1]] = " checked";
 			} //if the current name is on the person's autoread list, set the array so that the value attributed with the index number of the priority level will be the string "checked" to show what is currently set.
 			else {

@@ -22,8 +22,8 @@ function display_footer() {
 }
 
 function get_myprivl() {
-	if (isset($_SESSION['session_lvl'])) {
-		return $_SESSION['session_lvl'];
+	if (isset($_SESSION['glbs_lvl'])) {
+		return $_SESSION['glbs_lvl'];
 	} else {
 		return 1;
 	}

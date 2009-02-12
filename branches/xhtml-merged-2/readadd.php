@@ -24,7 +24,7 @@ if (!$searchnum) //if no search number given
 {
 	if (isvaliduser($dbh, $searchname)) //if valid username, change to num
 	{
-		$searchnum = get_item($mydbh, "userid", "accounts", "username", $searchname);
+		$searchnum = get_item($dbh, "userid", "accounts", "username", $searchname);
 	} else
 	//if is not a valid username
 	{

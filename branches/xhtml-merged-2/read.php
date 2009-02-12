@@ -82,17 +82,15 @@ if (User::logged_in()) {
 	if ($onlist) {
 		update_read($dbh, $idcookie, $searchnum); //mark as having been read
 		setReadTime($dbh, $idcookie, $searchnum); //and mark time that was read
-		$myonlist[$onlist[0]] = "checked"; //show which priority person is
-		
+		$myonlist = $onlist[0];
 	} else {
-		$myonlist[0] = "checked"; //if not on autoread list, show is not on priority list
-		
+		$myonlist = "X";	 //if not on autoread list, show is not on priority list
 	}
 }
 //TODO should this go inside if(!$auth) ?
 $guest_auth = false;
 if ($guest_pass = $_GET['guest-pass']) {
-	$real_pass = get_item($mydbh, "guest_password", "accounts", "userid", $searchnum);
+	$real_pass = get_item($dbh, "guest_password", "accounts", "userid", $searchnum);
 	//error_log("JLW real pass is $real_pass");
 	if ($real_pass == '') {
 		$guest_auth = false;

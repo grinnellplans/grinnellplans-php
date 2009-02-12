@@ -29,6 +29,22 @@ require_once('Configuration.php');
 ini_set('include_path', '.:' . __ROOT__ . ':' . __ROOT__ . '/inc');
 putenv('TZ=' . TZ);
 
+// Plans Revision
+if (file_exists(__ROOT__ . '/.svn/entries')) {
+    $svn = file(__ROOT__ . '/.svn/entries');
+    if (is_numeric(trim($svn[3]))) {
+        $version = $svn[3];
+    } else { // pre 1.4 svn used xml for this file
+        $version = explode('"', $svn[4]);
+        $version = $version[1];    
+    }
+    define ('PLANS_REVISION', trim($version));
+    unset ($svn);
+    unset ($version);
+} else {
+    define ('PLANS_REVISION', 0); // default if no svn data avilable
+}
+
 // Doctrine setup
 require_once('lib/doctrine/lib/Doctrine.php');
 spl_autoload_register(array('Doctrine', 'autoload'));

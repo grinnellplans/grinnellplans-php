@@ -13,6 +13,8 @@ if (!User::logged_in())
 }
 
 $mytime = $_POST['mytime'];
+$mytime = (isset($_POST['mytime']) ? $_POST['mytime'] : 12);
+
 if (!($mytime > 0 and $mytime < 100)) {
 	$mytime = 12;
 } //if time is out of acceptable period, set to 12

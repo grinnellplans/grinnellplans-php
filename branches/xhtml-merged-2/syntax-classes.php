@@ -1,8 +1,6 @@
 <?php
 /**
 *
-* @package Interfaces
-*
 * Object-Oriented stuff for Plans!
 * Defines a set of objects that are constructed by pages and then passed
 * to the interface, where they are turned into HTML or whatever else.
@@ -10,6 +8,8 @@
 * Note: Some of the objects implement a toHTML() method.  This is for
 * convenience only, and interfaces are by no means required to make use
 * of these methods.
+*
+* @package Interfaces
 */
 
 /**
@@ -158,7 +158,7 @@ class Footer
  * General-purpose class for things found within a PlansPage.
  * Should not actually be used, just exists to be extended by other classes.
  */
-class Widget
+abstract class Widget
 {
 	/**
 	 * A unique identifier for this item
@@ -188,7 +188,7 @@ class Widget
 	 * the id and class properties in HTML, don't assume that this is the only way they
 	 * may be used.
 	 */
-	function __construct($identifier, $unique) 
+	public function __construct($identifier, $unique) 
 	{
 		if ($unique) {
 			$this->identifier = $identifier;
@@ -207,11 +207,7 @@ class Widget
 	 *
 	 * @return string the HTML result
 	 */
-	function toHTML() 
-	{
-		/* we should never get this high, return a warning */
-		return "Warning: toHTML() has been called on an object that does not provide it. Please report this as a bug.";
-	}
+	abstract public function toHTML();
 }
 
 /**

@@ -232,7 +232,7 @@ function show_opt_links($idcookie, $buf)
             <?php
 		} else if ($new_row[0] == 'Jumble') {
 			$url = $_SERVER['REQUEST_URI'];
-			if ($_GET['jumbled'] == 'yes' || ($_COOKIE['jumbled'] == 'yes' && $_GET['jumbled'] != 'no')) {
+			if (isset($_GET['jumbled']) && ($_GET['jumbled'] == 'yes' || ($_COOKIE['jumbled'] == 'yes' && $_GET['jumbled'] != 'no'))) {
 				$url = add_param($url, 'jumbled', 'no');
 				$linktext = 'unjumble';
 			} else {

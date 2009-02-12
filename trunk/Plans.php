@@ -30,8 +30,8 @@ ini_set('include_path', '.:' . __ROOT__ . ':' . __ROOT__ . '/inc');
 putenv('TZ=' . TZ);
 
 // Plans Revision
-if (file_exists(__ROOT__ . '.svn/entries')) {
-    $svn = file(__ROOT__ . '.svn/entries');
+if (file_exists(__ROOT__ . '/.svn/entries')) {
+    $svn = file(__ROOT__ . '/.svn/entries');
     if (is_numeric(trim($svn[3]))) {
         $version = $svn[3];
     } else { // pre 1.4 svn used xml for this file

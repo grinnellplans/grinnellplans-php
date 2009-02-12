@@ -20,7 +20,7 @@ class User {
 	
 	public static function get() {
 		if (logged_in()) {
-			return Doctrine::getTable('Accounts')->find($_SESSION['userid']);			
+			return Doctrine::getTable('Accounts')->find($_SESSION['glbs_i']);			
 		} else {
 			throw new Exception('dunno');
 		}

@@ -35,8 +35,8 @@ function mdisp_begin($dbh, $idcookie, $myurl, $myprivl, $jsfile = NULL)
 	}
 	disp_begin($dbh, $idcookie, $myurl, $myprivl, $mycss, $jsfile);
 
-	if (isset($_SESSION['b'])) {
-		$b = (int)$_SESSION['b'];
+	if (isset($_SESSION['glbs_b'])) {
+		$b = (int)$_SESSION['glbs_b'];
 		if (file_exists("buckets/$b.php")) {
 			include ("buckets/$b.php");
 		} else {

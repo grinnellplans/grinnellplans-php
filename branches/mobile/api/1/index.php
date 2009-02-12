@@ -113,6 +113,8 @@ if (isset($_GET['task'])) {
   print json_encode($response);
   $log->addToLog("RETURN: ". print_r($response,true));
   
+} else {
+	echo "This JSON API is _very_ unstable and undocumented. Take a look at the source code though."
 } //end of controller, everything else should be a function
 
 if ($debug === true) {

@@ -4,6 +4,8 @@ require ("functions-main.php");
 ?>
 <?php display_header(); ?>
 <?php 
+$mytime = (isset($_GET['mytime']) ? $_GET['mytime'] : 12);
+
 if (!($mytime > 0 and $mytime < 100)) {
 	$mytime = 12;
 } //if time is out of acceptable period, set to 12

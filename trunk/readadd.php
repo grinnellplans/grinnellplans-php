@@ -10,7 +10,7 @@ if (!$searchnum) //if no search number given
 {
 	if (isvaliduser($dbh, $searchname)) //if valid username, change to number
 	{
-		$searchnum = get_item($mydbh, "userid", "accounts", "username", $searchname);
+		$searchnum = get_item($dbh, "userid", "accounts", "username", $searchname);
 	} else {
 		if ($searchname) //if there is no user number given, but there is a name, but not an exact one of a user, try to search for similar ones
 		{
@@ -80,7 +80,7 @@ else {
 	gdisp_begin($dbh);
 } //begin guest user display
 //get plan data or complain if not possible for whatever reason
-if (!$planinfo = get_items($mydbh, "username,pseudo,DATE_FORMAT(login,
+if (!$planinfo = get_items($dbh, "username,pseudo,DATE_FORMAT(login,
 '%a %M %D, %l:%i %p'),DATE_FORMAT(changed,
 '%a %M %D, %l:%i %p'),plan", "accounts", "userid", $searchnum)) {
 	echo "Could not retrieve plan.";

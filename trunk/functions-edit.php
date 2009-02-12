@@ -54,12 +54,13 @@ function cleanText($plan)
 		if (!$checked[$mycheck]) //make sure current thing being checked has not already been checked
 		{
 			//check for plan with username
-			if ($item = get_item($mydbh, "username", "accounts", "username", $mycheck)) //see if is a valid user, if so also gets username
+			$dbh = db_connect();
+			if ($item = get_item($dbh, "username", "accounts", "username", $mycheck)) //see if is a valid user, if so also gets username
 			{
 				$plan = preg_replace("/\[$mycheck\]/s", "[<a href=\"read.php?searchname=$item\" class=\"planlove\">$mycheck</a>]", $plan); //change all occurences of person on plan
 				
 			} else {
-				if (preg_match('/^\d+$/', $mycheck) && $item = get_item($mydbh, "messageid", "subboard", "messageid", $mycheck)) {
+				if (preg_match('/^\d+$/', $mycheck) && $item = get_item($dbh, "messageid", "subboard", "messageid", $mycheck)) {
 					$plan = preg_replace("/\[" . preg_quote($mycheck, "/") . "\]/s", "[<a href=\"board_messages.php?messagenum=$item#$item\" class=\"boardlink\">$mycheck</a>]", $plan);
 				}
 				if ($mycheck == "dnew") {

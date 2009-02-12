@@ -98,7 +98,7 @@ if (User::logged_in()) {
 $guest_auth = false;
 $guest_pass = (isset($_GET['guest-pass']) ? $_GET['guest-pass'] : false);
 if ($guest_pass) {
-	$real_pass = get_item($mydbh, "guest_password", "accounts", "userid", $searchnum);
+	$real_pass = get_item($dbh, "guest_password", "accounts", "userid", $searchnum);
 	//error_log("JLW real pass is $real_pass");
 	if ($real_pass == '') {
 		$guest_auth = false;

@@ -51,7 +51,7 @@ function cleanText($plan)
 		//echo '<!-- ' ."/\[$mycheck\]/s" . ' -->' . "\n";
 		$jlw = preg_replace("/\//", '\/', $mycheck);
 		//echo '<!-- ' ."/\[$jlw\]/s" . ' -->' . "\n";
-		if (!$checked[$mycheck]) //make sure current thing being checked has not already been checked
+		if (!isset($checked[$mycheck])) //make sure current thing being checked has not already been checked
 		{
 			//check for plan with username
 			$dbh = db_connect();

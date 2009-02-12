@@ -164,7 +164,6 @@ if (User::logged_in()) //if is a valid user, give them the option of putting the
 	gdisp_end();
 }
 db_disconnect($dbh);
-echo "<!-- $username -->";
 function basicSearch($idcookie, $dbh, $_auth, $context, $mysearch)
 {
 	if (strlen($mysearch) < 3) {

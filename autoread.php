@@ -26,6 +26,7 @@ if (!User::logged_in()) {
 	}
 	//////////////////////////////////////////////////////////////////
 	//check to make sure is a valid number
+	$letternum = (isset($_GET['letternum']) ? $_GET['letternum'] : 0);
 	if (!(97 < $letternum) | !($letternum < 123)) {
 		$letternum = 97;
 	} //if not, set to a
@@ -61,7 +62,7 @@ if (!User::logged_in()) {
 			$mypriority[1] = "";
 			$mypriority[2] = "";
 			$mypriority[3] = "";
-			if ($autolist[$arraylist[$j][0]][0] == 1) {
+			if (isset($autolist[$arraylist[$j][0]][0]) && ($autolist[$arraylist[$j][0]][0] == 1)) {
 				$mypriority[$autolist[$arraylist[$j][0]][1]] = " checked";
 			} //if the current name is on the person's autoread list, set the array so that the value attributed with the index number of the priority level will be the string "checked" to show what is currently set.
 			else {

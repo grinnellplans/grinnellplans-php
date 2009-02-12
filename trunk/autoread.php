@@ -15,7 +15,7 @@ if (!User::logged_in()) {
 <?php
 	$arlist = get_items($dbh, "interest,priority", "autofinger", "owner", $idcookie); //get their autoread info
 	$o = 0;
-	while ($arlist[$o][0]) {
+	while (isset($arlist[$o][0])) {
 		$autolist[$arlist[$o][0]][0] = 1;
 		//set up an array with the first index value being the id number of the
 		// plan the person is interested in, the second index number being 0, and
@@ -50,7 +50,7 @@ if (!User::logged_in()) {
 	$arraylist = get_letters($dbh, chr($current_letter), chr($current_letter + 1), $idcookie); //get usernames that start with that letter
 	//display those usernames
 	$j = 0;
-	while ($arraylist[$j][0]) //do while there are names to display
+	while (isset($arraylist[$j][0])) //do while there are names to display
 	{
 		if ($arraylist[$j][0] == $idcookie) //don't display name if the name is the user's name
 		{

@@ -14,6 +14,7 @@ if (!User::logged_in()) {
 	$my_result = mysql_query("Select COUNT(*) From mainboard");
 	$totalthreads = mysql_fetch_row($my_result);
 	$max_page = ceil($totalthreads[0] / NOTES_THREADS_PER_PAGE) - 1;
+	$pagenumber = (isset($_GET['pagenumber']) ? $_GET['pagenumber'] : 0);
 	if (!($pagenumber > 0)) {
 		$pagenumber = 0;
 	}

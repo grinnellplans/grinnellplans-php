@@ -56,6 +56,7 @@ function get_item($dbh, $get_column, $table, $search_column, $search_item)
 */
 function get_items($dbh, $get_column, $table, $search_column, $search_item)
 {
+	$all = array();
 	$search_item = addslashes($search_item);
 	$my_result = mysql_query("Select $get_column From $table where
 	$search_column = '$search_item'");
@@ -111,6 +112,7 @@ function create_table($dbh, $table_name, $items)
 */
 function partial_search($dbh, $get_column, $table, $search_column, $search_item, $orderby)
 {
+	$all = array();
 	$search_item = addslashes($search_item);
 	$my_result = mysql_query("Select $get_column From $table where
 							$search_column RLIKE '$search_item' ORDER by $orderby");

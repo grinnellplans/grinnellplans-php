@@ -9,8 +9,8 @@ if (!User::logged_in()) {
 	gdisp_end();
 } else {
 	mdisp_begin($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], get_myprivl()); //begin valid user display
-	$real_pass = get_item($mydbh, "guest_password", "accounts", "userid", $idcookie);
-	$username = get_item($mydbh, "username", "accounts", "userid", $idcookie);
+	$real_pass = get_item($dbh, "guest_password", "accounts", "userid", $idcookie);
+	$username = get_item($dbh, "username", "accounts", "userid", $idcookie);
 	if ($changed && ($checknumb != $idcookie)) {
 		echo "Error: Checknumbers do not match.";
 		exit(0);
@@ -35,7 +35,7 @@ if (!User::logged_in()) {
 	}
 	if ($changed == 'guest_pass') {
 		$guest_password = $_POST['guest_password'];
-		set_item($mydbh, "accounts", "guest_password", $guest_password, "userid", $idcookie);
+		set_item($dbh, "accounts", "guest_password", $guest_password, "userid", $idcookie);
 		$real_pass = $guest_password;
 	}
 ?>

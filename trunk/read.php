@@ -87,11 +87,10 @@ if (User::logged_in()) {
 	if ($onlist) {
 		update_read($dbh, $idcookie, $searchnum); //mark as having been read
 		setReadTime($dbh, $idcookie, $searchnum); //and mark time that was read
-		$myonlist[$onlist[0]] = "checked"; //show which priority person is
+		$myonlist = $onlist[0];
 		
 	} else {
-		$myonlist[0] = "checked"; //if not on autoread list, show is not on priority list
-		
+		$myonlist = "X";	 //if not on autoread list, show is not on priority list
 	}
 	mdisp_begin($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], get_myprivl());
 } else {
@@ -130,7 +129,7 @@ else {
 		echo "<table><tr><td><p class=\"main4\">Name:</p></td><td><u>" . $planinfo[0][1] . "</u></td></tr></table>";
 		$planinfo[0][4] = stripslashes($planinfo[0][4]);
 		echo "<p class=\"sub\">";
-		if ($_GET['jumbled'] == 'yes' || ($_COOKIE['jumbled'] == 'yes' && $_GET['jumbled'] != 'no')) {
+		if (isset($_GET['jumbled']) && ($_GET['jumbled'] == 'yes' || ($_COOKIE['jumbled'] == 'yes' && $_GET['jumbled'] != 'no'))) {
 			echo (jumble($planinfo[0][4]));
 			//    $_SERVER['REQUEST_URI'] = add_param($_SERVER['REQUEST_URI'], 'jumbled', '1');
 			
@@ -147,14 +146,11 @@ if (User::logged_in()) //if is a valid user, give them the option of putting the
 ?>
 			<BR><BR><BR><BR><BR><center><table><tr><td><p class="sub2"><form method="POST" action="readadd.php">
 			<input type="hidden" name="addtolist" value="1">
-			<input type="radio" name="privlevel" value="0" <?php
-		echo $myonlist[0]; ?>>X
-			<input type="radio" name="privlevel" value="1" <?php
-		echo $myonlist[1]; ?>>1
-			<input type="radio" name="privlevel" value="2" <?php
-		echo $myonlist[2]; ?>>2
-			<input type="radio" name="privlevel" value="3" <?php
-		echo $myonlist[3]; ?>>3
+<?php foreach(array('X', '1', '2', '3') as $value) {
+	$real_value = ($value == 'X' ? 0 : $value);
+	$checked = ($value == $myonlist ? "checked" : "");
+	echo '<input type="radio" name="privlevel" value="$real_value" $checked>$value</input>';
+?>
 			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 		<input type="hidden" name="searchnum" value="<?php
 		echo $searchnum; ?>"><input

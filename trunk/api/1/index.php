@@ -1,7 +1,7 @@
 <?php
 header("content-type:text/plain");
 
-require_once('Plans.php');
+require_once('../../Plans.php');
 new SessionBroker();
 
 $debug = false; //set this to true to see messages in error_log

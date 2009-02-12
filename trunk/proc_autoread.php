@@ -19,7 +19,7 @@ if (!User::logged_in()) {
 	$arlist = get_items($dbh, "interest,priority", "autofinger", "owner", $idcookie); //get the contents of a person's autofinger list
 	$arraylist = get_letters($dbh, chr($letternum), chr($letternum + 1), $idcookie); //get usernames that start with that letter
 	$o = 0;
-	while ($arraylist[$o][0]) {
+	while (isset($arraylist[$o][0])) {
 		$alist[$arraylist[$o][0]][0] = 1; //Get user id numbers for everyone whose name starts with the letter, and make the idnumbers the first index number of a new array, set the second index number to 0, and set the value to boolean 1
 		$alist[$arraylist[$o][0]][1] = $arraylist[$o][1]; //if the second index number is 1, set the user's name as the value
 		$o++;

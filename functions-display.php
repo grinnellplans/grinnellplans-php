@@ -54,9 +54,11 @@ messed with the color balance, to make it a light blue
 */
 function gdisp_begin($dbh)
 {
+  $myprivl = 	$_SESSION['glbs_lvl'];
 	if (!$myprivl == 2 or !$myprivl == 3) {
 		$myprivl = 1;
 	}
+	$_SESSION['glbs_lvl'] = $myprivl;
 	if (isset($username)) {
 		$title = "$username's Plan";
 	} else {

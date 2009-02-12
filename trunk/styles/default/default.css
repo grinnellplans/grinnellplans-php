@@ -126,8 +126,7 @@ a.lev3:link {  text-decoration: none; color: #2EDFB4; font-variant:
 small-caps; background-color: #ffffff; font-family: times}
 
 /* Set visited links for sub-sub category */
-a.lev3:visited {  text-decoration: none; color: #2EDFB4; font variant:
-small-caps;
+a.lev3:visited {  text-decoration: none; color: #2EDFB4; font-variant: small-caps;
 font-weight: bold; background-color: #ffffff;font-family: times;}
 
 /* Set hover links for sub-sub category */

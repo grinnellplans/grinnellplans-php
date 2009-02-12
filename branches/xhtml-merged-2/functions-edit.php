@@ -6,8 +6,6 @@ require_once('Plans.php');
 */
 function setUpdatedTime($idcookie)
 {
-function setUpdatedTime($idcookie)
-{
         $t = timestamp();
         mysql_query("UPDATE accounts SET changed = $t WHERE userid = $idcookie");
 }

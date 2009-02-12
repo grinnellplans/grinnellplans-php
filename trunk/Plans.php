@@ -23,6 +23,10 @@ if ((strstr($_SERVER['REQUEST_URI'], '/dev/') != FALSE) ||
 	ini_set('track_errors', FALSE);
 }
 
+// Plans Revision
+$__svn_revision = '$Rev$';
+define('PLANS_REVISION', intval(substr(substr($__svn_revision, 6), 0, -2)));
+
 // Boilerplate code for _all_ Plans scripts
 define('__ROOT__', dirname(__FILE__));
 require_once('Configuration.php');

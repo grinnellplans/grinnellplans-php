@@ -8,6 +8,9 @@ if (!User::logged_in()) {
 	echo ("You are not allowed to edit as a guest."); //tell person they can't log in
 	gdisp_end();
 } 
+else if (User::id() == 0) {
+	User::logout();
+}
 else
 //elseallowed to edit
 {

@@ -1,6 +1,7 @@
 <?php
 // Set some settings only for when we're called through /beta/.
 if ((strstr($_SERVER['REQUEST_URI'], '/dev/') != FALSE) ||
+	($_SERVER['SERVER_NAME'] == 'dev.grinnellplans.com') ||
  	(strstr($_SERVER['SERVER_NAME'], 'localhost') != FALSE) ||
 	(strstr($_SERVER['REQUEST_URI'], '/trunk/') != FALSE)) {
 	// Error reporting for development

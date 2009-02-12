@@ -23,9 +23,15 @@ if ((strstr($_SERVER['REQUEST_URI'], '/dev/') != FALSE) ||
 	ini_set('track_errors', FALSE);
 }
 
+// Boilerplate code for _all_ Plans scripts
+define('__ROOT__', dirname(__FILE__));
+require_once('Configuration.php');
+ini_set('include_path', '.:' . __ROOT__ . ':' . __ROOT__ . '/inc');
+putenv('TZ=' . TZ);
+
 // Plans Revision
-if (file_exists(APP . '.svn' . DS . 'entries')) {
-    $svn = file(APP . '.svn' . DS . 'entries');
+if (file_exists(__ROOT__ . '.svn/entries')) {
+    $svn = file(__ROOT__ . '.svn/entries');
     if (is_numeric(trim($svn[3]))) {
         $version = $svn[3];
     } else { // pre 1.4 svn used xml for this file
@@ -38,12 +44,6 @@ if (file_exists(APP . '.svn' . DS . 'entries')) {
 } else {
     define ('PLANS_REVISION', 0); // default if no svn data avilable
 }
-
-// Boilerplate code for _all_ Plans scripts
-define('__ROOT__', dirname(__FILE__));
-require_once('Configuration.php');
-ini_set('include_path', '.:' . __ROOT__ . ':' . __ROOT__ . '/inc');
-putenv('TZ=' . TZ);
 
 // Doctrine setup
 require_once('lib/doctrine/lib/Doctrine.php');

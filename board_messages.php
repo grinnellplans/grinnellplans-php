@@ -130,6 +130,7 @@ else
 
 
 	<?php
+	$messagenum = (isset($_GET['messagenum']) ? $_GET['messagenum'] : 0);
 	if ($messagenum > 0) {
 		$messagevals = get_items($dbh, "threadid, created", "subboard", "messageid", $messagenum);
 		$threadid = $messagevals[0][0];
@@ -144,6 +145,7 @@ else
 	}
 	$my_result = mysql_query("Select COUNT(*) From subboard WHERE userid != 0 AND threadid=\"" . $threadid . "\"");
 	$totalmessages = mysql_fetch_row($my_result);
+	$pagenumber = (isset($_GET['pagenumber']) ? $_GET['pagenumber'] : 0);
 	if (!($pagenumber > 0)) {
 		$pagenumber = 0;
 	}

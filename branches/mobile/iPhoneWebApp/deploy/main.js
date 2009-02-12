@@ -10,7 +10,7 @@ var DB_tableName = "GrinnellPlansTable";       // database name
 var requestManager = {
     _validResponse: false,
     _lastMessage: "",
-    base_url: "http://www.grinnellplans.com/json_api.php",
+    base_url: "http://www.grinnellplans.com/api/1/",
     
     setCurrentToken: function(token) {
         this._currentToken = token;

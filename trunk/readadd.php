@@ -6,7 +6,7 @@ require('functions-main.php');
 $dbh = db_connect(); //connect to the database
 $idcookie = User::id();
 
-if (isset($_POST['searchnum'])) //if no search number given
+if (!isset($_POST['searchnum'])) //if no search number given
 {
 	$searchnum = $_POST['searchnum'];
 	$searchname = (isset($_POST['searchname']) ? $_POST['searchname'] : false);

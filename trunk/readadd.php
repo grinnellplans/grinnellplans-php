@@ -6,10 +6,10 @@ require('functions-main.php');
 $dbh = db_connect(); //connect to the database
 $idcookie = User::id();
 
-if (isset($_GET['searchnum'])) //if no search number given
+if (isset($_POST['searchnum'])) //if no search number given
 {
-	$searchnum = $_GET['searchnum'];
-	$searchname = (isset($_GET['searchname']) ? $_GET['searchname'] : false);
+	$searchnum = $_POST['searchnum'];
+	$searchname = (isset($_POST['searchname']) ? $_POST['searchname'] : false);
 	if (isvaliduser($dbh, $searchname)) //if valid username, change to number
 	{
 		$searchnum = get_item($dbh, "userid", "accounts", "username", $searchname);

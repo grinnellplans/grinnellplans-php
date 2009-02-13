@@ -1,19 +1,34 @@
 <?php
 require_once('Plans.php');
 require('functions-main.php');
+require('syntax-classes.php');
 $dbh = db_connect(); //establish the database handler
 $idcookie = User::id();
+$thispage = new PlansPage('Notes', 'board_show', PLANSVNAME . ' - Notes', 'board_show.php');
 
 if (!User::logged_in()) {
-	gdisp_begin($dbh); 
-	echo ("You are not allowed to edit as a guest."); //tell person they can't log in
-	gdisp_end();
+	populate_guest_page($thispage);
+	$denied = new AlertText('You are not allowed to view notes.', 'Access Denied');
+	$thispage->append($denied);
 } else {
-	mdisp_begin($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], get_myprivl()); //begin user display
-	echo "<center><a href=\"board_submit.php?newthread=1\" class=\"lev2\">New Thread</a>";
+	populate_page($thispage, $dbh, $idcookie);
+
+	$content = new WidgetGroup('notes_content', false);
+	$thispage->append($content);
+	$header = new WidgetGroup('notes_header', false);
+	$content->append($header);
+
+	$href = "board_submit.php?newthread=1";
+	$newthread = new Hyperlink('new_thread', true, $href, 'New Thread');
+	$header->append($newthread);
+
 	$my_result = mysql_query("Select COUNT(*) From mainboard");
 	$totalthreads = mysql_fetch_row($my_result);
 	$max_page = ceil($totalthreads[0] / NOTES_THREADS_PER_PAGE) - 1;
+
+	$nav = new NotesNavigation('board_nav', false);
+	$header->append($nav);
+
 	$pagenumber = (isset($_GET['pagenumber']) ? $_GET['pagenumber'] : 0);
 	if (!($pagenumber > 0)) {
 		$pagenumber = 0;
@@ -22,47 +37,37 @@ if (!User::logged_in()) {
 		$pagenumber = $max_page;
 	}
 	if ($pagenumber > 0) {
-		echo "<a href=\"board_show.php?pagenumber=0\">&lt;&lt;</a> ";
-	} else {
-		echo "&lt;&lt; ";
+		$nav->newest = new Hyperlink('newest', false, 'board_show.php?pagenumber=0', '&lt;&lt;');
 	}
 	if ($pagenumber >= 2) {
 		$tempnum = $pagenumber - 2;
-		echo "<a href=\"board_show.php?pagenumber=" . $tempnum . "\">" . $tempnum . "</a> ";
-	} else {
-		echo "_ ";
+		$nav->even_newer = new Hyperlink('newer', false, 'board_show.php?pagenumber=' . $tempnum, $tempnum);
 	}
 	if ($pagenumber >= 1) {
 		$tempnum = $pagenumber - 1;
-		echo "<a href=\"board_show.php?pagenumber=" . $tempnum . "\">" . $tempnum . "</a> ";
-	} else {
-		echo "_ ";
+		$nav->newer = new Hyperlink('newer', false, 'board_show.php?pagenumber=' . $tempnum, $tempnum);
 	}
-	echo "[" . $pagenumber . "] ";
+	$nav->current = new RegularText($pagenumber);
 	if ($pagenumber <= $max_page - 1) {
 		$tempnum = $pagenumber + 1;
-		echo "<a href=\"board_show.php?pagenumber=" . $tempnum . "\">" . $tempnum . "</a> ";
-	} else {
-		echo "_ ";
+		$nav->older = new Hyperlink('older', false, 'board_show.php?pagenumber=' . $tempnum, $tempnum);
 	}
 	if ($pagenumber <= $max_page - 2) {
 		$tempnum = $pagenumber + 2;
-		echo "<a href=\"board_show.php?pagenumber=" . $tempnum . "\">" . $tempnum . "</a> ";
-	} else {
-		echo "_ ";
+		$nav->even_older = new Hyperlink('older', false, 'board_show.php?pagenumber=' . $tempnum, $tempnum);
 	}
 	if ($max_page > $pagenumber) {
-		echo "<a href=\"board_show.php?pagenumber=" . $max_page . "\">&gt;&gt;</a></center>";
-	} else {
-		echo "&gt;&gt;</center>";
+		$nav->oldest = new Hyperlink('oldest', false, 'board_show.php?pagenumber=' . $max_page, '&gt;&gt;');
 	}
 	$rowoffset = NOTES_THREADS_PER_PAGE * $pagenumber;
-	echo "<table class=\"boardshow\"><tr class=\"boardrow1\"><td><center><b>Title</b></center></td><td><center><b>Newest 
-		Message</b></center></td><td><center><b># Posts</b></center></td><td><center><b>First</b></center></td><td><center><b>Last</b></center></td></tr>";
+
+	$board = new NotesBoard('notes_board', true);
+	$content->append($board);
+
 	$the_query = "Select
 mainboard.threadid,
 mainboard.title,
-DATE_FORMAT(mainboard.lastupdated, '%a %b %D, %l:%i %p'),
+mainboard.lastupdated,
 count(*),
 accounts.username,
 maxes.username
@@ -91,28 +96,22 @@ LIMIT " . $rowoffset . "," . NOTES_THREADS_PER_PAGE;
 	//error_log($the_query);
 	$colorswitch = 0;
 	while ($new_row = mysql_fetch_row($my_result)) {
+
+		$topic = new NotesTopic('notes_topic', false);
+		$board->append($topic);
+
 		if ($new_row[4]) {
-			$display_planlove = "[<a href=\"read.php?searchname=" . $new_row[4] . "\">" . $new_row[4] . "</a>]";
-		} else {
-			$display_planlove = "<i>User Deleted</i>";
+			$topic->firstposter = new PlanLink($new_row[4]);
 		}
 		if ($new_row[5]) {
-			$display_planlove2 = "[<a href=\"read.php?searchname=" . $new_row[5] . "\">" . $new_row[5] . "</a>]";
-		} else {
-			$display_planlove2 = "<i>User Deleted</i>";
+			$topic->lastposter = new PlanLink($new_row[4]);
 		}
-		if ($colorswitch == 0) {
-			echo "<tr class=\"noteslight\">";
-			$colorswitch = 1;
-		} else {
-			echo "<tr class=\"notesdark\">";
-			$colorswitch = 0;
-		}
-		echo "<td><a href=\"board_messages.php?threadid=" . $new_row[0] . "\">" . stripslashes($new_row[1]) . "</a></td><td>" . $new_row[2] . "</td><td><center>" . $new_row[3] . "</center></td><td>" . $display_planlove . "</td><td>" . $display_planlove2 . "</td></tr>";
+		$topic->title = new Hyperlink('topic_link', false, 'board_messages.php?threadid=' . $new_row[0], stripslashes($new_row[1]));
+		$topic->updated = strtotime($new_row[2]);
+		$topic->posts = $new_row[3];
 	}
-	echo "</table>";
-	mdisp_end($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], get_myprivl()); //gets user display
 	
 }
+interface_disp_page($thispage);
 db_disconnect($dbh);
 ?>

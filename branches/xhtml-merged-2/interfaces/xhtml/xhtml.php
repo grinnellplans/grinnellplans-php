@@ -1,4 +1,7 @@
 <?php
+define('LONG_DATE_FORMAT', 'D F jS Y, g:i A');
+define('SHORT_DATE_FORMAT', 'm-d-Y');
+
 /**
  * Returns the interface object that we're using for this particular interface.
  *
@@ -249,6 +252,7 @@ class XHTMLInterface implements DisplayInterface {
 			print($str . "\n");
 
 		} else if ($obj instanceof Hyperlink) {
+			$obj->html_attributes = self::id_and_class($obj->identifier, $obj->group);
 			print (strtolower($obj->toHTML()) . "\n");
 
 		} else if ($obj instanceof Secret) {
@@ -292,17 +296,47 @@ class XHTMLInterface implements DisplayInterface {
 				$this->disp_widget($widg, null);
 			}
 			print ("\n</div>\n");
+		} else if ($obj instanceof NotesBoard) {
+			$attrs = self::id_and_class($obj->identifier, $obj->group);
+			// Notes can have a table, who gives a shit?
+			print ("\n<table $attrs>");
+			print ('<tr class="heading"><th>Title</th><th>Newest Message</th><th># Posts</th><th>First</th><th>Last</th></tr>');
+			foreach ($obj->contents as $i => $widg) {
+				if ($i % 2 == 0) {
+					$class = 'even';
+				} else {
+					$class = 'odd';
+				}
+				print("\n<tr class=\"$class\"><td>");
+				$this->disp_widget($widg->title);
+				print("\n</td><td>");
+?>
+				<span class="long"><?php echo date(LONG_DATE_FORMAT, $widg->updated) ?></span>
+				<span class="short"><?php echo date(SHORT_DATE_FORMAT, $widg->updated) ?></span>
+<?php
+				print("\n</td><td>");
+				print($widg->posts);
+				print("\n</td><td>");
+				$this->disp_widget($widg->firstposter);
+				print("\n</td><td>");
+				$this->disp_widget($widg->lastposter);
+				print("\n</td></tr>");
+			}
+			print ("\n</table>\n");
 		} else if ($obj instanceof WidgetList) {
 			$attrs = self::id_and_class($obj->identifier, $obj->group);
 			print ("\n<ul $attrs>");
 			foreach($obj->contents as $i => $widg) {
-				$class = '';
+				if ($i % 2 == 0) {
+					$class = 'even';
+				} else {
+					$class = 'odd';
+				}
 				if ($i == 0) {
-					$class = 'first';
+					$class = ' first';
 				}
 				if ($i == count($obj->contents) - 1) {
-					if ($class) $class .= ' ';
-					$class .= 'last';
+					$class .= ' last';
 				}
 
 				if ($class) {
@@ -322,6 +356,33 @@ class XHTMLInterface implements DisplayInterface {
 				$this->disp_widget($widg, null);
 			}
 			print ("\n</div>\n");
+		} else if ($obj instanceof NotesNavigation) {
+			$attrs = self::id_and_class($obj->identifier, array($obj->group, 'notes_nav'));
+			echo "<div $attrs>\n";
+			if ($obj->newest instanceof Hyperlink) {
+				$obj->newest->description = '&lt;&lt;';
+				$obj->newest->group = 'newest';
+				$this->disp_widget($obj->newest, null);
+			} else {
+				echo '<span class="newest">&lt;&lt;</span>';
+			}
+			foreach (array('even_newer', 'newer', 'current', 'older', 'even_older') as $linkname) {
+				if ($linkname == 'current') {
+					echo '<span class="current">' . $obj->current->toHTML() . '</span>';
+				} else if ($obj->$linkname instanceof Hyperlink) {
+					echo $obj->$linkname->toHTML();
+				} else {
+					echo "<span class=\"$linkname disabled\"></span>";
+				}
+			}
+			if ($obj->oldest instanceof Hyperlink) {
+				$obj->oldest->description = '&gt;&gt;';
+				$obj->newest->group = 'oldest';
+				$this->disp_widget($obj->oldest, null);
+			} else {
+				echo '<span class="oldest">&gt;&gt;</span>';
+			}
+			echo "</div>\n";
 		}
 	}
 
@@ -341,22 +402,20 @@ class XHTMLInterface implements DisplayInterface {
 	}
 	protected function disp_plan($plan) 
 	{
-		$dateformat1 = 'D F jS Y, g:i A';
-		$dateformat2 = 'm-d-Y';
 ?>
 	<div id="header">
 		<ul>
 		<li class="username"><span class="title">Username:</span> <span class="value"><?php echo $plan->username ?></span></li>
 		<li class="lastupdated"><span class="title">Last Updated:</span> 
 			<span class="value">
-				<span class="long"><?php echo date($dateformat1, $plan->lastupdate) ?></span>
-				<span class="short"><?php echo date($dateformat2, $plan->lastupdate) ?></span>
+				<span class="long"><?php echo date(LONG_DATE_FORMAT, $plan->lastupdate) ?></span>
+				<span class="short"><?php echo date(SHORT_DATE_FORMAT, $plan->lastupdate) ?></span>
 			</span>
 		</li>
 		<li class="lastlogin"><span class="title">Last Login:</span> 
 			<span class="value">
-				<span class="long"><?php echo date($dateformat1, $plan->lastlogin) ?></span>
-				<span class="short"><?php echo date($dateformat2, $plan->lastlogin) ?></span>
+				<span class="long"><?php echo date(LONG_DATE_FORMAT, $plan->lastlogin) ?></span>
+				<span class="short"><?php echo date(SHORT_DATE_FORMAT, $plan->lastlogin) ?></span>
 			</span>
 		</li>
 

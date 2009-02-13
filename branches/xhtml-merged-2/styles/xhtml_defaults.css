@@ -3,7 +3,7 @@
  */
 
 /* Display the long version of dates in the plan header */
-.value .short {
+.short {
 	display: none;
 }
 
@@ -30,6 +30,7 @@
 #edit_fill_meter .full_amount {
 	background: url("../images/old/filled.gif");
 	height: 1em;
+	/* Default to no width if javascript is turned off */
 	width: 0%;
 }
 #edit_fill_meter .fill_percent {
@@ -66,3 +67,21 @@
 .requestmessage .body {
 	background: url("../../images/icons/help.png") no-repeat left center;
 }
+
+/* Float the poll options so the result numbers will line up with them */
+.polloption .form_prompt {
+	display: block;
+	float: left;
+	width: 20em;
+}
+
+/* Float the new thread link left */
+.notes_header #new_thread {
+	float: left;
+}
+/* Center the nav stuff */
+.notes_content {
+	width: 100%;
+	text-align: center;
+}
+

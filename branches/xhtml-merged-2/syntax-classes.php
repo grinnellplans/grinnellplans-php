@@ -615,3 +615,73 @@ class PlanText extends Text
 	}
 
 }
+
+/**
+ * Navigation bar for notes.
+ *
+ * This may be either for a single thread or the whole board.
+ */
+class NotesNavigation extends Widget {
+	/**#@+
+	 * @var Hyperlink|null
+	 */
+	public $newest;
+	public $oldest;
+	public $newer;
+	public $even_newer;
+	public $older;
+	public $even_older;
+	/**#@-*/
+
+	/**
+	 * @var RegularText
+	 */
+	public $current;
+
+	/**
+	 * @todo fill this out
+	 */
+	public function toHTML() {
+		//STUB
+	}
+}
+
+class NotesBoard extends WidgetList {
+}
+
+class NotesTopic extends Widget {
+	/**
+	 * Title of the thread
+	 * @var Hyperlink
+	 */
+	public $title;
+	/**
+	 * Date of most recent activity
+	 */
+	public $updated;
+	/**
+	 * Number of posts in this thread
+	 * @var int
+	 */
+	public $posts;
+	/**
+	 * The thread creator
+	 * @var Planlove|null
+	 */
+	public $firstposter;
+	/**
+	 * The most recent poster
+	 * @var Planlove|null
+	 */
+	public $lastposter;
+
+	/**
+	 * @todo fill this out
+	 */
+	public function toHTML() {
+		//STUB
+	}
+}
+
+class NotesPost {
+}

@@ -50,6 +50,7 @@ if (!User::logged_in()) {
 <?php
 		mdisp_end($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], get_myprivl());
 	} else {
+		$plan = $_POST['plan'];
 		//if form info submitted, process
 		$diff_data = get_items($dbh, "edit_text", "accounts", "userid", $idcookie); //get plan as well as what the size of the plan should be
 		$old_plan = $diff_data[0][0]; //put the contents of the plan into the plan variable for easier use.

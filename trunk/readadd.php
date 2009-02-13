@@ -14,8 +14,9 @@ if (isset($_POST['searchnum'])) //if no search number given
 	{
 		$searchnum = get_item($dbh, "userid", "accounts", "username", $searchname);
 	} else {
-		if ($searchname) //if there is no user number given, but there is a name, but not an exact one of a user, try to search for similar ones
+		if (isset($_GET['$searchname'])) //if there is no user number given, but there is a name, but not an exact one of a user, try to search for similar ones
 		{
+			$searchname = $_GET['serachname'];
 			if (User::logged_in()) //if is valid user, begin user display
 			{
 				mdisp_begin($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], get_myprivl());

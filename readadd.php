@@ -83,9 +83,7 @@ else {
 	gdisp_begin($dbh);
 } //begin guest user display
 //get plan data or complain if not possible for whatever reason
-if (!$planinfo = get_items($dbh, "username,pseudo,DATE_FORMAT(login,
-'%a %M %D, %l:%i %p'),DATE_FORMAT(changed,
-'%a %M %D, %l:%i %p'),plan", "accounts", "userid", $searchnum)) {
+if (!$planinfo = get_items($dbh, "username,pseudo,DATE_FORMAT(login, '%a %M %D, %l:%i %p'),DATE_FORMAT(changed, '%a %M %D, %l:%i %p'),plan", "accounts", "userid", $_POST['searchnum'])) {
 	echo "Could not retrieve plan.";
 	$searchnum = $idcookie;
 } //and set the searchnum to the persons own id, so that person does not get option to add non-existant user/plan to their autoread list

@@ -131,6 +131,7 @@ else
 
 	<?php
 	$messagenum = (isset($_GET['messagenum']) ? $_GET['messagenum'] : 0);
+	$threadid = (isset($_GET['threadid']) ? $_GET['threadid'] : 0);
 	if ($messagenum > 0) {
 		$messagevals = get_items($dbh, "threadid, created", "subboard", "messageid", $messagenum);
 		$threadid = $messagevals[0][0];

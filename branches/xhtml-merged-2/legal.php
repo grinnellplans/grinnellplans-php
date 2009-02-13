@@ -27,6 +27,6 @@ function disclaimer() {
 /* Same as above, only returns it as a string */
 function get_disclaimer()
 {
-	return '        <p>Use of the GrinnellPlans service means you have accepted the <a href="http://www.grinnellplans.com/tos"> GrinnellPlans Terms of Service agreement</a>. If you do not accept and abide by this agreement, you may not use GrinnellPlans. This agreement is subject to change without notice, so you should periodically review the most up-to-date version.You may contact us at <a href="mailto:grinnellplans@gmail.com">grinnellplans@gmail.com</a>.</p>';
+	return '        Use of the GrinnellPlans service means you have accepted the <a href="http://www.grinnellplans.com/tos"> GrinnellPlans Terms of Service agreement</a>. If you do not accept and abide by this agreement, you may not use GrinnellPlans. This agreement is subject to change without notice, so you should periodically review the most up-to-date version.You may contact us at <a href="mailto:grinnellplans@gmail.com">grinnellplans@gmail.com</a>.';
 }
 ?>

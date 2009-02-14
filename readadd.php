@@ -6,17 +6,14 @@ require('functions-main.php');
 $dbh = db_connect(); //connect to the database
 $idcookie = User::id();
 
-if (!isset($_POST['searchnum'])) //if no search number given
+if (!$searchnum) //if no search number given
 {
-	$searchnum = $_POST['searchnum'];
-	$searchname = (isset($_POST['searchname']) ? $_POST['searchname'] : false);
 	if (isvaliduser($dbh, $searchname)) //if valid username, change to number
 	{
 		$searchnum = get_item($dbh, "userid", "accounts", "username", $searchname);
 	} else {
-		if (isset($_GET['$searchname'])) //if there is no user number given, but there is a name, but not an exact one of a user, try to search for similar ones
+		if ($searchname) //if there is no user number given, but there is a name, but not an exact one of a user, try to search for similar ones
 		{
-			$searchname = $_GET['serachname'];
 			if (User::logged_in()) //if is valid user, begin user display
 			{
 				mdisp_begin($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], get_myprivl());
@@ -83,7 +80,9 @@ else {
 	gdisp_begin($dbh);
 } //begin guest user display
 //get plan data or complain if not possible for whatever reason
-if (!$planinfo = get_items($dbh, "username,pseudo,DATE_FORMAT(login, '%a %M %D, %l:%i %p'),DATE_FORMAT(changed, '%a %M %D, %l:%i %p'),plan", "accounts", "userid", $_POST['searchnum'])) {
+if (!$planinfo = get_items($dbh, "username,pseudo,DATE_FORMAT(login,
+'%a %M %D, %l:%i %p'),DATE_FORMAT(changed,
+'%a %M %D, %l:%i %p'),plan", "accounts", "userid", $searchnum)) {
 	echo "Could not retrieve plan.";
 	$searchnum = $idcookie;
 } //and set the searchnum to the persons own id, so that person does not get option to add non-existant user/plan to their autoread list

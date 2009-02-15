@@ -15,6 +15,11 @@
 .formitemset, .form_prompt {
 	clear: left;
 }
+/* Keep text and textarea labels above the prompt */
+.textareainput label, .textinput label, .passwordinput label {
+	display: block;
+}
+
 /* float the Read button next to the finger form */
 #finger .form_prompt {
 	float: left;

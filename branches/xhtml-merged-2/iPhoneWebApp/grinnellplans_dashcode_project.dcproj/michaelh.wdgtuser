@@ -6,39 +6,39 @@
 	<dict>
 		<key>http://creirwy.local/~michaelh/dashcode_project/main.js:249</key>
 		<string>getCookie</string>
-		<key>main.js:125</key>
+		<key>main.js:126</key>
 		<string>-success</string>
-		<key>main.js:146</key>
+		<key>main.js:147</key>
 		<string>-</string>
-		<key>main.js:186</key>
+		<key>main.js:187</key>
 		<string>-unreadPlanCount</string>
-		<key>main.js:206</key>
+		<key>main.js:207</key>
 		<string>-setupAutofingerlist</string>
-		<key>main.js:233</key>
+		<key>main.js:234</key>
 		<string>-prepareRow</string>
-		<key>main.js:242</key>
+		<key>main.js:243</key>
 		<string>-prepareRow</string>
-		<key>main.js:247</key>
-		<string>-handler</string>
 		<key>main.js:248</key>
 		<string>-handler</string>
 		<key>main.js:249</key>
 		<string>-handler</string>
 		<key>main.js:250</key>
 		<string>-handler</string>
-		<key>main.js:255</key>
+		<key>main.js:251</key>
 		<string>-handler</string>
 		<key>main.js:256</key>
 		<string>-handler</string>
-		<key>main.js:312</key>
+		<key>main.js:257</key>
+		<string>-handler</string>
+		<key>main.js:313</key>
 		<string>-setUserSuccess</string>
-		<key>main.js:320</key>
+		<key>main.js:321</key>
 		<string>-setUserSuccess</string>
-		<key>main.js:359</key>
+		<key>main.js:360</key>
 		<string>-load</string>
-		<key>main.js:369</key>
+		<key>main.js:370</key>
 		<string>-load</string>
-		<key>main.js:376</key>
+		<key>main.js:378</key>
 		<string>-moveToListLevel</string>
 	</dict>
 	<key>ContentSplitViewGeometry</key>
@@ -66,7 +66,7 @@
 		<key>Account</key>
 		<string>file://localhost/Users/michaelh/Sites/</string>
 		<key>Date</key>
-		<date>2008-10-11T15:06:51Z</date>
+		<date>2009-02-14T13:43:16Z</date>
 		<key>Path</key>
 		<string>/grinnellplans/iPhoneWebApp/deploy/</string>
 		<key>Save</key>
@@ -272,15 +272,7 @@
 		</array>
 	</array>
 	<key>Objects view last selections</key>
-	<array>
-		<array>
-			<integer>0</integer>
-			<integer>0</integer>
-			<integer>1</integer>
-			<integer>1</integer>
-			<integer>1</integer>
-		</array>
-	</array>
+	<array/>
 	<key>Opened Steps</key>
 	<array>
 		<integer>0</integer>
@@ -290,7 +282,7 @@
 	</array>
 	<key>Visible StackLayout Views</key>
 	<array>
-		<string>listLevel</string>
+		<string>loginLevel</string>
 	</array>
 </dict>
 </plist>

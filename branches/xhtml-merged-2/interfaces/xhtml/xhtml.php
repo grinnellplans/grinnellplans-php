@@ -323,6 +323,23 @@ class XHTMLInterface implements DisplayInterface {
 				print("\n</td></tr>");
 			}
 			print ("\n</table>\n");
+		} else if ($obj instanceof NotesPost) {
+			print("\n<div class=\"notes_post\">");
+			print("\n\t<div class=\"notes_post_header\">");
+			print('<div class="post_id">' . $obj->id . '</div>');
+			print('<div class="post_author">' . $this->disp_widget_str($obj->poster) . '</div>');
+			print('<div class="post_date"><span class="long">' . date(LONG_DATE_FORMAT, $obj->date)
+				. '</span><span class="short">' . date(SHORT_DATE_FORMAT, $obj->date) . '</span></div>');
+
+			print('<div class="post_votes">');
+			print("($obj->score) ($obj->votes Votes)");
+			print('</div>');
+
+			print("\n\t</div>");
+			print("\n\t<div class=\"notes_post_content\">");
+			print($obj->contents);
+			print("\n\t</div>");
+			print("\n</div>");
 		} else if ($obj instanceof WidgetList) {
 			$attrs = self::id_and_class($obj->identifier, $obj->group);
 			print ("\n<ul $attrs>");
@@ -333,7 +350,7 @@ class XHTMLInterface implements DisplayInterface {
 					$class = 'odd';
 				}
 				if ($i == 0) {
-					$class = ' first';
+					$class .= ' first';
 				}
 				if ($i == count($obj->contents) - 1) {
 					$class .= ' last';

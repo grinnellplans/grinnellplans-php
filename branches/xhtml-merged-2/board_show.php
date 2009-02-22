@@ -19,7 +19,7 @@ if (!User::logged_in()) {
 	$content->append($header);
 
 	$href = "board_submit.php?newthread=1";
-	$newthread = new Hyperlink('new_thread', true, $href, 'New Thread');
+	$newthread = new Hyperlink('notes_new_thread', true, $href, 'New Thread');
 	$header->append($newthread);
 
 	$my_result = mysql_query("Select COUNT(*) From mainboard");

@@ -85,8 +85,40 @@
 	float: left;
 }
 /* Center the nav stuff */
-.notes_content {
+.notes_header {
 	width: 100%;
 	text-align: center;
 }
+/* Put some whitespace in between nav elements */
+.notes_header .oldest {
+	margin-left: 0.4em;
+}
+.notes_header .newest {
+	margin-right: 0.4em;
+}
+.notes_header .newer, .notes_header .older, .notes_header .even_newer, .notes_header .even_older, .notes_header .current {
+	margin: 0em 0.2em;
+}
+/* Hide inactive nav elements */
+.notes_header .disabled {
+	display: none;
+}
 
+/* Line up notes post stuff in a sensible fashion */
+.notes_post_header .post_id {
+	width: 4em;
+	float: left;
+}
+.notes_post_header .post_author {
+	float: left;
+	width: 7em;
+}
+.notes_post_header .post_date {
+	float: left;
+}
+.notes_post_header .post_votes {
+	float: right;
+}
+.notes_post_content {
+	clear: both;
+}

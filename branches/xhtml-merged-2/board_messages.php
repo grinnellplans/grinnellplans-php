@@ -1,21 +1,23 @@
 <?php
 require_once('Plans.php');
-require_once('Configuration.php');
 
 require('functions-main.php');
+require('syntax-classes.php');
 $dbh = db_connect(); //establish the database handler
 
 $idcookie = User::id();
+$thispage = new PlansPage('Notes', 'board_submit', PLANSVNAME . ' - Notes', 'board_submit.php');
+
 if (!User::logged_in()) {
-	gdisp_begin($dbh); 
-	echo ("You are not allowed to edit as a guest."); //tell person they can't log in
-	gdisp_end();
+	populate_guest_page($thispage);
+	$denied = new AlertText('You are not allowed to use Notes as a guest.', 'Access Denied');
+	$thispage->append($denied);
 } 
 else
 //elseallowed to edit
 {
-	mdisp_begin($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], get_myprivl()); //begin user display
-	
+	populate_page($thispage, $dbh, $idcookie);
+	/*
 ?>
 
 	<script language="JavaScript">
@@ -91,30 +93,38 @@ else
         }
 	-->
 	</script>
+	 */
 
+	$content = new WidgetGroup('notes_content', false);
+	$thispage->append($content);
+	$header = new WidgetGroup('notes_header', false);
+	$content->append($header);
 
-	<div style="position: fixed;width: 50px;display:none" id="reply"><a 
-	href="javascript:Show_Stuff(display1);javascript:Show_Stuff(hide)" class="lev2">Reply</a></div><br>
+	//href="javascript:Show_Stuff(display1);javascript:Show_Stuff(hide)" class="lev2">Reply</a></div><br>
+	$newthread = new Hyperlink('notes_reply', true, $href, 'Reply');
+	//$header->append($newthread);
 
+	$replyform = new Form('notes_replyform', true);
+	$replyform->action = 'board_submit.php';
+	$content->append($replyform);
 
-	<span id="display1">
+	$cook = new HiddenInput('checknum', $idcookie);
+	$replyform->append($cook);
+	$thread = new HiddenInput('threadid', $_REQUEST['threadid']);
+	$replyform->append($thread);
+	$sub = new HiddenInput('submit', 1);
+	$replyform->append($sub);
 
-	<table>
-	<tbody><tr><td wrap="" width="200">
+	$text = new TextareaInput('messagecontents');
+	$text->rows = 11;
+	$text->cols = 50;
+	$text->title = 'Post Reply';
+	$replyform->append($text);
 
-	<form action="board_submit.php" method="POST">
-	<input type="hidden" name="checknum" value="<?php
-	echo $idcookie
-?>">
+	$button = new SubmitInput('Submit');
+	$replyform->append($button);
 
-	<textarea rows="11" cols="50" name="messagecontents" wrap="virtual"></textarea><br>
-	<input type="hidden" name="threadid" value="<?php
-	echo $_REQUEST['threadid'] ?>">
-	<input type="hidden" name="submit" value="1"><input type="submit" value="Submit"></form>
-	</td>
-	</tr>
-	</tbody></table>
-	</span>
+	/*
 	<script>
 	<!-- 
 	document.getElementById('display1').style.display = 'none';
@@ -123,20 +133,16 @@ else
 
 	-->
 	</script> 
+	 */
 
-
-
-
-
-
-	<?php
 	$messagenum = (isset($_GET['messagenum']) ? $_GET['messagenum'] : 0);
 	if ($messagenum > 0) {
 		$messagevals = get_items($dbh, "threadid, created", "subboard", "messageid", $messagenum);
 		$threadid = $messagevals[0][0];
 		if (!$threadid) {
-			echo "The message you requested has been deleted or does not exist.";
-			mdisp_end($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], get_myprivl()); //gets user display
+			$error_message = new AlertText("The message you requested has been deleted or does not exist.", 'Error');
+			$thispage->append($error_message);
+			interface_disp_page($thispage);
 			stop();
 		}
 		$my_result = mysql_query("Select COUNT(*) From subboard WHERE userid != 0 AND created >= \"" . $messagevals[0][1] . "\" and threadid=\"" . $threadid . "\"");
@@ -152,49 +158,41 @@ else
 	if ($pagenumber > floor($totalmessages[0] / NOTES_MSGS_PER_PAGE)) {
 		$pagenumber = floor($totalmessages[0] / NOTES_MSGS_PER_PAGE);
 	}
-	echo "<center>";
+
+	$nav = new NotesNavigation('board_nav', false);
+	$header->append($nav);
+
 	if ($pagenumber > 0) {
-		echo "<a href=\"board_messages.php?pagenumber=0&threadid=" . $threadid . "\">&lt;&lt;</a> ";
-	} else {
-		echo "&lt;&lt; ";
+		$nav->newest = new Hyperlink('newest', false, 'board_messages.php?pagenumber=0&threadid=' . $threadid, '&lt;&lt;');
 	}
 	if ($pagenumber >= 2) {
 		$tempnum = $pagenumber - 2;
-		echo "<a href=\"board_messages.php?pagenumber=" . $tempnum . "&threadid=" . $threadid . "\">" . $tempnum . "</a> ";
-	} else {
-		echo "_ ";
+		$nav->even_newer = new Hyperlink('newer', false, 'board_show.php?pagenumber=' . $tempnum . "&threadid=" . $threadid, $tempnum);
 	}
 	if ($pagenumber >= 1) {
 		$tempnum = $pagenumber - 1;
-		echo "<a href=\"board_messages.php?pagenumber=" . $tempnum . "&threadid=" . $threadid . "\">" . $tempnum . "</a> ";
-	} else {
-		echo "_ ";
+		$nav->newer = new Hyperlink('newer', false, 'board_messages.php?pagenumber=' . $tempnum . "&threadid=" . $threadid, $tempnum);
 	}
-	echo "[" . $pagenumber . "] ";
+	$nav->current = new RegularText($pagenumber);
 	if ($totalmessages[0] > ($pagenumber + 1) * NOTES_MSGS_PER_PAGE) {
 		$tempnum = $pagenumber + 1;
-		echo "<a href=\"board_messages.php?pagenumber=" . $tempnum . "&threadid=" . $threadid . "\">" . $tempnum . "</a> ";
-	} else {
-		echo "_ ";
+		$nav->older = new Hyperlink('older', false, 'board_messages.php?pagenumber=' . $tempnum . "&threadid=" . $threadid, $tempnum);
 	}
 	if ($totalmessages[0] > ($pagenumber + 2) * NOTES_MSGS_PER_PAGE) {
 		$tempnum = $pagenumber + 1;
-		echo "<a href=\"board_messages.php?pagenumber=" . $tempnum . "&threadid=" . $threadid . "\">" . $tempnum . "</a> ";
-	} else {
-		echo "_ ";
+		$nav->even_older = new Hyperlink('oldest', false, 'board_messages.php?pagenumber=' . $tempnum . "&threadid=" . $threadid, $tempnum);
 	}
 	if (floor($totalmessages[0] / NOTES_MSGS_PER_PAGE) > $pagenumber) {
-		echo "<a href=\"board_messages.php?pagenumber=" . floor($totalmessages[0] / NOTES_MSGS_PER_PAGE) . "&threadid=" . $threadid . "\">&gt;&gt;</a></center>";
-	} else {
-		echo "&gt;&gt;</center>";
+		$nav->oldest = new Hyperlink('oldest', false, 'board_messages.php?pagenumber=' . floor($totalmessages[0] / NOTES_MSGS_PER_PAGE) . '&threadid=' . $threadid, '&gt;&gt;');
 	}
 	$rowoffset = NOTES_MSGS_PER_PAGE * $pagenumber;
 
-	$thread_title = get_item($dbh, "title", "mainboard", "threadid", $threadid);
-	echo ' <br /> <p style="font-weight:bold; text-align:center"> ' . stripslashes($thread_title) . " </p> \n";
-	echo "<table class=\"boardmessages\">";
+	$thread = new NotesTopic('notes_thread', true);
+	$content->append($thread);
+
+	$thread->title = stripslashes(get_item($dbh, "title", "mainboard", "threadid", $threadid));
+
 	$notes_pref = get_item($dbh, "notes_asc", "accounts", "userid", $userid);
-	echo "<!-- $notes_pref -->";
 	if ($notes_pref) {
 		$rowoffset = $totalmessages[0] - NOTES_MSGS_PER_PAGE * ($pagenumber + 1);
 		if ($rowoffset < 0) {
@@ -203,7 +201,7 @@ else
 	}
 
 	$query = "Select subboard.messageid, 
-                DATE_FORMAT(subboard.created, ' %l:%i %p, %a %M %D, %Y'),
+                UNIX_TIMESTAMP(subboard.created),
                 subboard.userid, accounts.username, subboard.title ,subboard.contents, ifnull(vts.votes,0), mv.vote, ifnull(vts.num_votes,0)
                 From 
                 subboard left join  accounts using (userid)
@@ -218,42 +216,28 @@ else
                 ORDER BY subboard.messageid DESC 
                 LIMIT " . $rowoffset . "," . NOTES_MSGS_PER_PAGE;
 	$my_result = mysql_query($query);
-	$colorlight = "<table class=\"noteslight\" width=\"100%\">";
-	$colordark = "<table class=\"notesdark\" width=\"100%\">";
 	$colorswitch = 0;
 	while ($new_row = mysql_fetch_row($my_result)) {
-		if ($colorswitch == 0) {
-			$thecolor = $colorlight;
-			$colorswitch = 1;
-		} else {
-			$thecolor = $colordark;
-			$colorswitch = 0;
-		}
+		$post = new NotesPost('notes_post', false);
+		$thread->append($post);
 		if ($new_row[3]) {
-			$display_planlove = "[<a href=\"read.php?searchname=" . $new_row[3] . "\">" . $new_row[3] . "</a>]";
-		} else {
-			$display_planlove = "<i>User Deleted</i>";
+			$post->poster = new PlanLink($new_row[3]);
 		}
-		$yes_vote = $no_vote = "{}";
 		if ($new_row[7] == 1) {
-			$yes_vote = "border: #222222 thin solid";
+			//$post->user_vote = 'yes';
 		}
 		if ($new_row[7] == - 1) {
-			$no_vote = "border: #222222 thin solid";
+			//$post->user_vote = 'no';
 		}
-		echo "<tr><td>";
-		echo $thecolor . "<tr><td>";
-		echo "<tr><td><b><p id=\"" . $new_row[0] . "\">" . stripslashes($new_row[4]) . "</p></b></td></tr>";
-		echo "<tr><td><table border=\"1\" width=\"100%\"><tr><td>" . $new_row[0] . "</td>
-    <td style=\"cursor:pointer; cursor:hand\"><span style=\"" . $yes_vote . "\" id=\"" . $new_row[0] . "y\" onclick=\"vote(" . $new_row[0] . ",'y');\">&uarr;</span>&nbsp;&nbsp; <span style=\"" . $no_vote . "\" id=\"" . $new_row[0] . "n\" onclick=\"vote(" . $new_row[0] . ",'n');\">&darr;</span> &nbsp;&nbsp;(<span id=\"" . $new_row[0] . "c\">" . $new_row[6] . "</span>) (<span id=\"" . $new_row[0] . "i\">" . $new_row[8] . "</span> votes)</td>
-<td>" . $new_row[1] . "</td><td><center>" . $display_planlove . " </center></td></tr></table></td></tr>";
-		echo "<tr><td>" . stripslashes($new_row[5]) . "<br><br></td></tr>";
-		echo "</table>";
-		echo "</td></tr>";
+		$post->id = $new_row[0];
+		$post->score = $new_row[6];
+		$post->votes = $new_row[8];
+		$post->date = $new_row[1];
+
+		$post->contents = stripslashes($new_row[5]);
 	}
-	echo "</table>";
-	mdisp_end($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], get_myprivl()); //gets user display
 	
 }
+interface_disp_page($thispage);
 db_disconnect($dbh);
 ?>

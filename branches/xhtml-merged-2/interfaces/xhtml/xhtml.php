@@ -189,8 +189,10 @@ class XHTMLInterface implements DisplayInterface {
 			$class = array($class);
 		}
 		$class = array_filter($class);
-		$out[] = 'class="'.implode(' ', $class).'"';
-		return implode(' ', $out);
+		if ($class) {
+			$out[] = 'class="'.implode(' ', $class).'"';
+		}
+		return ' ' . implode(' ', $out);
 	}
 
 	protected function disp_widget($obj, $key = null) 

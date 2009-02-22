@@ -337,10 +337,10 @@ class Form extends WidgetGroup
 	 */
 	public $action;
 	/**
-	 * The form's method. Defaults to 'POST'.
-	 * @var string 'POST' or 'GET'
+	 * The form's method. Defaults to 'post'.
+	 * @var string 'post' or 'get'
 	 */
-	public $method;
+	public $method = 'post';
 
         /* an array containing the fields in the form, as FormItems */
         public $contents;
@@ -649,7 +649,12 @@ class NotesNavigation extends Widget {
 class NotesBoard extends WidgetList {
 }
 
-class NotesTopic extends Widget {
+/**
+ * @todo This is a little weird in that it gets used both on the display of
+ * all topics on the main notes page, and as a container for an individual
+ * topic's posts. But whatever.
+ */
+class NotesTopic extends WidgetList {
 	/**
 	 * Title of the thread
 	 * @var Hyperlink
@@ -666,12 +671,12 @@ class NotesTopic extends Widget {
 	public $posts;
 	/**
 	 * The thread creator
-	 * @var Planlove|null
+	 * @var PlanLink|null
 	 */
 	public $firstposter;
 	/**
 	 * The most recent poster
-	 * @var Planlove|null
+	 * @var PlanLink|null
 	 */
 	public $lastposter;
 
@@ -683,5 +688,51 @@ class NotesTopic extends Widget {
 	}
 }
 
-class NotesPost {
+/**
+ * @todo give this a structure that isn't dependent on JS. Like, extend
+ * Hyperlink and hold whole links for up and down, with an active flag if needed
+ */
+class NotesPost extends Widget {
+	/**
+	 * Who posted this message
+	 * @var PlanLink|null
+	 */
+	public $poster;
+	/**
+	 * The date this was posted
+	 * @var int a UNIX timestamp
+	 */
+	public $date;
+	/**
+	 * The post id
+	 * @var int
+	 */
+	public $id;
+	/**
+	 * The score in Notes voting
+	 * @var int
+	 */
+	public $score;
+	/**
+	 * The number of votes cast for this post
+	 * @var int
+	 */
+	public $votes;
+	/**
+	 * How the current user has voted
+	 * @var string 'yes' or 'no' or null if no vote
+	 */
+	//public $user_vote;
+	/**
+	 * The contents of this post
+	 * @var string
+	 */
+	public $contents;
+
+	/**
+	 * @todo fill this out
+	 */
+	public function toHTML() {
+		//STUB
+	}
 }

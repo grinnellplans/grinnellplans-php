@@ -304,7 +304,11 @@ class Hyperlink extends Widget
 	}
 	function toHTML() 
 	{
-		return "<a href=\"$this->href\"$this->html_attributes>$this->description</a>";
+		// Make sure all special characters in the url are encoded
+		$href = html_entity_decode($this->href);
+		$href = htmlentities($href);
+
+		return "<a href=\"$href\"$this->html_attributes>$this->description</a>";
 	}
 }
 /**

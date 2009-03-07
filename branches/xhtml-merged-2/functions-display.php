@@ -95,15 +95,17 @@ function populate_page(PlansPage $page, $dbh, $idcookie)
 	$page->mainpanel = $mp;
 	$mp->fingerbox = get_fingerbox();
 	$mp->linkhome = get_linkhome();
-	$mp->requiredlinks = get_req_links();
-	$mp->optionallinks = get_opt_links($idcookie);
-	$mp->autoreads = array();
+	$mp->links = new WidgetList('linkslist', false);
+	foreach (get_all_user_links($idcookie) as $link) {
+		$mp->links->append($link);
+	}
+	$mp->autoreads = new WidgetList('autoread', true);
 	for ($i = 1; $i <= 3; $i++) { //TODO variable number
-		$mp->autoreads[] = get_autoread($idcookie, $i);
+		$mp->autoreads->append(get_autoread($idcookie, $i));
 	}
 	$footer = new Footer();
 	$footer->doyouread = get_just_updated();
-	$footer->legal = new InfoText(get_disclaimer(), NULL);
+	$footer->legal = new RegularText(get_disclaimer());
 	$page->footer = $footer;
 }
 /**
@@ -157,18 +159,18 @@ function get_autoread($idcookie, $p)
 	return $ar;
 }
 /**
- * Get the required links
+ * Get all links
  *
- * These are the links that show up for every user
+ * These are all the links that show up for a logged-in user
  *
  * @return array An array of Hyperlink objects
  */
-function get_req_links()
-{
+function get_all_user_links($idcookie) {
 	$newarr = array();
 	$newarr[] = new Hyperlink('mainlink_edit', true, 'edit.php', 'Edit Plan');
 	$newarr[] = new Hyperlink('mainlink_search', true, 'search.php', 'Search Plans');
 	$newarr[] = new Hyperlink('mainlink_prefs', true, 'customize.php', 'Preferences');
+	$newarr = array_merge($newarr, get_opt_links($idcookie));
 	$newarr[] = new Hyperlink('mainlink_logout', true, 'index.php?logout=1', 'Log Out');
 	return $newarr;
 }
@@ -275,7 +277,7 @@ function get_just_updated()
     // Get the appropriate URI for a plan link
     $temp = new PlanLink($new_plans[1]);
     // But we want a generic Hyperlink, so it can be styled separately.
-    return new Hyperlink('justupdated', true, $temp->href, $new_plans[1]);
+    return new Hyperlink('justupdatedlink', true, $temp->href, $new_plans[1]);
 }
 
 function wants_secrets($idcookie)

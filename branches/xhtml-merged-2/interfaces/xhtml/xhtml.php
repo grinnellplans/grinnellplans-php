@@ -1,6 +1,7 @@
 <?php
 define('LONG_DATE_FORMAT', 'D F jS Y, g:i A');
-define('SHORT_DATE_FORMAT', 'm-d-Y');
+define('SHORT_DATE_FORMAT', 'm-d-Y g:i A');
+require_once('lib/savant/Savant3.php');
 
 /**
  * Returns the interface object that we're using for this particular interface.
@@ -23,160 +24,88 @@ function interface_construct()
 class XHTMLInterface implements DisplayInterface {
 	public function display_page(PlansPage $page)
 	{
-?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+		$tpl = new Savant3();
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+		$tpl->page_title = $page->title;
+		$tpl->stylesheets = $page->stylesheets;
+		$tpl->scripts = $this->get_local_jsfiles($page);
+		$tpl->body_id = 'planspage_' . strtolower($page->identifier);
+		$tpl->body_class = strtolower($page->group);
 
-<head>
-<title><?php echo $page->title ?></title>
-<?php
-		foreach ($page->stylesheets as $css) {
-			echo '<link rel="stylesheet" type="text/css" href="' . $css . '" />';
+		$tpl->mainpanel_template = $this->setup_mainpanel($page->mainpanel);
+		$tpl->mainpanel_template = $this->setup_mainpanel($page->mainpanel);
+
+		foreach ($page->contents as $w) {
+			//echo get_class($w);
 		}
-		// Add the length counter script if it's the edit page
-		if ($page->identifier == 'edit') {
-			echo '<script src="edit.js" type="text/javascript" language="javascript"></script>';
-		}
+		$tpl->contents = array_map(array($this, 'setup_widget'), $page->contents);
 
-?>
-</head>
-<body id="planspage_<?php echo strtolower($page->identifier) ?>" class="<?php echo strtolower($page->group) ?>">
+		$tpl->footer_template = $this->setup_footer($page->footer);
 
-<div id="wrapper">
-
-<div id="nav"><div>
-<?php
-			//print the mainpanel
-			if ($page->mainpanel) $this->disp_mainpanel($page);
-?>
-</div></div>
-
-<div id="main"><div>
-
-<?php
-		// display the widgets in the contents of the page
-		array_walk($page->contents, array($this, 'disp_widget'));
-		echo "\n</div></div>"; // "main"
-		if ($page->footer) $this->disp_footer($page->footer);
-		echo "\n</div>"; // "wrapper"
-		echo "\n</body></html>";
+		$tpl->display('views/templates/XHTML/PlansPage.tpl.php');
 	}
-	protected function disp_mainpanel($page) 
-	{
-		$panel = $page->mainpanel;
-		// print the logo
-		if ($panel->linkhome) {
-			echo '<div id="logo">';
-			$panel->linkhome->description = 'Home';
-			echo ("\t" . $panel->linkhome->toHTML() . "\n");
-			echo "</div>";
-		}
-		// print the finger form
-		if ($panel->fingerbox) {
-			echo '<div id="finger">';
-			echo $panel->fingerbox->toHTML(array($this, 'disp_widget_str'));
-			echo "</div>";
-		}
-		// print the user's links
-		if ($panel->requiredlinks) $this->disp_links($panel);
-		// print the autoread
-		if ($panel->autoreads) $this->disp_autoread($panel->autoreads, $page->url, $page->autoreadpriority);
+	protected function setup_mainpanel(MainPanel $panel) {
+		$tpl = new Savant3();
+
+		$tpl->linkhome_template = $this->setup_linkhome($panel->linkhome);
+		$tpl->fingerbox_template = $this->setup_fingerbox($panel->fingerbox);
+		$tpl->links_template = $this->setup_links($panel->links);
+		$tpl->autoread_template = $this->setup_autoreads($panel->autoreads, $page->autoreadpriority);
+
+		$tpl->setTemplate('views/templates/XHTML/mainpanel.tpl.php');
+		return $tpl;
 	}
-	protected function disp_footer($footer) 
-	{
-		echo "<div id=\"footer\">\n";
-		if ($footer->doyouread) {
-			echo "\t<div id=\"justupdated\"><div>\n";
-			echo "\t\tDo you read " . $footer->doyouread->toHTML() . ", who just updated?\n";
-			echo "\t</div></div>\n";
-		}
-		if ($footer->legal) {
-			echo "\t<div id=\"legal\"><div>\n";
-			echo "\t\t" . $footer->legal->toHTML() . "\n";
-			echo "\t</div></div>\n";
-		}
-		echo "</div>\n";
+	protected function setup_linkhome(Hyperlink $link) {
+		$tpl = new Savant3();
+
+		$tpl->href = htmlentities(html_entity_decode($link->href));
+		$tpl->description = 'Home';
+
+		$tpl->setTemplate('views/templates/XHTML/linkhome.tpl.php');
+		return $tpl;
 	}
-	/**
-	 * @todo junk $myurl
-	 */
-	protected function disp_autoread($autoreads, $myurl, $privl) 
-	{
-?>
-	<div id="autoread"><h2>Autoread List</h2>
-		<ul>
-<?php
-		$length = count($autoreads);
-		foreach($autoreads as $i => $ar) {
-			$priority = $ar->priority;
-			$class = 'autoreadlevel';
-			if ($priority == $privl) {
-				$class .= ' current';
+	protected function setup_fingerbox(Form $finger) {
+		$tpl = $this->setup_widget($finger);
+		return $tpl;
+	}
+	protected function setup_links($links) {
+		$tpl = $this->setup_widget($links);
+		$tpl->setTemplate('views/templates/XHTML/Links.tpl.php');
+		return $tpl;
+	}
+	protected function setup_autoreads(WidgetList $autoreads, $lvl) {
+		$tpl = $this->setup_widget($autoreads);
+		foreach($autoreads->contents as $i => $ar) {
+			$t = $tpl->contents[$i];
+			if ($t->priority == $lvl) {
+				$t->list_attributes .= ' current';
 			} else {
-				$class .= ' notcurrent';
+				$t->list_attributes .= ' notcurrent';
 			}
-			if ($i == 0) {
-				$class .= ' first';
-			}
-			if ($i == $length - 1) {
-				$class .= ' last';
-			}
-			echo "\t\t<li class=\"$class\">\n";
-			echo "\t\t<div class=\"autoreadname\">\n";
-			$link = $ar->link;
-			echo "\t\t\t<a class=\"autoreadlink\" href=\"$link->href\">" . $ar->title . "</a>\n";
-			// print the little X to mark all as read
-			echo "\t\t\t<a class=\"markasread\" onclick =\"return confirm(" . "'Are you sure you\'d like to mark all the Plans on level " . $priority . " as read?')\" href=\"http://" . add_param($new_url, 'mark_as_read', 1) . "\">X</a>\n";
-			echo "\t\t</div>\n";
-			// now print the plans on this autoread level
-			echo "\t\t\t<ul>\n";
-
-			$end = "</li>\n";
-			$innerlength = count($ar->contents);
-			foreach($ar->contents as $j => $item) {
-				$class = 'autoreadentry';
-				if ($j == 0) {
-					$class .= ' first';
-				}
-				if ($j == $innerlength - 1) {
-					$class .= ' last';
-				}
-				$front = "\t\t\t<li class=\"$class\">";
-				echo $front . $item->toHTML() . $end;
-			}
-?>
-			</ul>
-<?php
-			echo "\t\t</li>\n";
 		}
-?>
-	</ul></div>
-<?php
+		$tpl->setTemplate('views/templates/XHTML/AutoReads.tpl.php');
+		return $tpl;
 	}
-	protected function disp_links($panel) 
+	protected function get_local_jsfiles($page) 
 	{
-?>
-	<div id="links"><h2>Links</h2>
-		<ul>
-<?php
-		// Just use this for the first one, then change it
-		$front = "\t\t<li class='first'>";
-		$end = "</li>\n";
-		// print out the links
-		if ($panel->requiredlinks) for ($i = 0; ($l = $panel->requiredlinks[$i]); $i++) {
-			if (strtolower($l->description) == 'log out') $logout = $l;
-			else echo $front . $l->toHTML() . $end;
-			$front = "\t\t<li>";
+		$jsfile_arr = array();
+		// Populate the array with any files we need
+		switch ($page->identifier) {
+		case 'edit':
+			$jsfile_arr[] = 'edit.js';
+			break;
 		}
-		if ($panel->optionallinks) for ($i = 0; ($l = $panel->optionallinks[$i]); $i++) {
-			echo $front . $l->toHTML() . $end;
-		}
-		if ($logout) echo "\t\t<li class='last'>" . $logout->toHTML() . "</li>\n";
-?>
-		</ul>
-	</div>
-<?php
+		return $jsfile_arr;
+	}
+	protected function setup_footer($footer) 
+	{
+		$tpl = new Savant3();
+
+		$tpl->doyouread_link_template = $this->setup_widget($footer->doyouread);
+		$tpl->legal_template = $this->setup_widget($footer->legal);
+
+		$tpl->setTemplate('views/templates/XHTML/Footer.tpl.php');
+		return $tpl;
 	}
 
 	protected static function id_and_class($id, $class) {
@@ -195,24 +124,95 @@ class XHTMLInterface implements DisplayInterface {
 		return ' ' . implode(' ', $out);
 	}
 
-	protected function disp_widget($obj, $key = null) 
-	{
-		if ($obj instanceof EditBox) {
-			$this->disp_editbox($obj);
+	protected function setup_widget(Widget $obj) {
+		$tpl = new Savant3();
 
-		} else if ($obj instanceof Form) {
-			$attrs = self::id_and_class($obj->identifier, array($obj->group, 'form'));
-			$str = "<div $attrs>";
-			$str .= $obj->toHTML(array($this, 'disp_widget_str')) . "\n";
-			$str .= '</div>';
-			print $str;
+		if ($obj instanceof NotesTopic && $obj->summary) {
+			$tpl->title_template = $this->setup_widget($obj->title);
+			$tpl->updated = $obj->updated;
+			$tpl->posts = $obj->posts;
+			if (is_null($obj->firstposter)) {
+				$tpl->firstposter_template = $this->setup_widget(new RegularText('User Deleted'));
+			} else {
+				$tpl->firstposter_template = $this->setup_widget($obj->firstposter);
+			}
+			if (is_null($obj->lastposter)) {
+				$tpl->lastposter_template = $this->setup_widget(new RegularText('User Deleted'));
+			} else {
+				$tpl->lastposter_template = $this->setup_widget($obj->lastposter);
+			}
+			$tpl->setTemplate('views/templates/XHTML/NotesBoardTopic.tpl.php');
+		} else if ($obj instanceof WidgetGroup) {
+
+			$tpl->contents = array_map(array($this, 'setup_widget'), $obj->contents);
+
+			if ($obj instanceof WidgetList) {
+				foreach($tpl->contents as $i => $t) {
+					if ($i % 2 == 0) {
+						$class = 'even';
+					} else {
+						$class = 'odd';
+					}
+					if ($i == 0) {
+						$class .= ' first';
+					}
+					if ($i == count($obj->contents) - 1) {
+						$class .= ' last';
+					}
+					$t->list_attributes = $class;
+				}
+			}
+
+			if ($obj instanceof Form) {
+				$tpl->tag_attributes = self::id_and_class($obj->identifier, array($obj->group, 'form'));
+				$tpl->method = strtolower($obj->method);
+				$tpl->action = $obj->action;
+
+				$tpl->setTemplate('views/templates/XHTML/Form.tpl.php');
+
+				if ($obj instanceof EditBox) {
+					$tpl->rows = $obj->rows;
+					$tpl->columns = $obj->columns;
+					$tpl->text = $obj->text->message;
+					//TODO This line should be the responsibility of edit.php, not this object
+					$tpl->otherinputs_template = $this->setup_widget(new HiddenInput('part', 1));
+					$tpl->button_template = $this->setup_widget(new SubmitInput('Change Plan'));
+
+					$tpl->setTemplate('views/templates/XHTML/EditBox.tpl.php');
+				}
+			} else if ($obj instanceof FormItemSet) {
+				$tpl->tag_attributes = self::id_and_class($obj->identifier, array($obj->group, 'formitemset'));
+				$tpl->setTemplate('views/templates/XHTML/FormItemSet.tpl.php');
+			} else if ($obj instanceof AutoRead) {
+				$tpl->tag_attributes = self::id_and_class($obj->identifier, array($obj->group, 'formitemset'));
+				$tpl->level_link_template = $this->setup_widget($obj->link);
+				// Setting the class this way is kinda sketchy, we should really handle classes better
+				$tpl->level_link_template->tag_attributes .= ' class="autoreadlink"';
+				$tpl->markasread_template = $this->setup_widget($obj->markasread_link);
+				$tpl->markasread_template->tag_attributes .= " onclick =\"return confirm('Are you sure you\'d like to mark all the Plans on level " . $obj->priority . " as read?')\"";
+				$tpl->setTemplate('views/templates/XHTML/AutoRead.tpl.php');
+			} else if ($obj instanceof NotesBoard) {
+				$tpl->tag_attributes = self::id_and_class($obj->identifier, $obj->group);
+				$tpl->setTemplate('views/templates/XHTML/NotesBoard.tpl.php');
+			} else if ($obj instanceof WidgetList) {
+				$tpl->tag_attributes = self::id_and_class($obj->identifier, $obj->group);
+				$tpl->setTemplate('views/templates/XHTML/WidgetList.tpl.php');
+			} else if ($obj instanceof WidgetGroup) {
+				$tpl->tag_attributes = self::id_and_class($obj->identifier, $obj->group);
+				$tpl->setTemplate('views/templates/XHTML/WidgetGroup.tpl.php');
+			}
+			return $tpl; //TODO remove
 
 		} else if ($obj instanceof SubmitInput) {
-			$attrs = 'type="submit" class="submitinput"';
+			$tpl->tag_attributes = 'class="submitinput"';
 			if ($obj->name) {
-				$attrs .= " name=\"$obj->name\"";
+				$tpl->tag_attributes .= " name=\"$obj->name\"";
 			}
-			echo "<button $attrs>$obj->value</button>";
+
+			$tpl->text = $obj->value;
+
+			$tpl->setTemplate('views/templates/std/FormButton.tpl.php');
+
 		} else if ($obj instanceof FormItem) {
 
 			if ($item->identifier) {
@@ -228,256 +228,128 @@ class XHTMLInterface implements DisplayInterface {
 				$item_id = $item_id . $num;
 			}
 
-			if ($obj->title != null) {
-				$title = '<label class="prompt_label" for="' . $item_id . '">';
-				$title .= $obj->title;
-				$title .= ' </label>';
+			$tpl->label = $obj->title;
+			$tpl->description = $obj->description;
+			$tpl->prompt_id = $item_id;
+
+			$tpl->type = $obj->type;
+			$tpl->name = $obj->name;
+			$tpl->value = $obj->value;
+
+			if (isset($obj->checked)) {
+				$tpl->checked = $obj->checked;
 			}
-			$obj->html_attributes = " id=\"$item_id\"";
-			$item .= $obj->toHTML();
-			if ($obj->description != null) {
-				$desc = '<span class="prompt_description">';
-				$desc .= $obj->description;
-				$desc .= '</span>';
+			if (isset($obj->rows)) {
+				$tpl->rows = $obj->rows;
+			}
+			if (isset($obj->cols)) {
+				$tpl->cols = $obj->cols;
 			}
 
-			$strbeg = "\t" . '<div class="form_prompt ' . strtolower(get_class($obj)) . '">';
+			$tpl->tag_attributes .= ' class="form_prompt ' . strtolower(get_class($obj)) . '"';
 
-			$strend = '</div>';
 			if ($obj instanceof HiddenInput) {
-				$str = $item;
+				$tpl->setTemplate('views/templates/std/FormInput.tpl.php');
 			} else if ($obj instanceof TextInput || $obj instanceof TextareaInput || $obj instanceof PasswordInput) {
-				$str = $strbeg . $title . $item . $desc . $strend;
+				$tpl->setTemplate('views/templates/XHTML/FormElement_title_prepend.tpl.php');
 			} else {
-				$str = $strbeg . $item . $title . $desc . $strend;
+				$tpl->setTemplate('views/templates/XHTML/FormElement.tpl.php');
 			}
-			print($str . "\n");
 
 		} else if ($obj instanceof Hyperlink) {
-			$obj->html_attributes = self::id_and_class($obj->identifier, $obj->group);
-			print (strtolower($obj->toHTML()) . "\n");
+			$tpl->href = htmlentities(html_entity_decode($obj->href));
+			$tpl->description = $obj->description;
+			$tpl->tag_attributes = self::id_and_class($obj->identifier, $obj->group);
+			$tpl->setTemplate('views/templates/std/Hyperlink.tpl.php');
 
 		} else if ($obj instanceof Secret) {
-			print("<div class='secret'>\n");
-			print("\t<span class='secret_id'>$obj->secret_id</span>\n");
-			print("\t<span class='date'>$obj->date</span>\n");
-			print($obj->message);
-			print("</div>");
+			$tpl->date = $obj->date;
+			$tpl->secret_id = $obj->secret_id;
+			$tpl->message = $obj->message;
+			$tpl->setTemplate('views/templates/XHTML/Secret.tpl.php');
 
 		} else if ($obj instanceof PlanContent) {
-			$this->disp_plan($obj);
+			$tpl->username = $obj->username;
+			$tpl->lastupdate = $obj->lastupdate;
+			$tpl->lastlogin = $obj->lastlogin;
+			$tpl->planname = $obj->planname;
+			$tpl->plan_template = $this->setup_widget($obj->text);
+
+			if ($obj->addform) {
+				$tpl->addform_template = $this->setup_widget($obj->addform);
+			} else {
+				$tpl->addform_template = new Savant3();
+				$tpl->addform_template->setTemplate('views/templates/std/Empty.tpl.php');
+			}
+
+			$tpl->setTemplate('views/templates/XHTML/Plan.tpl.php');
 
 		} else if ($obj instanceof PlanText) {
-			print('<div class="plan_text">');
-			print $obj->toHTML();
-			print('</div>');
+			$tpl->text = $obj->message;
+			$tpl->setTemplate('views/templates/XHTML/PlanText.tpl.php');
 
 		} else if ($obj instanceof HeadingText) {
-			print ('<h' . $obj->sublevel . '>' . $obj->message . '</h' . $obj->sublevel . '>');
+			$tpl->tag = 'h' . $obj->sublevel;
+			$tpl->text = $obj->message;
+			$tpl->setTemplate('views/templates/std/GenericTag.tpl.php');
 
 		} else if ($obj instanceof RegularText) {
-			print ("\t<span>" . $obj->toHTML() . "</span>\n");
+			$tpl->tag = 'span';
+			$tpl->text = $obj->message;
+			$tpl->setTemplate('views/templates/std/GenericTag.tpl.php');
 
 		} else if ($obj instanceof Text) {
-			$class = strtolower($obj->group);
-			print ("\t<div class=\"$class\">\n");
-			print ("\t<span class=\"title\">" . $obj->title . "</span>\n");
-			print ("\t<span class=\"body\">" . $obj->toHTML() . "</span>\n");
-			print ("\t</div>\n");
+			$tpl->tag_attributes = self::id_and_class($obj->identifier, $obj->group);
+			$tpl->title = $obj->title;
+			$tpl->message = $obj->message;
+			$tpl->setTemplate('views/templates/XHTML/Text.tpl.php');
 
-		} else if ($obj instanceof FormItemSet) {
-			$attrs = self::id_and_class($obj->identifier, array($obj->group, 'formitemset'));
-			print ("\n<div $attrs>");
-			if ($obj->title != null) {
-				$title = '<span class="promptset_label">';
-				$title .= $obj->title;
-				$title .= ' </span>';
-				echo $title;
-			}
-			foreach($obj->contents as $widg) {
-				$this->disp_widget($widg, null);
-			}
-			print ("\n</div>\n");
-		} else if ($obj instanceof NotesBoard) {
-			$attrs = self::id_and_class($obj->identifier, $obj->group);
-			// Notes can have a table, who gives a shit?
-			print ("\n<table $attrs>");
-			print ('<tr class="heading"><th>Title</th><th>Newest Message</th><th># Posts</th><th>First</th><th>Last</th></tr>');
-			foreach ($obj->contents as $i => $widg) {
-				if ($i % 2 == 0) {
-					$class = 'even';
-				} else {
-					$class = 'odd';
-				}
-				print("\n<tr class=\"$class\"><td>");
-				$this->disp_widget($widg->title);
-				print("\n</td><td>");
-?>
-				<span class="long"><?php echo date(LONG_DATE_FORMAT, $widg->updated) ?></span>
-				<span class="short"><?php echo date(SHORT_DATE_FORMAT, $widg->updated) ?></span>
-<?php
-				print("\n</td><td>");
-				print($widg->posts);
-				print("\n</td><td>");
-				$this->disp_widget($widg->firstposter);
-				print("\n</td><td>");
-				$this->disp_widget($widg->lastposter);
-				print("\n</td></tr>");
-			}
-			print ("\n</table>\n");
 		} else if ($obj instanceof NotesPost) {
-			print("\n<div class=\"notes_post\">");
-			print("\n\t<div class=\"notes_post_header\">");
-			print('<div class="post_id">' . $obj->id . '</div>');
-			print('<div class="post_author">' . $this->disp_widget_str($obj->poster) . '</div>');
-			print('<div class="post_date"><span class="long">' . date(LONG_DATE_FORMAT, $obj->date)
-				. '</span><span class="short">' . date(SHORT_DATE_FORMAT, $obj->date) . '</span></div>');
+			$tpl->post_id = $obj->id;
+			$tpl->date = $obj->date;
+			$tpl->post_author_template = $this->setup_widget($obj->poster);
+			$tpl->score = $obj->score;
+			$tpl->votes = $obj->votes;
+			$tpl->text = $obj->contents;
 
-			print('<div class="post_votes">');
-			print("($obj->score) ($obj->votes Votes)");
-			print('</div>');
-
-			print("\n\t</div>");
-			print("\n\t<div class=\"notes_post_content\">");
-			print($obj->contents);
-			print("\n\t</div>");
-			print("\n</div>");
-		} else if ($obj instanceof WidgetList) {
-			$attrs = self::id_and_class($obj->identifier, $obj->group);
-			print ("\n<ul $attrs>");
-			foreach($obj->contents as $i => $widg) {
-				if ($i % 2 == 0) {
-					$class = 'even';
-				} else {
-					$class = 'odd';
-				}
-				if ($i == 0) {
-					$class .= ' first';
-				}
-				if ($i == count($obj->contents) - 1) {
-					$class .= ' last';
-				}
-
-				if ($class) {
-					print ("\n<li class=\"$class\">");
-				} else {
-					print ("\n<li>");
-				}
-
-				$this->disp_widget($widg, null);
-				print ("</li>");
-			}
-			print ("\n</ul>\n");
-		} else if ($obj instanceof WidgetGroup) {
-			$attrs = self::id_and_class($obj->identifier, $obj->group);
-			print ("\n<div $attrs>");
-			foreach($obj->contents as $widg) {
-				$this->disp_widget($widg, null);
-			}
-			print ("\n</div>\n");
+			$tpl->setTemplate('views/templates/XHTML/NotesPost.tpl.php');
 		} else if ($obj instanceof NotesNavigation) {
-			$attrs = self::id_and_class($obj->identifier, array($obj->group, 'notes_nav'));
-			echo "<div $attrs>\n";
+			$tpl->tag_attributes = self::id_and_class($obj->identifier, array($obj->group, 'notes_nav'));
 			if ($obj->newest instanceof Hyperlink) {
-				$obj->newest->description = '&lt;&lt;';
-				$obj->newest->group = 'newest';
-				$this->disp_widget($obj->newest, null);
+				$tpl->newest = $this->setup_widget($obj->newest);
+				$tpl->newest->description = '&lt;&lt;';
 			} else {
-				echo '<span class="newest">&lt;&lt;</span>';
+				$tpl->newest = new Savant3();
+				$tpl->newest->setTemplate('views/templates/std/GenericTag.tpl.php');
+				$tpl->newest->text = '&lt;&lt;';
+				$tpl->newest->tag = 'span';
 			}
 			foreach (array('even_newer', 'newer', 'current', 'older', 'even_older') as $linkname) {
 				if ($linkname == 'current') {
-					echo '<span class="current">' . $obj->current->toHTML() . '</span>';
+					$tpl->current = $this->setup_widget($obj->current);
 				} else if ($obj->$linkname instanceof Hyperlink) {
-					echo $obj->$linkname->toHTML();
+					$tpl->$linkname = $this->setup_widget($obj->$linkname);
 				} else {
-					echo "<span class=\"$linkname disabled\"></span>";
+					$tpl->$linkname = new Savant3();
+					$tpl->$linkname->setTemplate('views/templates/std/GenericTag.tpl.php');
+					$tpl->$linkname->text = '_';
+					$tpl->$linkname->tag = 'span';
 				}
 			}
 			if ($obj->oldest instanceof Hyperlink) {
-				$obj->oldest->description = '&gt;&gt;';
-				$obj->newest->group = 'oldest';
-				$this->disp_widget($obj->oldest, null);
+				$tpl->oldest = $this->setup_widget($obj->oldest);
+				$tpl->oldest->description = '&gt;&gt;';
 			} else {
-				echo '<span class="oldest">&gt;&gt;</span>';
+				$tpl->oldest = new Savant3();
+				$tpl->oldest->setTemplate('views/templates/std/GenericTag.tpl.php');
+				$tpl->oldest->text = '&gt;&gt;';
+				$tpl->oldest->tag = 'span';
 			}
-			echo "</div>\n";
+			$tpl->setTemplate('views/templates/XHTML/NotesNavigation.tpl.php');
 		}
+
+		return $tpl;
 	}
 
-	/**
-	 * Poor foresight led to disp_widget printing everything directly instead of
-	 * outputting a string.  This is a simple hack that uses output buffering to
-	 * get around that fact.
-	 * @param mixed $value See {@link disp_widget()}
-	 * @return string The widget as HTML
-	 */
-	public function disp_widget_str($value) {
-		ob_start();
-		$this->disp_widget($value);
-		$retval = ob_get_contents();
-		ob_end_clean();
-		return $retval;
-	}
-	protected function disp_plan($plan) 
-	{
-?>
-	<div id="header">
-		<ul>
-		<li class="username"><span class="title">Username:</span> <span class="value"><?php echo $plan->username ?></span></li>
-		<li class="lastupdated"><span class="title">Last Updated:</span> 
-			<span class="value">
-				<span class="long"><?php echo date(LONG_DATE_FORMAT, $plan->lastupdate) ?></span>
-				<span class="short"><?php echo date(SHORT_DATE_FORMAT, $plan->lastupdate) ?></span>
-			</span>
-		</li>
-		<li class="lastlogin"><span class="title">Last Login:</span> 
-			<span class="value">
-				<span class="long"><?php echo date(LONG_DATE_FORMAT, $plan->lastlogin) ?></span>
-				<span class="short"><?php echo date(SHORT_DATE_FORMAT, $plan->lastlogin) ?></span>
-			</span>
-		</li>
-
-		<li class="planname"><span class="title">Name:</span> <span class="value"><?php echo $plan->planname ?></span></li>
-		</ul>
-	</div>
-
-<?php
-		$this->disp_widget($plan->text, null);
-	/*
-	if ($plan->text->markup)
-	print($plan->text->message);
-	else
-	print("Uh oh! Plan markup is screwy! This is a bug.\n");
-	 */
-
-		if ($plan->addform) {
-			$this->disp_widget($plan->addform, NULL);
-		}
-	}
-	protected function disp_editbox($box) 
-	{
-?><div id="editform">
-	<form action="<?php echo strtolower($box->action)
-	?>" method="<?php echo strtolower($box->method)
-?>"><div>
-<textarea id="edit_textarea" rows="<?php echo $box->rows
-?>" cols="<?php echo $box->columns
-?>" 
-		name="plan" onkeyup="javascript:checkPlanLength();">
-<?php
-print ($box->text->message);
-?>
-		</textarea><br />
-		<input type="hidden" name="part" value="1" />
-		<div id="edit_fill_meter">
-			<div class="fill_bar"><div class="full_amount"></div></div>
-			<div class="fill_percent">0%</div>
-		</div>
-<?php $this->disp_widget(new SubmitInput('Change Plan'), null); ?>
-	</div></form></div>
-<?php
-
-	}
 }
 ?>

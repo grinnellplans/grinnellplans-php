@@ -10,6 +10,7 @@
 /* Float items within a set next to each other */
 .formitemset .form_prompt {
 	float: left;
+	clear: none;
 }
 /* But in general, clear prompts to their own line */
 .formitemset, .form_prompt {
@@ -23,6 +24,11 @@
 /* float the Read button next to the finger form */
 #finger .form_prompt {
 	float: left;
+}
+/* float the submit button next to the add plan form */
+#autoreadadd .submitinput {
+	float: left;
+	clear:none;
 }
 
 /* Styling for the fill meter when editing */
@@ -58,7 +64,7 @@
 	padding-bottom: 0.3em;
 }
 .alertmessage .title {
-	background: url("../../images/icons/exclamation.png") no-repeat left center;
+	background: url("../images/icons/famfamfam/exclamation.png") no-repeat left center;
 }
 .infomessage .body, .requestmessage .body {
 	padding-left: 20px;
@@ -67,10 +73,10 @@
 	display: none;
 }
 .infomessage .body {
-	background: url("../../images/icons/information.png") no-repeat left center;
+	background: url("../images/icons/famfamfam/information.png") no-repeat left center;
 }
 .requestmessage .body {
-	background: url("../../images/icons/help.png") no-repeat left center;
+	background: url("../images/icons/famfamfam/help.png") no-repeat left center;
 }
 
 /* Float the poll options so the result numbers will line up with them */

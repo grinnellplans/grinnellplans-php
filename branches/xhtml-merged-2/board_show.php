@@ -98,13 +98,14 @@ LIMIT " . $rowoffset . "," . NOTES_THREADS_PER_PAGE;
 	while ($new_row = mysql_fetch_row($my_result)) {
 
 		$topic = new NotesTopic('notes_topic', false);
+		$topic->summary = true;
 		$board->append($topic);
 
 		if ($new_row[4]) {
 			$topic->firstposter = new PlanLink($new_row[4]);
 		}
 		if ($new_row[5]) {
-			$topic->lastposter = new PlanLink($new_row[4]);
+			$topic->lastposter = new PlanLink($new_row[5]);
 		}
 		$topic->title = new Hyperlink('topic_link', false, 'board_messages.php?threadid=' . $new_row[0], stripslashes($new_row[1]));
 		$topic->updated = strtotime($new_row[2]);

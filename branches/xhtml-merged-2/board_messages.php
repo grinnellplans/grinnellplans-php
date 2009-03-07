@@ -179,7 +179,7 @@ else
 		$nav->older = new Hyperlink('older', false, 'board_messages.php?pagenumber=' . $tempnum . "&threadid=" . $threadid, $tempnum);
 	}
 	if ($totalmessages[0] > ($pagenumber + 2) * NOTES_MSGS_PER_PAGE) {
-		$tempnum = $pagenumber + 1;
+		$tempnum = $pagenumber + 2;
 		$nav->even_older = new Hyperlink('oldest', false, 'board_messages.php?pagenumber=' . $tempnum . "&threadid=" . $threadid, $tempnum);
 	}
 	if (floor($totalmessages[0] / NOTES_MSGS_PER_PAGE) > $pagenumber) {

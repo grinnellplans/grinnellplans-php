@@ -4,17 +4,6 @@ define('SHORT_DATE_FORMAT', 'm-d-Y g:i A');
 require_once('lib/savant/Savant3.php');
 
 /**
- * Returns the interface object that we're using for this particular interface.
- *
- * For now, every file in interfaces/ must implement this.
- * @todo At some point, get rid of this (probably by changing how interfaces are stored in the DB)
- * @return DisplayInterface
- */
-function interface_construct()
-{
-	return new XHTMLInterface();
-}
-/**
  * Gives Plans a long-needed bump into the world of CSS.
  *
  * This version is fairly
@@ -318,32 +307,36 @@ class XHTMLInterface implements DisplayInterface {
 			if ($obj->newest instanceof Hyperlink) {
 				$tpl->newest = $this->setup_widget($obj->newest);
 				$tpl->newest->description = '&lt;&lt;';
+				$tpl->navigable['newest'] = true;
 			} else {
 				$tpl->newest = new Savant3();
 				$tpl->newest->setTemplate('views/templates/std/GenericTag.tpl.php');
 				$tpl->newest->text = '&lt;&lt;';
 				$tpl->newest->tag = 'span';
+				$tpl->navigable['newest'] = false;
 			}
 			foreach (array('even_newer', 'newer', 'current', 'older', 'even_older') as $linkname) {
-				if ($linkname == 'current') {
-					$tpl->current = $this->setup_widget($obj->current);
-				} else if ($obj->$linkname instanceof Hyperlink) {
+				if ($obj->$linkname instanceof Hyperlink || $linkname == 'current') {
 					$tpl->$linkname = $this->setup_widget($obj->$linkname);
+					$tpl->navigable[$linkname] = true;
 				} else {
 					$tpl->$linkname = new Savant3();
 					$tpl->$linkname->setTemplate('views/templates/std/GenericTag.tpl.php');
 					$tpl->$linkname->text = '_';
 					$tpl->$linkname->tag = 'span';
+					$tpl->navigable[$linkname] = false;
 				}
 			}
 			if ($obj->oldest instanceof Hyperlink) {
 				$tpl->oldest = $this->setup_widget($obj->oldest);
 				$tpl->oldest->description = '&gt;&gt;';
+				$tpl->navigable['oldest'] = true;
 			} else {
 				$tpl->oldest = new Savant3();
 				$tpl->oldest->setTemplate('views/templates/std/GenericTag.tpl.php');
 				$tpl->oldest->text = '&gt;&gt;';
 				$tpl->oldest->tag = 'span';
+				$tpl->navigable['oldest'] = false;
 			}
 			$tpl->setTemplate('views/templates/XHTML/NotesNavigation.tpl.php');
 		}
@@ -351,5 +344,19 @@ class XHTMLInterface implements DisplayInterface {
 		return $tpl;
 	}
 
+}
+/**
+ * Holds an instance of the interface object that we're using for this particular interface.
+ *
+ * For now, every file in interfaces/ must implement this.
+ * @todo At some point, get rid of this (probably by changing how interfaces are stored in the DB)
+ */
+global $my_interface_name;
+$my_interface_name = 'XHTMLInterface';
+
+function interface_construct()
+{
+	global $my_interface_name;
+	return new $my_interface_name();
 }
 ?>

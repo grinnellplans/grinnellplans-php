@@ -37,27 +37,27 @@ if (!User::logged_in()) {
 		$pagenumber = $max_page;
 	}
 	if ($pagenumber > 0) {
-		$nav->newest = new Hyperlink('newest', false, 'board_show.php?pagenumber=0', '&lt;&lt;');
+		$nav->newest = new Hyperlink('notes_nav_page', false, 'board_show.php?pagenumber=0', '&lt;&lt;');
 	}
 	if ($pagenumber >= 2) {
 		$tempnum = $pagenumber - 2;
-		$nav->even_newer = new Hyperlink('newer', false, 'board_show.php?pagenumber=' . $tempnum, $tempnum);
+		$nav->even_newer = new Hyperlink('notes_nav_page', false, 'board_show.php?pagenumber=' . $tempnum, $tempnum);
 	}
 	if ($pagenumber >= 1) {
 		$tempnum = $pagenumber - 1;
-		$nav->newer = new Hyperlink('newer', false, 'board_show.php?pagenumber=' . $tempnum, $tempnum);
+		$nav->newer = new Hyperlink('notes_nav_page', false, 'board_show.php?pagenumber=' . $tempnum, $tempnum);
 	}
 	$nav->current = new RegularText($pagenumber);
 	if ($pagenumber <= $max_page - 1) {
 		$tempnum = $pagenumber + 1;
-		$nav->older = new Hyperlink('older', false, 'board_show.php?pagenumber=' . $tempnum, $tempnum);
+		$nav->older = new Hyperlink('notes_nav_page', false, 'board_show.php?pagenumber=' . $tempnum, $tempnum);
 	}
 	if ($pagenumber <= $max_page - 2) {
 		$tempnum = $pagenumber + 2;
-		$nav->even_older = new Hyperlink('older', false, 'board_show.php?pagenumber=' . $tempnum, $tempnum);
+		$nav->even_older = new Hyperlink('notes_nav_page', false, 'board_show.php?pagenumber=' . $tempnum, $tempnum);
 	}
 	if ($max_page > $pagenumber) {
-		$nav->oldest = new Hyperlink('oldest', false, 'board_show.php?pagenumber=' . $max_page, '&gt;&gt;');
+		$nav->oldest = new Hyperlink('notes_nav_page', false, 'board_show.php?pagenumber=' . $max_page, '&gt;&gt;');
 	}
 	$rowoffset = NOTES_THREADS_PER_PAGE * $pagenumber;
 

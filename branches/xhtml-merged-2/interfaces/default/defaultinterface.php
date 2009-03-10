@@ -1,99 +1,145 @@
 <?php
+define('DATE_FORMAT', 'D F jS Y, g:i A');
+require_once('lib/savant/Savant3.php');
+require_once('interfaces/base.php');
+
 /**
  * "Modern" Interface
  * The default Plans interface. Table-icious. Ick.
  */
-/*
-* Interface files must include the public function
-*   interface_disp_page(PlansPage $page)
-* which must handle a PlansPage object and everything it contains, as
-* specified in syntax-classes.php.
-*
-*/
-//DEPRECATED
-include (realpath(dirname(__FILE__) . '/../common.php'));
-//DEPRECATED
-function interface_disp_begin($foo1, $foo2, $foo3, $foo4, $foo5, $foo6, $foo7) 
-{
-}
-//DEPRECATED
-function interface_disp_end($foo1) 
-{
-	echo '';
-}
-function interface_disp_page(PlansPage $page) 
-{
-?>
-<html>
-<head>
-<META NAME="ROBOTS" CONTENT="NOARCHIVE">
-<title><?php
-	echo $page->title ?></title>  
-<link rel=stylesheet
-href="<?php
-	echo $page->stylesheet ?>">
+class LegacyDefaultInterface extends BaseInterface {
+	protected $page;
 
-<?php
-	disp_local_jsfiles($page);
-?>
-</head>
-<body>
+	public function display_page(PlansPage $page)
+	{
+		$this->page = $page;
+		$tpl = new Savant3();
 
-<table width="100%" cellspacing="0" cellpadding="0"
-class="main">
-<?php
-	//print the mainpanel
-	if ($page->mainpanel) disp_mainpanel($page);
-?>
-<td valign="top">
+		$tpl->page_title = $page->title;
+		$tpl->stylesheets = $page->stylesheets;
+		$tpl->scripts = $this->get_local_jsfiles($page);
+		$tpl->body_id = 'planspage_' . strtolower($page->identifier);
+		$tpl->body_class = strtolower($page->group);
 
-<br />
+		if ($page->group == 'Preferences' && $page->identifier != 'autoreadedit') {
+			$tpl->center = true;
+		} else {
+			$tpl->center = false;
+		}
 
-<table>
+		$tpl->mainpanel_template = $this->setup_mainpanel($page);
 
-<tr><td>
+		foreach ($page->contents as $w) {
+			//echo get_class($w);
+		}
+		$tpl->contents = array_map(array($this, 'setup_widget'), $page->contents);
 
-<?php
-	if ($page->group == 'Preferences' && $page->identifier != 'autoreadedit') {
-		echo '<center>';
-		$print_center = true;
+		$tpl->footer_template = $this->setup_footer($page->footer);
+
+		$tpl->display('views/templates/legacy/PlansPage.tpl.php');
 	}
-	// display the widgets in the contents of the page
-	array_walk($page->contents, 'disp_widget');
+	protected function setup_mainpanel(PlansPage $page) {
+		$tpl = new Savant3();
 
-	if ($print_center) {
-		echo '</center>';
+		$panel = $page->mainpanel;
+		$tpl->panel = $panel;
+		$tpl->links_template = $this->setup_links($panel->links);
+		$tpl->autoread_template = $this->setup_autoreads($panel->autoreads, $page->autoreadpriority);
+
+		$tpl->setTemplate('views/templates/legacy/Mainpanel.tpl.php');
+		return $tpl;
 	}
-	echo "</td></tr></table></td></tr></table>";
-	if ($page->footer) disp_footer($page->footer);
-	echo "\n\t</body>\n\n\n\n</html>";
-} //function interface_disp_page
-/*
-* disp_local_jsfiles
-*
-* Examines the page identifier and prints includes for any javascript we
-* traditionally use on the page.
-*/
-function disp_local_jsfiles($page) 
-{
-	$jsfile_arr = array();
-	// Populate the array with any files we need
-	switch ($page->identifier) {
+	protected function setup_links($links) {
+		$tpl = $this->setup_widget($links);
+		foreach ($tpl->contents as $t) {
+			$t->description = strtolower($t->description);
+			$t->tag_attributes = ' class="main"';
+		}
+		$tpl->setTemplate('views/templates/legacy/Links.tpl.php');
+		return $tpl;
+	}
+	protected function setup_autoreads(WidgetList $autoreads, $lvl)
+	{
+		$tpl = new Savant3();
+
+		foreach ($autoreads->contents as $ar) {
+			$t = new Savant3();
+			$tpl->contents[] = $t;
+			$t->level_link = $ar->link;
+			$t->markasread_link = $ar->markasread_link;
+			if ($ar->priority == $lvl) {
+				$t->current = true;
+			} else {
+				$t->current = false;
+			}
+			$t->priority = $ar->priority;
+			$t->names = $ar->contents;
+
+			$t->setTemplate('views/templates/legacy/AutoRead.tpl.php');
+		}
+		$tpl->setTemplate('views/templates/legacy/AutoReads.tpl.php');
+		return $tpl;
+	}
+	protected function get_local_jsfiles($page) 
+	{
+		$jsfile_arr = array();
+		// Populate the array with any files we need
+		switch ($page->identifier) {
 		case 'edit':
 			$jsfile_arr[] = 'edit.js';
 			break;
+		}
+		return $jsfile_arr;
 	}
-	// Now print them to the page
-	foreach($jsfile_arr as $jsfile) {
-		echo "<script language=\"javascript\" type=\"text/javascript\" src=\"$jsfile\"></script>";
+	protected function setup_footer($footer) 
+	{
+		$tpl = new Savant3();
+
+		$tpl->doyouread_link_template = $this->setup_widget($footer->doyouread);
+		$tpl->legal_template = $this->setup_widget($footer->legal);
+
+		$tpl->setTemplate('views/templates/legacy/Footer.tpl.php');
+		return $tpl;
 	}
-}
-//TODO
-function disp_widget($value, $key) 
-{
-	switch (get_class($value)) {
+
+	protected static function id_and_class($id, $class) {
+		$out = array();
+		if ($id != null) {
+			$out[] = 'id="'.$id.'"';
+		}
+
+		if (!is_array($class)) {
+			$class = array($class);
+		}
+		$class = array_filter($class);
+		if ($class) {
+			$out[] = 'class="'.implode(' ', $class).'"';
+		}
+		return ' ' . implode(' ', $out);
+	}
+
+	protected function setup_widget(Widget $obj) {
+		$tpl = parent::setup_widget($obj);
+
+		if ($obj instanceof NotesTopic && $obj->summary) {
+			$tpl->title_template = $this->setup_widget($obj->title);
+			$tpl->updated = $obj->updated;
+			$tpl->posts = $obj->posts;
+			if (is_null($obj->firstposter)) {
+				$tpl->firstposter_template = $this->setup_widget(new RegularText('User Deleted'));
+			} else {
+				$tpl->firstposter_template = $this->setup_widget($obj->firstposter);
+			}
+			if (is_null($obj->lastposter)) {
+				$tpl->lastposter_template = $this->setup_widget(new RegularText('User Deleted'));
+			} else {
+				$tpl->lastposter_template = $this->setup_widget($obj->lastposter);
+			}
+			$tpl->setTemplate('views/templates/XHTML/NotesBoardTopic.tpl.php');
+		} else if ($obj instanceof WidgetGroup) {
+
+			/*
 		case 'Form':
-			print('<table><form method="' . $value->method . '" action="' . $value->action . '">');
 			// treat certain forms differently
 			if ($value->identifier == 'autoreadlistform') {
 				foreach($value->contents as $item) {
@@ -104,293 +150,193 @@ function disp_widget($value, $key)
 				break;
 			}
 
-			foreach($value->contents as $item) {
-				$special = ($item->type == 'hidden' || $item->type == 'submit');
-				if (!$special) print("\n\t<tr><td>");
-				disp_widget($item, null);
-				if (!$special) print("</td></tr>");
-			}
-			print("\n</form></table>");
-			print ($str);
 			break;
-
-		case 'FormItem':
-			print($value->toHTML() . ' ');
-			break;
-
-		case 'Hyperlink':
-			print (strtolower($value->toHTML()) . "\n");
-			break;
-
-		case 'InfoText':
-			print ("\t<span class=\"info\">\n");
-			if ($value->title && $value->title != '') print ("\t<span class=\"infotitle\">" . $value->title . "</span>\n");
-			print ("\t" . $value->toHTML() . "\n");
-			print ("\t</span>\n");
-			break;
-
-		case 'RegularText':
-			print ($value->toHTML());
-			break;
-
-		case 'RequestText':
-			print ("\t<span class=\"question\">\n");
-			print ("\t" . $value->toHTML() . "\n");
-			print ("\t</span>\n");
-			break;
-
-		case 'HeadingText':
-			print ('<h' . ($value->sublevel+1) . '>' . $value->message . '</h' . ($value->sublevel+1) . '>');
-			break;
-
-		case 'AlertText':
-			print ("\t<span class=\"alert\">\n");
-			print ("\t" . $value->toHTML() . "\n");
-			print ("\t</span>\n");
-			break;
-
-		case 'EditBox':
-			disp_editbox($value);
-			break;
-
-		case 'PlanContent':
-			disp_plan($value);
-			break;
-
-		case 'WidgetGroup':
-			foreach($value->contents as $widg) {
-				disp_widget($widg, null);
-			}
-			break;
-		case 'WidgetList':
-			// treat the alphabet on the autoread edit page differently
-			if ($value->identifier == 'autoread_alphabet') {
-				foreach($value->contents as $widg) {
-					disp_widget($widg, null);
+			 */
+			if ($obj instanceof Form) {
+				//check, mostly
+				foreach ($obj->contents as $i => $item) {
+					if ($item instanceof SubmitInput) {
+						$tpl->submit_button = $item;
+					}
 				}
-				break;
+
+				$tpl->setTemplate('views/templates/legacy/Form.tpl.php');
+
+				if ($this->page->identifier == 'planname') {
+					$tpl = $this->oneline_form($obj, $tpl);
+				}
+				if ($obj instanceof EditBox) {
+					$tpl->setTemplate('views/templates/legacy/EditBox.tpl.php');
+				}
+			} else if ($obj instanceof FormItemSet) {
+				$tpl->tag_attributes = self::id_and_class($obj->identifier, array($obj->group, 'formitemset'));
+				foreach ($tpl->contents as $template) {
+					$template->setTemplate('views/templates/legacy/FormElement_no_row.tpl.php');
+				}
+				$tpl->setTemplate('views/templates/legacy/FormItemSet.tpl.php');
+			} else if ($obj instanceof NotesBoard) {
+				$tpl->tag_attributes = self::id_and_class($obj->identifier, $obj->group);
+				$tpl->setTemplate('views/templates/XHTML/NotesBoard.tpl.php');
+			} else if ($obj instanceof WidgetList) {
+				//check
+				$tpl->tag_attributes = self::id_and_class($obj->identifier, $obj->group);
+				$tpl->setTemplate('views/templates/XHTML/WidgetList.tpl.php');
+				// The Preferences page
+				if ($this->page->identifier == 'prefs') {
+					$part2 = false;
+					foreach ($obj->contents as $i => $item) {
+						$t = $tpl->contents[$i];
+						if ($part2) {
+							$t->tag_attributes = ' class="lev2"';
+						} else if ($item instanceof HeadingText) {
+							$t->tag_attributes = ' class="main"';
+							$t->tag = 'p';
+							$t->setTemplate('views/templates/std/GenericTag.tpl.php');
+							$part2 = true;
+						} else {
+							$t->tag_attributes = ' class="main"';
+						}
+					}
+					$tpl->setTemplate('views/templates/legacy/WidgetList.tpl.php');
+				}
+				// The autoread management pages
+				else if ($value->identifier == 'autoread_alphabet') {
+					$tpl->setTemplate('views/templates/XHTML/WidgetGroup.tpl.php');
+				}
+			} else if ($obj instanceof WidgetGroup) {
+				//check
+				$tpl->setTemplate('views/templates/XHTML/WidgetGroup.tpl.php');
 			}
-			print ("\n<table" . get_id_or_class($widget) . ">");
-			foreach($value->contents as $widg) {
-				print ("\n<tr><td>");
-				disp_widget($widg, null);
-				print ("</td></tr>");
+			return $tpl; //TODO remove
+
+		} else if ($obj instanceof SubmitInput) {
+			// We handle this elsewhere, so print nothing here
+			$tpl->setTemplate('views/templates/std/Empty.tpl.php');
+		} else if ($obj instanceof FormItem) {
+
+			if ($obj instanceof HiddenInput) {
+				$tpl->setTemplate('views/templates/std/FormInput.tpl.php');
+			} else if ($obj instanceof TextInput || $obj instanceof TextareaInput || $obj instanceof PasswordInput) {
+				$tpl->setTemplate('views/templates/legacy/FormElement_title_prepend.tpl.php');
+			} else {
+				$tpl->setTemplate('views/templates/legacy/FormElement.tpl.php');
 			}
-			print ("\n</table>\n");
-			break;
 
-		default:
-			//foobar
-			break;
-		}
-}
+		} else if ($obj instanceof Hyperlink) {
+			//check
+			$tpl->description = strtolower($obj->description);
+			$tpl->setTemplate('views/templates/std/Hyperlink.tpl.php');
 
-/**
- * Get the string of id and/or class properties for a widget,
- * depending on its settings.
- *
- * @param Widget
- * @return string
- * @todo move this somewhere common
- */
-function get_id_or_class($widget) {
-	$id = $widget->identifier;
-	$class = $widget->group;
-	$str = '';
-	if ($id) {
-		$str .= " id='$id'";
-	}
-	if ($class) {
-		$str .= " class='$class'";
-	}
-	return $str;
-}
+		} else if ($obj instanceof Secret) {
+			$tpl->date = $obj->date;
+			$tpl->secret_id = $obj->secret_id;
+			$tpl->message = $obj->message;
+			$tpl->setTemplate('views/templates/XHTML/Secret.tpl.php');
 
-function disp_footer($footer) 
-{
-	//TODO
-	if ($footer->doyouread) {
-		echo "Do you read " . $footer->doyouread->toHTML() . ", who just updated?<hr>\t<hr>\n";
-	}
-	echo "\n\n\t<p style=\"font-size: 80%\">\n\n";
-	if ($footer->legal) {
-		echo "" . $footer->legal->toHTML() . "\n";
-	}
-}
-function disp_mainpanel($page) 
-{
-?>
-<tr>
-<td valign="top" align="left" class="left" width="12%">
-<table class="mainpanel"><tr><td>
-<?php
-	$panel = $page->mainpanel;
-	// print the logo
-	echo "<p class=\"logo\">&nbsp;</p>";
-	// print the finger form
-	if ($panel->fingerbox) {
-?>
-
-<Form action="<?php echo $panel->fingerbox->action
-?>" method="<?php echo $panel->fingerbox->method
-?>">
-<?php
-		foreach($panel->fingerbox->contents as $item) {
-			print ($item->toHTML() . "\n");
-			if ($item->name == "searchname") echo "<br>\n";
-		}
-?></form>
-<table class="lowerpanel">
-<?php
-	}
-	// print the user's links
-	if ($panel->requiredlinks) disp_links($panel);
-	// print the autoread
-	if ($panel->autoreads) disp_autoread($panel->autoreads, $page->url, $page->autoreadpriority);
-?>
-
-
-
-
-</table>
-</td></tr></table>
-</td>
-<?php
-}
-function disp_links($panel) 
-{
-	$front = "\n<tr>\n<td><p class=\"imagelev1\">&nbsp;</p></td><td></td><td></td>\n<td>";
-	$end = "</td>\n</tr>\n"; // TODO do we want a class div around these?
-	// print out the links
-	if ($panel->requiredlinks) for ($i = 0; ($l = $panel->requiredlinks[$i]); $i++) {
-		$l->html_attributes = ' class="main"';
-		$l->description = strtolower($l->description); //TODO necessary?
-		if (strtolower($l->description) == 'log out') $logout = $l;
-		else echo $front . $l->toHTML() . $end;
-	}
-	if ($panel->optionallinks) for ($i = 0; ($l = $panel->optionallinks[$i]); $i++) {
-		$l->html_attributes = ' class="main"';
-		echo $front . $l->toHTML() . $end;
-	}
-	if ($logout) echo $front . $logout->toHTML() . $end;
-?>
-<tr><td><br></td><td><br></td><td><br></td><td><br></td></tr>
-
-<?php
-}
-function disp_autoread($autoreads, $myurl, $privl) 
-{
-?>
-<tr><td><p class="imagelev1">&nbsp;</p></td><td></td><td></td>
-
-<td><p class="main">auto read list</p></td>
-</tr>
-
-<?php
-	echo "</table>\n";
-	echo "<table>\n";
-	$front = "<tr><td></td><td></td><td><p class=\"imagelev3\">&nbsp;</p></td>" . "\n<td>";
-	$end = "</td></tr>\n";
-	foreach($autoreads as $ar) {
-                $priority = $ar->priority;
-                $new_url = "setpriv.php";
-		$new_url = add_param($new_url, 'myprivl', $priority);
-		echo '<tr><td></td><td><p class="imagelev2' . '">&nbsp;</p></td><td></td>' . "\n";
-		echo '<td><a href="' . $new_url . '" class="lev2' . '">level ' . $priority . '</a>' . "\n</td>\n";
-		// If this is the current autoread level
-		if ($priority == $privl) {
-			// Print the clear button
-			echo '<td><a onClick =" ' . " return confirm('Are you sure you\'d like to mark all the Plans on level " . $priority . " as read?')" . '" href="setpriv.php?mark_as_read=1">X</a></td></tr>' . "\n";
-			// now print the plans on this autoread level
-			foreach($ar->contents as $item) {
-				$item->html_attributes = ' class="lev3"';
-				echo $front . $item->toHTML() . $end;
+		} else if ($obj instanceof PlanContent) {
+			//check
+			if ($obj->addform) {
+				$tpl->addform_present = true;
+				$tpl->addform_template = $this->oneline_form($obj->addform, $tpl->addform_template);
+				$tpl->addform_template->setTemplate('views/templates/legacy/addform.tpl.php');
+			} else {
+				$tpl->addform_present = false;
 			}
-		} else {
-			echo "</tr>";
+			$tpl->setTemplate('views/templates/legacy/Plan.tpl.php');
+		} else if ($obj instanceof PlanText) {
+			//check
+			$tpl->setTemplate('views/templates/legacy/PlanText.tpl.php');
+
+		} else if ($obj instanceof HeadingText) {
+			$tpl->tag = 'h' . ($obj->sublevel + 1);
+			$tpl->text = $obj->message;
+			$tpl->setTemplate('views/templates/std/GenericTag.tpl.php');
+
+		} else if ($obj instanceof RegularText) {
+			$tpl->tag = 'span';
+			$tpl->text = $obj->message;
+			$tpl->setTemplate('views/templates/std/GenericTag.tpl.php');
+
+		} else if ($obj instanceof Text) {
+			$tpl->tag_attributes = self::id_and_class($obj->identifier, $obj->group);
+			$tpl->title = $obj->title;
+			$tpl->message = $obj->message;
+			$tpl->setTemplate('views/templates/XHTML/Text.tpl.php');
+
+		} else if ($obj instanceof NotesPost) {
+			$tpl->post_id = $obj->id;
+			$tpl->date = $obj->date;
+			$tpl->post_author_template = $this->setup_widget($obj->poster);
+			$tpl->score = $obj->score;
+			$tpl->votes = $obj->votes;
+			$tpl->text = $obj->contents;
+
+			$tpl->setTemplate('views/templates/XHTML/NotesPost.tpl.php');
+		} else if ($obj instanceof NotesNavigation) {
+			$tpl->tag_attributes = self::id_and_class($obj->identifier, array($obj->group, 'notes_nav'));
+			if ($obj->newest instanceof Hyperlink) {
+				$tpl->newest = $this->setup_widget($obj->newest);
+				$tpl->newest->description = '&lt;&lt;';
+				$tpl->navigable['newest'] = true;
+			} else {
+				$tpl->newest = new Savant3();
+				$tpl->newest->setTemplate('views/templates/std/GenericTag.tpl.php');
+				$tpl->newest->text = '&lt;&lt;';
+				$tpl->newest->tag = 'span';
+				$tpl->navigable['newest'] = false;
+			}
+			foreach (array('even_newer', 'newer', 'current', 'older', 'even_older') as $linkname) {
+				if ($obj->$linkname instanceof Hyperlink || $linkname == 'current') {
+					$tpl->$linkname = $this->setup_widget($obj->$linkname);
+					$tpl->navigable[$linkname] = true;
+				} else {
+					$tpl->$linkname = new Savant3();
+					$tpl->$linkname->setTemplate('views/templates/std/GenericTag.tpl.php');
+					$tpl->$linkname->text = '_';
+					$tpl->$linkname->tag = 'span';
+					$tpl->navigable[$linkname] = false;
+				}
+			}
+			if ($obj->oldest instanceof Hyperlink) {
+				$tpl->oldest = $this->setup_widget($obj->oldest);
+				$tpl->oldest->description = '&gt;&gt;';
+				$tpl->navigable['oldest'] = true;
+			} else {
+				$tpl->oldest = new Savant3();
+				$tpl->oldest->setTemplate('views/templates/std/GenericTag.tpl.php');
+				$tpl->oldest->text = '&gt;&gt;';
+				$tpl->oldest->tag = 'span';
+				$tpl->navigable['oldest'] = false;
+			}
+			$tpl->setTemplate('views/templates/XHTML/NotesNavigation.tpl.php');
 		}
+
+		return $tpl;
 	}
-}
-/*
-?>
-<?
 
-}
-
-
-function priority_link($myurl, $notprivl)
-{
-
-if (ereg("myprivl", $myurl))
-{$myurlx = ereg_replace("myprivl=[0-9]{0,1}", "myprivl=" . $notprivl,
-$myurl);
-}//if already has privl
-else { //if doesn't already have privl
-if (ereg("\?", $myurl)) // if has ? but not privl
-{$myurlx = $myurl . "&myprivl=" . $notprivl;}
-else  //must add on extra info
-{$myurlx= $myurl . "?myprivl=" . $notprivl;}
-}//else, if doesn't already have privl
-
-echo "<tr><td></td><td><p class=\"imagelev2\">&nbsp;</p></td><td></td>";
-echo "<td><a href=\"http://" . $myurlx . "\" class=\"lev2\">level " .
-$notprivl .
-"</a></td></tr>";
-}//function priority_link
-
-
-
-function mdisp_end($dbh,$idcookie,$myurl,$myprivl)
-{echo "</td></tr></table></td></tr></table>";
-disclaimer();
-echo "</body></html>";}
-
-*/
-function disp_plan($plan) 
-{
-?>
-<table><tr><td><p class="main">Username: </p></td><td><b><?php echo $plan->username
-?></b></td></tr></table><table><tr><td><p class="main2">Last login: </p></td><td><?php echo $plan->lastlogin
-?></td></tr></table><table><tr><td><p class="main3">Updated on: </p></td><td><?php echo $plan->lastupdate
-?></td></tr></table><table><tr><td><p class="main4">Name:</p></td><td><u><?php echo $plan->planname
-?></u></td></tr></table><p class="sub">
-<?php
-	print ($plan->text);
-?>
-	</p>
-<?php
-	if ($plan->addform) {
-		echo "<BR><BR><BR><BR><BR>";
-		disp_widget($plan->addform, NULL);
+	/**
+	 * Consistency be damned, we're putting these forms on one line!
+	 *
+	 * Yee-haw!
+	 */
+	private function oneline_form($form, $form_tpl) {
+		$inputs = array();
+		foreach ($form->contents as $o) {
+			if ($o instanceof SubmitInput) {
+				// do nothing
+			} else if ($o instanceof FormItem) {
+				$inputs[] = $o;
+			} else if ($o instanceof FormItemSet) {
+				foreach ($o->contents as $_o)
+					$inputs[] = $_o;
+			}
+		}
+		$form_tpl->inputs = $inputs;
+		$form_tpl->setTemplate('views/templates/legacy/Form_oneline.tpl.php');
+		return $form_tpl;
 	}
-}
-function disp_editbox($box) 
-{
-?>
-		<form action="<?php echo $box->action
-?>" method="<?php echo $box->method
-?>" id="editform" name="editform">
-		<textarea rows="<?php echo $box->rows
-?>" cols="<?php echo $box->columns
-?>" 
-		name="plan" wrap="virtual" onkeyup="javascript:countlen();">
-<?php
-	print ($box->text->message);
-?>
-		</textarea><input type="hidden" name="part" value="1"><br>
-		<img src="left.gif" width="2" height="16"><img id="filled" src="filled.gif" width="0" height="16"><img id="unfilled" src="unfilled.gif" width="100" height="16"><img src="right.gif" width="2" height="16"> <input type="text" name="perc" value="0%" size="4" style="border: 0px" readonly>
-		&nbsp;&nbsp;&nbsp;<input type="submit" value="Change Plan">
-	</form>
 
-<?php
-	/*
-	</textarea><input type="hidden" name="part" value="1">
-	<input type="hidden" name="myprivl" value="" . $myprivl . "">
-	<span id="filled_left"></span><span id="filled"><span id="unfilled"></span><span id="filled_right">
-	<input id="filled_percent" type="text" name="perc" value="0%" readonly>
-	<input id="submitplan" type="submit" value="Change Plan"></form>
-	*/
-?>
-<?php
 }
-?>
+
+global $my_interface_name;
+$my_interface_name = 'LegacyDefaultInterface';

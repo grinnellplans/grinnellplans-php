@@ -26,7 +26,7 @@ else {
 
 				$item = new TextInput('urcss', get_item($dbh, "stylesheet", "stylesheet", "userid", $idcookie));
 				$item->title = 'Custom Stylesheet URL:';
-				$item->rows = 60;
+				$item->cols = 60;
 				$custom_style_form->append($item);
 				$item = new HiddenInput('style', 'custom');
 				$custom_style_form->append($item);

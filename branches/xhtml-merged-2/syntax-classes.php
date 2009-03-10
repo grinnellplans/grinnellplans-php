@@ -371,6 +371,7 @@ class FormItem extends Widget
 }
 
 class SubmitInput extends FormItem {
+	public $type = 'submit';
 	public function __construct($value = 'Submit')
 	{
 		parent::__construct(null, $value);

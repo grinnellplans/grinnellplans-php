@@ -15,6 +15,8 @@ if (!User::logged_in()) {
 //allowed to edit
 {
 	populate_page($page, $dbh, $idcookie);
+	$title = new HeadingText('Change Name', 1);
+	$page->append($title);
 	if ($changed == 1) //check to see if form has been submitted, process if so.
 	{
 		$user_name = htmlspecialchars($user_name); //strip out html chars

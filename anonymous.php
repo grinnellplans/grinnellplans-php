@@ -31,6 +31,7 @@ if (User::logged_in()) {
 <?php
 if (isset($_POST['secret_submitted'])) {
 	$secret = $_POST['secret'];
+	$secret = addslashes($secret);
 	$secret = cleanText($secret);
 	mysql_query("insert into secrets(secret_text, date, display) values (substring('$secret',1,4000), now(), 'no')");
 }

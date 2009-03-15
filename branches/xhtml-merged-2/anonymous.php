@@ -43,6 +43,7 @@ $page->append($submitform);
 
 if (isset($_POST['secret_submitted'])) {
 	$secret = $_POST['secret'];
+	$secret = addslashes($secret);
 	$secret = cleanText($secret);
 	$sql = "insert into secrets(secret_text, date, display) values (substring('$secret',1,4000), now(), 'no')";
 	mysql_query($sql);

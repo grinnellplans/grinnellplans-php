@@ -64,6 +64,8 @@ class XHTMLInterface extends BaseInterface {
 				$tpl->setTemplate('views/templates/XHTML/AutoRead.tpl.php');
 			} else if ($obj instanceof NotesBoard) {
 				$tpl->setTemplate('views/templates/XHTML/NotesBoard.tpl.php');
+			} else if ($obj instanceof NotesTopic) {
+				$tpl->setTemplate('views/templates/XHTML/NotesTopic.tpl.php');
 			} else if ($obj instanceof WidgetList) {
 				$tpl->setTemplate('views/templates/XHTML/WidgetList.tpl.php');
 			} else if ($obj instanceof WidgetGroup) {

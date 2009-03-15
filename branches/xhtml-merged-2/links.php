@@ -14,6 +14,9 @@ if (!User::logged_in()) {
 	$denied = new AlertText('You are not allowed to edit as a guest.', 'Access Denied');
 	$thispage->append($denied);
 } else {
+	$title = new HeadingText('Optional Links', 1);
+	$thispage->append($title);
+
 	if ($submit) //if form has been submitted
 	{
 		//if list of available links gets too long, may have to add code in to parse

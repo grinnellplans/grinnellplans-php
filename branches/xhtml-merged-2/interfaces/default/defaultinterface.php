@@ -17,6 +17,7 @@ class LegacyDefaultInterface extends BaseInterface {
 
 		$tpl->page_title = $page->title;
 		$tpl->stylesheets = $page->stylesheets;
+		array_unshift($tpl->stylesheets, 'styles/legacy_globals.css');
 		$tpl->scripts = $this->get_local_jsfiles($page);
 		$tpl->body_id = 'planspage_' . strtolower($page->identifier);
 		$tpl->body_class = strtolower($page->group);
@@ -122,36 +123,9 @@ class LegacyDefaultInterface extends BaseInterface {
 		$tpl = parent::setup_widget($obj);
 
 		if ($obj instanceof NotesTopic && $obj->summary) {
-			$tpl->title_template = $this->setup_widget($obj->title);
-			$tpl->updated = $obj->updated;
-			$tpl->posts = $obj->posts;
-			if (is_null($obj->firstposter)) {
-				$tpl->firstposter_template = $this->setup_widget(new RegularText('User Deleted'));
-			} else {
-				$tpl->firstposter_template = $this->setup_widget($obj->firstposter);
-			}
-			if (is_null($obj->lastposter)) {
-				$tpl->lastposter_template = $this->setup_widget(new RegularText('User Deleted'));
-			} else {
-				$tpl->lastposter_template = $this->setup_widget($obj->lastposter);
-			}
-			$tpl->setTemplate('views/templates/XHTML/NotesBoardTopic.tpl.php');
+			$tpl->setTemplate('views/templates/legacy/NotesBoardTopic.tpl.php');
 		} else if ($obj instanceof WidgetGroup) {
 
-			/*
-		case 'Form':
-			// treat certain forms differently
-			if ($value->identifier == 'autoreadlistform') {
-				foreach($value->contents as $item) {
-					$special = ($item->type == 'hidden' || $item->type == 'submit');
-					disp_widget($item, null);
-					if (!$special) print('<BR>');
-				}
-				break;
-			}
-
-			break;
-			 */
 			if ($obj instanceof Form) {
 				//check, mostly
 				foreach ($obj->contents as $i => $item) {
@@ -162,8 +136,12 @@ class LegacyDefaultInterface extends BaseInterface {
 
 				$tpl->setTemplate('views/templates/legacy/Form.tpl.php');
 
-				if ($this->page->identifier == 'planname') {
+				if ($this->page->identifier == 'planname' || $this->page->identifier == 'search') {
 					$tpl = $this->oneline_form($obj, $tpl);
+				} else if ($obj->identifier == 'signup') {
+					$tpl->contents[2]->setTemplate('views/templates/legacy/FormElement_no_table.tpl.php');
+				} else if ($this->page->identifier == 'poll') {
+					$tpl->setTemplate('views/templates/legacy/PollForm.tpl.php');
 				}
 				if ($obj instanceof EditBox) {
 					$tpl->setTemplate('views/templates/legacy/EditBox.tpl.php');
@@ -175,12 +153,21 @@ class LegacyDefaultInterface extends BaseInterface {
 				}
 				$tpl->setTemplate('views/templates/legacy/FormItemSet.tpl.php');
 			} else if ($obj instanceof NotesBoard) {
-				$tpl->tag_attributes = self::id_and_class($obj->identifier, $obj->group);
-				$tpl->setTemplate('views/templates/XHTML/NotesBoard.tpl.php');
+				foreach ($tpl->contents as $t) {
+					$t->list_attributes = str_replace('even', 'noteslight', $t->list_attributes);
+					$t->list_attributes = str_replace('odd', 'notesdark', $t->list_attributes);
+				}
+				$tpl->setTemplate('views/templates/legacy/NotesBoard.tpl.php');
+			} else if ($obj instanceof NotesTopic) {
+				$tpl->tag_attributes = ' class="boardmessages"';
+				foreach ($tpl->contents as $t) {
+					$t->list_attributes = str_replace('even', 'noteslight', $t->list_attributes);
+					$t->list_attributes = str_replace('odd', 'notesdark', $t->list_attributes);
+				}
+				$tpl->setTemplate('views/templates/legacy/NotesTopic.tpl.php');
 			} else if ($obj instanceof WidgetList) {
-				//check
 				$tpl->tag_attributes = self::id_and_class($obj->identifier, $obj->group);
-				$tpl->setTemplate('views/templates/XHTML/WidgetList.tpl.php');
+				$tpl->setTemplate('views/templates/legacy/WidgetList.tpl.php');
 				// The Preferences page
 				if ($this->page->identifier == 'prefs') {
 					$part2 = false;
@@ -197,15 +184,23 @@ class LegacyDefaultInterface extends BaseInterface {
 							$t->tag_attributes = ' class="main"';
 						}
 					}
-					$tpl->setTemplate('views/templates/legacy/WidgetList.tpl.php');
 				}
 				// The autoread management pages
 				else if ($value->identifier == 'autoread_alphabet') {
-					$tpl->setTemplate('views/templates/XHTML/WidgetGroup.tpl.php');
+					$tpl->setTemplate('views/templates/legacy/WidgetGroup.tpl.php');
 				}
 			} else if ($obj instanceof WidgetGroup) {
 				//check
-				$tpl->setTemplate('views/templates/XHTML/WidgetGroup.tpl.php');
+				$tpl->setTemplate('views/templates/legacy/WidgetGroup.tpl.php');
+
+				if ($obj->group == 'notes_header') {
+					$t = $tpl;
+					$tpl = new Savant3();
+					$tpl->inner_template = $t;
+					$tpl->tag = 'center';
+					$tpl->setTemplate('views/templates/std/GenericWrapperTag.tpl.php');
+				}
+
 			}
 			return $tpl; //TODO remove
 
@@ -226,12 +221,17 @@ class LegacyDefaultInterface extends BaseInterface {
 			//check
 			$tpl->description = strtolower($obj->description);
 			$tpl->setTemplate('views/templates/std/Hyperlink.tpl.php');
+			if ($obj->identifier == 'older_secrets') {
+				$t = $tpl;
+				$tpl = new Savant3();
+				$tpl->inner_template = $t;
+				$tpl->tag = 'p';
+				$tpl->setTemplate('views/templates/std/GenericWrapperTag.tpl.php');
+			}
 
 		} else if ($obj instanceof Secret) {
-			$tpl->date = $obj->date;
-			$tpl->secret_id = $obj->secret_id;
-			$tpl->message = $obj->message;
-			$tpl->setTemplate('views/templates/XHTML/Secret.tpl.php');
+			$tpl->text = preg_replace('/(^<p class="sub">)|(<\/p>$)/', '', $tpl->text);
+			$tpl->setTemplate('views/templates/legacy/Secret.tpl.php');
 
 		} else if ($obj instanceof PlanContent) {
 			//check
@@ -244,7 +244,6 @@ class LegacyDefaultInterface extends BaseInterface {
 			}
 			$tpl->setTemplate('views/templates/legacy/Plan.tpl.php');
 		} else if ($obj instanceof PlanText) {
-			//check
 			$tpl->setTemplate('views/templates/legacy/PlanText.tpl.php');
 
 		} else if ($obj instanceof HeadingText) {
@@ -258,57 +257,15 @@ class LegacyDefaultInterface extends BaseInterface {
 			$tpl->setTemplate('views/templates/std/GenericTag.tpl.php');
 
 		} else if ($obj instanceof Text) {
-			$tpl->tag_attributes = self::id_and_class($obj->identifier, $obj->group);
-			$tpl->title = $obj->title;
-			$tpl->message = $obj->message;
-			$tpl->setTemplate('views/templates/XHTML/Text.tpl.php');
+			//check
+			$tpl->setTemplate('views/templates/legacy/Text.tpl.php');
 
 		} else if ($obj instanceof NotesPost) {
-			$tpl->post_id = $obj->id;
-			$tpl->date = $obj->date;
-			$tpl->post_author_template = $this->setup_widget($obj->poster);
-			$tpl->score = $obj->score;
-			$tpl->votes = $obj->votes;
-			$tpl->text = $obj->contents;
-
-			$tpl->setTemplate('views/templates/XHTML/NotesPost.tpl.php');
+			$tpl->text = preg_replace('/(^<p class="sub">)|(<\/p>$)/', '', $tpl->text);
+			$tpl->setTemplate('views/templates/legacy/NotesPost.tpl.php');
 		} else if ($obj instanceof NotesNavigation) {
-			$tpl->tag_attributes = self::id_and_class($obj->identifier, array($obj->group, 'notes_nav'));
-			if ($obj->newest instanceof Hyperlink) {
-				$tpl->newest = $this->setup_widget($obj->newest);
-				$tpl->newest->description = '&lt;&lt;';
-				$tpl->navigable['newest'] = true;
-			} else {
-				$tpl->newest = new Savant3();
-				$tpl->newest->setTemplate('views/templates/std/GenericTag.tpl.php');
-				$tpl->newest->text = '&lt;&lt;';
-				$tpl->newest->tag = 'span';
-				$tpl->navigable['newest'] = false;
-			}
-			foreach (array('even_newer', 'newer', 'current', 'older', 'even_older') as $linkname) {
-				if ($obj->$linkname instanceof Hyperlink || $linkname == 'current') {
-					$tpl->$linkname = $this->setup_widget($obj->$linkname);
-					$tpl->navigable[$linkname] = true;
-				} else {
-					$tpl->$linkname = new Savant3();
-					$tpl->$linkname->setTemplate('views/templates/std/GenericTag.tpl.php');
-					$tpl->$linkname->text = '_';
-					$tpl->$linkname->tag = 'span';
-					$tpl->navigable[$linkname] = false;
-				}
-			}
-			if ($obj->oldest instanceof Hyperlink) {
-				$tpl->oldest = $this->setup_widget($obj->oldest);
-				$tpl->oldest->description = '&gt;&gt;';
-				$tpl->navigable['oldest'] = true;
-			} else {
-				$tpl->oldest = new Savant3();
-				$tpl->oldest->setTemplate('views/templates/std/GenericTag.tpl.php');
-				$tpl->oldest->text = '&gt;&gt;';
-				$tpl->oldest->tag = 'span';
-				$tpl->navigable['oldest'] = false;
-			}
-			$tpl->setTemplate('views/templates/XHTML/NotesNavigation.tpl.php');
+			$tpl->current->text = '[' . $tpl->current->text . ']';
+			$tpl->setTemplate('views/templates/legacy/NotesNavigation.tpl.php');
 		}
 
 		return $tpl;

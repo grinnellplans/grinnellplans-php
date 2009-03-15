@@ -1,6 +1,6 @@
 <tr <?php echo $this->tag_attributes; ?>>
 <?php if (isset($this->title)): ?>
-	<span class="promptset_label"><?php echo $this->title; ?></span>
+	<td><?php echo $this->title; ?></td>
 <?php endif ?>
 <?php
 foreach ($this->contents as $template):

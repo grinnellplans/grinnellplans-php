@@ -1,0 +1,1 @@
+<tr class="<?php echo $this->list_attributes; ?>"><td><?php $this->title_template->display(); ?></td><td><?php echo date(DATE_FORMAT, $this->updated) ?></td><td><center><?php echo $this->posts; ?></center></td><td><?php echo $this->firstposter_template->display(); ?></td><td><?php echo $this->lastposter_template->display(); ?></td></tr>

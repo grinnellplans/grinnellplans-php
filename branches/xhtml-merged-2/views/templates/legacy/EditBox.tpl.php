@@ -1,4 +1,4 @@
-		<form action="<?php echo $this->action; ?>" method="<?php echo $this->method; ?>">
+<form action="<?php echo $this->action; ?>" method="<?php echo $this->method; ?>"<?php echo $this->tag_attributes; ?>>
 		<textarea id="edit_textarea" rows="<?php echo $this->rows; ?>" cols="<?php echo $this->columns; ?>" name="plan" onkeyup="javascript:checkPlanLength();">
 <?php echo $this->text; ?>
 		</textarea><br /><? // This br is helpful for formatting, but why?! ?>
@@ -7,5 +7,5 @@
 			<div class="fill_bar"><div class="full_amount"></div></div>
 			<div class="fill_percent">0%</div>
 		</div>
-		&nbsp;&nbsp;&nbsp;<?php $this->button_template->display(); ?>
+		&nbsp;&nbsp;&nbsp;<input type="submit" value="Change Plan" />
 	</form>

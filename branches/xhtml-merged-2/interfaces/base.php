@@ -125,6 +125,7 @@ class BaseInterface implements DisplayInterface {
 		} else if ($obj instanceof WidgetGroup) {
 
 			$tpl->contents = array_map(array($this, 'setup_widget'), $obj->contents);
+			$tpl->title = $obj->title;
 
 			if ($obj instanceof WidgetList) {
 				foreach($tpl->contents as $i => $t) {
@@ -159,7 +160,7 @@ class BaseInterface implements DisplayInterface {
 			} else if ($obj instanceof FormItemSet) {
 				$tpl->tag_attributes = self::id_and_class($obj->identifier, array($obj->group, 'formitemset'));
 			} else if ($obj instanceof AutoRead) {
-				$tpl->tag_attributes = self::id_and_class($obj->identifier, array($obj->group, 'formitemset'));
+				$tpl->tag_attributes = self::id_and_class($obj->identifier, $obj->group);
 				$tpl->level_link_template = $this->setup_widget($obj->link);
 				$tpl->markasread_template = $this->setup_widget($obj->markasread_link);
 			} else if ($obj instanceof NotesBoard) {

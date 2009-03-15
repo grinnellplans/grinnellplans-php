@@ -87,7 +87,7 @@
 }
 
 /* Float the new thread link left */
-.notes_header #new_thread {
+#notes_new_thread {
 	float: left;
 }
 /* Center the nav stuff */
@@ -108,6 +108,10 @@
 /* Hide inactive nav elements */
 .notes_header .disabled {
 	display: none;
+}
+/* Except the first and last arrows */
+.notes_header .newest, .notes_header .oldest {
+	display: inline;
 }
 
 /* Line up notes post stuff in a sensible fashion */

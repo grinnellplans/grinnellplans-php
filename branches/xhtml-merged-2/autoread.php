@@ -61,7 +61,10 @@ if (!User::logged_in()) {
 	$arlist = get_items($dbh, "interest,priority", "autofinger", "owner", $idcookie); //get their autoread info
 	//display those usernames
 	$j = 0;
+	/*
 	$buttonlist = new WidgetList('autoreadbuttonlist', false);
+	$listform->append($buttonlist);
+	 */
 	while (isset($arraylist[$j][0])) //do while there are names to display
 	{
 		if ($arraylist[$j][0] != $idcookie) //don't display name if the name is the user's name
@@ -87,11 +90,10 @@ if (!User::logged_in()) {
 			}
 			$buttons->title = $arraylist[$j][1];
 
-			$buttonlist->append($buttons);
+			$listform->append($buttons);
 		}
 		$j++;
 	}
-	$listform->append($buttonlist);
 	//pass on other info
 	$item = new HiddenInput('set_autoreadlist', $idcookie);
 	$listform->append($item);

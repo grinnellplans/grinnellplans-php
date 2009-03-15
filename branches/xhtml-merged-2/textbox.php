@@ -20,7 +20,7 @@ else
 {
 	populate_page($thispage, $dbh, $idcookie);
 
-	$heading = new HeadingText('Change Edit Box Size:', 2);
+	$heading = new HeadingText('Change Edit Box Size:', 1);
 	$thispage->append($heading);
 
 	if ($_POST['part']) //if form has been submitted

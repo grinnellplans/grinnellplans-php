@@ -124,12 +124,14 @@ function show_form()
 	$item->title = 'Grinnell email username:';
 	$form->append($item);
 
+	/*
 	$acct_type = new WidgetList('accounttype', true);
 	$acct_type->title = 'What is your relation to Grinnell?';
 	$form->append($acct_type);
+	 */
 
 	$group = new FormItemSet('studenttype', true);
-	$acct_type->append($group);
+	$form->append($group);
 	$item = new RadioInput('type', 'student');
 	$item->description = 'Student';
 	$group->append($item);
@@ -141,21 +143,21 @@ function show_form()
 
 	$item = new RadioInput('type', 'staff');
 	$item->description = 'Staff';
-	$acct_type->append($item);
+	$form->append($item);
 		
 	$item = new RadioInput('type', 'group');
 	$item->description = 'Group';
-	$acct_type->append($item);
+	$form->append($item);
 		
 	$item = new RadioInput('type', 'faculty');
 	$item->description = 'Faculty';
-	$acct_type->append($item);
+	$form->append($item);
 
 	$item = new SubmitInput('Register');
-	$acct_type->append($item);
+	$form->append($item);
 
 	$item = new HiddenInput('submitted', 1);
-	$acct_type->append($item);
+	$form->append($item);
 
 	return $form;
 }

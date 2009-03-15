@@ -143,7 +143,7 @@ if (User::logged_in()) //if is a valid user, give them the option of putting the
 			$item = new RadioInput('privlevel', $j);
 			if ($j == 0) $item->description = 'X';
 			else $item->description = "$j";
-			$item->checked = $myonlist[$j];
+			$item->checked = ($myonlist == $item->description);
 			$levels->append($item);
 		}
 		$item = new SubmitInput('Set Priority');

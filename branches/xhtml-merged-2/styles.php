@@ -14,6 +14,9 @@ if (!User::logged_in()) {
 } //end guest display
 else {
 
+	$title = new HeadingText('Style Options:', 1);
+	$thispage->append($title);
+
 	$custom_style_form = '';
 	if ($_POST['part']) //if they are submitting the form
 	{
@@ -78,7 +81,7 @@ else {
 	$o = 0;
 	while ($mystyles[$o][0]) {
 		$item = new RadioInput('style', $mystyles[$o][0]);
-		$item->checked = (strtolower($intcheck[$mystyles[$o][0]]) == 'checked');
+		$item->checked = (strtolower($intcheck[$mystyles[$o][0]]) == ' checked');
 		$name_and_desc =  $mystyles[$o][1];
 		$tmp_matches = array();
 		preg_match('/<b>(.*)<\/b><br>(.*)/', $name_and_desc, $tmp_matches);

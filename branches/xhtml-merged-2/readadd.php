@@ -73,9 +73,7 @@ if (!$searchnum) //if no search number given
 	
 } //$if (!$searchnum)
 
-if (!$planinfo = get_items($mydbh, "username,pseudo,DATE_FORMAT(login, 
-'%a %M %D %Y, %l:%i %p'),DATE_FORMAT(changed, 
-'%a %M %D %Y, %l:%i %p'),plan,webview", "accounts", "userid", $searchnum)) //get all of persons plan info
+if (!$planinfo = get_items($mydbh, "username,pseudo,login,changed,plan,webview", "accounts", "userid", $searchnum)) //get all of persons plan info
 {
 	//if we failed, complain
 	$page->append(new AlertText("Could not retrieve plan.", 'DB Error', true));

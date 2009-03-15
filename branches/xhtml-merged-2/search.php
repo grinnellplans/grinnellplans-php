@@ -37,7 +37,7 @@ $item->description = 'Planlove';
 $item->checked = $planlove;
 $searchprompt->append($item);
 $item = new SubmitInput('Search');
-$searchprompt->append($item);
+$searchform->append($item);
 
 if ($mysearch) //if no search query, give search form
 //otherwise perform the search

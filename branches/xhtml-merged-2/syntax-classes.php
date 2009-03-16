@@ -231,6 +231,16 @@ class WidgetList extends WidgetGroup
  * line or will be visually grouped in some other manner.
  */
 class FormItemSet extends WidgetList {
+	/**
+	 * The form this set is in
+	 * @var Form
+	 */
+	public $parent_form;
+
+	public function append($item) {
+		$item->parent_form = $this->parent_form;
+		parent::append($item);
+	}
 }
 /**
  * An autoread list. Stores its own priority level.
@@ -323,10 +333,12 @@ class Form extends WidgetGroup
 	 */
 	public $method = 'post';
 
+	public function __construct($name) {
+		parent::__construct($name, true);
+	}
+
 	public function append($item) {
-		if ($item instanceof FormItem) {
-			$item->parent_form = $this;
-		}
+		$item->parent_form = $this;
 		parent::append($item);
 	}
 }
@@ -361,6 +373,11 @@ class FormItem extends Widget
 	 * @var string
 	 */
 	public $type;
+	/**
+	 * The form this set is in
+	 * @var Form
+	 */
+	public $parent_form;
 
 	public function __construct($name, $value = null) 
 	{

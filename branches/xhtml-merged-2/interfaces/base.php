@@ -309,7 +309,7 @@ abstract class BaseInterface implements DisplayInterface {
  * @todo At some point, get rid of this (probably by changing how interfaces are stored in the DB)
  */
 global $my_interface_name;
-$my_interface_name = 'XHTMLInterface';
+$my_interface_name = 'BaseInterface';
 
 function interface_construct()
 {

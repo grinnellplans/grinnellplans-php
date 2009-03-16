@@ -33,8 +33,8 @@ function cleanText($plan)
 	//fix the dollar sign error- by josh
 	//$plan = preg_replace("(\|(\w\s)*)\$
 	$plan = preg_replace("/((\[\w*\],?){8})(?=[^ ,])/s", "$1 ", $plan);
-	$plan = preg_replace("/\n/s", "<br />", $plan);
-	$plan = preg_replace("/\&lt\;hr\&gt\;/si", "</p><hr /><p class=\"sub\">", $plan);
+	$plan = preg_replace("/\n/s", "<br>", $plan);
+	$plan = preg_replace("/\&lt\;hr\&gt\;/si", "</p><hr><p class=\"sub\">", $plan);
 	// replace the first </p> that we just inserted erroneously
 	//$plan = preg_replace("</p>", "", $plan, 1);
 	$plan = '<p class="sub">' . $plan . '</p>';

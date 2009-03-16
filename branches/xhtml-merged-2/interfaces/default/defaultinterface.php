@@ -10,7 +10,7 @@ require_once('interfaces/base.php');
 class LegacyDefaultInterface extends BaseInterface {
 	protected $page;
 
-	public function display_page(PlansPage $page)
+	public function setup_page(PlansPage $page)
 	{
 		$this->page = $page;
 		$tpl = new Savant3();
@@ -30,14 +30,12 @@ class LegacyDefaultInterface extends BaseInterface {
 
 		$tpl->mainpanel_template = $this->setup_mainpanel($page);
 
-		foreach ($page->contents as $w) {
-			//echo get_class($w);
-		}
 		$tpl->contents = array_map(array($this, 'setup_widget'), $page->contents);
 
 		$tpl->footer_template = $this->setup_footer($page->footer);
 
-		$tpl->display('views/templates/legacy/PlansPage.tpl.php');
+		$tpl->setTemplate('views/templates/legacy/PlansPage.tpl.php');
+		return $tpl;
 	}
 	protected function setup_mainpanel(PlansPage $page) {
 		$tpl = new Savant3();
@@ -127,7 +125,6 @@ class LegacyDefaultInterface extends BaseInterface {
 		} else if ($obj instanceof WidgetGroup) {
 
 			if ($obj instanceof Form) {
-				//check, mostly
 				foreach ($obj->contents as $i => $item) {
 					if ($item instanceof SubmitInput) {
 						$tpl->submit_button = $item;
@@ -190,7 +187,6 @@ class LegacyDefaultInterface extends BaseInterface {
 					$tpl->setTemplate('views/templates/legacy/WidgetGroup.tpl.php');
 				}
 			} else if ($obj instanceof WidgetGroup) {
-				//check
 				$tpl->setTemplate('views/templates/legacy/WidgetGroup.tpl.php');
 
 				if ($obj->group == 'notes_header') {
@@ -218,7 +214,6 @@ class LegacyDefaultInterface extends BaseInterface {
 			}
 
 		} else if ($obj instanceof Hyperlink) {
-			//check
 			$tpl->description = strtolower($obj->description);
 			$tpl->setTemplate('views/templates/std/Hyperlink.tpl.php');
 			if ($obj->identifier == 'older_secrets') {
@@ -234,7 +229,6 @@ class LegacyDefaultInterface extends BaseInterface {
 			$tpl->setTemplate('views/templates/legacy/Secret.tpl.php');
 
 		} else if ($obj instanceof PlanContent) {
-			//check
 			if ($obj->addform) {
 				$tpl->addform_present = true;
 				$tpl->addform_template = $this->oneline_form($obj->addform, $tpl->addform_template);
@@ -257,7 +251,6 @@ class LegacyDefaultInterface extends BaseInterface {
 			$tpl->setTemplate('views/templates/std/GenericTag.tpl.php');
 
 		} else if ($obj instanceof Text) {
-			//check
 			$tpl->setTemplate('views/templates/legacy/Text.tpl.php');
 
 		} else if ($obj instanceof NotesPost) {

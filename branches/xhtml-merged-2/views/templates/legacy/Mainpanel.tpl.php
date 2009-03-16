@@ -13,7 +13,9 @@
 <table class="lowerpanel">
 <?php
 $this->links_template->display();
-$this->autoread_template->display();
+if ($this->autoread_template) {
+	$this->autoread_template->display();
+}
 ?>
 
 </table>

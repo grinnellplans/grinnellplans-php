@@ -9,11 +9,14 @@ require_once('lib/savant/Savant3.php');
  * so be cautious with changing this (unless it is to simply set a
  * generic template for an object that previously had no template set).
  */
-class BaseInterface implements DisplayInterface {
-	/**
-	 * @todo make this display, not return
-	 */
-	public function display_page(PlansPage $page)
+abstract class BaseInterface implements DisplayInterface {
+
+	public function display_page(PlansPage $page) {
+		$tpl = $this->setup_page($page);
+		$tpl->display();
+	}
+
+	public function setup_page(PlansPage $page)
 	{
 		$tpl = new Savant3();
 

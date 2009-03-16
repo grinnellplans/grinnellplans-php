@@ -14,7 +14,7 @@ require_once('interfaces/base.php');
 class XHTMLInterface extends BaseInterface {
 	public function display_page(PlansPage $page)
 	{
-		$tpl = parent::display_page($page);
+		$tpl = parent::setup_page($page);
 		$tpl->display('views/templates/XHTML/PlansPage.tpl.php');
 	}
 	protected function setup_mainpanel(MainPanel $panel) {

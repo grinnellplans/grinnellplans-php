@@ -17,7 +17,7 @@ function last_updated_plan() {
 function disclaimer() {
 ?>
 	<hr>
-	GrinnellPlans r<?=PLANS_REVISION?>. <p style="font-size: 80%">Use of the GrinnellPlans service means you have accepted the <a href="http://www.grinnellplans.com/tos"> GrinnellPlans Terms of Service agreement</a>. If you do not accept and abide by this agreement, you may not use GrinnellPlans. This agreement is subject to change without notice, so you should periodically review the most up-to-date version.You may contact us at <a href="mailto:grinnellplans@gmail.com">grinnellplans@gmail.com</a>.
+	GrinnellPlans r<?=PLANS_REVISION?>. <p style="font-size: 80%">Use of the GrinnellPlans service means you have accepted the <a href="http://www.grinnellplans.com/tos"> GrinnellPlans Terms of Service agreement</a>. If you do not accept and abide by this agreement, you may not use GrinnellPlans. This agreement is subject to change without notice, so you should periodically review the most up-to-date version. You may contact us at <a href="mailto:grinnellplans@gmail.com">grinnellplans@gmail.com</a>.
 <?php
 }
 

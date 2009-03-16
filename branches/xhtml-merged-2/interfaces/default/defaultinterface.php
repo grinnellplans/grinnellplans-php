@@ -230,7 +230,7 @@ class LegacyDefaultInterface extends BaseInterface {
 			}
 
 		} else if ($obj instanceof Secret) {
-			$tpl->text = preg_replace('/(^<p class="sub">)|(<\/p>$)/', '', $tpl->text);
+			$tpl->message = preg_replace('/(^<p class="sub">)|(<\/p>$)/', '', $tpl->message);
 			$tpl->setTemplate('views/templates/legacy/Secret.tpl.php');
 
 		} else if ($obj instanceof PlanContent) {

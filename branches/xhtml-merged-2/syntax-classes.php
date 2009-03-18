@@ -176,9 +176,9 @@ abstract class Widget
 	public function __construct($name, $unique) 
 	{
 		if ($unique) {
-			$this->identifier = $identifier;
+			$this->identifier = $name;
 		} else {
-			$this->group = $identifier;
+			$this->group = $name;
 		}
 	}
 

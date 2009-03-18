@@ -62,8 +62,6 @@
 	font-weight: bold;
 	padding-left: 20px;
 	padding-bottom: 0.3em;
-}
-.alertmessage .title {
 	background: url("../images/icons/famfamfam/exclamation.png") no-repeat left center;
 }
 .infomessage .body, .requestmessage .body {
@@ -77,6 +75,18 @@
 }
 .requestmessage .body {
 	background: url("../images/icons/famfamfam/help.png") no-repeat left center;
+}
+/* IE screws up the background image positioning when we span more than one line, so hack IE7... */
+*:first-child+html .infomessage .body {
+	background: url("../images/icons/famfamfam/information.png") no-repeat left 8px;
+}
+*:first-child+html .requestmessage .body {
+	background: url("../images/icons/famfamfam/help.png") no-repeat left 8px;
+}
+/* ...and just hide them altogether for IE6 */
+* html .infomessage .body, * html .requestmessage .body, * html .alertmessage .title {
+	background-image: none;
+	padding-left: 0;
 }
 
 /* Float the poll options so the result numbers will line up with them */

@@ -33,7 +33,6 @@ if (!User::logged_in()) {
 		$nameform->method = 'POST';
 		/* add fields to the form */
 		$item = new TextInput('user_name', $old_name);
-		$item->datatype = Form::FIELD_TEXT;
 		$nameform->append($item);
 		$item = new HiddenInput('myprivl', $myprivl);
 		$nameform->append($item);

@@ -69,7 +69,7 @@ if (User::logged_in()) {
 		while ($row = mysql_fetch_array($secrets)) {
 			$text = $row['secret_text'];
 			$secret = new Secret($text);
-			$secret->date = $row['date'];
+			$secret->date = strtotime($row['date']);
 			$secret->secret_id = $row['secret_id'];
 			$box_o_secrets->append($secret);
 		}

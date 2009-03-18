@@ -628,7 +628,8 @@ class HeadingText extends Text
 class Secret extends Text
 {
 	/**
-	 * @todo use timestamp
+	 * The date this secret was submitted
+	 * @var int a UNIX timestamp
 	 */
 	public $date;
 	/**

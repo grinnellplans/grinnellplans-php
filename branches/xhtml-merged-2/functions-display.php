@@ -19,18 +19,15 @@ function get_interface($idcookie)
 {
 	// If there's no id, it's a guest
 	if (!$idcookie) {
-		require_once("interfaces/xhtml/xhtml.php"); //TODO hardcoding! bleh!
+		require_once("interfaces/default/defaultinterface.php"); //TODO hardcoding! bleh!
 		return;
 	}
-	//TODO again, clean this up, it's ugly
-	//get the paths of the interface and style files that the user indicated as wanting to use
-	$my_result = mysql_query("Select interface.path,style.path From
-	interface interface, style style,display display where
-	display.userid = '$idcookie' and display.interface = interface.interface and display.style=style.style");
-	while ($new_row = mysql_fetch_row($my_result)) {
-		$mydisplayar[] = $new_row;
-	} //gets contents from query
-	require_once($mydisplayar[0][0]); //loads up the interface functions
+	// Get the path to the interface this user has active
+	$my_result = mysql_query("SELECT interface.path FROM
+	interface, display WHERE
+	display.userid = '$idcookie' AND display.interface = interface.interface");
+	$new_row = mysql_fetch_row($my_result);
+	require_once($new_row[0]); //loads up the interface functions
 	
 }
 
@@ -70,15 +67,13 @@ function interface_disp_page(PlansPage $page)
  */
 function populate_page(PlansPage $page, $dbh, $idcookie)
 {
-	//TODO get rid of all this crap - it should be much simpler
 	//get the paths of the interface and style files that the user indicated as wanting to use
-	$my_result = mysql_query("Select interface.path,style.path From
-	interface interface, style style,display display where
-	display.userid = '$idcookie' and display.interface = interface.interface and display.style=style.style");
-	while ($new_row = mysql_fetch_row($my_result)) {
-		$mydisplayar[] = $new_row;
-	} //gets contents from query
-	//require ($mydisplayar[0][0]);//loads up the interface functions
+	$my_result = mysql_query("SELECT style.path FROM
+	style, display WHERE
+	display.userid = '$idcookie' AND display.style=style.style");
+	$new_row = mysql_fetch_row($my_result);
+
+	// Check for a custom stylesheet
 	$css = get_item($dbh, "stylesheet", "stylesheet", "userid", $idcookie);
 
 	// get the global stylesheet
@@ -87,7 +82,7 @@ function populate_page(PlansPage $page, $dbh, $idcookie)
 	if ($css) {
 		$page->stylesheets[] = $css;
 	} else {
-		$page->stylesheets[] = $mydisplayar[0][1];
+		$page->stylesheets[] = $new_row[0];
 	}
 	$myprivl = get_myprivl();
 	$page->autoreadpriority = $myprivl;
@@ -100,7 +95,7 @@ function populate_page(PlansPage $page, $dbh, $idcookie)
 		$mp->links->append($link);
 	}
 	$mp->autoreads = new WidgetList('autoread', true);
-	for ($i = 1; $i <= 3; $i++) { //TODO variable number
+	for ($i = 1; $i <= 3; $i++) {
 		$mp->autoreads->append(get_autoread($idcookie, $i));
 	}
 	$footer = new Footer();
@@ -143,7 +138,6 @@ function populate_guest_page(PlansPage $page)
 function get_autoread($idcookie, $p)
 {
 	$newarr = array();
-	//TODO get a string for the level name from db
 	$privarray = mysql_query("Select autofinger.interest,accounts.username
 		From autofinger, accounts where owner = '$idcookie' and priority =
 		'$p' and updated = '1' and autofinger.interest=accounts.userid");
@@ -214,7 +208,6 @@ function get_opt_links($idcookie)
 		} else if ($new_row[0] == 'Jumble') {
 			$url = $_SERVER['REQUEST_URI'];
 			if ($_GET['jumbled'] == 'yes' || ($_COOKIE['jumbled'] == 'yes' && $_GET['jumbled'] != 'no')) {
-				// TODO build add_param into Hyperlink class?
 				$url = add_param($url, 'jumbled', 'no');
 				$linktext = 'unjumble';
 			} else {
@@ -242,7 +235,7 @@ function get_opt_links($idcookie)
  */
 function get_fingerbox()
 {
-	$f = new Form('finger', true, 'Finger Plan');
+	$f = new Form('finger');
 	$f->action = 'read.php';
 	$f->method = 'GET';
 	$item = new TextInput('searchname', NULL);

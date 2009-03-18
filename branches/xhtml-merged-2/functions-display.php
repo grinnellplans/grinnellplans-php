@@ -246,7 +246,6 @@ function get_fingerbox()
 	$f->action = 'read.php';
 	$f->method = 'GET';
 	$item = new TextInput('searchname', NULL);
-	$item->datatype = Form::FIELD_TEXT; // Setting expected datatype.
 	$f->append($item);
 	$item = new SubmitInput('Read');
 	$f->append($item);

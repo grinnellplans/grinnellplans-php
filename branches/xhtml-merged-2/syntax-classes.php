@@ -2,12 +2,12 @@
 /**
 *
 * Object-Oriented stuff for Plans!
+*
 * Defines a set of objects that are constructed by pages and then passed
 * to the interface, where they are turned into HTML or whatever else.
 *
-* Note: Some of the objects implement a toHTML() method.  This is for
-* convenience only, and interfaces are by no means required to make use
-* of these methods.
+* Please realize that these objects can and should be extended as the need arises.
+* What is here is not meant to be a comprehensive set.
 *
 * @package Interfaces
 */
@@ -27,7 +27,7 @@ class PlansPage
 	 * A unique identifier for this page
 	 * @var string
 	 */
-	public $identifier = 'defaultpage';
+	public $identifier;
 	/**
 	 * A title for the page
 	 * @var string
@@ -37,12 +37,12 @@ class PlansPage
 	 * The main panel that contains all the links, autoreads, etc
 	 * @var MainPanel
 	 */
-	public $mainpanel = NULL;
+	public $mainpanel;
 	/**
 	 * An array of Widgets, the contents of this page
 	 * @var array
 	 */
-	public $contents = array();
+	public $contents;
 	/**
 	 * The footer of the page
 	 * @var Footer
@@ -81,16 +81,16 @@ class PlansPage
 		$this->identifier = $id;
 		$this->title = $title;
 		$this->url = $url;
+		$this->contents = array();
 		$this->stylesheets = array();
 		$this->scripts = array();
 	}
 
 	/**
 	 * Add a widget to the page.
-	 * @param Widget &$widget the widget to be added.  Uses by reference, so widget
-	 * may still be modified after being passed to this method.
+	 * @param Widget $widget the widget to be added.
 	 */
-	public function append(Widget &$widget) 
+	public function append(Widget $widget) 
 	{
 		// If it's a form, we can set some defaults
 		if ($widget instanceof Form) {
@@ -144,7 +144,7 @@ class Footer
 	public $doyouread;
 	/**
 	 * Whatever legalese text goes at the bottom
-	 * @var InfoText
+	 * @var RegularText
 	 */
 	public $legal;
 	
@@ -166,16 +166,14 @@ abstract class Widget
 	public $group;
 
 	/**
-	 * @param string $identifier An identifier for this widget. Should give a meaningful
-	 * name for the purpose of this widget.
-	 * @param boolean $unique is <var>$identifier</var> unique? In other words, will this widget
-	 * be the only one with the given identifier on a given page?
+	 * @param string $name An identifying name for this widget.
+	 * @param boolean $unique is <var>$identifier</var> unique?
 	 *
 	 * <b>Note:</b> While this identification scheme, incidentally, is quite similar to
 	 * the id and class properties in HTML, don't assume that this is the only way they
 	 * may be used.
 	 */
-	public function __construct($identifier, $unique) 
+	public function __construct($name, $unique) 
 	{
 		if ($unique) {
 			$this->identifier = $identifier;
@@ -237,6 +235,9 @@ class FormItemSet extends WidgetList {
 	 */
 	public $parent_form;
 
+	/**
+	 * @param FormItem|FormItemSet
+	 */
 	public function append($item) {
 		$item->parent_form = $this->parent_form;
 		parent::append($item);
@@ -248,21 +249,26 @@ class FormItemSet extends WidgetList {
 class AutoRead extends WidgetList
 {
 	/**
-	 * a number designating the "priority" level
+	 * A number designating the "priority" level of this list
 	 * @var int
 	 */
 	public $priority;
 	/**
-	 * a link to set this autoread as current
+	 * A link to set this autoread as current
 	 * @var Hyperlink
 	 */
 	public $link;
 	/**
-	 * a link to mark all plans in this autoread as read
+	 * A link to mark all plans in this autoread as read
 	 * @var Hyperlink
 	 */
 	public $markasread_link;
 
+	/**
+	 * @param int $p a priority level
+	 * @param string $url a URL to set this autoread as current
+	 * @todo Give markasread as a param?
+	 */
 	function __construct($p, $url) 
 	{
 		parent::__construct("autoreadlev$p", true, "Level $p");
@@ -303,6 +309,9 @@ class Hyperlink extends Widget
  */
 class PlanLink extends Hyperlink
 {
+	/**
+	 * @param string $username the username to link to
+	 */
 	function __construct($username) 
 	{
 		$href = "read.php?searchname=$username";
@@ -315,13 +324,6 @@ class PlanLink extends Hyperlink
  */
 class Form extends WidgetGroup
 {
-    /* These constants attempt to formalize what content we are expecting.
-     * This information could be used for client-side sanity checking with
-     * JavaScript, or to transparently reimplement a form in XForms.
-     */
-	const FIELD_NUMERIC = 10;
-	const FIELD_TEXT = 15;
-
 	/**
 	 * The form's action. Defaults to containing page.
 	 * @var string a URL
@@ -331,12 +333,18 @@ class Form extends WidgetGroup
 	 * The form's method. Defaults to 'post'.
 	 * @var string 'post' or 'get'
 	 */
-	public $method = 'post';
+	public $method;
 
+	/**
+	 * @param string $name a name for the form. Must be unique within the page
+	 */
 	public function __construct($name) {
 		parent::__construct($name, true);
 	}
 
+	/**
+	 * @param FormItem|FormItemSet
+	 */
 	public function append($item) {
 		$item->parent_form = $this;
 		parent::append($item);
@@ -353,19 +361,13 @@ class FormItem extends Widget
 	 */
 	public $name;
 	/**
-	 * A constant as defined in the Form class
-	 * @var int
-	 * @todo currently unused
-	 */
-	public $datatype;
-	/**
 	 * Text description of the item
 	 * @var string
 	 */
 	public $description;
 	/**
 	 * The value of the item
-	 * @var string|int
+	 * @var mixed
 	 */
 	public $value;
 	/**
@@ -379,6 +381,10 @@ class FormItem extends Widget
 	 */
 	public $parent_form;
 
+	/**
+	 * @param string $name a name for this input. Must be unique within the form.
+	 * @param mixed $value the value of this input
+	 */
 	public function __construct($name, $value = null) 
 	{
 		parent::__construct($name, true);
@@ -420,12 +426,16 @@ class TextInput extends FormItem {
 }
 class PasswordInput extends FormItem {
 	public $type = 'password';
+	/**
+	 * @param string $name a name for this input. Must be unique within the form.
+	 */
 	public function __construct($name) 
 	{
 		parent::__construct($name);
 	}
 }
 class TextareaInput extends FormItem {
+	public $type = 'textarea';
 	/**
 	 * How many rows the box should span
 	 * @var int
@@ -436,7 +446,6 @@ class TextareaInput extends FormItem {
 	 * @var int
 	 */
 	public $cols;
-	public $type = 'textarea';
 
 	public function __construct($name, $value = null, $rows = 3, $cols = 40)
 	{
@@ -446,11 +455,30 @@ class TextareaInput extends FormItem {
 	}
 }
 
+/**
+ * The form users edit their plan with
+ *
+ * Notice that this encompasses the entire form, not just the textarea
+ */
 class EditBox extends Form
 {
+	/**
+	 * The username we're editing
+	 * @var string
+	 */
 	public $username;
-	public $text; // A PlanText object
+	/**
+	 * The contents of this plan
+	 * @var PlanText
+	 */
+	public $text;
+	/**
+	 * @see TextareaInput::$rows
+	 */
 	public $rows;
+	/**
+	 * @see TextareaInput::$columns
+	 */
 	public $columns;
 	public function __construct($username, $text, $rows, $cols) 
 	{
@@ -463,12 +491,36 @@ class EditBox extends Form
 }
 class PlanContent extends Widget
 {
+	/**
+	 * The username we're editing
+	 * @var string
+	 */
 	public $username;
-	public $text; // A PlanText object
+	/**
+	 * The contents of this plan
+	 * @var PlanText
+	 */
+	public $text;
+	/**
+	 * The "name" on this plan
+	 */
 	public $planname;
+	/**
+	 * The date this user last logged in
+	 * @var int a UNIX timestamp
+	 */
 	public $lastlogin;
+	/**
+	 * The date this user last updated
+	 * @var int a UNIX timestamp
+	 */
 	public $lastupdate;
-	public $addform; // form to add this plan to autoread
+	/**
+	 * A form to add this plan to autoread
+	 * @var Form
+	 */
+	public $addform;
+
 	public function __construct($username, $planname, $lastlogin, $lastupdate, $text) 
 	{
 		parent::__construct('plan', true);
@@ -501,14 +553,22 @@ abstract class Text extends Widget
 	}
 
 }
+/**
+ * Regular, boring old text.
+ *
+ * Only use this if your text doesn't fit in any of the other categories
+ */
 class RegularText extends Text
 {
-	public function __construct($message, $title='') 
+	public function __construct($message) 
 	{
-		parent::__construct('text', $title);
+		parent::__construct('text', '');
 		$this->message = $message;
 	}
 }
+/**
+ * Text to give the user information
+ */
 class InfoText extends Text
 {
 	public function __construct($_message, $title='') 
@@ -520,6 +580,9 @@ class InfoText extends Text
 		$this->message = $_message;
 	}
 }
+/**
+ * Text to warn the user that there's a problem
+ */
 class AlertText extends Text
 {
 	/**
@@ -534,6 +597,9 @@ class AlertText extends Text
 		$this->error = $error;
 	}
 }
+/**
+ * Text to request something from the user
+ */
 class RequestText extends Text
 {
 	public function __construct($_message) 
@@ -542,6 +608,9 @@ class RequestText extends Text
 		$this->message = $_message;
 	}
 }
+/**
+ * A section heading
+ */
 class HeadingText extends Text
 {
 	/**
@@ -558,6 +627,9 @@ class HeadingText extends Text
 }
 class Secret extends Text
 {
+	/**
+	 * @todo use timestamp
+	 */
 	public $date;
 	/**
 	 * The id of this secret
@@ -579,7 +651,6 @@ class PlanText extends Text
 	/**
 	 * A boolean: true if the text is in plans markup (i.e. [b] for
 	 * bold text), and false if text is in HTML form. 
-	 * @todo currently unused, I think
 	 */
 	public $planmarkup;
 	public function __construct($_message, $_planmarkup) 
@@ -615,9 +686,17 @@ class NotesNavigation extends Widget {
 
 }
 
+/**
+ * The main Notes board
+ */
 class NotesBoard extends WidgetList {
 }
 
+/**
+ * A single topic in notes.
+ *
+ * This may exist as either an entry in a NotesBoard, or on its own.
+ */
 class NotesTopic extends WidgetList {
 	/**
 	 * Is this being used as a summary (i.e. on the main board), or as a 

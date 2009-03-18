@@ -33,6 +33,7 @@ function get_interface($idcookie)
 
 /**
  * All interface objects for displaying pages must implement this (OO) interface.
+ * @package Interfaces
  */
 interface DisplayInterface {
 	/**

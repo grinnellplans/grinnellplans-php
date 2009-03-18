@@ -303,14 +303,20 @@ abstract class BaseInterface implements DisplayInterface {
 
 }
 /**
- * Holds an instance of the interface object that we're using for this particular interface.
+ * Holds a name of the interface object that we're using for this particular interface.
  *
- * For now, every file in interfaces/ must implement this.
- * @todo At some point, get rid of this (probably by changing how interfaces are stored in the DB)
+ * For now, every interface file must implement this.
  */
 global $my_interface_name;
 $my_interface_name = 'BaseInterface';
 
+/**
+ * This function gets called to help build the interface, based on the global variable.
+ *
+ * @todo At some point, get rid of this (probably by changing how interfaces are stored in the DB)
+ *
+ * @return DisplayInterface
+ */
 function interface_construct()
 {
 	global $my_interface_name;

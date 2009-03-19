@@ -17,8 +17,8 @@ class TablelessInterface extends BaseInterface {
 		$tpl = parent::setup_page($page);
 		$tpl->display('views/templates/tableless/PlansPage.tpl.php');
 	}
-	protected function setup_mainpanel(MainPanel $panel) {
-		$tpl = parent::setup_mainpanel($panel);
+	protected function setup_mainpanel(PlansPage $page) {
+		$tpl = parent::setup_mainpanel($page);
 		$tpl->setTemplate('views/templates/tableless/mainpanel.tpl.php');
 		return $tpl;
 	}

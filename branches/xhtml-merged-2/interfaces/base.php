@@ -26,14 +26,15 @@ abstract class BaseInterface implements DisplayInterface {
 		$tpl->body_id = 'planspage_' . strtolower($page->identifier);
 		$tpl->body_class = strtolower($page->group);
 
-		$tpl->mainpanel_template = $this->setup_mainpanel($page->mainpanel);
+		$tpl->mainpanel_template = $this->setup_mainpanel($page);
 
 		$tpl->contents = array_map(array($this, 'setup_widget'), $page->contents);
 
 		$tpl->footer_template = $this->setup_footer($page->footer);
 		return $tpl;
 	}
-	protected function setup_mainpanel(MainPanel $panel) {
+	protected function setup_mainpanel(PlansPage $page) {
+		$panel = $page->mainpanel;
 		$tpl = new Savant3();
 
 		$tpl->linkhome_template = $this->setup_linkhome($panel->linkhome);
@@ -63,7 +64,7 @@ abstract class BaseInterface implements DisplayInterface {
 		$tpl = $this->setup_widget($autoreads);
 		foreach($autoreads->contents as $i => $ar) {
 			$t = $tpl->contents[$i];
-			if ($t->priority == $lvl) {
+			if ($ar->priority == $lvl) {
 				$t->list_attributes .= ' current';
 			} else {
 				$t->list_attributes .= ' notcurrent';

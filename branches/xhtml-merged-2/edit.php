@@ -39,8 +39,8 @@ if (!User::logged_in()) {
 		$plantext = preg_replace("/<br \/>/", "", $plantext);
 		$plantext = preg_replace("/&amp;/s", "&", $plantext);
 		$plantext = preg_replace("/amp;/s", "", $plantext);
+		$plantext = preg_replace("/<\/p><hr><p class=\"sub\">/", "<hr>", $plantext);
 		$plantext = preg_replace("/<hr><p.class=\"sub\">/", "<hr>", $plantext); //deprecated
-		$plantext = preg_replace("/<\/p><hr \/><p class=\"sub\">/", "<hr>", $plantext);
 		$plantext = preg_replace('/<pre class="sub">/', "<pre>", $plantext);
 		$plantext = preg_replace("/^<p.class=\"sub\">/", "", $plantext);
 		$plantext = preg_replace("/<\/p>$/", "", $plantext);

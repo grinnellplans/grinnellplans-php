@@ -57,8 +57,11 @@ class LegacyDefaultInterface extends BaseInterface {
 		$tpl->setTemplate('views/templates/legacy/Links.tpl.php');
 		return $tpl;
 	}
-	protected function setup_autoreads(WidgetList $autoreads, $lvl)
+	protected function setup_autoreads($autoreads, $lvl)
 	{
+		if (!$autoreads) {
+			return false;
+		}
 		$tpl = new Savant3();
 
 		foreach ($autoreads->contents as $ar) {
@@ -92,11 +95,7 @@ class LegacyDefaultInterface extends BaseInterface {
 	}
 	protected function setup_footer($footer) 
 	{
-		$tpl = new Savant3();
-
-		$tpl->doyouread_link_template = $this->setup_widget($footer->doyouread);
-		$tpl->legal_template = $this->setup_widget($footer->legal);
-
+		$tpl = parent::setup_footer($footer);
 		$tpl->setTemplate('views/templates/legacy/Footer.tpl.php');
 		return $tpl;
 	}

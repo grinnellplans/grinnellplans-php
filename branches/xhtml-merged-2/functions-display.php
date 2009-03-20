@@ -115,18 +115,20 @@ function populate_guest_page(PlansPage $page)
 {
 	//$css=get_item($dbh,"stylesheet","stylesheet","userid", $idcookie);
 	//if ($css) {$page->stylesheet=$css;}
-	$css = "styles/guest.css"; //TODO hardcoding this is ugly
-	$page->stylesheet = $css;
+	$css = "styles/default/default.css"; //TODO hardcoding this is ugly
+	$page->stylesheets = array($css);
 	$mp = new MainPanel();
 	$page->mainpanel = $mp;
 	$mp->fingerbox = get_fingerbox();
 	$mp->linkhome = get_linkhome();
-	$mp->requiredlinks = get_guest_links();
-	$mp->optionallinks = NULL;
+	$mp->links = new WidgetList('linkslist', false);
+	foreach (get_guest_links() as $link) {
+		$mp->links->append($link);
+	}
 	$mp->autoreads = NULL;
 	$footer = new Footer();
 	$footer->doyouread = NULL;
-	$footer->legal = new InfoText(get_disclaimer(), NULL);
+	$footer->legal = new RegularText(get_disclaimer(), NULL);
 	$page->footer = $footer;
 }
 /**

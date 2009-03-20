@@ -60,7 +60,14 @@ abstract class BaseInterface implements DisplayInterface {
 		$tpl = $this->setup_widget($links);
 		return $tpl;
 	}
-	protected function setup_autoreads(WidgetList $autoreads, $lvl) {
+	/**
+	 * @param WidgetList|null $autoreads
+	 * @param int $lvl
+	 */
+	protected function setup_autoreads($autoreads, $lvl) {
+		if (!$autoreads) {
+			return false;
+		}
 		$tpl = $this->setup_widget($autoreads);
 		foreach($autoreads->contents as $i => $ar) {
 			$t = $tpl->contents[$i];
@@ -87,7 +94,11 @@ abstract class BaseInterface implements DisplayInterface {
 	{
 		$tpl = new Savant3();
 
-		$tpl->doyouread_link_template = $this->setup_widget($footer->doyouread);
+		if ($footer->doyouread) {
+			$tpl->doyouread_link_template = $this->setup_widget($footer->doyouread);
+		} else {
+			$tpl->doyouread_link_template = null;
+		}
 		$tpl->legal_template = $this->setup_widget($footer->legal);
 
 		return $tpl;

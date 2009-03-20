@@ -150,8 +150,8 @@ if (User::logged_in()) //if is a valid user, give them the option of putting the
 		$addform->append($item);
 	}
 }
+}
 interface_disp_page($page);
 db_disconnect($dbh);
-}
 
 ?>

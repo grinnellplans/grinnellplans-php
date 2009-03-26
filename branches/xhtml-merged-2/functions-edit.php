@@ -42,6 +42,7 @@ function cleanText($plan)
 	$plan = preg_replace("/\&lt\;tt\&gt\;(.*?)\&lt\;\/tt\&gt\;/si", "<tt>\\1</tt>", $plan);
 	$plan = preg_replace("/\&lt\;pre\&gt\;(.*?)\&lt\;\/pre\&gt\;/si", "</p><pre class=\"sub\">\\1</pre><p class=\"sub\">", $plan);
 	$plan = preg_replace("/\&lt\;strike\&gt\;(.*?)\&lt\;\/strike\&gt\;/si", "<span class=\"strike\">\\1</span><!--strike-->", $plan);
+	$plan = preg_replace("/\&lt\;s\&gt\;(.*?)\&lt\;\/s\&gt\;/si", "<s>\\1</s>", $plan);
 	$plan = preg_replace("/\&lt\;i\&gt\;(.*?)\&lt\;\/i\&gt\;/si", "<i>\\1</i>", $plan); //allow stuff in the italics tag back in
 	$plan = preg_replace("/\&lt\;u\&gt\;(.*?)\&lt\;\/u\&gt\;/si", "<span class=\"underline\">\\1</span><!--u-->", $plan); //allow stuff in the underline tag back in
 	$plan = preg_replace("/\&lt\;a.+?href=.&quot\;(.+?).&quot\;&gt\;(.+?)&lt\;\/a&gt\;/si", "<a href=\"\\1\" class=\"onplan\">\\2</a>", $plan);

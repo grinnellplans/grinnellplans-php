@@ -320,6 +320,34 @@ class PlanLink extends Hyperlink
 	}
 }
 /**
+ * A link that, when clicked, shows or hides another element using Javascript.
+ *
+ * In the absence of Javascript, this will degrade gracefully by simply
+ * displaying the target element always.
+ *
+ * @todo Be smarter about ids - maybe auto-generate unique ids?
+ */
+class DisplayToggleLink extends Hyperlink
+{
+	/**
+	 * @param Widget $target the element to be shown or hidden when this link is clicked
+	 * @param string $show_desc the description to use when clicking this link will show the target
+	 * @param string $hide_desc the description to use when clicking this link will hide the target
+	 * @param boolean $initially_hidden is the target hidden when the page loads?
+	 */
+	public function __construct($target, $show_desc='Show', $hide_desc='Hide', $initially_hidden=true) {
+		parent::__construct('toggle', false, 'javascript:void(0)', ($initially_hidden? $show_desc : $hide_desc));
+		if (!$target->identifier) {
+			//STUB
+			throw new Exception('You may only link a display toggle to a widget with a unique identifier.');
+		}
+		$this->target_id = $target->identifier;
+		$this->show_desc = $show_desc;
+		$this->hide_desc = $hide_desc;
+		$this->initially_hidden = $initially_hidden;
+	}
+}
+/**
  * A web form.
  */
 class Form extends WidgetGroup

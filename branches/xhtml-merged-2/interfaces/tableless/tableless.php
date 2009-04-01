@@ -88,9 +88,6 @@ class TablelessInterface extends BaseInterface {
 				$tpl->setTemplate('views/templates/tableless/FormElement.tpl.php');
 			}
 
-		} else if ($obj instanceof Hyperlink) {
-			$tpl->setTemplate('views/templates/std/Hyperlink.tpl.php');
-
 		} else if ($obj instanceof Secret) {
 			$tpl->setTemplate('views/templates/tableless/Secret.tpl.php');
 

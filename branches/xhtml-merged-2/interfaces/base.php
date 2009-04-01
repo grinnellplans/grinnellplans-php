@@ -82,6 +82,7 @@ abstract class BaseInterface implements DisplayInterface {
 	protected function get_local_jsfiles($page) 
 	{
 		$jsfile_arr = array();
+		$jsfile_arr[] = 'common.js';
 		// Populate the array with any files we need
 		switch ($page->identifier) {
 		case 'edit':
@@ -229,6 +230,17 @@ abstract class BaseInterface implements DisplayInterface {
 			$tpl->href = htmlentities(html_entity_decode($obj->href));
 			$tpl->description = $obj->description;
 			$tpl->tag_attributes = self::id_and_class($obj->identifier, $obj->group);
+
+			$tpl->setTemplate('views/templates/std/Hyperlink.tpl.php');
+
+			if ($obj instanceof DisplayToggleLink) {
+				$tpl->onclick = "toggleShowHide('$obj->target_id', this, '$obj->show_desc', '$obj->hide_desc')";
+				if ($obj->initially_hidden) {
+					$tpl->js = "document.getElementById('$obj->target_id').style.display = 'none';";
+				}
+
+				$tpl->setTemplate('views/templates/std/DisplayToggleLink.tpl.php');
+			}
 
 		} else if ($obj instanceof Secret) {
 			$tpl->date = $obj->date;

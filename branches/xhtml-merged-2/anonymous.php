@@ -39,6 +39,9 @@ $submitform->append($text);
 $submit = new SubmitInput('Post');
 $submitform->append($submit);
 
+$post_secret = new DisplayToggleLink($submitform, 'Post a Secret', 'Cancel');
+
+$page->append($post_secret);
 $page->append($submitform);
 
 if (isset($_POST['secret_submitted'])) {

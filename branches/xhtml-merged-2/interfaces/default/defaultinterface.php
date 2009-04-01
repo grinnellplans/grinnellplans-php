@@ -82,17 +82,6 @@ class LegacyDefaultInterface extends BaseInterface {
 		$tpl->setTemplate('views/templates/legacy/AutoReads.tpl.php');
 		return $tpl;
 	}
-	protected function get_local_jsfiles($page) 
-	{
-		$jsfile_arr = array();
-		// Populate the array with any files we need
-		switch ($page->identifier) {
-		case 'edit':
-			$jsfile_arr[] = 'edit.js';
-			break;
-		}
-		return $jsfile_arr;
-	}
 	protected function setup_footer($footer) 
 	{
 		$tpl = parent::setup_footer($footer);
@@ -214,7 +203,6 @@ class LegacyDefaultInterface extends BaseInterface {
 
 		} else if ($obj instanceof Hyperlink) {
 			$tpl->description = strtolower($obj->description);
-			$tpl->setTemplate('views/templates/std/Hyperlink.tpl.php');
 			if ($obj->identifier == 'older_secrets') {
 				$t = $tpl;
 				$tpl = new Savant3();

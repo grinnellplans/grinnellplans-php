@@ -335,8 +335,8 @@ class DisplayToggleLink extends Hyperlink
 	 * @param string $hide_desc the description to use when clicking this link will hide the target
 	 * @param boolean $initially_hidden is the target hidden when the page loads?
 	 */
-	public function __construct($target, $show_desc='Show', $hide_desc='Hide', $initially_hidden=true) {
-		parent::__construct('toggle', false, 'javascript:void(0)', ($initially_hidden? $show_desc : $hide_desc));
+	public function __construct($id, $unique, $target, $show_desc='Show', $hide_desc='Hide', $initially_hidden=true) {
+		parent::__construct($id, $unique, 'javascript:void(0)', ($initially_hidden? $show_desc : $hide_desc));
 		if (!$target->identifier) {
 			//STUB
 			throw new Exception('You may only link a display toggle to a widget with a unique identifier.');

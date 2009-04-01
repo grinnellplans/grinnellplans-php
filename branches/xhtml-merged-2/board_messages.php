@@ -103,7 +103,7 @@ else
 	$replyform = new Form('notes_replyform', true);
 	$replyform->action = 'board_submit.php';
 
-	$replylink = new DisplayToggleLink($replyform, 'Reply', 'Cancel');
+	$replylink = new DisplayToggleLink('post_reply_toggle', true, $replyform, 'Reply', 'Cancel');
 	$content->append($replylink);
 	$content->append($replyform);
 

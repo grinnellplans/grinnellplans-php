@@ -100,12 +100,11 @@ else
 	$header = new WidgetGroup('notes_header', false);
 	$content->append($header);
 
-	//href="javascript:Show_Stuff(display1);javascript:Show_Stuff(hide)" class="lev2">Reply</a></div><br>
-	$newthread = new Hyperlink('notes_reply', true, $href, 'Reply');
-	//$header->append($newthread);
-
 	$replyform = new Form('notes_replyform', true);
 	$replyform->action = 'board_submit.php';
+
+	$replylink = new DisplayToggleLink($replyform, 'Reply', 'Cancel');
+	$content->append($replylink);
 	$content->append($replyform);
 
 	$cook = new HiddenInput('checknum', $idcookie);

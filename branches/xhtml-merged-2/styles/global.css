@@ -9,3 +9,7 @@
 .plan_text pre br {
 	display: none;
 }
+
+.clickable {
+	cursor: pointer;
+}

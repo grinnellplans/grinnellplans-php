@@ -281,6 +281,7 @@ abstract class BaseInterface implements DisplayInterface {
 			$tpl->date = $obj->date;
 			$tpl->post_author_template = $this->setup_widget($obj->poster);
 			$tpl->score = $obj->score;
+			$tpl->user_vote = $obj->user_vote;
 			$tpl->votes = $obj->votes;
 			$tpl->text = $obj->contents;
 

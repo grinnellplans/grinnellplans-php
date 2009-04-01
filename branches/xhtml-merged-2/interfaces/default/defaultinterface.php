@@ -88,6 +88,18 @@ class LegacyDefaultInterface extends BaseInterface {
 		$tpl->setTemplate('views/templates/legacy/Footer.tpl.php');
 		return $tpl;
 	}
+	protected function get_local_jsfiles($page) 
+	{
+		$arr = parent::get_local_jsfiles($page);
+
+		switch ($page->identifier) {
+		case 'board_messages':
+			$arr[] = 'board_voting.js';
+			break;
+		}
+
+		return $arr;
+	}
 
 	protected static function id_and_class($id, $class) {
 		$out = array();
@@ -242,6 +254,8 @@ class LegacyDefaultInterface extends BaseInterface {
 
 		} else if ($obj instanceof NotesPost) {
 			$tpl->text = preg_replace('/(^<p class="sub">)|(<\/p>$)/', '', $tpl->text);
+			$tpl->yes_style = ($obj->user_vote == 'yes' ? ' style="border:#222222 thin solid"' : null);
+			$tpl->no_style = ($obj->user_vote == 'no' ? ' style="border:#222222 thin solid"' : null);
 			$tpl->setTemplate('views/templates/legacy/NotesPost.tpl.php');
 		} else if ($obj instanceof NotesNavigation) {
 			$tpl->current->text = '[' . $tpl->current->text . ']';

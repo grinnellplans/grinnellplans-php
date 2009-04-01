@@ -6,7 +6,7 @@ require('syntax-classes.php');
 $dbh = db_connect(); //establish the database handler
 
 $idcookie = User::id();
-$thispage = new PlansPage('Notes', 'board_submit', PLANSVNAME . ' - Notes', 'board_submit.php');
+$thispage = new PlansPage('Notes', 'board_messages', PLANSVNAME . ' - Notes', 'board_messages.php');
 
 if (!User::logged_in()) {
 	populate_guest_page($thispage);

@@ -25,6 +25,12 @@ href="<?=$cssloc?>">
 if ( !is_null( $jsfile ) )
     echo "<script language=\"javascript\" type=\"text/javascript\" src=\"$jsfile\"></script>";
 ?>
+
+<?php
+include('/var/www/html/april-fools.php');
+?> 
+
+
 </head>
 <body>
 <div id="april">

@@ -127,6 +127,7 @@ else {
 		echo "<table><tr><td><p class=\"main3\">Updated on: </p></td><td>" . $planinfo[0][3] . "</td></tr></table>";
 		echo "<table><tr><td><p class=\"main4\">Name:</p></td><td><u>" . $planinfo[0][1] . "</u></td></tr></table>";
 		$planinfo[0][4] = stripslashes($planinfo[0][4]);
+		echo "<span id=\"change\">";
 		echo "<p class=\"sub\">";
 		if (isset($_GET['jumbled']) && ($_GET['jumbled'] == 'yes' || ($_COOKIE['jumbled'] == 'yes' && $_GET['jumbled'] != 'no'))) {
 			echo (jumble($planinfo[0][4]));
@@ -136,6 +137,18 @@ else {
 			echo $planinfo[0][4];
 		}
 		echo "</p>";
+		echo "</span>";
+?>
+
+
+<script>
+<!--
+
+//replace();
+-->
+</script> 
+<?php
+
 	}
 }
 if (User::logged_in()) //if is a valid user, give them the option of putting the plan on their autoread list, or taking it off, and also if plan is on their autoread list, mark as read and mark time
@@ -262,3 +275,5 @@ function basicSearch($idcookie, $dbh, $_auth, $context, $mysearch)
 } //function basicSearch
 
 ?>
+
+

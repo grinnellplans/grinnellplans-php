@@ -66,7 +66,8 @@ function autoread_list($myurl, $idcookie, $myprivl)
 		if ($priority == $myprivl) {
 			$privarray = mysql_query("Select autofinger.interest,accounts.username
 			From autofinger, accounts where owner = '$idcookie' and priority =
-			'$myprivl' and updated = '1' and autofinger.interest=accounts.userid");
+			'$myprivl' and updated = '1' and autofinger.interest=accounts.userid
+			order by accounts.changed desc");
 			$autoreadlist = array();
 			while ($new_row = mysql_fetch_row($privarray)) {
 				$autoreadlist[] = $new_row;

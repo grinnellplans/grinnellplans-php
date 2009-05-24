@@ -59,6 +59,13 @@ if (!User::logged_in()) {
 		$plantext = preg_replace("/\<a\shref=\"([^\"]*?)\"\sclass=\"onplan\"\>(.*?)\<\/a\>/s", "[\\1\|\\2]", $plantext);
 		//strip slashes that were added to plan to make sure the database didn't have any troubles with it
 		$plantext = stripslashes($plantext);
+
+		// If this is the test server, give them a warning
+		if ($GLOBALS['ENVIRONMENT'] == 'testing') {
+			$betawarn = new AlertText('Remember, any changes you make here won\'t show up on regular Plans.', 'We\'re in beta');
+			$page->append($betawarn);
+		}
+
 		/* Add the edit form */
 		$plan = new PlanText($plantext, true);
 		$editbox = new EditBox($myedit[0][3], $plan, $myedit[0][2], $myedit[0][1]);

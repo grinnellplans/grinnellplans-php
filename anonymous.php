@@ -44,11 +44,7 @@ if (User::logged_in()) {
 		$offset = 0;
 	}
 	echo '<p><a href="anonymous.php?offset=' . ($offset + $count) . '">Older Secrets</a></p>';
-	if (isset($_GET['show_all'])) {
-		$select_query = "select * from secrets order by date desc limit $offset, $count";
-	} else {
-		$select_query = "select * from secrets where display = 'yes' or display = 'pref'  order by date desc limit $offset, $count";
-	}
+	$select_query = "select * from secrets where display = 'yes' or display = 'pref'  order by date desc limit $offset, $count";
 	if (!$secrets = mysql_query($select_query)) {
 		echo "No secrets";
 	} else {

@@ -59,11 +59,7 @@ if (User::logged_in()) {
 	}
 	$link = new Hyperlink('older_secrets', true, 'anonymous.php?offset=' . ($offset + $count), 'Older Secrets');
 	$page->append($link);
-	if (isset($_GET['show_all'])) {
-		$select_query = "select * from secrets order by date desc limit $offset, $count";
-	} else {
-		$select_query = "select * from secrets where display = 'yes' or display = 'pref'  order by date desc limit $offset, $count";
-	}
+	$select_query = "select * from secrets where display = 'yes' or display = 'pref'  order by date desc limit $offset, $count";
 	if (!$secrets = mysql_query($select_query)) {
 		$page->append(new AlertText("No secrets", false));
 	} else {

@@ -22,7 +22,7 @@
 		die;
 	} else {
 		// TODO: Abstract this out--it is grinnellplans.com specific.
-		system("/usr/bin/sudo /usr/bin/svn up /var/www/dev/beta/");
-		system("/usr/bin/sudo /usr/bin/svn up /var/www/dev/svn/"); 
+		system("/usr/bin/sudo /usr/bin/svn up /var/www/dev/beta/ 2>&1");
+		system("/usr/bin/sudo /usr/bin/svn up /var/www/dev/svn/ 2>&1"); 
 	}
 ?>

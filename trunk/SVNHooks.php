@@ -1,7 +1,8 @@
 <?php
-	// http://code.google.com/p/support/wiki/PostCommitWebHooks
-	define(__ROOT__, '');
-	require_once('Configuration.php');
+	/** Script to update local repositories upon update. 
+	  * http://code.google.com/p/support/wiki/PostCommitWebHooks
+	  */
+	require_once('Plans.php');
 
 	function hmac($key, $data, $hash = 'md5', $blocksize = 64) {
 		if (strlen($key)>$blocksize) {
@@ -18,6 +19,8 @@
 		($_SERVER['HTTP_GOOGLE_CODE_PROJECT_HOSTING_HOOK_HMAC'] != hmac(GOOGLE_CODE_SECRET, $request))) {
 		die;
 	} else {
-		mail("thatha@thatha.org", "SVN updated", $request);
+		// TODO: Abstract this out--it is grinnellplans.com specific.
+		system("sudo /usr/bin/svn up /var/www/dev/beta/ &");
+		system("sudo /usr/bin/svn up /var/www/dev/svn/ &");
 	}
 ?>

@@ -2,7 +2,8 @@
 	/** Script to update local repositories upon update. 
 	  * http://code.google.com/p/support/wiki/PostCommitWebHooks
 	  */
-	require_once('Plans.php');
+	define('__ROOT__', '');
+	require_once('Configuration.php');
 
 	function hmac($key, $data, $hash = 'md5', $blocksize = 64) {
 		if (strlen($key)>$blocksize) {
@@ -15,12 +16,13 @@
 	}
 
 	$request = @file_get_contents('php://input');
-	if (!isset($_SERVER['HTTP_GOOGLE_CODE_PROJECT_HOSTING_HOOK_HMAC']) ||
+	if  (!isset($_SERVER['HTTP_GOOGLE_CODE_PROJECT_HOSTING_HOOK_HMAC']) ||
 		($_SERVER['HTTP_GOOGLE_CODE_PROJECT_HOSTING_HOOK_HMAC'] != hmac(GOOGLE_CODE_SECRET, $request))) {
+		trigger_error("HMAC-MD5 WebHook authentication failed!", E_USER_ERROR);
 		die;
 	} else {
 		// TODO: Abstract this out--it is grinnellplans.com specific.
-		system("sudo /usr/bin/svn up /var/www/dev/beta/ > /dev/null | mail thatha@thatha.org");
-		system("sudo /usr/bin/svn up /var/www/dev/svn/ > /dev/null | mail thatha@thatha.org");
+		system("/usr/bin/sudo /usr/bin/svn up /var/www/dev/beta/");
+		system("/usr/bin/sudo /usr/bin/svn up /var/www/dev/svn/"); 
 	}
 ?>

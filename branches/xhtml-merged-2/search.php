@@ -180,7 +180,7 @@ if ($mysearch) //if no search query, give search form
 					}
 					//Don't try to read past the end of the plan.
 					$endof = min($endof, $endsize);
-					$textitem = new InfoText(substr($new_row[1], $startof, $endof - $startof), false);
+					$textitem = new RegularText(substr($new_row[1], $startof, $endof - $startof), false);
 					$sublist->append($textitem);
 				} //while still displaying parts of plan
 			} //while dealing with one plan that has term

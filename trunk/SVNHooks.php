@@ -14,6 +14,10 @@
 		$opad = str_repeat(chr(0x5c), $blocksize);
 		return $hash(($key^$opad) . pack('H*', $hash(($key^$ipad) . $data)));
 	}
+	
+	function background_exec($cmd) {
+		exec("%cmd 2>/dev/null >&- < &- >/dev/null &");
+	}
 
 	$request = @file_get_contents('php://input');
 	if  (!isset($_SERVER['HTTP_GOOGLE_CODE_PROJECT_HOSTING_HOOK_HMAC']) ||
@@ -22,7 +26,7 @@
 		die;
 	} else {
 		// TODO: Abstract this out--it is grinnellplans.com specific.
-		system("/usr/bin/sudo /usr/bin/svn up /var/www/dev/beta/ 2>&1");
-		system("/usr/bin/sudo /usr/bin/svn up /var/www/dev/svn/ 2>&1"); 
+		background_exec("/usr/bin/sudo /usr/bin/svn up /var/www/dev/beta/");
+		background_exec("/usr/bin/sudo /usr/bin/svn up /var/www/dev/svn/"); 
 	}
 ?>

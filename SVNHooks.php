@@ -16,7 +16,7 @@
 	}
 	
 	function background_exec($cmd) {
-		exec("%cmd 2>/dev/null >&- < &- >/dev/null &");
+		exec("$cmd 2>/dev/null >&- < &- >/dev/null &");
 	}
 
 	$request = @file_get_contents('php://input');

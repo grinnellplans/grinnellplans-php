@@ -83,6 +83,8 @@ if (User::logged_in()) {
 		update_read($dbh, $idcookie, $searchnum); //mark as having been read
 		setReadTime($dbh, $idcookie, $searchnum); //and mark time that was read
 		$myonlist = $onlist[0];
+		// Repopulate the page to get updated autoread
+		populate_page($page, $dbh, $idcookie);
 	} else {
 		$myonlist = "X";	 //if not on autoread list, show is not on priority list
 	}

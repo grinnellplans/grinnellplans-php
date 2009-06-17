@@ -1,5 +1,6 @@
 <?php
 	// http://code.google.com/p/support/wiki/PostCommitWebHooks
+	define(__ROOT__, '');
 	require_once('Configuration.php');
 
 	function hmac($key, $data, $hash = 'md5', $blocksize = 64) {

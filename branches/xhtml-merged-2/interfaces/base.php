@@ -2,6 +2,18 @@
 require_once('lib/savant/Savant3.php');
 
 /**
+ * A simple wrapper around the Savant3 template class.
+ *
+ * To be used as the base template class for all Plans templating.
+ */
+class Plans_Savant3 extends Savant3 {
+	public function __construct() {
+		parent::__construct();
+		$this->tag_attributes = '';
+	}
+}
+
+/**
  * A base class to be extended by interface classes.
  *
  * Sets up some default behavior that may be overridden as desired.
@@ -18,7 +30,7 @@ abstract class BaseInterface implements DisplayInterface {
 
 	public function setup_page(PlansPage $page)
 	{
-		$tpl = new Savant3();
+		$tpl = new Plans_Savant3();
 
 		$tpl->page_title = $page->title;
 		$tpl->stylesheets = $page->stylesheets;
@@ -35,7 +47,7 @@ abstract class BaseInterface implements DisplayInterface {
 	}
 	protected function setup_mainpanel(PlansPage $page) {
 		$panel = $page->mainpanel;
-		$tpl = new Savant3();
+		$tpl = new Plans_Savant3();
 
 		$tpl->linkhome_template = $this->setup_linkhome($panel->linkhome);
 		$tpl->fingerbox_template = $this->setup_fingerbox($panel->fingerbox);
@@ -45,7 +57,7 @@ abstract class BaseInterface implements DisplayInterface {
 		return $tpl;
 	}
 	protected function setup_linkhome(Hyperlink $link) {
-		$tpl = new Savant3();
+		$tpl = new Plans_Savant3();
 
 		$tpl->href = htmlentities(html_entity_decode($link->href));
 		$tpl->description = 'Home';
@@ -93,7 +105,7 @@ abstract class BaseInterface implements DisplayInterface {
 	}
 	protected function setup_footer($footer) 
 	{
-		$tpl = new Savant3();
+		$tpl = new Plans_Savant3();
 
 		if ($footer->doyouread) {
 			$tpl->doyouread_link_template = $this->setup_widget($footer->doyouread);
@@ -122,7 +134,7 @@ abstract class BaseInterface implements DisplayInterface {
 	}
 
 	protected function setup_widget(Widget $obj) {
-		$tpl = new Savant3();
+		$tpl = new Plans_Savant3();
 
 		if ($obj instanceof NotesTopic && $obj->summary) {
 			$tpl->title_template = $this->setup_widget($obj->title);
@@ -141,7 +153,6 @@ abstract class BaseInterface implements DisplayInterface {
 		} else if ($obj instanceof WidgetGroup) {
 
 			$tpl->contents = array_map(array($this, 'setup_widget'), $obj->contents);
-			$tpl->title = $obj->title;
 
 			if ($obj instanceof WidgetList) {
 				foreach($tpl->contents as $i => $t) {
@@ -195,8 +206,8 @@ abstract class BaseInterface implements DisplayInterface {
 
 		} else if ($obj instanceof FormItem) {
 
-			if ($item->identifier) {
-				$item_id = $item->identifier;
+			if ($obj->identifier) {
+				$item_id = $obj->identifier;
 			} else {
 				$item_id = $obj->parent_form->identifier . '_' . $obj->name;
 			}
@@ -292,7 +303,7 @@ abstract class BaseInterface implements DisplayInterface {
 				$tpl->newest->description = '&lt;&lt;';
 				$tpl->navigable['newest'] = true;
 			} else {
-				$tpl->newest = new Savant3();
+				$tpl->newest = new Plans_Savant3();
 				$tpl->newest->setTemplate('views/templates/std/GenericTag.tpl.php');
 				$tpl->newest->text = '&lt;&lt;';
 				$tpl->newest->tag = 'span';
@@ -303,7 +314,7 @@ abstract class BaseInterface implements DisplayInterface {
 					$tpl->$linkname = $this->setup_widget($obj->$linkname);
 					$tpl->navigable[$linkname] = true;
 				} else {
-					$tpl->$linkname = new Savant3();
+					$tpl->$linkname = new Plans_Savant3();
 					$tpl->$linkname->setTemplate('views/templates/std/GenericTag.tpl.php');
 					$tpl->$linkname->text = '_';
 					$tpl->$linkname->tag = 'span';
@@ -315,7 +326,7 @@ abstract class BaseInterface implements DisplayInterface {
 				$tpl->oldest->description = '&gt;&gt;';
 				$tpl->navigable['oldest'] = true;
 			} else {
-				$tpl->oldest = new Savant3();
+				$tpl->oldest = new Plans_Savant3();
 				$tpl->oldest->setTemplate('views/templates/std/GenericTag.tpl.php');
 				$tpl->oldest->text = '&gt;&gt;';
 				$tpl->oldest->tag = 'span';

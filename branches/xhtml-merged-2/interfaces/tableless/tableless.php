@@ -95,7 +95,7 @@ class TablelessInterface extends BaseInterface {
 			if ($obj->addform) {
 				$tpl->addform_template = $this->setup_widget($obj->addform);
 			} else {
-				$tpl->addform_template = new Savant3();
+				$tpl->addform_template = new Plans_Savant3();
 				$tpl->addform_template->setTemplate('views/templates/std/Empty.tpl.php');
 			}
 			$tpl->setTemplate('views/templates/tableless/Plan.tpl.php');

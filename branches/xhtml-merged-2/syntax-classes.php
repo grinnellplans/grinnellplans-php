@@ -389,6 +389,11 @@ class FormItem extends Widget
 	 */
 	public $name;
 	/**
+	 * The title of the field
+	 * @var string
+	 */
+	public $title;
+	/**
 	 * Text description of the item
 	 * @var string
 	 */

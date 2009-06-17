@@ -13,7 +13,7 @@ class LegacyDefaultInterface extends BaseInterface {
 	public function setup_page(PlansPage $page)
 	{
 		$this->page = $page;
-		$tpl = new Savant3();
+		$tpl = new Plans_Savant3();
 
 		$tpl->page_title = $page->title;
 		$tpl->stylesheets = $page->stylesheets;
@@ -38,7 +38,7 @@ class LegacyDefaultInterface extends BaseInterface {
 		return $tpl;
 	}
 	protected function setup_mainpanel(PlansPage $page) {
-		$tpl = new Savant3();
+		$tpl = new Plans_Savant3();
 
 		$panel = $page->mainpanel;
 		$tpl->panel = $panel;
@@ -62,10 +62,10 @@ class LegacyDefaultInterface extends BaseInterface {
 		if (!$autoreads) {
 			return false;
 		}
-		$tpl = new Savant3();
+		$tpl = new Plans_Savant3();
 
 		foreach ($autoreads->contents as $ar) {
-			$t = new Savant3();
+			$t = new Plans_Savant3();
 			$tpl->contents[] = $t;
 			$t->level_link = $ar->link;
 			$t->markasread_link = $ar->markasread_link;
@@ -191,7 +191,7 @@ class LegacyDefaultInterface extends BaseInterface {
 
 				if ($obj->group == 'notes_header') {
 					$t = $tpl;
-					$tpl = new Savant3();
+					$tpl = new Plans_Savant3();
 					$tpl->inner_template = $t;
 					$tpl->tag = 'center';
 					$tpl->setTemplate('views/templates/std/GenericWrapperTag.tpl.php');
@@ -217,7 +217,7 @@ class LegacyDefaultInterface extends BaseInterface {
 			$tpl->description = strtolower($obj->description);
 			if ($obj->identifier == 'older_secrets') {
 				$t = $tpl;
-				$tpl = new Savant3();
+				$tpl = new Plans_Savant3();
 				$tpl->inner_template = $t;
 				$tpl->tag = 'p';
 				$tpl->setTemplate('views/templates/std/GenericWrapperTag.tpl.php');

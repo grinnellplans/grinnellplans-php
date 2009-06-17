@@ -15,13 +15,13 @@ class LegacyCenteredInterface extends LegacyDefaultInterface {
 		return $tpl;
 	}
 	protected function setup_rightpanel(PlansPage $page) {
-		$tpl = new Savant3();
+		$tpl = new Plans_Savant3();
 		$tpl->autoread_template = $this->setup_autoreads($page->mainpanel->autoreads, $page->autoreadpriority);
 		$tpl->setTemplate('views/templates/legacy/Rightpanel.tpl.php');
 		return $tpl;
 	}
 	protected function setup_mainpanel(PlansPage $page) {
-		$tpl = new Savant3();
+		$tpl = new Plans_Savant3();
 
 		$panel = $page->mainpanel;
 		$tpl->panel = $panel;

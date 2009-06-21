@@ -143,7 +143,7 @@ function get_autoread($idcookie, $p)
 	$newarr = array();
 	$privarray = mysql_query("Select autofinger.interest,accounts.username
 		From autofinger, accounts where owner = '$idcookie' and priority =
-		'$p' and updated = '1' and autofinger.interest=accounts.userid");
+		'$p' and updated = '1' and autofinger.interest=accounts.userid order by accounts.changed desc");
 	while ($new_row = mysql_fetch_row($privarray)) {
 		$autoreadlist[] = $new_row;
 	}

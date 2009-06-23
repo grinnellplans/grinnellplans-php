@@ -43,3 +43,4 @@ if (!User::logged_in()) {
 	$thispage->append($gohome);
 }
 interface_disp_page($thispage);
+?>

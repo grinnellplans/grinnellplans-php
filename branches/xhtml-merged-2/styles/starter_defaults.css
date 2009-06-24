@@ -8,7 +8,7 @@
 }
 
 /* Float items within a set next to each other */
-.formitemset .form_prompt {
+.formitemset .form_prompt, .formitemset .formitemset_label {
 	float: left;
 	clear: none;
 }

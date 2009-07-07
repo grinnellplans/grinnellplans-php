@@ -17,10 +17,10 @@ function mdisp_begin($dbh, $idcookie, $myurl, $myprivl, $jsfile = NULL)
 				$mydisplayar[] = $new_row;
 	} //gets contents from query
 	$interface = $mydisplayar[0][0];
-	if (!isset($interface) || empty($interface)) {
+	if (!isset($interface) || empty($interface) || !file_exists($interface)) {
 		$interface = 'interfaces/default/defaultinterface.php';
 	}
-	
+
 	require_once($interface);
 	
 	if ($css) {

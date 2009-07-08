@@ -1,83 +1,85 @@
 <?php
+/**
+ * Change the size of the text box in the edit page.
+ */
 require_once('Plans.php');
 new SessionBroker();
 
 require('functions-main.php');
+require ("syntax-classes.php");
 $dbh = db_connect(); //establish the database handler
 $idcookie = User::id();
+$thispage = new PlansPage('Preferences', 'textbox', PLANSVNAME . ' - Text Box Size', 'textbox.php');
 if (!User::logged_in()) {
-	gdisp_begin($dbh); 
-	echo ("You are not allowed to edit as a guest."); //tell person they can't log in
-	gdisp_end();
-} 
+	populate_guest_page($thispage);
+	$denied = new AlertText('You are not allowed to edit as a guest.', 'Access Denied');
+	$thispage->append($denied);
+} //end guest display
 else
 //elseallowed to edit
 {
-	mdisp_begin($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], get_myprivl()); //begin user display
-	if ($part) //if form has been submitted
+	populate_page($thispage, $dbh, $idcookie);
+
+	$heading = new HeadingText('Change Edit Box Size:', 1);
+	$thispage->append($heading);
+
+	if ($_POST['part']) //if form has been submitted
 	{
+		$cols = $_POST['cols'];
 		if ($cols > 150 or $cols < 25) //check to make sure that columns are a reasonable size
 		{
-			$message = "Column size is not valid.";
+			$denied = new AlertText('Column size is not valid.', 'Problem With Your Selection');
+			$thispage->append($denied);
 		} //if not complain
-		else
+		else if ($rows < 5 or $rows > 50) //make sure row size is reasonable
 		//if ok, check the row size
 		{
-			if ($rows < 5 or $rows > 50) //make sure row size is reasonable
-			{
-				$message = "Row size was not valid.";
-			} //if not complain
-			else
-			//otherwise sizes are fine, so set the data
-			{
-				set_item($dbh, "accounts", "edit_cols", $cols, "userid", $idcookie); //update the column size
-				set_item($dbh, "accounts", "edit_rows", $rows, "userid", $idcookie); //update the row size
-				if ($notes_asc != 1) {
-					$notes_asc = 0;
-				}
-				set_item($dbh, "accounts", "notes_asc", $notes_asc, "userid", $idcookie); //update the row size
-				$message = "Row size set to <b>" . $rows . "</b>." . " <br>Column size set to <b>" . $cols . "</b>.";
-			} //if rows else
+			$denied = new AlertText('Row size is not valid.', 'Problem With Your Selection');
+			$thispage->append($denied);
+		} //if not complain
+		else
+		//otherwise sizes are fine, so set the data
+		{
+			set_item($dbh, "accounts", "edit_cols", $cols, "userid", $idcookie); //update the column size
+			set_item($dbh, "accounts", "edit_rows", $rows, "userid", $idcookie); //update the row size
+			if ($notes_asc != 1) {
+				$notes_asc = 0;
+			}
+			set_item($dbh, "accounts", "notes_asc", $notes_asc, "userid", $idcookie); //update the row size
+			$message = new AlertText("Row size set to <b>" . $rows . "</b>." . " <br>Column size set to <b>" . $cols . "</b>.", 'Submission Successful');
+			$thispage->append($message);
 			
-		} //if cols else
+		} //else
 		//actually tell the user here if there was a problem, or if things were set correctly.
 		
-?>
-          <center><h2>Change Edit Box Size:</h2>
-             <?php
-		echo $message
-?>
-             </center>
-             <?php
 	} else
 	//if form hasn't been submitted, get the current column and row size, and give form
 	{
 		$edsizes = get_items($dbh, "edit_cols, edit_rows, notes_asc", "accounts", "userid", $idcookie); //gets the columns and row size
 		//gives form
 		
-?>
-         <center><h2>Change Edit Box Size:</h2>
-            <form action="textbox.php" method="GET">
-            <table>
-            <input type="hidden" name="part" value="1">
-            <tr><td>Rows:</td><td><input type="text" name="rows" 
-            value="<?php
-		echo $edsizes[0][1] ?>"></td></tr>
-            <tr><td>Columns:</td><td><input type="text" name="cols" 
-            value="<?php
-		echo $edsizes[0][0] ?>"></tr>
-            <tr><td>Notes Posts in ascending order:</td><td><input type="checkbox" name="notes_asc" 
-            <?php
-		if ($edsizes[0][2] == "1") echo 'checked' ?> value="1"></tr>
-            <tr><td></td><td>
-            <input type="submit" value="Change Edit Box"></td></tr>
-            </table>
-            </form>
-            </center>
-            <?php
+		$textboxform = new Form('textbox_form', true);
+		$textboxform->action = 'textbox.php';
+		$textboxform->method = 'POST';
+		$thispage->append($textboxform);
+
+		$item = new HiddenInput('part', 1);
+		$textboxform->append($item);
+		$item = new TextInput('rows', $edsizes[0][1]);
+		$item->title = 'Rows:';
+		$textboxform->append($item);
+		$item = new TextInput('cols', $edsizes[0][0]);
+		$item->title = 'Columns:';
+		$textboxform->append($item);
+		$item = new CheckboxInput('notes_asc', 1);
+		$item->description = 'Notes posts in ascending order';
+		if ($edsizes[0][2] == "1") $item->checked = true;
+		$textboxform->append($item);
+		$item = new SubmitInput('Change Edit Box');
+		$textboxform->append($item);
 	}
-	mdisp_end($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], get_myprivl()); //gets user display
 	
 }
+interface_disp_page($thispage);
 db_disconnect($dbh);
 ?>

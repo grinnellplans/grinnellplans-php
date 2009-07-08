@@ -14,6 +14,9 @@ if ((strstr($_SERVER['REQUEST_URI'], '/dev/') != FALSE) ||
 	ini_set('register_globals', FALSE);
 	ini_set('register_long_arrays', FALSE);
 	ini_set('register_argc_argv', FALSE);
+	//TODO For now, this is not a constant because I want to be able to change 
+	// it, but there's probably a better solution in the long run
+	$GLOBALS['ENVIRONMENT'] = 'development';
 } else {
 	// For production, be a bit loose.
 	ini_set('register_globals', TRUE);
@@ -21,6 +24,7 @@ if ((strstr($_SERVER['REQUEST_URI'], '/dev/') != FALSE) ||
 	ini_set('register_argc_argv', TRUE);
 
 	ini_set('track_errors', FALSE);
+	$GLOBALS['ENVIRONMENT'] = 'production';
 }
 
 // Boilerplate code for _all_ Plans scripts
@@ -66,4 +70,10 @@ new ResourceCounter();
 new SessionBroker();
 new ClickstreamEvent();
 header('Content-Type: text/html; charset=UTF-8');
+
+// If we're on a testing environment, warn them
+if (User::logged_in() && $GLOBALS['ENVIRONMENT'] == 'testing' && !$_SESSION['accept_beta'] && basename($_SERVER['PHP_SELF']) != 'beta_warning.php') {
+	Redirect('beta_warning.php');
+	return;
+}
 ?>

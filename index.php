@@ -71,7 +71,7 @@ if (isset($_GET['logout'])) {
 	  <table cellpadding=0 width="100%">
 	  <tr>
 		<td colspan=2 align=center>
-			<img src="img/logo.jpg">
+			<img src="images/logo.jpg">
 		</td>
 	  </tr>
 	  <tr class="boxes">

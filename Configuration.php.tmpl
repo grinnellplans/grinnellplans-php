@@ -1,6 +1,9 @@
 <?
 /* Centralized file to hold all configuration parameters */
 
+define("PLANSVERSION", "2.7");
+define("PLANSVNAME", "Plans " . PLANSVERSION);
+
 define('GOOGLE_CODE_SECRET', '');
 
 define('TZ', 'America/Chicago');
@@ -22,4 +25,8 @@ define('USER_GUEST_NAME', 'guest');
 
 define('GEO_GMAPS_API', '');
 define('GEO_DATABASE', __ROOT__ . '/geo/geo.dat');
+
+// Use this if you wish to override the auto-detected environment type.
+// Options are 'development', 'production', or 'testing'
+//$GLOBALS['ENVIRONMENT'] = 'testing';
 ?>

@@ -1,33 +1,60 @@
 <?php
 require_once('Plans.php');
 require('functions-main.php');
-require('syntax-classes.php');
 $dbh = db_connect();
 $idcookie = User::id();
-// initialize page classes
-$thispage = new PlansPage('Preferences', 'prefs', PLANSVNAME . ' - Preferences', 'customize.php');
 if (!User::logged_in()) {
-	populate_guest_page($thispage);
-	$denied = new AlertText('You are not allowed to edit as a guest.', 'Access Denied');
-	$thispage->append($denied);
+	gdisp_begin($dbh); 
+	echo ("You are not allowed to edit as a guest."); //tell guest they can't edit
+	gdisp_end();
 } else {
-	populate_page($thispage, $dbh, $idcookie);
-	$heading = new HeadingText('Preferences', 1);
-	$thispage->append($heading);
-	$preflist = new WidgetList('preflist', "Preferences");
-	// make the list of preference pages
-	$arr = array('Change Auto List' => "autoread.php", 'Change Password' => "changepassword.php", 'Change Name' => "changename.php", 'Guest Readable' => "webview.php", 'Customize' => '', 'Interfaces' => "interfaces.php", 'Styles' => "styles.php", 'Edit Text Box Size' => "textbox.php", 'Optional Links' => "links.php");
-	foreach($arr as $name => $ref) {
-		if (strtolower($name) != 'customize') {
-			$alink = new Hyperlink('preflink', false, $ref, $name);
-			$preflist->append($alink);
-		} else {
-			$aheading = new HeadingText('Customize', 2);
-			$preflist->append($aheading);
-		}
-	}
-	$thispage->append($preflist);
+	mdisp_begin($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], get_myprivl()); //begin valid user display
+	//Give list of links of types of customization
+	
+?>
+	<center><h2>Preferences: </h2>
+	<table>
+
+
+	<tr><td><a
+	href="autoread.php"
+	class="main">change auto list</a></td></tr>
+
+
+	<tr><td><a
+	href="changepassword.php"
+	class="main">change password</a></td></tr>
+
+	<tr><td><a
+	href="changename.php"
+	class="main">change name</a></td></tr>
+
+	<tr><td><a
+	href="webview.php"
+	class="main">guest readable</a></td></tr>
+
+
+	<tr><td>&nbsp;</td></tr>
+
+	<tr><td><p class="main">customize</p></td></tr>
+
+	<tr><td><a href="interfaces.php"class="lev2">interfaces</a></td></tr>
+
+	<tr><td><a href="styles.php"
+	class="lev2">styles</a></td></tr>
+
+	<tr><td><a href="textbox.php" class="lev2">edit
+	text box size</a></td></tr>
+
+
+	<tr><td><a href="links.php" class="lev2">optional
+	links</a></td></tr>
+
+	</table>
+	</center>
+	<?php
+	mdisp_end($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], get_myprivl()); //end display
+	
 } //if is a valid user
-interface_disp_page($thispage);
 db_disconnect($dbh);
 ?>

@@ -3,55 +3,48 @@ require_once('Plans.php');
 new SessionBroker();
 
 require('functions-main.php');
-require('syntax-classes.php');
 $dbh = db_connect();
 $idcookie = User::id();
-// initialize page classes
-$thispage = new PlansPage('Preferences', 'webview', PLANSVNAME . ' - Guest Viewable', 'webview.php');
-// If user is not authorized, turn them away.
 if (!User::logged_in()) {
-	populate_guest_page($thispage);
-	$denied = new AlertText('You are not allowed to edit as a guest.', 'Access Denied');
-	$thispage->append($denied);
-} else {
+	gdisp_begin($dbh);
+	echo ("You are not allowed to edit as a guest.");
+	gdisp_end();
+} else
 
-	//allowed to edit
-	populate_page($thispage, $dbh, $idcookie);
-	$heading = new HeadingText('Guest Viewable', 1);
-	$thispage->append($heading);
-	// If the form was submitted, set the preference and print a message
+{
 	if ($part) {
 		if ($webview != 1) {
 			$webview = 0;
 		}
 		set_item($dbh, "accounts", "webview", $webview, "userid", $idcookie);
-		$thisitem = new InfoText('Preference set.', '');
-		$thispage->append($thisitem);
-	}
-	// Make our form
-	$viewableform = new Form('guestviewableform', true);
-	$thispage->append($viewableform);
-	$viewableform->action = 'webview.php';
-	$viewableform->method = 'POST';
-	if (get_item($dbh, "webview", "accounts", "userid", $idcookie) == 1) {
-		$viewable = true;
+		mdisp_begin($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], get_myprivl());
+?>
+		<center><h2>Guest Viewable:</h2>  
+		<table><tr><Td>Preference set.</td></tr></table></center><?php
 	} else {
-		$viewable = false;
+		mdisp_begin($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], get_myprivl());
+		if (get_item($dbh, "webview", "accounts", "userid", $idcookie) == 1) {
+			$viewable = " checked";
+		} else {
+			$unviewable = " checked";
+		}
+?>
+		<center><h2>Webview:</h2>
+		<table><form action="webview.php" method="POST">
+		<input type="hidden" name="part" value="1">
+		<?php
+		echo "<tr><td><input type=\"radio\" name=\"webview\" 
+		value=\"1\" " . $viewable . ">Make plan viewable to guests.</td></tr>";
+		echo "<tr><td><input type=\"radio\" name=\"webview\" value=\"\" " . $unviewable . ">Make plan unviewable to guests.</td></tr>";
+?>
+		</table>
+		<input type="submit" value="Change">
+		</form>
+		</center>
+		<?php
 	}
-	$item = new HiddenInput('part', 1);
-	$viewableform->append($item);
-	$item = new RadioInput('webview', 1);
-	$item->checked = $viewable;
-	$item->description = "Make plan viewable to guests.";
-	$viewableform->append($item);
-	$item = new RadioInput('webview', 0);
-	$item->checked = !($viewable);
-	$item->description = "Make plan unviewable to guests.";
-	$viewableform->append($item);
-	$item = new SubmitInput('Change');
-	$viewableform->append($item);
+	mdisp_end($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], get_myprivl());
 } //if is a valid user
-interface_disp_page($thispage);
 db_disconnect($dbh);
 ?>
 

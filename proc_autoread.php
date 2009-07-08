@@ -1,17 +1,20 @@
 <?php
 require_once('Plans.php');
 new SessionBroker();
+
 require('functions-main.php');
 $dbh = db_connect(); //connect to the database
 $idcookie = User::id();
 
 if (!User::logged_in()) {
-	populate_guest_page($thispage);
-	$denied = new AlertText('You do not have an autoread list as a guest.', 'Access Denied');
-	$thispage->append($denied);
+	gdisp_begin($dbh); 
+	echo ("You do not have an autoread list as a guest."); //tell guest they can't do anything on thsi page
+	gdisp_end(); 
+	
 } else
 
 {
+	mdisp_begin($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], get_myprivl()); //begin valid user display
 	//get old autofinger list
 	$arlist = get_items($dbh, "interest,priority", "autofinger", "owner", $idcookie); //get the contents of a person's autofinger list
 	$arraylist = get_letters($dbh, chr($letternum), chr($letternum + 1), $idcookie); //get usernames that start with that letter
@@ -22,7 +25,7 @@ if (!User::logged_in()) {
 		$o++;
 	}
 	//Loop through submitted data and create a new array with the index number being a plans userid number, and the value is the priority level
-	while (list($key, $val) = each($_POST)) {
+	while (list($key, $val) = each($HTTP_POST_VARS)) {
 		if ($key > 0 and $key < 9999 and $val > 0) {
 			$prosplist[$key] = $val;
 		}
@@ -73,7 +76,20 @@ owner = '$idcookie' and interest = '$val'");
 			add_row($dbh, "autofinger", $rew);
 		}
 	}
-	Redirect($_SERVER['HTTP_REFERER']);
+	$i = 97; //set begin letter to a
+	while ($i < 123) //while before z
+	{
+		if ($i == $letternum) //if we've hit the desire letter
+		{
+			echo "[" . chr($i) . "]"; //show that the letter is selected
+			
+		} else {
+			echo " <a href= \"autoread.php?letternum=" . $i . "\">" . chr($i) . "</a> ";
+		}
+		$i++;
+	}
+	echo "<HR>" . "AutoRead List Changed.";
+	mdisp_end($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], get_myprivl());
 }
 db_disconnect($dbh);
 ?>

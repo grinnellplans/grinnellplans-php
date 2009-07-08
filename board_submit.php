@@ -1,23 +1,19 @@
 <?php
 require_once('Plans.php');
 require('functions-main.php');
-require('syntax-classes.php');
 $dbh = db_connect(); //establish the database handler
 $idcookie = User::id();
-$thispage = new PlansPage('Notes', 'board_submit', PLANSVNAME . ' - Notes', 'board_submit.php');
 if (!User::logged_in()) {
-	populate_guest_page($thispage);
-	$denied = new AlertText('You are not allowed to use Notes as a guest.', 'Access Denied');
-	$thispage->append($denied);
-}
-//TODO why is this here?
+	gdisp_begin($dbh); 
+	echo ("You are not allowed to edit as a guest."); //tell person they can't log in
+	gdisp_end();
+} 
 else if (User::id() == 0) {
 	User::logout();
 }
 else
 //elseallowed to edit
 {
-	populate_page($thispage, $dbh, $idcookie);
 	$showform = 1;
 	$error_message = '';
 	if ($submit) {
@@ -27,21 +23,21 @@ else
 			$threadtitle = preg_replace('/<[^>]*>/', '', $threadtitle);
 			if (!$threadtitle || preg_match("/JLW/", $threadtitle)) {
 				$showform = 1;
-				$error_message = new AlertText("You are creating a new thread. Please enter a title for the thread.", 'Error');
+				$error_message = "You are creating a new thread. Please enter a title for the thread.<br>";
 			} //if no threadtitle
 			
 		} //if newthread
 		else {
 			if (!(get_item($dbh, "threadid", "mainboard", "threadid", $threadid))) {
 				$showform = 1;
-				$error_message = new AlertText("Invalid parent thread.", 'Error');
+				$error_message = "Invalid parent thread.<br>";
 			}
 		} //if not new thread
 		$messagetitle = cleanText($messagetitle);
 		$messagecontents = cleanText($messagecontents);
 		if (!$messagecontents) {
 			$showform = 1;
-			$error_message = new AlertText("Please enter a message.", 'Error');
+			$error_message = "Please enter a message.<br>";
 		}
 		if (!$showform) {
 			if ($newthread) {
@@ -61,20 +57,21 @@ else
 			
 		}
 	} //if submit
-	if ($error_message instanceof Widget) {
-		$thispage->append($error_message);
-	} else if (!$showform) {
-		header('Location: board_messages.php?threadid=' . $threadid);
+	if ($error_message || $showform) {
+		mdisp_begin($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], get_myprivl()); //begin user display
+		echo $error_message;
+	} else {
+		header('Location: http://www.grinnellplans.com/board_messages.php?threadid=' . $threadid);
 	}
 	if ($showform) {
-		$messageform = new Form('notesform', true);
-		$thispage->append($messageform);
+		echo "<form action=\"board_submit.php\" method=\"POST\">";
 		if ($newthread) {
-			$title = new TextInput('threadtitle', $threadtitle);
-			$title->title = 'Thread Title:';
-			$hid = new HiddenInput('newthread', 1);
-			$messageform->append($title);
-			$messageform->append($hid);
+?>
+		Thread Title:<br><input type="text" name="threadtitle" value="<?php
+			echo $threadtitle
+?>"><br><br>
+		<input type="hidden" name="newthread" value="1">
+		<?php
 		} //if ($newthread)
 		$boardsize = get_items($dbh, "edit_cols,edit_rows", "accounts", "userid", $idcookie); //get the users chosen box size
 		if ($boardsize[0][1] < 1) {
@@ -83,25 +80,22 @@ else
 		if ($boardsize[0][2] < 1) {
 			$boardsize[0][1] = 14;
 		}
-		$message = new TextInput('messagetitle', $messagetitle);
-		$message->title = 'Message Title:';
-		$messageform->append($message);
-
-		$messagecontents = new TextareaInput('messagecontents', $messagecontents);
-		$messagecontents->title = 'Message Contents:';
-		$messagecontents->rows = $boardsize[0][1];
-		$messagecontents->cols = $boardsize[0][0];
-		$messageform->append($messagecontents);
-
-		$threadid = new HiddenInput('threadid', $threadid);
-		$messageform->append($threadid);
-		$hidsubmit = new HiddenInput('submit', 1);
-		$messageform->append($hidsubmit);
-		$button = new SubmitInput('Submit Message');
-		$messageform->append($button);
+?>
+	Message Title:<br><input type="text" name="messagetitle" value="<?php
+		echo $messagetitle
+?>"><br><br>
+	Message Contents:<br><textarea rows="<?php
+		echo $boardsize[0][1] ?>" cols="<?php
+		echo $boardsize[0][0] ?>" name="messagecontents" 
+	wrap="virtual"><?php
+		echo $messagecontents ?></textarea><br>
+	<input type="hidden" name="threadid" value="<?php
+		echo $threadid ?>">
+	<input type="hidden" name="submit" value="1"><input type="submit" value="Submit Message"></form>
+	<?php
 	} //if showform
+	mdisp_end($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], get_myprivl()); //gets user display
 	
 } //if valid user
-interface_disp_page($thispage);
 db_disconnect($dbh);
 ?>

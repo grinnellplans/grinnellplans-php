@@ -1,14 +1,4 @@
-#af_loading {
-  background: url("progress.gif");
-  width: 16px;
-  height: 16px;
-  display: block;
-  float: left;
-}
 
-/* Fix for PRE double-spacing [bug 21] */
-pre br {display:none}
-/* End fix */
 
 body {
     color: #000;

@@ -9,10 +9,6 @@ no-repeat fixed
 top}
 */
 
-/* Fix for PRE double-spacing [bug 21] */
-pre br {display:none}
-/* End fix */
-
 body {color: #000000; background-color: #ffffff; background: #ffffff}
 
 p.logo { background: #ffffff

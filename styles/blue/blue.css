@@ -11,11 +11,6 @@ body {
 		           scrollbar-darkshadow-color: d6c1ff;
 		           scrollbar-track-color: 000;
 		           scrollbar-arrow-color: b6a1e4;
-
-/* Fix for PRE double-spacing [bug 21] */
-pre br {display:none}
-/* End fix */
-
 /*b6a1e4
 */
 }
@@ -38,6 +33,7 @@ td.right {
   border: #000 solid;
   border-width: 0px 0px 0px 1px;
 }
+
 
 /******************
  * Forms and misc *
@@ -225,3 +221,7 @@ a.onplan:visited {
   border-width: 1px;
   border-color: #47a;
 }
+ 
+
+
+

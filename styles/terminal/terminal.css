@@ -54,10 +54,6 @@ table.lowerpanel {
   border-color: #0f0;
 }
 
-/* Fix for PRE double-spacing [bug 21] */
-pre br {display:none}
-/* End fix */
-
 p.imagelev1 {
 /*  background: #000 no-repeat;
   padding-right: 0.15cm

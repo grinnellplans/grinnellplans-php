@@ -1,19 +1,18 @@
 <?php
 require_once('Plans.php');
 require ("functions-main.php"); 
-require ("syntax-classes.php");
+
 $dbh = db_connect();
 $idcookie = User::id();
-// initialize page classes
-$thispage = new PlansPage('Preferences', 'autoreadedit', PLANSVNAME . ' - Change Autoread', 'autoread.php');
 if (!User::logged_in()) {
-	populate_guest_page($thispage);
-	$denied = new AlertText('You do not have an autoread list as a guest.', 'Access Denied');
-	$thispage->append($denied);
-} else
-//allowed to edit
-{
-	populate_page($thispage, $dbh, $idcookie);
+	gdisp_begin($dbh);
+	echo ("You do not have an autoread list as a guest.");
+	gdisp_end();
+} else {
+	mdisp_begin($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], get_myprivl());
+?>
+<form method="post" action="proc_autoread.php">
+<?php
 	$arlist = get_items($dbh, "interest,priority", "autofinger", "owner", $idcookie); //get their autoread info
 	$o = 0;
 	while (isset($arlist[$o][0])) {
@@ -32,42 +31,32 @@ if (!User::logged_in()) {
 		$letternum = 97;
 	} //if not, set to a
 	$letternum = round($letternum); // round in case decimal exists from user messing around
-	$j = 97; //set begin letter to a
-	$alphabet = new WidgetGroup('autoread_alphabet', true);
-	while ($j < 123) //do while before z
+	$i = 97; //set begin letter to a
+	while ($i < 123) //do while before z
 	{
-		if ($j == $letternum) //if we've hit the desire letter
+		if ($i == $letternum) //if we've hit the desire letter
 		{
-			$letter = new RegularText("[" . chr($j) . "]", null);
-			//echo "[" . chr($j) . "]"; //show that the letter is selected
-			$current_letter = $j;
+			echo "[" . chr($i) . "]"; //show that the letter is selected
+			$current_letter = $i;
 		} else
 		//if not selected letter, make letter link to select that letter
 		{
-			$letter = null;
-			$letter = new Hyperlink('letterlink_' . chr($j), true, "autoread.php?letternum=$j", chr($j));
+			echo " <a href= \"autoread.php?&letternum=" . $i . "\">" . chr($i) . "</a> ";
 		}
-		$alphabet->append($letter);
-		$j++; //go on to next letter
+		$i++; //go on to next letter
 		
 	}
-	$thispage->append($alphabet);
-	$arraylist = get_letters($dbh, chr($current_letter), chr($current_letter+1), $idcookie); //get usernames that start with that letter
-	// Make our form
-	$listform = new Form('autoreadlistform', true);
-	$thispage->append($listform);
-	$listform->action = 'proc_autoread.php';
-	$listform->method = 'POST';
-	$arlist = get_items($dbh, "interest,priority", "autofinger", "owner", $idcookie); //get their autoread info
+	echo "<HR><BR>";
+	$arraylist = get_letters($dbh, chr($current_letter), chr($current_letter + 1), $idcookie); //get usernames that start with that letter
 	//display those usernames
 	$j = 0;
-	/*
-	$buttonlist = new WidgetList('autoreadbuttonlist', false);
-	$listform->append($buttonlist);
-	 */
 	while (isset($arraylist[$j][0])) //do while there are names to display
 	{
-		if ($arraylist[$j][0] != $idcookie) //don't display name if the name is the user's name
+		if ($arraylist[$j][0] == $idcookie) //don't display name if the name is the user's name
+		{
+			echo "";
+		} else
+		//if name isn't the user's name, continue loop to display form
 		{
 			$mypriority[0] = "";
 			$mypriority[1] = "";
@@ -79,33 +68,21 @@ if (!User::logged_in()) {
 			else {
 				$mypriority[0] = " checked";
 			}
-			$buttons = new FormItemSet('autoreadbuttons', false);
-			for ($a = 0; $a < 4; $a++) {
-				$item = new RadioInput($arraylist[$j][0], $a);
-				$item->checked = (" checked" == $mypriority[$a]);
-				if ($a == 0) $item->description = "X";
-				else $item->description = $a;
-				//$listform->appendField($item);
-				$buttons->append($item);
-			}
-			$buttons->title = $arraylist[$j][1];
-
-			$listform->append($buttons);
+			echo " <input type=\"radio\" name=\"" . $arraylist[$j][0] . "\" value=\"0\"" . $mypriority[0] . ">X";
+			echo " <input type=\"radio\" name=\"" . $arraylist[$j][0] . "\" value=\"1\"" . $mypriority[1] . ">1";
+			echo " <input type=\"radio\" name=\"" . $arraylist[$j][0] . "\" value=\"2\"" . $mypriority[2] . ">2";
+			echo " <input type=\"radio\" name=\"" . $arraylist[$j][0] . "\" value=\"3\"" . $mypriority[3] . ">3";
+			echo "  " . $arraylist[$j][1] . "<BR>\n";
 		}
 		$j++;
 	}
 	//pass on other info
-	$item = new HiddenInput('set_autoreadlist', $idcookie);
-	$listform->append($item);
-	$item = new HiddenInput('letternum', $letternum);
-	$listform->append($item);
-	$item = new SubmitInput('Submit');
-	$listform->append($item);
+	echo "<input type=\"hidden\" name=\"set_autoreadlist\" value=\"" . $idcookie . "\">";
+	echo "<input type=\"hidden\" name=\"letternum\" value=\"" . $letternum . "\">";
+	echo "<input type=\"submit\" value=\"Submit\"></form>";
+	/////endform here
+	mdisp_end($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], get_myprivl()); //end display
+	
 }
-interface_disp_page($thispage);
 db_disconnect($dbh);
 ?>
-
-
-
-

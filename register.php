@@ -1,23 +1,27 @@
 <?php
 require_once('Plans.php');
 new SessionBroker();
-require ("functions-main.php");
-require ("functions-kommand.php");
-require ("syntax-classes.php");
+
+require('functions-main.php');
+require ("functions-kommand.php"); //load main functions
 $idcookie = User::id();
 $userid = $idcookie;
 $dbh = db_connect();
 $admin_email = "grinnellplans@gmail.com";
-$thispage = new PlansPage('Utilities', 'register', PLANSVNAME . ' - Registration', 'register.php');
+
 if (User::logged_in()) {
-	populate_page($thispage, $dbh, $idcookie);
+	mdisp_begin($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], get_myprivl());
 } else {
-	populate_guest_page($thispage);
+	gdisp_begin($dbh);
 }
+?>
+<br />
+<br />
+<br />
+<br />
+<br />
 
-$heading = new HeadingText('Plan Registration', 1);
-$thispage->append($heading);
-
+<?php
 if ($_GET['submitted']) {
 	$username = $_GET['username'];
 	$match = array();
@@ -25,7 +29,7 @@ if ($_GET['submitted']) {
 		$username = $match[1];
 	}
 	$orig_username = $username;
-	$username = preg_replace('/[^a-zA-A+0-9]/', '', $username);
+	$username = preg_replace('/[^a-zA-Z+0-9]/', '', $username);
 	$year = $_GET['gradyear'];
 	$year = preg_replace("/[^0-9]/", '', $year);
 	$type = $_GET['type'];
@@ -33,7 +37,7 @@ if ($_GET['submitted']) {
 		$type = $_GET['other'];
 	}
 	if ($username == '' || get_item($dbh, 'username', 'accounts', 'username', $username)) {
-		$thispage->append(show_username_taken($orig_username));
+		show_username_taken($orig_username);
 	} else {
 		$token = make_token();
 		$data = array('username' => $username, 'year' => $year, 'type' => $type);
@@ -42,15 +46,13 @@ if ($_GET['submitted']) {
 		mysql_query("insert into tentative_accounts set session = '$storable', token = '$token', created = now()");
 		$message = "Click the following link to activate your Plan:\n" . "www.grinnellplans.com/register.php?token=$token\n\n" . "The link will expire in 24 hours.";
 		mail($email, "Activate your new plan.", $message, "From:$admin_email\nReply-to:$admin_email");
-		$message = new InfoText("An email has been sent to $email with a link to activate your Plan.  You will probably receive it right away, but if you don't get it within a few hours, <a href=" . '"mailto:grinnellplans@gmail.com"' . ">Bug us</a>.", 'Email Sent');
-		$thispage->append($message);
+		echo "An email has been sent to $email with a link to activate your Plan.  You will probably receive it right away, but if you don't get it within a few hours, <a href=" . '"mailto:grinnellplans@gmail.com"' . ">Bug us</a>.";
 	}
 } else if ($_GET['token']) {
 	$session = get_item($dbh, 'session', 'tentative_accounts', 'token', $token);
 	if (!$session) {
-		$message = new AlertText('That doesn\'t seem to be a valid or unexpired token, please try again or <a href="mailto:grinnellplans@gmail.com">Email</a> us.', 'Token not recognized');
-		$thispage->append($message);
-		$thispage->append(show_form());
+		echo 'That doesn\'t seem to be a valid or unexpired token, please try again or <a href="mailto:grinnellplans@gmail.com">Email</a> us.<br /> <hr />';
+		show_form();
 	} else {
 		$data = unserialize($session);
 		$username = $data['username'];
@@ -58,108 +60,111 @@ if ($_GET['submitted']) {
 		$year = $data['year'];
 		$email = $username . '@grinnell.edu';
 		if (get_item($dbh, 'username', 'accounts', 'username', $username)) {
-			$message = new AlertText('A plan with the username ' . $username . ' already exists, meaning this token has been used.  If you are the owner of that email, your password was given to you when you first clicked the link.  If you\'ve lost the password, or for anything else, <a href="mailto:grinnellplans@gmail.com">Email</a> us.', 'Plan exists');
-			$thispage->append($message);
-			$thispage->append(show_form());
+			echo 'A plan with the username ' . $username . ' already exists, meaning this token has been used.  If you are the owner of that email, your password was given to you when you first clicked the link.  If you\'ve lost the password, or for anything else, <a href="mailto:grinnellplans@gmail.com">Email</a> us.';
+			show_form();
 		} else {
 			$results = insert_user($username, '', $year, $email, $type);
 			$password = $results[0];
-			$message = new InfoText("Your account has been created!  Your username is $username and your initial password is $password." . '  Go <a href="http://www.grinnellplans.com/">Here</a> to test them out.', 'Plan Created');
-			$thispage->append($message);
+			echo "Your account has been created!  Your username is $username and your initial password is $password.  ";
+			echo 'Go <a href="http://www.grinnellplans.com/">here</a> to test them out.';
+			echo '<p>Lost? Confused? Just curious what the heck this Plans thing is?';
+			echo 'You can read the [newbie] plan for a Plans crash course.';
+			echo 'All you have to do is log in and type "newbie" (without the brackets) in the box in the upper-right-hand corner and click "Read".';
+			echo '<p>An email with a copy of your password has also been emailed to you.';
 			$message = "A new plan has been created with \nusername:  $username\nGrad Year: $year\n$username self-identifies as $type.";
 			mail($admin_email, "Plan Created: $username", $message, "From:$admin_email\nReply-to:$admin_email");
-			$message = "Your account has been created!  Your username is $username and your initial password is $password. Go to http://www.grinnellplans.com/ to get started.\n";
+			$message = "Your account has been created!  Your username is $username and your initial password is $password. Go to http://www.grinnellplans.com/ to get started.\n Don't forget that you can log in and read [newbie] or [help] any time you want a little guidance. You can also email us at grinnellplans@gmail.com.\n";
 			mail("$email", "Plan Created", $message, "From:$admin_email\nReply-to:$admin_email");
 		}
 	}
 } else {
-	$thispage->append(show_form());
+	show_form();
 }
-
-interface_disp_page($thispage);
-db_disconnect($dbh);
-
-/*
 ?>
-	<script>
-	<!-- 
-	    document.getElementById('year').style.display = 'none';
-	    document.getElementById('other').style.display = 'none';
-		recount_chars();
 
 
-		function recount_chars() {
-			document.getElementById("char_count").innerHTML = document.signup.other.value.length;
-		}
+	<?php
+if (User::logged_in()) {
+	mdisp_end($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], get_myprivl()); //and send closing display data
+	
+} else {
+	gdisp_end();
+} //if guest send guest closing display data
+
+?>
+</p>
+
+<script>
+<!-- 
+document.getElementById('year').style.display = 'none';
+document.getElementById('other').style.display = 'none';
+recount_chars();
+
+
+function recount_chars() {
+	document.getElementById("char_count").innerHTML = document.signup.other.value.length;
+}
 
 function toggle(item, box) {
 	if ( document.signup.type[box].checked == true) {
-		 document.getElementById(item).style.display = 'inline';
+		document.getElementById(item).style.display = 'inline';
 	} else {
-		 document.getElementById(item).style.display = 'none';
+		document.getElementById(item).style.display = 'none';
 	}
 }
-		    -->
-			    </script>  
+-->
+</script>  
+</body>
+</html>
+
+
 <?php
- */
 function show_username_taken($username)
 {
-	return new AlertText(" Oh nO!, the username '$username' is already taken.  Please <a href=" . '"mailto:grinnellplans@gmail.com"' . ">Email</a> us and we'll make your account by hand.", 'Username taken');
+	echo " Oh nO!, the username '$username' is already taken.  Please <a href=" . '"mailto:grinnellplans@gmail.com"' . ">Email</a> us and we'll make your account by hand.";
 }
 function show_form()
 {
-	$form = new Form('signup', true);
-	$form->action = 'GET';
+?>
+		<p>
+		If you have an @grinnell.edu email address for yourself or a student group, you may use this page to register a Plan for that username.<br />
+		<b>If you are an alum</b>, please <a href="mailto:grinnellplans@gmail.com">Send us</a> your alumni.grinnell.edu email address and we will contact you through it with a username and password.  Please include your year of graduation, if any.<br />
+		If you are somebody else, or have questions, <a href="mailto:grinnellplans@gmail.com">Ask us</a>, and we'll see what we can do.
+		<br />
+		<br />
+		<br />
+		</p>
+		<p>  Enter your Grinnell username below (this is the part of your email address that comes before the '@', and click Register.  This will send you an email with a link that will complete your account creation.</p>
+				<p>
+				</p>
+				<form name="signup" method="GET">
+				<table>
+				<tr><td>Grinnell email username:</td><td><input type="text" name="username"><br></td></tr>
+				<tr><td>What is your relation to Grinnell? </td><td>
+				<table>
+				<tr><td>Student </td><td> <input type="radio" name="type" value="student" onClick ="toggle('year', 0);toggle('other', 4);">
 
-	$message = new InfoText('If you have an @grinnell.edu email address for yourself or a student group, you may use this page to register a Plan for that username.<br />
-	<b>If you are an alum</b>, please <a href="mailto:grinnellplans@gmail.com">Send us</a> your alumni.grinnell.edu email address and we will contact you through it with a username and password.  Please include your year of graduation, if any.<br />
-	If you are somebody else, or have questions, <a href="mailto:grinnellplans@gmail.com">Ask us</a>, and we\'ll see what we can do.', 'Register your plan');
-	$form->append($message);
+				<span id="year"> Grad Year: <input type="text" name="gradyear"> </span>
 
-	$instruct = new InfoText('Enter your Grinnell username below (this is the part of your email address that comes before the \'@\', and click Register.  This will send you an email with a link that will complete your account creation.', 'Email needed');
-	$form->append($instruct);
+				</td></tr>
+				<tr><td>Staff  </td><td> <input type="radio" name="type" value="staff" onClick ="toggle('year', 0);toggle('other', 4);"></td></tr>
+				<tr><td>Group  </td><td> <input type="radio" name="type" value="group" onClick ="toggle('year', 0);toggle('other', 4);"></td></tr>
+				<tr><td>Faculty  </td><td> <input type="radio" name="type" value="faculty" onClick ="toggle('year', 0);toggle('other', 4);"></td></tr>
+				<!--
+				<tr><td>Other  </td><td> <input type="radio" name="type" value="other" onClick ="toggle('year', 0);toggle('other', 4);"> <span id="other">
+				Description: <input type="text" name="other" onkeyup="recount_chars()"> <i> max of 128 chars. So far you have typed <span id="char_count"></span></i>
+				</span>
+				-->
 
-	$item = new TextInput('username', null);
-	$item->title = 'Grinnell email username:';
-	$form->append($item);
 
-	/*
-	$acct_type = new WidgetList('accounttype', true);
-	$acct_type->title = 'What is your relation to Grinnell?';
-	$form->append($acct_type);
-	 */
-
-	$group = new FormItemSet('studenttype', true);
-	$form->append($group);
-	$item = new RadioInput('type', 'student');
-	$item->description = 'Student';
-	$group->append($item);
-	/*<input type="radio" name="type" value="student" onClick ="toggle('year', 0);toggle('other', 4);">*/
-	$item = new TextInput('gradyear', null);
-	$item->description = 'Grad Year';
-	$group->append($item);
-	/*<span id="year"> Grad Year: <input type="text" name="gradyear"> </span>*/
-
-	$item = new RadioInput('type', 'staff');
-	$item->description = 'Staff';
-	$form->append($item);
-		
-	$item = new RadioInput('type', 'group');
-	$item->description = 'Group';
-	$form->append($item);
-		
-	$item = new RadioInput('type', 'faculty');
-	$item->description = 'Faculty';
-	$form->append($item);
-
-	$item = new SubmitInput('Register');
-	$form->append($item);
-
-	$item = new HiddenInput('submitted', 1);
-	$form->append($item);
-
-	return $form;
+				</td></tr>
+				</table>
+				</td></tr>
+				</table>
+				<input type="submit" value="Register">
+				<input type="hidden" value="1" name="submitted">
+				</form>
+				<?php
 }
 function make_token()
 {

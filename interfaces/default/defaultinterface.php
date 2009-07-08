@@ -1,293 +1,181 @@
-<?php
-define('DATE_FORMAT', 'D F jS Y, g:i A');
-require_once('lib/savant/Savant3.php');
-require_once('interfaces/base.php');
+<?
 
-/**
- * "Modern" Interface
- * The default Plans interface. Table-icious. Ick.
- */
-class LegacyDefaultInterface extends BaseInterface {
-	protected $page;
 
-	public function setup_page(PlansPage $page)
-	{
-		$this->page = $page;
-		$tpl = new Plans_Savant3();
 
-		$tpl->page_title = $page->title;
-		$tpl->stylesheets = $page->stylesheets;
-		array_unshift($tpl->stylesheets, 'styles/legacy_globals.css');
-		$tpl->scripts = $this->get_local_jsfiles($page);
-		$tpl->body_id = 'planspage_' . strtolower($page->identifier);
-		$tpl->body_class = strtolower($page->group);
+function disp_begin($dbh,$idcookie,$myurl,$myprivl,$cssloc,$jsfile)
+{
 
-		if ($page->group == 'Preferences' && $page->identifier != 'autoreadedit') {
-			$tpl->center = true;
-		} else {
-			$tpl->center = false;
-		}
+if (!$myprivl == 2 or !$myprivl == 3)
+ {$myprivl = 1;}
 
-		$tpl->mainpanel_template = $this->setup_mainpanel($page);
+	if (isset($_GET['searchname'])) {
+	    $searchname = $_GET['searchname'];
+      $title = "[$searchname]'s Plan";
+  } else {
+      $title = "Plans 2.5";
+  }  
+?>
+<html>
+<head>
+<META NAME="ROBOTS" CONTENT="NOARCHIVE">
+<title><?php echo $title ?></title>  
+<link rel=stylesheet
+href="<?=$cssloc?>">
+<?
+if ( !is_null( $jsfile ) )
+    echo "<script language=\"javascript\" type=\"text/javascript\" src=\"$jsfile\"></script>";
+?>
+</head>
+<body>
+<div id="april">
 
-		$tpl->contents = array_map(array($this, 'setup_widget'), $page->contents);
+<table width="100%" cellspacing="0" cellpadding="0"
+class="main">
+<tr>
+<td valign="top" align="left" class="left" width="12%">
+<table class="mainpanel"><tr><td>
+<p class="logo">&nbsp;</p>
+<Form action="read.php" method="get">
+<input name="searchname" type="text"><br>
+<input type="hidden" name="myprivl" value="<? echo $myprivl; ?>">
+<input type="submit" value="Read"></form>
 
-		$tpl->footer_template = $this->setup_footer($page->footer);
+<table class="lowerpanel"><tr>
+<td><p class="imagelev1">&nbsp;</p></td><td></td><td></td>
+<td><a href="edit.php?myprivl=<? echo $myprivl;?>" class="main">edit 
+plan</a></td>
+</tr>
 
-		$tpl->setTemplate('views/templates/legacy/PlansPage.tpl.php');
-		return $tpl;
-	}
-	protected function setup_mainpanel(PlansPage $page) {
-		$tpl = new Plans_Savant3();
+<tr>
+<td><p class="imagelev1">&nbsp;</p></td><td></td><td></td>
+<td><a href="search.php?myprivl=<? echo $myprivl;?>"
+class="main">search plans</a></td>
+</tr>
 
-		$panel = $page->mainpanel;
-		$tpl->panel = $panel;
-		$tpl->links_template = $this->setup_links($panel->links);
-		$tpl->autoread_template = $this->setup_autoreads($panel->autoreads, $page->autoreadpriority);
+<tr>
+<td><p class="imagelev1">&nbsp;</p></td><td></td><td></td>
+<td><a href="customize.php?myprivl=<? echo $myprivl;?>"
+class="main">preferences</a></td>
+</tr>
+<?
 
-		$tpl->setTemplate('views/templates/legacy/Mainpanel.tpl.php');
-		return $tpl;
-	}
-	protected function setup_links($links) {
-		$tpl = $this->setup_widget($links);
-		foreach ($tpl->contents as $t) {
-			$t->description = strtolower($t->description);
-			$t->tag_attributes = ' class="main"';
-		}
-		$tpl->setTemplate('views/templates/legacy/Links.tpl.php');
-		return $tpl;
-	}
-	protected function setup_autoreads($autoreads, $lvl)
-	{
-		if (!$autoreads) {
-			return false;
-		}
-		$tpl = new Plans_Savant3();
 
-		foreach ($autoreads->contents as $ar) {
-			$t = new Plans_Savant3();
-			$tpl->contents[] = $t;
-			$t->level_link = $ar->link;
-			$t->markasread_link = $ar->markasread_link;
-			if ($ar->priority == $lvl) {
-				$t->current = true;
-			} else {
-				$t->current = false;
-			}
-			$t->priority = $ar->priority;
-			$t->names = $ar->contents;
+$buf = '<td><p class="imagelev1">&nbsp;</p></td><td></td><td></td>';
 
-			$t->setTemplate('views/templates/legacy/AutoRead.tpl.php');
-		}
-		$tpl->setTemplate('views/templates/legacy/AutoReads.tpl.php');
-		return $tpl;
-	}
-	protected function setup_footer($footer) 
-	{
-		$tpl = parent::setup_footer($footer);
-		$tpl->setTemplate('views/templates/legacy/Footer.tpl.php');
-		return $tpl;
-	}
-	protected function get_local_jsfiles($page) 
-	{
-		$arr = parent::get_local_jsfiles($page);
+show_opt_links($idcookie, $buf);
 
-		switch ($page->identifier) {
-		case 'board_messages':
-			$arr[] = 'board_voting.js';
-			break;
-		}
 
-		return $arr;
-	}
+?>
 
-	protected static function id_and_class($id, $class) {
-		$out = array();
-		if ($id != null) {
-			$out[] = 'id="'.$id.'"';
-		}
 
-		if (!is_array($class)) {
-			$class = array($class);
-		}
-		$class = array_filter($class);
-		if ($class) {
-			$out[] = 'class="'.implode(' ', $class).'"';
-		}
-		return ' ' . implode(' ', $out);
-	}
+<tr>
+<td><p class="imagelev1">&nbsp;</p></td><td></td><td></td>
+<td><a href="index.php?logout=1" class="main">log out</a></td>
+</tr>
 
-	protected function setup_widget(Widget $obj) {
-		$tpl = parent::setup_widget($obj);
+<tr><td><br></td><td><br></td><td><br></td><td><br></td></tr>
 
-		if ($obj instanceof NotesTopic && $obj->summary) {
-			$tpl->setTemplate('views/templates/legacy/NotesBoardTopic.tpl.php');
-		} else if ($obj instanceof WidgetGroup) {
+<tr><td><p class="imagelev1">&nbsp;</p></td><td></td><td></td>
+<td><p class="main">auto read list</p></td>
+</tr>
 
-			if ($obj instanceof Form) {
-				foreach ($obj->contents as $i => $item) {
-					if ($item instanceof SubmitInput) {
-						$tpl->submit_button = $item;
-					}
-				}
+<?
+autoread_list ($myurl, $idcookie, $myprivl);
+/*
+//get autoread list
+if (ereg("index.php", $myurl)) // if has ? but not privl
+{$myurl = ereg_replace("index.php", "blank.php", $myurl);}
 
-				$tpl->setTemplate('views/templates/legacy/Form.tpl.php');
 
-				if ($this->page->identifier == 'planname' || $this->page->identifier == 'search') {
-					$tpl = $this->oneline_form($obj, $tpl);
-				} else if ($obj->identifier == 'signup') {
-					$tpl->contents[2]->setTemplate('views/templates/legacy/FormElement_no_table.tpl.php');
-				} else if ($this->page->identifier == 'poll') {
-					$tpl->setTemplate('views/templates/legacy/PollForm.tpl.php');
-				}
-				if ($obj instanceof EditBox) {
-					$tpl->setTemplate('views/templates/legacy/EditBox.tpl.php');
-				}
-			} else if ($obj instanceof FormItemSet) {
-				$tpl->tag_attributes = self::id_and_class($obj->identifier, array($obj->group, 'formitemset'));
-				foreach ($tpl->contents as $template) {
-					$template->setTemplate('views/templates/legacy/FormElement_no_row.tpl.php');
-				}
-				$tpl->setTemplate('views/templates/legacy/FormItemSet.tpl.php');
-			} else if ($obj instanceof NotesBoard) {
-				foreach ($tpl->contents as $t) {
-					$t->list_attributes = str_replace('even', 'noteslight', $t->list_attributes);
-					$t->list_attributes = str_replace('odd', 'notesdark', $t->list_attributes);
-				}
-				$tpl->setTemplate('views/templates/legacy/NotesBoard.tpl.php');
-			} else if ($obj instanceof NotesTopic) {
-				$tpl->tag_attributes = ' class="boardmessages"';
-				foreach ($tpl->contents as $t) {
-					$t->list_attributes = str_replace('even', 'noteslight', $t->list_attributes);
-					$t->list_attributes = str_replace('odd', 'notesdark', $t->list_attributes);
-				}
-				$tpl->setTemplate('views/templates/legacy/NotesTopic.tpl.php');
-			} else if ($obj instanceof WidgetList) {
-				$tpl->tag_attributes = self::id_and_class($obj->identifier, $obj->group);
-				$tpl->setTemplate('views/templates/legacy/WidgetList.tpl.php');
-				// The Preferences page
-				if ($this->page->identifier == 'prefs') {
-					$part2 = false;
-					foreach ($obj->contents as $i => $item) {
-						$t = $tpl->contents[$i];
-						if ($part2) {
-							$t->tag_attributes = ' class="lev2"';
-						} else if ($item instanceof HeadingText) {
-							$t->tag_attributes = ' class="main"';
-							$t->tag = 'p';
-							$t->setTemplate('views/templates/std/GenericTag.tpl.php');
-							$part2 = true;
-						} else {
-							$t->tag_attributes = ' class="main"';
-						}
-					}
-				}
-				// The autoread management pages
-				else if ($value->identifier == 'autoread_alphabet') {
-					$tpl->setTemplate('views/templates/legacy/WidgetGroup.tpl.php');
-				}
-			} else if ($obj instanceof WidgetGroup) {
-				$tpl->setTemplate('views/templates/legacy/WidgetGroup.tpl.php');
-
-				if ($obj->group == 'notes_header') {
-					$t = $tpl;
-					$tpl = new Plans_Savant3();
-					$tpl->inner_template = $t;
-					$tpl->tag = 'center';
-					$tpl->setTemplate('views/templates/std/GenericWrapperTag.tpl.php');
-				}
-
-			}
-			return $tpl; //TODO remove
-
-		} else if ($obj instanceof SubmitInput) {
-			// We handle this elsewhere, so print nothing here
-			$tpl->setTemplate('views/templates/std/Empty.tpl.php');
-		} else if ($obj instanceof FormItem) {
-
-			if ($obj instanceof HiddenInput) {
-				$tpl->setTemplate('views/templates/std/FormInput.tpl.php');
-			} else if ($obj instanceof TextInput || $obj instanceof TextareaInput || $obj instanceof PasswordInput) {
-				$tpl->setTemplate('views/templates/legacy/FormElement_title_prepend.tpl.php');
-			} else {
-				$tpl->setTemplate('views/templates/legacy/FormElement.tpl.php');
-			}
-
-		} else if ($obj instanceof Hyperlink) {
-			$tpl->description = strtolower($obj->description);
-			if ($obj->identifier == 'older_secrets') {
-				$t = $tpl;
-				$tpl = new Plans_Savant3();
-				$tpl->inner_template = $t;
-				$tpl->tag = 'p';
-				$tpl->setTemplate('views/templates/std/GenericWrapperTag.tpl.php');
-			}
-
-		} else if ($obj instanceof Secret) {
-			$tpl->message = preg_replace('/(^<p class="sub">)|(<\/p>$)/', '', $tpl->message);
-			$tpl->setTemplate('views/templates/legacy/Secret.tpl.php');
-
-		} else if ($obj instanceof PlanContent) {
-			if ($obj->addform) {
-				$tpl->addform_present = true;
-				$tpl->addform_template = $this->oneline_form($obj->addform, $tpl->addform_template);
-				$tpl->addform_template->setTemplate('views/templates/legacy/addform.tpl.php');
-			} else {
-				$tpl->addform_present = false;
-			}
-			$tpl->setTemplate('views/templates/legacy/Plan.tpl.php');
-		} else if ($obj instanceof PlanText) {
-			$tpl->setTemplate('views/templates/legacy/PlanText.tpl.php');
-
-		} else if ($obj instanceof HeadingText) {
-			$tpl->tag = 'h' . ($obj->sublevel + 1);
-			$tpl->text = $obj->message;
-			$tpl->setTemplate('views/templates/std/GenericTag.tpl.php');
-
-		} else if ($obj instanceof RegularText) {
-			$tpl->tag = 'span';
-			$tpl->text = $obj->message;
-			$tpl->setTemplate('views/templates/std/GenericTag.tpl.php');
-
-		} else if ($obj instanceof Text) {
-			$tpl->setTemplate('views/templates/legacy/Text.tpl.php');
-
-		} else if ($obj instanceof NotesPost) {
-			$tpl->text = preg_replace('/(^<p class="sub">)|(<\/p>$)/', '', $tpl->text);
-			$tpl->yes_style = ($obj->user_vote == 'yes' ? ' style="border:#222222 thin solid"' : null);
-			$tpl->no_style = ($obj->user_vote == 'no' ? ' style="border:#222222 thin solid"' : null);
-			$tpl->setTemplate('views/templates/legacy/NotesPost.tpl.php');
-		} else if ($obj instanceof NotesNavigation) {
-			$tpl->current->text = '[' . $tpl->current->text . ']';
-			$tpl->setTemplate('views/templates/legacy/NotesNavigation.tpl.php');
-		}
-
-		return $tpl;
-	}
-
-	/**
-	 * Consistency be damned, we're putting these forms on one line!
-	 *
-	 * Yee-haw!
-	 */
-	private function oneline_form($form, $form_tpl) {
-		$inputs = array();
-		foreach ($form->contents as $o) {
-			if ($o instanceof SubmitInput) {
-				// do nothing
-			} else if ($o instanceof FormItem) {
-				$inputs[] = $o;
-			} else if ($o instanceof FormItemSet) {
-				foreach ($o->contents as $_o)
-					$inputs[] = $_o;
-			}
-		}
-		$form_tpl->inputs = $inputs;
-		$form_tpl->setTemplate('views/templates/legacy/Form_oneline.tpl.php');
-		return $form_tpl;
-	}
-
+if (!($myprivl == 1))
+{priority_link($myurl, 1);
+if (!($myprivl == 2))
+{priority_link($myurl, 2);}
 }
 
-global $my_interface_name;
-$my_interface_name = 'LegacyDefaultInterface';
+echo "<tr><td></td><td><p
+class=\"imagelev2\">&nbsp;</p></td><td></td><td><p 
+class=\"lev2\">level " . $myprivl . "</p></td></tr>";
+
+
+$privarray = mysql_query("Select autofinger.interest,accounts.username
+From autofinger, accounts where owner = '$idcookie' and priority =
+'$myprivl' and updated = '1' and autofinger.interest=accounts.userid");
+
+    while($new_row = mysql_fetch_row($privarray)) {
+      $autoreadlist[] = $new_row;
+    }
+
+$o=0;
+while ($autoreadlist[$o][0])
+{
+echo "<tr><td></td><td></td><td><p class=\"imagelev3\">&nbsp;</p></td>";
+echo "<td><a href=\"read.php?searchname=" .
+$autoreadlist[$o][1] . "\" class=\"lev3\">" .
+$autoreadlist[$o][1] . "</a></td></tr>\n";
+
+ $o++;}
+
+if (!($myprivl == 3))
+ {if (!($myprivl == 2))
+ {priority_link($myurl, 2);}
+ priority_link($myurl, 3);
+}
+*/
+
+?>
+
+
+
+</table>
+</td></tr></table>
+</td>
+<td valign="top">
+
+<br />
+
+<table>
+
+<tr><td>
+
+<?
+
+} 
+
+
+function priority_link($myurl, $notprivl)
+{
+
+if (ereg("myprivl", $myurl))
+{$myurlx = ereg_replace("myprivl=[0-9]{0,1}", "myprivl=" . $notprivl,
+$myurl);
+}//if already has privl
+else { //if doesn't already have privl
+if (ereg("\?", $myurl)) // if has ? but not privl
+{$myurlx = $myurl . "&myprivl=" . $notprivl;}
+else  //must add on extra info
+{$myurlx= $myurl . "?myprivl=" . $notprivl;}
+}//else, if doesn't already have privl
+ 
+echo "<tr><td></td><td><p class=\"imagelev2\">&nbsp;</p></td><td></td>";  
+echo "<td><a href=\"http://" . $myurlx . "\" class=\"lev2\">level " .
+$notprivl .
+"</a></td></tr>";
+}//function priority_link
+
+
+
+function mdisp_end($dbh,$idcookie,$myurl,$myprivl)
+{echo "</td></tr></table></td></tr></table>";
+footer();
+?>
+</body>
+
+
+
+</html>
+
+<?php
+}
+
+?>

@@ -1,25 +1,30 @@
 <?php
 require_once('Plans.php');
 require ("functions-main.php");
-require ('syntax-classes.php');
 
 $dbh = db_connect();
 $idcookie = User::id();
-$thispage = new PlansPage('Main', 'home', PLANSVNAME, 'home.php');
 
 if (User::logged_in()) {
-	populate_page($thispage, $dbh, $idcookie);
+	mdisp_begin($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], get_myprivl()); //send beginning display info
 } else {
-	populate_guest_page($thispage);
+	gdisp_begin($dbh);
 }
 
 $my_result = mysql_query("Select system.motd from system");
 $my_row = mysql_fetch_array($my_result); //get information from mysql query
 // echo stripslashes(stripslashes($my_row[1])); //if logged in, show the private message
+echo '<pre>';
+echo '</pre>';
 
-$motd = new PlanText(stripslashes(stripslashes($my_row[0])), false); //display the main Plans message
-$thispage->append($motd);
+echo stripslashes(stripslashes($my_row[0])); //display the main Plans message
 
-interface_disp_page($thispage);
+if (User::logged_in()) {
+	mdisp_end($dbh, $idcookie, $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], get_myprivl()); //and send closing display data
+} else {
+	gdisp_end();
+}
+
+
 db_disconnect($dbh);
 ?>

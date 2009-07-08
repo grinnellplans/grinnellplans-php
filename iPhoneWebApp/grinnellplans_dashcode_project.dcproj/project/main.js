@@ -5,13 +5,12 @@
  */
  
 var database = null;                            // The client-side database
-var DB_tableName = "GrinnellPlansTable";       // database Table Name
-var DB_name = "Sessions";       // database Name
+var DB_tableName = "GrinnellPlansTable";       // database name
 
 var requestManager = {
     _validResponse: false,
     _lastMessage: "",
-    base_url: "http://creirwy/~michaelh/grinnellplans/json_api.php",
+    base_url: "http://192.168.1.47/~michaelh/grinnellplans/json_api.php",
     
     setCurrentToken: function(token) {
         this._currentToken = token;
@@ -133,7 +132,7 @@ var loginController = {
     },
     
     failure: function() {
-        alert(requestManager.getLastMessage());
+        alert(requestController.getLastMessage());
         var loginPassword = document.getElementById('loginPassword');
         if (loginPassword) {
             loginPassword.value = "";
@@ -367,14 +366,14 @@ function load()
             }
             )}
         );
-        requestManager.serverRequest('autofingerlist', "", moveToListLevel, loginController.doLogin);
+        requestManager.serverRequest('autofingerlist', "", moveToListLevel);
     }
 }
 
 function moveToListLevel() {
         var stackLayout = document.getElementById('stackLayout').object;
         var simpleTransition = new Transition(Transition.NONE_TYPE);
-        stackLayout.setCurrentView('listLevel'); 
+        stackLayout.setCurrentViewWithTransition('listLevel', simpleTransition, false);
 }
 
 //
@@ -385,7 +384,7 @@ function initDB()
 {
     try {
         if (window.openDatabase) {
-            database = openDatabase(DB_name, "1.0", "Grinnell Plans Database", 1000);
+            database = openDatabase("Message", "1.0", "Message Database", 1000);
             if (database) {
                 database.transaction(function(tx) {
                     tx.executeSql("SELECT COUNT(*) FROM " + DB_tableName, [],

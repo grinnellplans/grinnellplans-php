@@ -5,7 +5,8 @@
  */
  
 var database = null;                            // The client-side database
-var DB_tableName = "GrinnellPlansTable";       // database name
+var DB_tableName = "GrinnellPlansTable";       // database Table Name
+var DB_name = "Sessions";       // database Name
 
 var requestManager = {
     _validResponse: false,
@@ -132,7 +133,7 @@ var loginController = {
     },
     
     failure: function() {
-        alert(requestController.getLastMessage());
+        alert(requestManager.getLastMessage());
         var loginPassword = document.getElementById('loginPassword');
         if (loginPassword) {
             loginPassword.value = "";
@@ -366,14 +367,13 @@ function load()
             }
             )}
         );
-        requestManager.serverRequest('autofingerlist', "", moveToListLevel);
+        requestManager.serverRequest('autofingerlist', "", moveToListLevel, loginController.doLogin);
     }
 }
 
 function moveToListLevel() {
         var stackLayout = document.getElementById('stackLayout').object;
-        var simpleTransition = new Transition(Transition.NONE_TYPE);
-        stackLayout.setCurrentViewWithTransition('listLevel', simpleTransition, false);
+        stackLayout.setCurrentView('listLevel'); 
 }
 
 //
@@ -384,7 +384,7 @@ function initDB()
 {
     try {
         if (window.openDatabase) {
-            database = openDatabase("Message", "1.0", "Message Database", 1000);
+            database = openDatabase(DB_name, "1.0", "Grinnell Plans Database", 1000);
             if (database) {
                 database.transaction(function(tx) {
                     tx.executeSql("SELECT COUNT(*) FROM " + DB_tableName, [],

@@ -144,12 +144,13 @@ function get_autoread($idcookie, $p)
 	$privarray = mysql_query("Select autofinger.interest,accounts.username
 		From autofinger, accounts where owner = '$idcookie' and priority =
 		'$p' and updated = '1' and autofinger.interest=accounts.userid order by accounts.changed desc");
+	$autoreadlist = array();
 	while ($new_row = mysql_fetch_row($privarray)) {
 		$autoreadlist[] = $new_row;
 	}
 	$ar = new AutoRead($p, "setpriv.php?myprivl=$p");
 	$o = 0;
-	while ($autoreadlist[$o][0]) {
+	while (isset($autoreadlist[$o][0])) {
 		$ar->append(new PlanLink($autoreadlist[$o][1]));
 		$o++;
 	}

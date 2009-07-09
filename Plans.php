@@ -4,34 +4,32 @@ if ((strstr($_SERVER['REQUEST_URI'], '/dev/') != FALSE) ||
 	($_SERVER['SERVER_NAME'] == 'dev.grinnellplans.com') ||
  	(strstr($_SERVER['SERVER_NAME'], 'localhost') != FALSE) ||
 	(strstr($_SERVER['REQUEST_URI'], '/trunk/') != FALSE)) {
-	// Error reporting for development
-	ini_set('error_reporting', E_ALL);
-	ini_set('display_errors', TRUE);
-	ini_set('display_startup_errors', TRUE);
-	ini_set('html_errors', TRUE);
-
-	// Be very strict with globals
-	ini_set('register_globals', FALSE);
-	ini_set('register_long_arrays', FALSE);
-	ini_set('register_argc_argv', FALSE);
 	//TODO For now, this is not a constant because I want to be able to change 
 	// it, but there's probably a better solution in the long run
 	$GLOBALS['ENVIRONMENT'] = 'development';
 } else {
-	// For production, be a bit loose.
-	ini_set('register_globals', TRUE);
-	ini_set('register_long_arrays', TRUE);
-	ini_set('register_argc_argv', TRUE);
-
-	ini_set('track_errors', FALSE);
 	$GLOBALS['ENVIRONMENT'] = 'production';
 }
+
+// Be very strict with globals
+ini_set('register_globals', FALSE);
+ini_set('register_long_arrays', FALSE);
+ini_set('register_argc_argv', FALSE);
 
 // Boilerplate code for _all_ Plans scripts
 define('__ROOT__', dirname(__FILE__));
 require_once('Configuration.php');
 ini_set('include_path', '.:' . __ROOT__ . ':' . __ROOT__ . '/inc');
 putenv('TZ=' . TZ);
+
+if ($GLOBALS['ENVIRONMENT'] == 'development') {
+	ini_set('error_reporting', E_ALL);
+	ini_set('display_errors', TRUE);
+	ini_set('display_startup_errors', TRUE);
+	ini_set('html_errors', TRUE);
+} else {
+	ini_set('display_errors', FALSE);
+}
 
 // Plans Revision
 if (file_exists(__ROOT__ . '/.svn/entries')) {

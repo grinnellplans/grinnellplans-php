@@ -216,7 +216,8 @@ abstract class BaseInterface implements DisplayInterface {
 			// If it's possible there are multiple inputs with the same name, 
 			// append a number to the end to make it unique
 			if ($obj instanceof CheckboxInput || $obj instanceof RadioInput) {
-				$num = (int)$this->element_ids[$item_id]++;
+				!isset($this->element_ids[$item_id]) ? $this->element_ids[$item_id] = 0 : null;
+				$num = $this->element_ids[$item_id]++;
 				$item_id = $item_id . $num;
 			}
 

@@ -23,7 +23,7 @@ if (!$searchnum) //if no search number given
 {
 	if (isvaliduser($dbh, $searchname)) //if valid username, change to num
 	{
-		$searchnum = get_item($mydbh, "userid", "accounts", "username", $searchname);
+		$searchnum = get_item($dbh, "userid", "accounts", "username", $searchname);
 	} else
 	//if is not a valid username
 	{
@@ -91,7 +91,8 @@ if (User::logged_in()) {
 }
 //TODO should this go inside if(!$auth) ?
 $guest_auth = false;
-if ($guest_pass = $_GET['guest-pass']) {
+if (isset($_GET['guest-pass'])) {
+	$guest_pass = $_GET['guest-pass'];
 	$real_pass = get_item($dbh, "guest_password", "accounts", "userid", $searchnum);
 	//error_log("JLW real pass is $real_pass");
 	if ($real_pass == '') {
@@ -103,7 +104,7 @@ if ($guest_pass = $_GET['guest-pass']) {
 	}
 }
 //error_log("JLW guest auth is $guest_auth");
-if (!$planinfo = get_items($mydbh, "username, pseudo, UNIX_TIMESTAMP(login), UNIX_TIMESTAMP(changed), plan, webview", "accounts", "userid", $searchnum)) //get all of persons plan info
+if (!$planinfo = get_items($dbh, "username, pseudo, UNIX_TIMESTAMP(login), UNIX_TIMESTAMP(changed), plan, webview", "accounts", "userid", $searchnum)) //get all of persons plan info
 {
 	//if we failed, complain
 	$page->append(new AlertText("Could not retrieve plan.", 'DB Error', true));
@@ -113,13 +114,15 @@ if (!$planinfo = get_items($mydbh, "username, pseudo, UNIX_TIMESTAMP(login), UNI
 	// we're good to go, display the plan
 	$planinfo[0][1] = stripslashes($planinfo[0][1]);
 	$planinfo[0][4] = stripslashes($planinfo[0][4]);
-	if ($_GET['jumbled'] == 'yes' || ($_COOKIE['jumbled'] == 'yes' && $_GET['jumbled'] != 'no')) {
+	if (isset($_GET['jumbled']) &&
+		($_GET['jumbled'] == 'yes' ||
+		(isset($_COOKIE['jumbled']) && $_COOKIE['jumbled'] == 'yes' && $_GET['jumbled'] != 'no'))) {
 		$plantext = jumble($planinfo[0][4]);
 	} else {
 		$plantext = $planinfo[0][4];
 	}
 	// If we're redirecting from edit.php, assure the user that their change was applied
-	if ($_GET['edit_submit'] == 1) {
+	if (isset($_GET['edit_submit']) && $_GET['edit_submit'] == 1) {
 		$changed_msg = new InfoText('Plan changed successfully.');
 		$page->append($changed_msg);
 	}

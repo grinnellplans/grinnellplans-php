@@ -52,7 +52,7 @@ if ($mysearch) //if no search query, give search form
 	{
 		if ($planlove) {
 			if (!$thesearchnum = get_item($dbh, "userid", "accounts", "username", $mysearch)) {
-				$err = AlertText('Search could not be performed. There is no plan with that name.');
+				$err = new AlertText('Search could not be performed. There is no plan with that name.', 'Bad search');
 				$thispage->append($err);
 				$donotsearch = 1;
 			} else {
@@ -73,7 +73,7 @@ if ($mysearch) //if no search query, give search form
 				$mysearch = preg_replace("/\</", "&lt;", $mysearch);
 				$mysearch = preg_replace("/\>/", "&gt;", $mysearch);
 				$mysearch = preg_quote($mysearch);
-				if ($mynamedsearch) {
+				if (isset($mynamedsearch)) {
 					$likeclause = "(plan LIKE '%$mysearch%' OR plan LIKE '%$mynamedsearch%')";
 				} else {
 					$likeclause = "plan LIKE '%$mysearch%'";
@@ -184,7 +184,7 @@ if ($mysearch) //if no search query, give search form
 					$sublist->append($textitem);
 				} //while still displaying parts of plan
 			} //while dealing with one plan that has term
-			if (!($matchcount > 0)) {
+			if (!isset($matchcount)) {
 				$ohwell = new InfoText('No matches found.');
 				$thispage->append($ohwell);
 			}

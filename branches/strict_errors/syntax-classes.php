@@ -651,11 +651,11 @@ class HeadingText extends Text
 	 * @var int
 	 */
 	public $sublevel;
-	public function __construct($_message, $_level) 
+	public function __construct($heading, $sublevel) 
 	{
 		parent::__construct('heading' . $sublevel, NULL);
-		$this->message = $_message;
-		$this->sublevel = $_level;
+		$this->message = $heading;
+		$this->sublevel = $sublevel;
 	}
 }
 class Secret extends Text

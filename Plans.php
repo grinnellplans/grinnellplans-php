@@ -11,11 +11,6 @@ if ((strstr($_SERVER['REQUEST_URI'], '/dev/') != FALSE) ||
 	$GLOBALS['ENVIRONMENT'] = 'production';
 }
 
-// Be very strict with globals
-ini_set('register_globals', FALSE);
-ini_set('register_long_arrays', FALSE);
-ini_set('register_argc_argv', FALSE);
-
 // Boilerplate code for _all_ Plans scripts
 define('__ROOT__', dirname(__FILE__));
 require_once('Configuration.php');

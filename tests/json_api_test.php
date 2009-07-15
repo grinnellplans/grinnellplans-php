@@ -3,13 +3,14 @@
 //       This should point to your local environment.
 require_once('simpletest/autorun.php');
 require_once('simpletest/web_tester.php');
+require_once('../Configuration.php');
 
 
 class TestOfJSONApi extends WebTestCase {
     private $url;
     
-    function TestOfJSONApi(){ //setup URL
-      $this->url = 'http://creirwy/~michaelh/grinnellplans/json_api.php';
+    function __construct(){ //setup URL
+      $this->url = __WEBROOT__ . '/json_api.php';
     }
     
     function testConnection() { //Verify the server is running
@@ -25,7 +26,7 @@ class TestOfJSONApi extends WebTestCase {
     }
     
     function testFailedLogin() {
-      $response = $this->post($this->url."?task=login", array("username"=>'youngian', "password" => 'bobo'));
+      $response = $this->post($this->url."?task=login", array("username" => TEST_USER, "password" => 'incorrectpassword'));
       $response = json_decode($response);
       $this->assertFailure($response);
     }

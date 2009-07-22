@@ -183,8 +183,12 @@ class LegacyDefaultInterface extends BaseInterface {
 					}
 				}
 				// The autoread management pages
-				else if ($value->identifier == 'autoread_alphabet') {
+				else if ($obj->identifier == 'autoread_alphabet') {
 					$tpl->setTemplate('views/templates/legacy/WidgetGroup.tpl.php');
+				}
+				else if ($obj->identifier == 'search_results' || $obj->group == 'result_sublist') {
+					blkafkjaass;
+					$tpl->setTemplate('views/templates/tableless/WidgetList.tpl.php');
 				}
 			} else if ($obj instanceof WidgetGroup) {
 				$tpl->setTemplate('views/templates/legacy/WidgetGroup.tpl.php');

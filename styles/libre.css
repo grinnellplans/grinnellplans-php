@@ -230,7 +230,7 @@ ul {
 	color: black;
 }
 /* Gray links when moused over */
-#autoread a:hover, a.planlove:hover {
+#autoread a:hover, a.planlove:hover, a.onplan:hover, #main a:hover {
 	color: #666;
 }
 

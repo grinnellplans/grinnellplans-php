@@ -383,6 +383,12 @@ p.sub:first-letter {
 	background: url("images/brackets.png") no-repeat bottom right;
 }
 
+/* Float the edit meter right and make it light gray */
+#edit_fill_meter {
+	float: right;
+	color: #888;
+}
+
 /* Space out secret headers a bit */
 .secret .secret_id {
 	margin-right: 1em;

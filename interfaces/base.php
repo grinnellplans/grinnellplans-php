@@ -193,6 +193,9 @@ abstract class BaseInterface implements DisplayInterface {
 				$tpl->markasread_template = $this->setup_widget($obj->markasread_link);
 			} else if ($obj instanceof NotesBoard) {
 				$tpl->tag_attributes = self::id_and_class($obj->identifier, $obj->group);
+			} else if ($obj instanceof NotesTopic) {
+				$tpl->tag_attributes = self::id_and_class($obj->identifier, $obj->group);
+				$tpl->title_template = $this->setup_widget($obj->title);
 			} else if ($obj instanceof WidgetList) {
 				$tpl->tag_attributes = self::id_and_class($obj->identifier, $obj->group);
 			} else if ($obj instanceof WidgetGroup) {

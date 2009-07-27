@@ -455,6 +455,11 @@ p.sub:first-letter {
 	color: #999999;
 	letter-spacing: 0.09em;
 }
+/* Right-align the # Posts column on Notes */
+#notes_board td.num_posts {
+	text-align: right;
+	padding-right: 0.6em;
+}
 
 /* Style the search results a bit */
 

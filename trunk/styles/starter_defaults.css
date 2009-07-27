@@ -142,3 +142,9 @@
 .notes_post_content {
 	clear: both;
 }
+
+/* Right-align the # Posts column on Notes */
+#notes_board td.num_posts {
+	text-align: right;
+	padding-right: 0.6em;
+}

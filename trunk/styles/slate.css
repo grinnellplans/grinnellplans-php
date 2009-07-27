@@ -208,7 +208,7 @@ body.plan #main {
 .plan_text {
 	padding: 1em;
 	margin: 0.2em 0em 0em 0em;
-	color: #87ceeb;
+	color: #aecfde;
 	border: 1px dotted #354044;
 }
 /* planlove links */
@@ -295,9 +295,21 @@ body.plan #main {
 	clear: left;
 }
 
+/* Give secrets a little styling */
 .secret {
 	margin-top: 1em;
 }
 .secret span {
 	font-weight: bold;
+}
+
+/* Separate notes posts visually a little */
+#notes_thread li {
+	padding-bottom: 1em;
+	margin-bottom: 1em;
+	border-bottom: 1px dotted #354044;
+}
+#notes_thread li.first {
+	padding-top: 1em;
+	border-top: 1px dotted #354044;
 }

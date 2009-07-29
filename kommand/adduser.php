@@ -18,6 +18,7 @@ if ($added_name) {
 		$password = $_POST['password'];
 		$email = $_POST['email'];
 		$perms = $_POST['perms'];
+		$gradyear = $_POST['gradyear'];
 
 		if ($type == "other") {
 			$type = $_POST['other'];

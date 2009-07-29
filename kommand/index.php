@@ -17,6 +17,7 @@ if (User::is_admin()) {
 <a href="new-accounts.cgi">New Account Usage </a><br />
 <a href="update-frequency.cgi">Update Frequency</a><br />
 <a href="swap-password.php">Switch a User's password with that of [test].</a><br />
+<a href="style-stats.php">Display Prefs Statistics</a><br/>
 <pre>
 <?php
 	show_penetration();

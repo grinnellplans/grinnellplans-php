@@ -14,6 +14,11 @@ if ($added_name) {
 	if (isvaliduser($dbh, $added_name)) {
 		echo "User already exists.";
 	} else {
+		$type = $_POST['type'];
+		$password = $_POST['password'];
+		$email = $_POST['email'];
+		$perms = $_POST['perms'];
+
 		if ($type == "other") {
 			$type = $_POST['other'];
 		}

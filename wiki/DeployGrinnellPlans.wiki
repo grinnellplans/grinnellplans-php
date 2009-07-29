@@ -124,6 +124,7 @@ mysql -u plans -p plansdb < grinnellplans_xhtml_sample_dbdump.sql
 The Geo IP library is included with plans, but the location database is not.  In the geo/ folder there is a file called INSTALL which lists where to download the database.  Once downloaded, it needs to be uncompressed and renamed so plans can find and use it.
 
 {{{
+cd geo
 wget http://www.maxmind.com/download/geoip/database/GeoLiteCity.dat.gz
 gunzip GeoLiteCity.dat.gz
 mv GeoLiteCity.dat geo.dat

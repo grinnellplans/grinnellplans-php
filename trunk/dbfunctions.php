@@ -33,7 +33,7 @@ function add_row($dbh, $table, $row)
 	$joined_row = join(',', $row);
 	if (!mysql_query("INSERT INTO $table VALUES($joined_row)")) {
 		echo "Error adding entry to $table";
-		//echo $joined_row . "<br />";
+		echo $joined_row . "<br />";
 		mysql_close($dbh);
 		exit();
 	}

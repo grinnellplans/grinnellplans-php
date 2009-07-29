@@ -1,9 +1,7 @@
 <?php
-// Set some settings only for when we're called through /beta/.
-if ((strstr($_SERVER['REQUEST_URI'], '/dev/') != FALSE) ||
-	($_SERVER['SERVER_NAME'] == 'dev.grinnellplans.com') ||
- 	(strstr($_SERVER['SERVER_NAME'], 'localhost') != FALSE) ||
-	(strstr($_SERVER['REQUEST_URI'], '/trunk/') != FALSE)) {
+require_once('Configuration.php');
+
+if (ENVIRONMENT == 'dev') {
 	// Error reporting for development
 	ini_set('error_reporting', E_ALL);
 	ini_set('display_errors', TRUE);

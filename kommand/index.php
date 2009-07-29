@@ -1,26 +1,7 @@
 <?php
 require_once ("../Plans.php");
 require ("dbfunctions.php");
-$dbh = db_connect();
-/*
-print_r($_POST);
-echo "$username<br />\n";
-
-echo $_POST['username'] . " is the PoSTed username<br/>\n";
-*/
-if ($_POST['username'] == 'plans') {
-	$password = crypt($_POST['password'], "ab");
-	$read_pass = get_item($dbh, "password", "accounts", "username", "plans");
-	//echo "You gave $password, and we need $read_pass <br />\n";
-	if (($password == $read_pass) || $in) {
-		$_SESSION['kommand_auth'] = 1;
-		$_SESSION['kommand_logged_in'] = time();
-	} else {
-		$wrong_password = 1;
-	}
-}
-echo "<br />\n";
-if ($_SESSION['kommand_auth'] && (time() - $_SESSION['kommand_logged_in'] < 1800)) {
+if (User::is_admin()) {
 ?>
 <html>
 <body>
@@ -65,9 +46,8 @@ if ($_SESSION['kommand_auth'] && (time() - $_SESSION['kommand_logged_in'] < 1800
 </html>
 <?php
 }
-db_disconnect($dbh);
 function show_penetration()
 {
-	system('/title/grinnellplans.com/class-year-penetration/run-counts.sh');
+//	system('/title/grinnellplans.com/class-year-penetration/run-counts.sh');
 }
 ?>

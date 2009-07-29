@@ -1,11 +1,6 @@
 <?php
 require_once ("../Plans.php");
-if ($_SESSION['kommand_auth']) {
-	$gap = time() - $_SESSION['kommand_logged_in'];
-	if ($gap > 1800) {
-		redirect_kommand("Sorry, your session timed out.");
-		exit;
-	}
+if (User::is_admin()) {
 } else {
 	redirect_kommand("Sorry, you don't seem to have a kommand session.");
 	exit;

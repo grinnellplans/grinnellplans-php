@@ -47,7 +47,13 @@ class User {
 	}
 	
 	public static function is_admin() {
-		return true;
+		$db = new Database();
+		$privileges = $db->value_from_query("SELECT is_admin FROM accounts WHERE username = '" . User::name() . "'");
+		if ($privileges) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 	
 	public static function is_guest() {

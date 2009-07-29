@@ -65,8 +65,20 @@ if (isset($_GET['logout'])) {
 			}
 	-->
 	</STYLE>
+<script src="http://www.google.com/jsapi"></script>
+<script type="text/javascript" charset="utf-8">
+google.load("jquery", "1.3.2");
+google.load("jqueryui", "1.7.2");
+</script>
+<script src="js/chroma-hash.js" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript" charset="utf-8">
+$(document).ready(function() {
+	$("#username").focus();
+	$("input:password").chromaHash({number: 3});
+});
+</script>
 </head>
-<body bgcolor="#ffffff" onLoad="self.focus();document.post.username.focus()">       
+<body bgcolor="#ffffff">       
 	<div class="left"><br><br>
 	  <table cellpadding=0 width="100%">
 	  <tr>
@@ -78,8 +90,8 @@ if (isset($_GET['logout'])) {
 		<td colspan=2 align=center class="boxes">
 			<form name="post" action="<?=$_SERVER['PHP_SELF']?>" method="POST">
 			<div class="boxes">
-				Username: <input type="text" name="username"><br>
-				Password: <input type="password" name="password"><br>
+				Username: <input type="text" id="username" name="username"><br>
+				Password: <input type="password" id="password" name="password"><br>
 			</div>
 		</td>
 	  </tr>

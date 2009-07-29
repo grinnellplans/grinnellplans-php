@@ -1,4 +1,5 @@
 <?php
+define('__ROOT__', dirname(__FILE__));
 require_once('Configuration.php');
 
 if (ENVIRONMENT == 'dev') {
@@ -25,14 +26,11 @@ if (ENVIRONMENT == 'dev') {
 	$GLOBALS['ENVIRONMENT'] = 'production';
 }
 
-// Boilerplate code for _all_ Plans scripts
-define('__ROOT__', dirname(__FILE__));
-require_once('Configuration.php');
 ini_set('include_path', '.:' . __ROOT__ . ':' . __ROOT__ . '/inc');
 putenv('TZ=' . TZ);
 
 // Plans Revision
-if (file_exists(__ROOT__ . '/.svn/entries')) {
+/* if (file_exists(__ROOT__ . '/.svn/entries')) {
     $svn = file(__ROOT__ . '/.svn/entries');
     if (is_numeric(trim($svn[3]))) {
         $version = $svn[3];
@@ -45,7 +43,9 @@ if (file_exists(__ROOT__ . '/.svn/entries')) {
     unset ($version);
 } else {
     define ('PLANS_REVISION', 0); // default if no svn data avilable
-}
+} */
+
+define('PLANS_REVISION', 0);
 
 // Doctrine setup
 require_once('lib/doctrine/lib/Doctrine.php');

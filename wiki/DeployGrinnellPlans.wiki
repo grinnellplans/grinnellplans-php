@@ -74,16 +74,6 @@ If you get errors about a Doctrine MySQL adaptor missing make sure you have PHP'
 
 Finally, let's set up a MySQL database for plans to use.
 
-===Setting up the database===
-If you downloaded the sample database dump, unpack it with:
-{{{
-gunzip grinnellplans_xhtml_sample_dbdump.sql.gz
-}}}
-Now, let's import this into MYSQL:
-{{{
-mysql -u plans -p plansdb < grinnellplans_xhtml_sample_dbdump.sql
-}}}
-
 ===Creating a plans account===
 This sets up privileges for a plans account in mysql (running Plans through the root account could be dangerous). We use "plansdb" for the database name and "plans" for the username, but you may change these if you like. Instead of "foobar", use whatever password you prefer (remember, this is a separate password from the machine account).
 {{{
@@ -93,6 +83,16 @@ CREATE DATABASE plansdb;
 GRANT all ON plansdb.* TO plans@localhost IDENTIFIED BY "foobar";
 quit
 
+}}}
+
+===Setting up the database===
+If you downloaded the sample database dump, unpack it with:
+{{{
+gunzip grinnellplans_xhtml_sample_dbdump.sql.gz
+}}}
+Now, let's import this into MYSQL:
+{{{
+mysql -u plans -p plansdb < grinnellplans_xhtml_sample_dbdump.sql
 }}}
 
 ==Set up Plans configuration==

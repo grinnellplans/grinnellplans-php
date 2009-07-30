@@ -109,25 +109,6 @@ CREATE TABLE `boardvotes` (
 SET character_set_client = @saved_cs_client;
 
 --
--- Table structure for table `clickstream`
---
-
-DROP TABLE IF EXISTS `clickstream`;
-SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8;
-CREATE TABLE `clickstream` (
-  `clickstream_id` int(10) unsigned NOT NULL auto_increment,
-  `userid` int(10) unsigned default NULL,
-  `created` datetime default NULL,
-  `script_uri` text,
-  `query_string` text,
-  `ip` varchar(15) default NULL,
-  `extra_data` text,
-  PRIMARY KEY  (`clickstream_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=76168077 DEFAULT CHARSET=latin1;
-SET character_set_client = @saved_cs_client;
-
---
 -- Table structure for table `diffs`
 --
 

@@ -56,7 +56,6 @@ Doctrine_Manager::connection(DB_URI);
 
 // Simple functions
 require_once('functions.php');
-require_once('functions-main.php');
 
 // Autoloader for classes
 function plans_autoload($classname) {
@@ -64,6 +63,8 @@ function plans_autoload($classname) {
 	require_once("$filename.php");
 }
 spl_autoload_register('plans_autoload');
+
+require_once('functions-main.php');
 
 new ResourceCounter();
 new SessionBroker();

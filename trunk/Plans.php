@@ -66,7 +66,6 @@ spl_autoload_register('plans_autoload');
 
 new ResourceCounter();
 new SessionBroker();
-new ClickstreamEvent();
 header('Content-Type: text/html; charset=UTF-8');
 
 // If we're on a testing environment, warn them

@@ -3,11 +3,12 @@
  */
 
 /* Make the powered by bar a bit more obvious and stylish. */
-.poweredby {
+#poweredby {
 	font-size: larger;
+	clear: left;
 }
 
-.poweredby img {
+#poweredby img {
 	vertical-align: middle;
 }
 

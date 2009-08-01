@@ -11,16 +11,10 @@ body {
 		           scrollbar-darkshadow-color: d6c1ff;
 		           scrollbar-track-color: 000;
 		           scrollbar-arrow-color: b6a1e4;
-
-/* Fix for PRE double-spacing [bug 21] */
-pre br {display:none}
-/* End fix */
-
-/*b6a1e4
-*/
 }
+
 p.logo {
-  background: url(bluelogo.jpg) no-repeat;
+  background: url("../../images/logo-small.png) no-repeat;
   width: 150px;
   height: 75px;
 }

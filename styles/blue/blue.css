@@ -19,7 +19,7 @@ pre br {display:none}
 /* End fix */
 
 p.logo {
-  background: url("../../images/logo-small.png) no-repeat;
+  background: url("../../images/logo-small.png") no-repeat;
   width: 150px;
   height: 75px;
 }

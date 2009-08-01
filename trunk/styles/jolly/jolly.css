@@ -13,7 +13,7 @@ body {
 		           scrollbar-arrow-color: 999;
 }
 p.logo {
-  background: url(logo.jpg) no-repeat;
+  background: url("../images/logo-small.png") no-repeat;
   width: 150px;
   height: 75px;
 }

@@ -13,6 +13,11 @@ body {
 		           scrollbar-arrow-color: b6a1e4;
 }
 
+
+/* Fix for PRE double-spacing [bug 21] */
+pre br {display:none}
+/* End fix */
+
 p.logo {
   background: url("../../images/logo-small.png) no-repeat;
   width: 150px;

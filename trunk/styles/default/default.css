@@ -1,14 +1,5 @@
 /* ###Main stuff */
 
-/* Set the text color and background */
-
-/*
-body {  color: #000000; background-color: #ffffff;
-background: #ffffff url("plans2.jpg")
-no-repeat fixed
-top}
-*/
-
 /* Fix for PRE double-spacing [bug 21] */
 pre br {display:none}
 /* End fix */
@@ -16,7 +7,7 @@ pre br {display:none}
 body {color: #000000; background-color: #ffffff; background: #ffffff}
 
 p.logo { background: #ffffff
-url("plans2.jpg")
+url("../../images/logo-small.png")
 no-repeat; padding: 0.3cm 2.6cm}
 
 /* Set the main table */

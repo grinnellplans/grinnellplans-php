@@ -30,11 +30,14 @@ else
 	} else
 	//if not submitted, give form
 	{
-		$myinterfaces = InterfaceRegistry::getAll();
-
+		$my_result = mysql_query("Select interface,descr From 
+interface"); //get the current interfaces and descriptions
+		while ($new_row = mysql_fetch_row($my_result)) {
+			$myinterfaces[] = $new_row;
+		}
 		$intcheck[get_item($dbh, "interface", "display", userid, $idcookie) ] = " checked"; //get user's current selection, and set it to the index of an array and put value to checked
 		//begin the form
-		print_r($myinterfaces);
+		
 		$interfaceform = new Form('interfacesform', true);
 		$thispage->append($interfaceform);
 

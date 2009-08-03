@@ -121,6 +121,8 @@ class LegacyDefaultInterface extends BaseInterface {
 		$tpl = parent::setup_widget($obj);
 
 		if ($obj instanceof NotesTopic && $obj->summary) {
+			// Override the forced lowercase that gets applied to Hyperlinks
+			$tpl->title_template->description = $obj->title->description;
 			$tpl->setTemplate('views/templates/legacy/NotesBoardTopic.tpl.php');
 		} else if ($obj instanceof WidgetGroup) {
 

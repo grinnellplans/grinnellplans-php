@@ -12,8 +12,6 @@ if (!User::logged_in()) {
 } else {
 	populate_page($thispage, $dbh, $idcookie);
 
-	$changed = isset($_POST['changed']) ? $_POST['changed'] : null;
-
 	$real_pass = get_item($dbh, "guest_password", "accounts", "userid", $idcookie);
 	$username = get_item($dbh, "username", "accounts", "userid", $idcookie);
 	if ($changed && ($checknumb != $idcookie)) {
@@ -23,22 +21,28 @@ if (!User::logged_in()) {
 		db_disconnect($dbh);
 		exit(0);
 	}
+	if ($changed && ($mypassword != $mypassword2)) {
+		$denied = new AlertText('Passwords do not match.', 'Error', true);
+		$thispage->append($denied);
+		interface_disp_page($thispage);
+		db_disconnect($dbh);
+		exit(0);
+	}
 	if ($changed == 'pass') {
-		if ((strstr($mypassword, "\"") or strstr($mypassword, "\'"))) {
-			$denied = new AlertText('Illegal character in password. Please do not use " or \'.', 'Bad Password', true);
-			$thispage->append($denied);
-		} else if ($mypassword != $mypassword2) {
-			$denied = new AlertText('Passwords do not match.', 'Error', true);
-			$thispage->append($denied);
-		} else if (strlen($mypassword) <= 3) {
-			$denied = new AlertText('Could not change password. Your password must be 4 or more characters.', 'Bad Password', true);
-			$thispage->append($denied);
-		} else {
-			$crpassword = crypt($mypassword, "ab"); //encrypt the password,
-			set_item($dbh, "accounts", "password", $crpassword, "userid", $idcookie); //set the password
-			$success = new InfoText("Password changed to <b>$mypassword</b>.", 'Success');
-			$thispage->append($success);
+		if (!(strstr($mypassword, "\"") or strstr($mypassword, "\'"))) {
+			if (strlen($mypassword) > 3) {
+				$crpassword = crypt($mypassword, "ab"); //encrypt the password,
+				set_item($dbh, "accounts", "password", $crpassword, "userid", $idcookie); //set the password
+				$success = new InfoText("Password changed to <b>$mypassword</b>.", 'Success');
+				$thispage->append($success);
 
+			} else {
+				$denied = new AlertText('Could not change password. Your password must be 4 or more characters.', 'Bad Password', true);
+				$thispage->append($denied);
+			}
+		} else {
+				$denied = new AlertText('Illegal character in password. Please do not use " or \'.', 'Bad Password', true);
+				$thispage->append($denied);
 		}
 	}
 	if ($changed == 'guest_pass') {

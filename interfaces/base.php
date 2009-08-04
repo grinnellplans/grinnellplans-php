@@ -113,6 +113,7 @@ abstract class BaseInterface implements DisplayInterface {
 			$tpl->doyouread_link_template = null;
 		}
 		$tpl->legal_template = $this->setup_widget($footer->legal);
+		$tpl->powered_by = $this->setup_widget($footer->powered_by);
 
 		return $tpl;
 	}

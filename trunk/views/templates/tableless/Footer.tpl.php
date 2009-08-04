@@ -6,10 +6,10 @@
 <?php endif ?>
 
 
-<div id="poweredby">
-<img src="images/logo-small.png" class="logo" width="120px" height="45px">
-<?php $this->powered_by->display(); ?>
-</div>
+	<div id="poweredby"><div>
+		<img src="images/logo-small.png" class="logo" width="120px" height="45px">
+		<?php $this->powered_by->display(); ?>
+	</div></div>
 
 <?php if ($this->legal_template): ?>
 	<div id="legal"><div>

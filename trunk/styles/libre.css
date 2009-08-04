@@ -302,11 +302,16 @@ p.sub:first-letter {
 	/* Always put our footer at the bottom of the page */
 	position: absolute;
 	bottom: 0em;
-	height: 8em;
+	height: 10em;
 }
 
-#legal {
+#legal, #poweredby {
 	margin-top: 0.5em;
+}
+
+/* Hide the logo in the powered by message */
+#poweredby .logo {
+	display: none;
 }
 
 /*
@@ -315,10 +320,13 @@ p.sub:first-letter {
 #justupdated div:before {
 	content: "1";
 }
-#legal div:before {
+#poweredby div:before {
 	content: "2";
 }
-#justupdated div:before, #legal div:before {
+#legal div:before {
+	content: "3";
+}
+#justupdated div:before, #legal div:before, #poweredby div:before {
 	font-size: 0.9em;
 	vertical-align: 0.5em;
 	padding-left: 0.8em;

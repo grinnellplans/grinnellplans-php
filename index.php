@@ -74,7 +74,7 @@ google.load("jqueryui", "1.7.2");
 <script type="text/javascript" charset="utf-8">
 $(document).ready(function() {
 	$("#username").focus();
-	$("input:password").chromaHash({number: 3});
+	$("input:password").chromaHash({bars: 3, salt: "5bf999ac93430ed303cd0b56f976e289", minimum: 4});
 });
 </script>
 </head>

@@ -278,6 +278,7 @@ abstract class BaseInterface implements DisplayInterface {
 			$tpl->text = $obj->message;
 
 		} else if ($obj instanceof HeadingText) {
+			$tpl->tag_attributes = self::id_and_class($obj->identifier, $obj->group);
 			$tpl->tag = 'h' . $obj->sublevel;
 			$tpl->text = $obj->message;
 			$tpl->setTemplate('views/templates/std/GenericTag.tpl.php');

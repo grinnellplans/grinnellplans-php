@@ -104,6 +104,7 @@ else
 
 	$this_title = stripslashes(get_item($dbh, "title", "mainboard", "threadid", $threadid));
 	$thread->title = new HeadingText($this_title, 3);
+	$thread->title->identifier = 'topic_title';
 
 	$notes_pref = get_item($dbh, "notes_asc", "accounts", "userid", $userid);
 	if ($notes_pref) {

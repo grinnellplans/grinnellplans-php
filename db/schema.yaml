@@ -145,22 +145,6 @@ Boardvotes:
       type: timestamp(25)
       default: CURRENT_TIMESTAMP
     vote: integer(2)
-Clickstream:
-  tableName: clickstream
-  columns:
-    clickstream_id:
-      type: integer(4)
-      unsigned: 1
-      primary: true
-      autoincrement: true
-    userid:
-      type: integer(4)
-      unsigned: 1
-    created: timestamp(25)
-    script_uri: string(2147483647)
-    query_string: string(2147483647)
-    ip: string(15)
-    extra_data: string(2147483647)
 Diffs:
   tableName: diffs
   columns:

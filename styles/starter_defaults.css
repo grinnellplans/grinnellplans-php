@@ -2,6 +2,16 @@
  * Some styling that almost all styles will want
  */
 
+/* Make the powered by bar a bit more obvious and stylish. */
+#poweredby {
+	font-size: larger;
+	clear: left;
+}
+
+#poweredby .logo {
+	vertical-align: middle;
+}
+
 /* Display the long version of dates in the plan header */
 .short {
 	display: none;
@@ -141,4 +151,10 @@
 }
 .notes_post_content {
 	clear: both;
+}
+
+/* Right-align the # Posts column on Notes */
+#notes_board td.num_posts {
+	text-align: right;
+	padding-right: 0.6em;
 }

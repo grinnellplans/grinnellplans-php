@@ -101,6 +101,7 @@ function populate_page(PlansPage $page, $dbh, $idcookie)
 	}
 	$footer = new Footer();
 	$footer->doyouread = get_just_updated();
+	$footer->powered_by = get_powered_by();
 	$footer->legal = new RegularText(get_disclaimer());
 	$page->footer = $footer;
 }
@@ -128,6 +129,7 @@ function populate_guest_page(PlansPage $page)
 	$mp->autoreads = NULL;
 	$footer = new Footer();
 	$footer->doyouread = NULL;
+	$footer->powered_by = get_powered_by();
 	$footer->legal = new RegularText(get_disclaimer(), NULL);
 	$page->footer = $footer;
 }
@@ -274,6 +276,16 @@ function get_just_updated()
     $temp = new PlanLink($new_plans[1]);
     // But we want a generic Hyperlink, so it can be styled separately.
     return new Hyperlink('justupdatedlink', true, $temp->href, $new_plans[1]);
+}
+
+function get_powered_by()
+{
+	$text = 'Powered by <a href="' .  ProjectInformation::projectUrl()
+		. '">GrinnellPlans</a> ' . ProjectInformation::version()
+		. ', an opensource project. File a <a href="' . ProjectInformation::bugReportUrl() . '">bug report</a>.';
+	$msg = new RegularText($text);
+	$msg->identifier = 'poweredby';
+	return $msg;
 }
 
 function wants_secrets($idcookie)

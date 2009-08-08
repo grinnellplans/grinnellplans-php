@@ -25,7 +25,10 @@ $timeform->action = 'planwatch.php';
 $timeform->method = 'POST';
 $thispage->append($timeform);
 
-$item = new TextInput('mytime', 12);
+$item = new TextInput('mytime', $mytime);
+$item->title = 'Plans updated in the past:';
+$item->description = 'hours';
+$item->cols = 2;
 $timeform->append($item);
 $item = new SubmitInput('See Plans');
 $timeform->append($item);

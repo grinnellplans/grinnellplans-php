@@ -113,6 +113,7 @@ abstract class BaseInterface implements DisplayInterface {
 			$tpl->doyouread_link_template = null;
 		}
 		$tpl->legal_template = $this->setup_widget($footer->legal);
+		$tpl->powered_by = $this->setup_widget($footer->powered_by);
 
 		return $tpl;
 	}
@@ -193,6 +194,9 @@ abstract class BaseInterface implements DisplayInterface {
 				$tpl->markasread_template = $this->setup_widget($obj->markasread_link);
 			} else if ($obj instanceof NotesBoard) {
 				$tpl->tag_attributes = self::id_and_class($obj->identifier, $obj->group);
+			} else if ($obj instanceof NotesTopic) {
+				$tpl->tag_attributes = self::id_and_class($obj->identifier, $obj->group);
+				$tpl->title_template = $this->setup_widget($obj->title);
 			} else if ($obj instanceof WidgetList) {
 				$tpl->tag_attributes = self::id_and_class($obj->identifier, $obj->group);
 			} else if ($obj instanceof WidgetGroup) {
@@ -275,6 +279,7 @@ abstract class BaseInterface implements DisplayInterface {
 			$tpl->text = $obj->message;
 
 		} else if ($obj instanceof HeadingText) {
+			$tpl->tag_attributes = self::id_and_class($obj->identifier, $obj->group);
 			$tpl->tag = 'h' . $obj->sublevel;
 			$tpl->text = $obj->message;
 			$tpl->setTemplate('views/templates/std/GenericTag.tpl.php');

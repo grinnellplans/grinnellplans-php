@@ -121,6 +121,8 @@ class LegacyDefaultInterface extends BaseInterface {
 		$tpl = parent::setup_widget($obj);
 
 		if ($obj instanceof NotesTopic && $obj->summary) {
+			// Override the forced lowercase that gets applied to Hyperlinks
+			$tpl->title_template->description = $obj->title->description;
 			$tpl->setTemplate('views/templates/legacy/NotesBoardTopic.tpl.php');
 		} else if ($obj instanceof WidgetGroup) {
 
@@ -183,8 +185,12 @@ class LegacyDefaultInterface extends BaseInterface {
 					}
 				}
 				// The autoread management pages
-				else if ($value->identifier == 'autoread_alphabet') {
+				else if ($obj->identifier == 'autoread_alphabet') {
 					$tpl->setTemplate('views/templates/legacy/WidgetGroup.tpl.php');
+				}
+				else if ($obj->identifier == 'search_results' || $obj->group == 'result_sublist') {
+					blkafkjaass;
+					$tpl->setTemplate('views/templates/tableless/WidgetList.tpl.php');
 				}
 			} else if ($obj instanceof WidgetGroup) {
 				$tpl->setTemplate('views/templates/legacy/WidgetGroup.tpl.php');

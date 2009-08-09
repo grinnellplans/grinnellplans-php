@@ -1,7 +1,7 @@
 #summary Information about the default database contents provided with the code.
 #labels Phase-QA,Phase-Deploy
 
-A sample database is provided in [http://grinnellplans.googlecode.com/files/grinnellplans_xhtml_sample_dbdump.sql.gz the GrinnellPlans Google group's file repository]. You can use this to set up a testing platform, or to start your own Plans server somewhere else. The database has an admin account, plus a bunch of fake user accounts with various options set.
+A sample database is provided in [http://code.google.com/p/grinnellplans/downloads/list our Downloads section]. You can use this to set up a testing platform, or to start your own Plans server somewhere else. The database has an admin account, plus a bunch of fake user accounts with various options set.
 
 _*All account passwords are the username of the account.*_
 

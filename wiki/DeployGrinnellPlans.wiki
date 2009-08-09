@@ -117,7 +117,7 @@ gunzip grinnellplans_xhtml_sample_dbdump.sql.gz
 }}}
 Now, let's import this into MYSQL:
 {{{
-mysql -u plans -p plansdb < grinnellplans_xhtml_sample_dbdump.sql
+mysql -u plans -p plansdb < grinnellplans_sample_db.sql
 }}}
 
 ==GeoIP==
@@ -127,7 +127,7 @@ The Geo IP library is included with plans, but the location database is not.  In
 cd geo
 wget http://www.maxmind.com/download/geoip/database/GeoLiteCity.dat.gz
 gunzip GeoLiteCity.dat.gz
-mv GeoLiteCity.dat geo.dat
+mv GeoLiteCity.dat geo/geo.dat
 }}}
 
 ==Done!==

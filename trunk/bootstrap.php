@@ -15,8 +15,8 @@ Doctrine_Manager::connection(DB_URI);
 // Autoloader for classes
 function plans_autoload($classname) {
 	$filename = str_replace('_', '/', $classname);
-	if (is_readable("inc/$filename.php")) {
-		require_once("$filename.php");
+	if (is_readable(__ROOT__ . "/inc/$filename.php")) {
+		require_once(__ROOT__ . "/inc/$filename.php");
 	}
 }
 spl_autoload_register('plans_autoload');

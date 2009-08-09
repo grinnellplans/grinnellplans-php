@@ -5,17 +5,26 @@ class User {
 	public static function login($username, $password) {
 		$user = Doctrine_Query::create()
 						->from('Accounts a')
-						->where('username = ? and password =?', array($username, crypt($password, 'ab')))
+						->where('username = ?', $username)
 						->fetchOne();
-		if ($user) {
+		$newpass = crypt($password, $user->password);
+		if ($newpass != '' && $newpass == $user->password) {
 			$user->login = timestamp();
 			$user->save();
 			$_SESSION['glbs_u'] = $user->username;
 			$_SESSION['glbs_i'] = $user->userid;
 			return $user;
 		} else {
+			unset($user);
 			return false;
 		}
+	}
+
+	/**
+	 * @return string a one-way hash of the password, suitable for storage
+	 */
+	public static function hashPassword($password) {
+		return crypt($password);
 	}
 	
 	public static function get() {

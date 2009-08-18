@@ -1,0 +1,373 @@
+Accounts:
+  tableName: accounts
+  columns:
+    userid:
+      type: integer(2)
+      unsigned: 1
+      primary: true
+      autoincrement: true
+    username:
+      type: string(16)
+      default: ''
+      notnull: true
+    poll:
+      type: integer(1)
+      unsigned: 1
+    group_bit:
+      type: string(1)
+      fixed: true
+    edit_cols:
+      type: integer(1)
+      unsigned: 1
+    edit_rows:
+      type: integer(1)
+      unsigned: 1
+    webview:
+      type: string(1)
+      fixed: true
+      default: '0'
+    notes_asc:
+      type: string(1)
+      fixed: true
+    show_images:
+      type: integer(1)
+      default: '0'
+      notnull: true
+    created: timestamp(25)
+    password: string(20)
+    email: string(64)
+    pseudo: string(64)
+    login: timestamp(25)
+    changed: timestamp(25)
+    plan: string(2147483647)
+    spec_message: string(255)
+    grad_year: string(4)
+    edit_text: string(2147483647)
+    user_type: string(128)
+    guest_password: string(30)
+  relations:
+    JsStatus:
+      foreign: userid
+      local: userid
+    Location:
+      foreign: user_id
+      local: userid
+
+Location:
+  tableName: location
+  columns:
+    user_id:
+        type: integer(11)
+        unsigned: 1
+        primary: true
+    country: string(2)
+    region: string(64)
+    city: string(64)
+    latitude: string(64)
+    longitude: string(64)
+
+Autofinger:
+  tableName: autofinger
+  columns:
+    id:
+      type: integer(20)
+      autoincrement: true
+      primary: true
+    owner:
+      type: integer(2)
+      unsigned: 1
+      default: '0'
+      notnull: true
+    interest:
+      type: integer(2)
+      unsigned: 1
+      default: '0'
+      notnull: true
+    priority:
+      type: integer(1)
+      unsigned: 1
+    updated:
+      type: string(1)
+      fixed: true
+    updtime: timestamp(25)
+    readtime: timestamp(25)
+AutoreadGroups:
+  tableName: autoread_groups
+  columns:
+    id:
+      type: integer(4)
+      default: '0'
+      notnull: true
+    user_id:
+      type: integer(4)
+      default: '0'
+      notnull: true
+    name:
+      type: string(32)
+      default: ''
+      notnull: true
+AvailLinks:
+  tableName: avail_links
+  columns:
+    linknum:
+      type: integer(1)
+      unsigned: 1
+      primary: true
+      autoincrement: true
+    linkname: string(128)
+    descr: string(2147483647)
+    html_code: string(2147483647)
+    static: string(2147483647)
+Boardvotes:
+  tableName: boardvotes
+  columns:
+    voteid:
+      type: integer(4)
+      unsigned: 1
+      primary: true
+      autoincrement: true
+    userid:
+      type: integer(2)
+      unsigned: 1
+      default: '0'
+      notnull: true
+    threadid:
+      type: integer(2)
+      unsigned: 1
+      default: '0'
+      notnull: true
+    messageid:
+      type: integer(2)
+      unsigned: 1
+      default: '0'
+      notnull: true
+    vote_date:
+      type: timestamp(25)
+      default: CURRENT_TIMESTAMP
+    vote: integer(2)
+Diffs:
+  tableName: diffs
+  columns:
+    diff_id:
+      type: integer(4)
+      primary: true
+      autoincrement: true
+    userid: integer(4)
+    text: string(2147483647)
+    date: timestamp(25)
+Display:
+  tableName: display
+  columns:
+    userid:
+      type: integer(2)
+      unsigned: 1
+      primary: true
+    interface:
+      type: integer(1)
+      unsigned: 1
+    style:
+      type: integer(1)
+      unsigned: 1
+Donations:
+  tableName: donations
+  columns:
+    donation_id:
+      type: integer(4)
+      primary: true
+      autoincrement: true
+    donor: string(255)
+    amount: decimal(10)
+    comment: string(255)
+    date: timestamp(25)
+Expenses:
+  tableName: expenses
+  columns:
+    expense_id:
+      type: integer(4)
+      primary: true
+      autoincrement: true
+    expense: string(255)
+    amount: decimal(10)
+    date: timestamp(25)
+JsStatus:
+  tableName: js_status
+  columns:
+    status:
+      type: string(3)
+      fixed: true
+    userid:
+      type: integer(4)
+      primary: true
+Mainboard:
+  tableName: mainboard
+  columns:
+    threadid:
+      type: integer(2)
+      unsigned: 1
+      primary: true
+      autoincrement: true
+    userid:
+      type: integer(2)
+      unsigned: 1
+      default: '0'
+      notnull: true
+    title: string(128)
+    created: timestamp(25)
+    lastupdated: timestamp(25)
+OptLinks:
+  tableName: opt_links
+  columns:
+    id:
+      type: integer(20)
+      autoincrement: true
+      primary: true
+    userid:
+      type: integer(2)
+      unsigned: 1
+      default: '0'
+      notnull: true
+    linknum:
+      type: integer(1)
+      unsigned: 1
+OutputInterface:
+  tableName: interface
+  columns:
+    interface:
+      type: integer(1)
+      unsigned: 1
+      primary: true
+      autoincrement: true
+    path: string(128)
+    descr: string(255)
+Perms:
+  tableName: perms
+  columns:
+    userid:
+      type: integer(2)
+      unsigned: 1
+      primary: true
+      autoincrement: true
+    status: string(32)
+Plans:
+  tableName: plans
+  columns:
+    id:
+      type: integer(20)
+      autoincrement: true
+      primary: true
+    user_id: integer(4)
+    plan: string(2147483647)
+PollChoices:
+  tableName: poll_choices
+  columns:
+    poll_choice_id:
+      type: integer(4)
+      unsigned: 1
+      primary: true
+      autoincrement: true
+    poll_question_id:
+      type: integer(4)
+      unsigned: 1
+    html: string(2147483647)
+    created: timestamp(25)
+PollQuestions:
+  tableName: poll_questions
+  columns:
+    poll_question_id:
+      type: integer(4)
+      unsigned: 1
+      primary: true
+      autoincrement: true
+    html: string(2147483647)
+    type: string(20)
+    created: timestamp(25)
+PollVotes:
+  tableName: poll_votes
+  columns:
+    poll_vote_id:
+      type: integer(4)
+      unsigned: 1
+      primary: true
+      autoincrement: true
+    poll_choice_id: integer(4)
+    userid: integer(4)
+    created: timestamp(25)
+Secrets:
+  tableName: secrets
+  columns:
+    secret_id:
+      type: integer(4)
+      primary: true
+      autoincrement: true
+    secret_text: string(2147483647)
+    date: timestamp(25)
+    display: string(5)
+    date_approved: timestamp(25)
+Style:
+  tableName: style
+  columns:
+    style:
+      type: integer(1)
+      unsigned: 1
+      primary: true
+      autoincrement: true
+    path: string(128)
+    descr: string(255)
+Stylesheet:
+  tableName: stylesheet
+  columns:
+    userid:
+      type: integer(2)
+      unsigned: 1
+      primary: true
+    stylesheet: string(2147483647)
+Subboard:
+  tableName: subboard
+  columns:
+    messageid:
+      type: integer(2)
+      unsigned: 1
+      primary: true
+      autoincrement: true
+    threadid:
+      type: integer(2)
+      unsigned: 1
+      default: '0'
+      notnull: true
+    userid:
+      type: integer(2)
+      unsigned: 1
+      default: '0'
+      notnull: true
+    contents:
+      type: string(2147483647)
+      default: ''
+      notnull: true
+    created: timestamp(25)
+    title: string(128)
+System:
+  tableName: system
+  columns:
+    id:
+      type: integer(20)
+      autoincrement: true
+      primary: true
+    motd: string(2147483647)
+    poll: string(2147483647)
+TentativeAccounts:
+  tableName: tentative_accounts
+  columns:
+    tentative_accounts_id:
+      type: integer(4)
+      primary: true
+      autoincrement: true
+    created: timestamp(25)
+    token: string(16)
+    session: string(200)
+ViewedSecrets:
+  tableName: viewed_secrets
+  columns:
+    userid:
+      type: integer(4)
+      primary: true
+    date: timestamp(25)

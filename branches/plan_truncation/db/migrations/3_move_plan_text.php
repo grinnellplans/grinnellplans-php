@@ -22,10 +22,25 @@ class MovePlanText extends Doctrine_Migration_Base
     {
         $this->removeColumn('accounts', 'plan');
         $this->removeColumn('accounts', 'edit_text');
+
+		$this->addIndex('plans', 'plans_user_id', array(
+             'fields' => 
+             array(
+              0 => 'user_id',
+             ),
+             'type' => 'unique',
+             ));
     }
 
     public function down()
     {
+		$this->removeIndex('plans', 'plans_user_id', array(
+             'fields' => 
+             array(
+              0 => 'user_id',
+             ),
+             ));
+
         $this->addColumn('accounts', 'plan', 'string', array('length' => '2147483647'));
         $this->addColumn('accounts', 'edit_text', 'string', array('length' => '2147483647'));
     }

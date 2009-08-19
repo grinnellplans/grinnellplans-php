@@ -3,11 +3,11 @@ require_once("Plans.php");
 
 class User {
 	public static function login($username, $password) {
-		$user = Doctrine_Query::create()
-						->from('Accounts a')
-						->where('username = ? and password =?', array($username, crypt($password, 'ab')))
-						->fetchOne();
-		if ($user) {
+		if (User::checkPassword($username, $password)) {
+			$user = Doctrine_Query::create()
+							->from('Accounts a')
+							->where('username = ?', $username)
+							->fetchOne();
 			$user->login = timestamp();
 			$user->save();
 			$_SESSION['glbs_u'] = $user->username;
@@ -16,6 +16,25 @@ class User {
 		} else {
 			return false;
 		}
+	}
+
+	/**
+	 * @return boolean true if the given password matched the stored password
+	 */
+	public static function checkPassword($username, $password) {
+		$user = Doctrine_Query::create()
+						->from('Accounts a')
+						->where('username = ?', $username)
+						->fetchOne();
+		$newpass = crypt($password, $user->password);
+		return ($newpass != '' && $newpass == $user->password);
+	}
+
+	/**
+	 * @return string a one-way hash of the password, suitable for storage
+	 */
+	public static function hashPassword($password) {
+		return crypt($password);
 	}
 	
 	public static function get() {

@@ -5,5 +5,15 @@
  */
 class Plans extends BasePlans
 {
+    public function setUp()
+    {
+        $this->hasMutator('edit_text', 'processText');
+	}
+
+	public function processText($text) {
+		$this->_set('edit_text', $text);
+		$html_text = cleanText($text);
+		$this->_set('plan', $html_text);
+	}
 
 }

@@ -12,8 +12,8 @@ class MovePlanText extends Doctrine_Migration_Base
         foreach ($plans as $plan) {
             $p = new Plans();
             $p->user_id = $plan->userid;
-            $p->plan = $plan->plan;
-            $p->edit_text = $plan->edit_text;
+            $p->plan = stripslashes($plan->plan);
+            $p->edit_text = stripslashes($plan->edit_text);
             $p->save();
         }
     }
@@ -55,8 +55,8 @@ class MovePlanText extends Doctrine_Migration_Base
         foreach ($plans as $plan) {
             $q = Doctrine_Query::create()
                 ->update('Accounts')
-                ->set('plan', '?', $plan->plan)
-                ->set('edit_text', '?', $plan->edit_text)
+                ->set('plan', '?', addslashes($plan->plan))
+                ->set('edit_text', '?', addslashes($plan->edit_text))
                 ->where('userid = ?', $plan->user_id);
             $q->execute();
         }

@@ -18,7 +18,7 @@ if ($subject_name) {
 			srand(time());
 			$password = rand(0, 999999);
 		}
-		$crpassword = crypt($password, "ab");
+		$crpassword = User::hashPassword($password);
 		set_item($dbh, "accounts", "password", $crpassword, "userid", $subject_id);
 		echo "<form action=\"email.php\" method=\"POST\">";
 		echo "<input type=\"hidden\" name=\"email\" value=\"" . $email . "\">";

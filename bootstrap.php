@@ -20,3 +20,11 @@ function plans_autoload($classname) {
 	}
 }
 spl_autoload_register('plans_autoload');
+
+// Convert all errors to exceptions if desired
+if (STRICT_EXCEPTIONS === true) {
+	function exception_error_handler($errno, $errstr, $errfile, $errline) {
+		throw new ErrorException($errstr, 0, $errno, $errfile, $errline);
+	}
+	set_error_handler("exception_error_handler");
+}

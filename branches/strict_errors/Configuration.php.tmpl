@@ -1,7 +1,7 @@
 <?
 /* Centralized file to hold all configuration parameters */
 
-define("PLANSVERSION", "2.7");
+define("PLANSVERSION", "3.1");
 define("PLANSVNAME", "Plans " . PLANSVERSION);
 
 define('GOOGLE_CODE_SECRET', '');
@@ -28,4 +28,15 @@ define('GEO_DATABASE', __ROOT__ . '/geo/geo.dat');
 
 // Options are 'development', 'production', or 'testing'
 define('ENVIRONMENT', 'development');
+
+// Throw exceptions for every error that is triggered?
+define('STRICT_EXCEPTIONS', false);
+
+// Options for automated functional testing
+
+// The root URL for Plans on this server
+define("__WEBROOT__", "http://0.0.0.0/plans");
+// The test user to log in as
+define('TEST_USER', 'mytestuser');
+define('TEST_PASSWORD', 'mypassword');
 ?>

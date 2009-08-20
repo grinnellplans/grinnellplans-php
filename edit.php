@@ -61,7 +61,7 @@ if (!User::logged_in()) {
 		$plantext = stripslashes($plantext);
 
 		// If this is the test server, give them a warning
-		if ($GLOBALS['ENVIRONMENT'] == 'testing') {
+		if (ENVIRONMENT == 'testing') {
 			$betawarn = new AlertText('Remember, any changes you make here won\'t show up on regular Plans.', 'We\'re in beta');
 			$page->append($betawarn);
 		}

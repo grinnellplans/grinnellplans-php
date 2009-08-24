@@ -11,6 +11,6 @@ Interested in helping with the development of Plans? This is the place!
 
 ==How to help==
   * Make sure you join the mailing list.
-  * Have a look at the [http://code.google.com/p/grinnellplans/issues/list?can=1&q=-has%3Aowner unclaimed tickets] in our issue tracker. If you fix one, [ContributingCode submit a patch].
+  * Have a look at the [http://code.google.com/p/grinnellplans/issues/list?can=2&q=-has%3Aowner unclaimed tickets] in our issue tracker. If you fix one, [ContributingCode submit a patch].
   * [http://code.google.com/p/grinnellplans/issues/entry?template=User%20defect%20report Report bugs]! Seriously, this is hugely helpful.
   * [http://code.google.com/p/grinnellplans/issues/entry?template=Feature%20suggestion Suggest features]! While there's no guarantee we'll implement your suggestion, well thought-out ideas are always welcome.

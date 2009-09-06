@@ -1,6 +1,6 @@
 <?php
 require_once('simpletest/autorun.php');
-require_once('simpletest/web_tester.php');
+require_once('simpletest/extensions/dom_tester.php');
 require_once('../Configuration.php');
 
 /**
@@ -9,10 +9,12 @@ require_once('../Configuration.php');
  * Provides helpful functionality like logging in/out, converting URLs 
  * appropriately, and so on.
  */
-class PlansTestCase extends WebTestCase {
+class PlansWebTestCase extends DomTestCase {
 
 	public function setUp() {
 		$this->logIn();
+		$this->db = mysql_connect(MYSQL_HOST, MYSQL_USER, MYSQL_PASS);
+		mysql_select_db(MYSQL_DB);
 	}
 
 	public function tearDown() {
@@ -57,6 +59,19 @@ class PlansTestCase extends WebTestCase {
 		$this->logOut();
 		$this->getRelative('index.php');
 		$this->click('Guest');
+	}
+
+	/**
+	 * @todo this is ugly code
+	 */
+	public function updatePlan($username) {
+		$update = 'UPDATE accounts SET changed=NOW() WHERE username = "'.$username.'"';
+		mysql_query($update, $this->db);
+		$query = 'SELECT userid FROM accounts WHERE username = "'.$username.'"';
+		$idcookies = mysql_fetch_array(mysql_query($query, $this->db));
+		$idcookie = $idcookies[0];
+		$update = 'UPDATE autofinger SET updated=1 WHERE interest = "'.$idcookie.'"';
+		mysql_query($update, $this->db);
 	}
 
 }

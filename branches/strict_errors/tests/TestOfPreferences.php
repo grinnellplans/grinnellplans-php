@@ -1,7 +1,7 @@
 <?php
 require_once('PlansTestCase.php');
 
-class TestOfPreferences extends PlansTestCase {
+class TestOfPreferences extends PlansWebTestCase {
 
 	/*
 	public function assertAccessDenied() {
@@ -37,18 +37,29 @@ class TestOfPreferences extends PlansTestCase {
 		$this->assertNoLink('Optional Links');
 	}
 
-	/* Incomplete
-	public function testAutoreadPageSubmit() {
+	public function testAutoreadPageSetLevel() {
 		$this->getRelative('autoread.php');
 		$this->clickLink('v');
 		$this->setFieldByName('109', '2'); 
 		$this->click('Submit');
-		$this->assertField('109', '2');
+		$this->updatePlan('vanvalke');
+		$this->getRelative('home.php');
+		$autoread2 = $this->getElementsBySelector('#autoread ul li.first+li ul li');
+		$this->assertTrue(in_array('vanvalke', $autoread2), 'User must appear on autoread level 2');
+		$autoread1 = $this->getElementsBySelector('#autoread ul li.first ul li');
+		$this->assertFalse(in_array('vanvalke', $autoread1), 'User must not appear on autoread level 1');
+	}
+
+	public function testAutoreadPageDeleteLevel() {
+		$this->getRelative('autoread.php');
+		$this->clickLink('v');
 		$this->setFieldByName('109', '0'); 
 		$this->click('Submit');
-		$this->assertField('109', '0');
+		$this->updatePlan('vanvalke');
+		$this->getRelative('home.php');
+		$autoreads = $this->getElementsBySelector('#autoread ul ul li');
+		$this->assertFalse(in_array('vanvalke', $autoreads), 'User must not appear on any autoreads');
 	}
-	 */
 
 	public function testAutoreadPageInaccessibleToGuest() {
 		$this->logInGuest();

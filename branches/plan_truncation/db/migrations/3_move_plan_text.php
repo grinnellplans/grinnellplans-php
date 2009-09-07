@@ -12,8 +12,8 @@ class MovePlanText extends Doctrine_Migration_Base
         foreach ($plans as $plan) {
             $p = new Plans();
             $p->user_id = $plan->userid;
-            $p->plan = stripslashes($plan->plan);
             $p->edit_text = stripslashes($plan->edit_text);
+            $p->plan = stripslashes($plan->plan);
             $p->save();
         }
     }

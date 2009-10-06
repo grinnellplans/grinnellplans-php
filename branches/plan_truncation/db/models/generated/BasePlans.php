@@ -30,14 +30,14 @@ abstract class BasePlans extends Doctrine_Record
              'notnull' => false,
              'autoincrement' => false,
              ));
-        $this->hasColumn('plan', 'string', null, array(
+        $this->hasColumn('plan', 'clob', 196605, array(
              'type' => 'string',
              'fixed' => false,
              'primary' => false,
              'notnull' => false,
              'autoincrement' => false,
              ));
-        $this->hasColumn('edit_text', 'string', null, array(
+        $this->hasColumn('edit_text', 'string', 65535, array(
              'type' => 'string',
              'fixed' => false,
              'primary' => false,

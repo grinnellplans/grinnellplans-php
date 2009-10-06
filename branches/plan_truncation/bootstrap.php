@@ -8,7 +8,9 @@ putenv('TZ=' . TZ);
 // Doctrine setup
 require_once('lib/doctrine/Doctrine.php');
 spl_autoload_register(array('Doctrine', 'autoload'));
-Doctrine_Manager::getInstance()->setAttribute('model_loading', 'conservative');
+$manager = Doctrine_Manager::getInstance();
+$manager->setAttribute('model_loading', 'conservative');
+$manager->setAttribute('validate', 'lengths');
 Doctrine::loadModels(__ROOT__ . '/db/models'); // This call will not require the found .php files
 Doctrine_Manager::connection(DB_URI);
 

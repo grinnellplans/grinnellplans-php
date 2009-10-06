@@ -19,13 +19,13 @@ class SplitPlanText extends Doctrine_Migration_Base
              ),
              'plan' => 
              array(
-              'type' => 'string',
-              'length' => '2147483647',
+              'type' => 'clob',
+              'length' => 196605,
              ),
              'edit_text' => 
              array(
               'type' => 'string',
-              'length' => '2147483647',
+              'length' => 65535,
              ),
              ), array(
              'primary' => 

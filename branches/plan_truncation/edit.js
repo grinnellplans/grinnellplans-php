@@ -2,7 +2,7 @@ function checkPlanLength() {
 	//var editForm = document.getElementById('editform');
 	var editText = document.getElementById('edit_textarea');
 	var planLength = editText.value.length;
-	var perc = Math.round( planLength * 100 / 60000 );
+	var perc = Math.round( planLength * 100 / 65535 );
 	if (perc != window.perc) {
 		var fillMeter = document.getElementById('edit_fill_meter');
 		var fillBarElements = fillMeter.getElementsByTagName('div');

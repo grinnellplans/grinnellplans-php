@@ -31,11 +31,7 @@ if (!User::logged_in()) {
 
 		// Add the edit form
 		$plantext = $user->Plan->edit_text;
-		$plan = new PlanText($plantext, true);
-		$editbox = new EditBox($user->username, $plan, $user->edit_rows, $user->edit_cols);
-		$editbox->action = 'edit.php';
-		$editbox->method = 'post';
-		$page->append($editbox);
+		$page->append(make_editbox($plantext, $user));
 
 	} else {
 
@@ -49,18 +45,34 @@ if (!User::logged_in()) {
 		$diff = xdiff_string_diff($old_plan, $plan);
 		mysql_query("insert into diffs(userid, text, date) values($idcookie, \"$diff\", now())");
 
-		// Store the edited plan source, convert it, and store the converted text.
-		$user->Plan->edit_text = $plan;
-		$user->Plan->save();
-		setUpdatedTime($idcookie); //set the time which keeps track of when the plan was last updated
-		set_item($dbh, "autofinger", "updated", 1, "interest", $idcookie); //make the plan show up as updated on other people's autoread list.
-
-		Redirect('read.php?edit_submit=1&searchname=' . User::name());
+        // Store the edited plan source, convert it, and store the converted text.
+        try {
+            $user->Plan->edit_text = $plan;
+            $user->Plan->save();
+            setUpdatedTime($idcookie); //set the time which keeps track of when the plan was last updated
+            set_item($dbh, "autofinger", "updated", 1, "interest", $idcookie); //make the plan show up as updated on other people's autoread list.
+            // Leave this page!
+            Redirect('read.php?edit_submit=1&searchname=' . User::name());
+            return;
+        } catch (Doctrine_Validator_Exception $e) {
+            $errmsg = 'Sorry, your plan is too long. Please remove some text and try again.';
+            $err = new AlertText($errmsg, 'Maximum Plan length exceeded');
+            $page->append($err);
+            $page->append(make_editbox($plan, $user));
+        }
 	}
 
 } //allow to edit if user
 /* display the page */
 interface_disp_page($page);
 db_disconnect($dbh);
+
+function make_editbox($plantext, $user) {
+    $plan = new PlanText($plantext, true);
+    $editbox = new EditBox($user->username, $plan, $user->edit_rows, $user->edit_cols);
+    $editbox->action = 'edit.php';
+    $editbox->method = 'post';
+    return $editbox;
+}
 ?>
 

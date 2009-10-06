@@ -102,31 +102,38 @@ if ($guest_pass = $_GET['guest-pass']) {
 		$guest_auth = false;
 	}
 }
-//error_log("JLW guest auth is $guest_auth");
-if (!$planinfo = get_items($mydbh, "username, pseudo, UNIX_TIMESTAMP(login), UNIX_TIMESTAMP(changed), plan, webview", "accounts", "userid", $searchnum)) //get all of persons plan info
-{
-	//if we failed, complain
+
+// Get the user and plan information
+$q = Doctrine_Query::create()
+	->from('Accounts a')
+	->leftJoin('a.Plan p')
+	->where('a.userid = ?', $searchnum);
+$user = $q->fetchOne();
+
+if (!$user) {
 	$page->append(new AlertText("Could not retrieve plan.", 'DB Error', true));
-} else if (!$idcookie && $planinfo[0][5] != 1 && !$guest_auth) {
+} else if (!$idcookie && $user->webview != 1 && !$guest_auth) {
 	$page->append(new AlertText("There is either no plan with that name or it is not viewable to guests.", 'Plan not found', false));
 } else {
-	// we're good to go, display the plan
-	$planinfo[0][1] = stripslashes($planinfo[0][1]);
-	$planinfo[0][4] = stripslashes($planinfo[0][4]);
+
+	// Get the plan text
+	$plantext = $user->Plan->plan;
+
+	// Jumble it if requested
 	if ($_GET['jumbled'] == 'yes' || ($_COOKIE['jumbled'] == 'yes' && $_GET['jumbled'] != 'no')) {
-		$plantext = jumble($planinfo[0][4]);
-	} else {
-		$plantext = $planinfo[0][4];
+		$plantext = jumble($plantext);
 	}
+
 	// If we're redirecting from edit.php, assure the user that their change was applied
 	if ($_GET['edit_submit'] == 1) {
 		$changed_msg = new InfoText('Plan changed successfully.');
 		$page->append($changed_msg);
 	}
+
 	$plantext = new PlanText($plantext, false);
-	$thisplan = new PlanContent($planinfo[0][0], $planinfo[0][1], $planinfo[0][2], $planinfo[0][3], $plantext);
+	$thisplan = new PlanContent($user->username, $user->pseudo, strtotime($user->login), strtotime($user->changed), $plantext);
 	$page->append($thisplan);
-	$page->title = '[' . $planinfo[0][0] . "]'s Plan";
+	$page->title = '[' . $user->username . "]'s Plan";
 if (User::logged_in()) //if is a valid user, give them the option of putting the plan on their autoread list, or taking it off, and also if plan is on their autoread list, mark as read and mark time
 {
 	if (!($searchnum == $idcookie)) //if person is not looking at their own plan, give them a small form to set the priority of the persons plan on their autoread list

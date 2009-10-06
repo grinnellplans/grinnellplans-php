@@ -5,16 +5,21 @@ class MovePlanText extends Doctrine_Migration_Base
     public function preUp()
     {
         $q = Doctrine_Query::create()
-            ->select('a.userid, a.plan, a.edit_text')
+            ->select('a.userid, a.plan, a.edit_text, a.username')
             ->from('Accounts a');
         $plans = $q->execute();
 
         foreach ($plans as $plan) {
             $p = new Plans();
             $p->user_id = $plan->userid;
-            $p->edit_text = stripslashes($plan->edit_text);
-            $p->plan = stripslashes($plan->plan);
-            $p->save();
+            try {
+                $p->edit_text = stripslashes($plan->edit_text);
+                $p->save();
+            } catch (Doctrine_Validator_Exception $e) {
+                echo "[$plan->username]'s Plan did not update because the generated HTML was too long\n";
+                $p->plan = stripslashes($plan->plan);
+                $p->save();
+            }
         }
     }
 

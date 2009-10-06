@@ -8,7 +8,7 @@ class User {
 							->from('Accounts a')
 							->where('username = ?', $username)
 							->fetchOne();
-			$user->login = timestamp();
+			$user->login = mysql_timestamp();
 			$user->save();
 			$_SESSION['glbs_u'] = $user->username;
 			$_SESSION['glbs_i'] = $user->userid;

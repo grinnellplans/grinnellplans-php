@@ -40,56 +40,57 @@ $item = new SubmitInput('Search');
 $searchform->append($item);
 
 if ($mysearch) //if no search query, give search form
-//otherwise perform the search
+    //otherwise perform the search
 {
-	if ($mysearch == "_") //if they just searched for an underscore
-	{
-		$err = AlertText('Invalid search term.');
-		$thispage->append($err);
-	} //tell them it's an invalid search
-	else
-	//otherwise, go on with the search
-	{
-		if ($planlove) {
-			if (!$thesearchnum = get_item($dbh, "userid", "accounts", "username", $mysearch)) {
-				$err = AlertText('Search could not be performed. There is no plan with that name.');
-				$thispage->append($err);
-				$donotsearch = 1;
-			} else {
-				$plansearchname = "[" . $mysearch . "]";
-				$mynamedsearch = "searchname\=" . $mysearch . "\"";
-				$mysearch = "searchnum=" . $thesearchnum . "\"";
-				$regexp = 0;
-			}
-		} //if planlove
-		if (!$donotsearch) {
-			if (!$idcookie) {
-				$guest = "AND webview=1";
-			} else {
-				$guest = "";
-			}
-			if (!$regexp) {
-				$mysearch = preg_replace("/\&/", "&amp;", $mysearch);
-				$mysearch = preg_replace("/\</", "&lt;", $mysearch);
-				$mysearch = preg_replace("/\>/", "&gt;", $mysearch);
-				$mysearch = preg_quote($mysearch);
-				if ($mynamedsearch) {
-					$likeclause = "(plan LIKE '%$mysearch%' OR plan LIKE '%$mynamedsearch%')";
-				} else {
-					$likeclause = "plan LIKE '%$mysearch%'";
-				}
-				$querytext = "SELECT username, plan, userid FROM accounts
-			where $likeclause $guest ORDER BY username";
-				$my_result = mysql_query($querytext);
-			} //if not regexp
-			else {
-				$querytext = "SELECT username, plan, userid FROM accounts
-			where plan RLIKE '$mysearch' $guest ORDER BY username";
-				$my_result = mysql_query($querytext);
-			}
-			$result_list = new WidgetList('search_results', true);
-			$thispage->append($result_list);
-			while ($new_row = mysql_fetch_row($my_result)) {
+    if ($mysearch == "_") //if they just searched for an underscore
+    {
+        $err = AlertText('Invalid search term.');
+        $thispage->append($err);
+    } //tell them it's an invalid search
+    else
+        //otherwise, go on with the search
+    {
+        // Make the beginnings of our query
+        $q = Doctrine_Query::create()
+            ->from('Accounts a')
+            ->leftJoin('a.Plan p');
+
+        if ($planlove) {
+            if (!$thesearchnum = get_item($dbh, "userid", "accounts", "username", $mysearch)) {
+                $err = new AlertText("Plan [$mysearch] does not exist. Please check your spelling.", 'Search failed');
+                $thispage->append($err);
+                $donotsearch = true;
+            } else {
+                $plansearchname = "[" . $mysearch . "]";
+                $donotsearch = false;
+            }
+        } //if planlove
+        if (!$donotsearch) {
+            if (!$regexp) {
+                $mysearch = preg_replace("/\&/", "&amp;", $mysearch);
+                $mysearch = preg_replace("/\</", "&lt;", $mysearch);
+                $mysearch = preg_replace("/\>/", "&gt;", $mysearch);
+                $mysearch = preg_quote($mysearch);
+                $q->where('p.edit_text LIKE ?', "%$mysearch%");
+            } //if not regexp
+            else {
+                $q->where('p.edit_text RLIKE ?', $mysearch);
+            }
+            if (!$idcookie) {
+                $q->addWhere('webview=1');
+            }
+            $q->orderBy('a.username');
+            // Run the query
+            $results = $q->execute();
+            $result_list = new WidgetList('search_results', true);
+            $thispage->append($result_list);
+            foreach ($results as $row) {
+                // Just stuff our results into an array for the legacy code
+                $new_row = array(
+                    0 => $row->username,
+                    1 => $row->Plan->plan,
+                    2 => $row->userid,
+                );
 				//$new_row[1] is the plan content
 				$new_row[1] = preg_replace("/<br>/", "|br|", $new_row[1]);
 				$new_row[1] = preg_replace("/<.*?>/s", "", $new_row[1]);
@@ -111,8 +112,13 @@ if ($mysearch) //if no search query, give search form
 				//$mysearch = preg_quote($mysearch,"/");
 				/*
 				*/
-				$matchcount = preg_match_all("/(" . preg_quote($mysearch, "/") . ")/si", $new_row[1], $matcharray);
-				$new_row[1] = preg_replace("/(" . preg_quote($mysearch, "/") . ")/si", "<b>\\1</b>", $new_row[1]);
+                if (!$regexp) {
+                    $matchcount = preg_match_all("/(" . preg_quote($mysearch, "/") . ")/si", $new_row[1], $matcharray);
+                    $new_row[1] = preg_replace("/(" . preg_quote($mysearch, "/") . ")/si", "<b>\\1</b>", $new_row[1]);
+                } else {
+                    $matchcount = preg_match_all("/(" . $mysearch . ")/si", $new_row[1], $matcharray);
+                    $new_row[1] = preg_replace("/(" . $mysearch . ")/si", "<b>\\1</b>", $new_row[1]);
+                }
 				/*
 				$matchcount = preg_match_all("/(" . $mysearch . ")/si", $new_row[1], $matcharray);
 				$new_row[1] = preg_replace("/(" . $mysearch . ")/si", "<b>\\1</b>", $new_row[1]);

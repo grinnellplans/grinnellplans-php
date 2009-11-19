@@ -164,6 +164,8 @@ ul {
 	margin-left: 17.5em;
 	/* Leave some space on top */
 	margin-top: 2em;
+	/* Fill the space that is available to us */
+	min-width: 40em;
 }
 
 /* Space above autoread */
@@ -259,30 +261,26 @@ ul {
 /* Make a box the hold our titles */
 #header ul {
 	width: 60%;
-	position: absolute;
-	top: 0;
+	position: relative;
 	left: 20%;
+	overflow: auto;
 }
 /* Send our names to the left and right sides of the box */
 #header .username {
-	position: absolute;
-	top: 0;
-	left: 0;
+	float: left;
+	/* Let .planname's empty padding push into this element */
+	margin-right: -10em;
 }
 #header .planname {
-	position: absolute;
-	top: 0;
-	right: 0;
+	float: right;
+	/* Leave enough space so as not to run into the plan name */
+	padding-left: 10em;
 }
 /* Don't show login/update times */
 #header .lastupdated, #header .lastlogin {
 	display: none;
 }
 
-/* Some space on top of the plan */
-.plan_text {
-	padding-top: 1.4em;
-}
 /* Some space between paragraphs in the plan */
 p.sub {
 	line-height: 1.5em;

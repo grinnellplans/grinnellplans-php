@@ -47,11 +47,14 @@ CREATE TABLE `accounts` (
   `is_admin` tinyint(1) default NULL,
   PRIMARY KEY  (`userid`),
   UNIQUE KEY `username` (`username`),
+  UNIQUE KEY `usernameid_uniq` (`username`,`userid`),
+  UNIQUE KEY `index0` (`username`,`userid`,`plan`(800)),
   KEY `changed` (`changed`),
+  KEY `username_changed` (`username`,`changed`),
   FULLTEXT KEY `password` (`password`),
-  FULLTEXT KEY `password_2` (`password`),
-  FULLTEXT KEY `username_2` (`username`)
-) ENGINE=MyISAM AUTO_INCREMENT=10282 DEFAULT CHARSET=latin1;
+  FULLTEXT KEY `username_2` (`username`),
+  FULLTEXT KEY `plan_search` (`plan`)
+) ENGINE=MyISAM AUTO_INCREMENT=10452 DEFAULT CHARSET=latin1;
 SET character_set_client = @saved_cs_client;
 
 --
@@ -105,7 +108,7 @@ CREATE TABLE `boardvotes` (
   `vote` smallint(2) default NULL,
   `vote_date` timestamp NOT NULL default CURRENT_TIMESTAMP,
   PRIMARY KEY  (`voteid`)
-) ENGINE=MyISAM AUTO_INCREMENT=15400 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=15591 DEFAULT CHARSET=latin1;
 SET character_set_client = @saved_cs_client;
 
 --
@@ -121,7 +124,7 @@ CREATE TABLE `diffs` (
   `date` datetime default NULL,
   `diff_id` int(11) NOT NULL auto_increment,
   PRIMARY KEY  (`diff_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=1887103 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=1985476 DEFAULT CHARSET=latin1;
 SET character_set_client = @saved_cs_client;
 
 --
@@ -196,7 +199,9 @@ SET @saved_cs_client     = @@character_set_client;
 SET character_set_client = utf8;
 CREATE TABLE `js_status` (
   `userid` int(11) default NULL,
-  `status` char(3) default NULL
+  `status` char(3) default NULL,
+  KEY `index0` (`userid`,`status`),
+  KEY `userid_idx` (`userid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 SET character_set_client = @saved_cs_client;
 
@@ -214,7 +219,8 @@ CREATE TABLE `location` (
   `city` varchar(64) default NULL,
   `latitude` varchar(64) default NULL,
   `longitude` varchar(64) default NULL,
-  PRIMARY KEY  (`user_id`)
+  PRIMARY KEY  (`user_id`),
+  UNIQUE KEY `all` (`user_id`,`country`,`region`,`city`,`latitude`,`longitude`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 SET character_set_client = @saved_cs_client;
 
@@ -231,8 +237,9 @@ CREATE TABLE `mainboard` (
   `created` datetime default NULL,
   `lastupdated` datetime default NULL,
   `userid` smallint(5) unsigned NOT NULL default '0',
-  PRIMARY KEY  (`threadid`)
-) ENGINE=MyISAM AUTO_INCREMENT=3192 DEFAULT CHARSET=latin1;
+  PRIMARY KEY  (`threadid`),
+  KEY `lastupdated` (`lastupdated`)
+) ENGINE=MyISAM AUTO_INCREMENT=3300 DEFAULT CHARSET=latin1;
 SET character_set_client = @saved_cs_client;
 
 --
@@ -260,7 +267,7 @@ CREATE TABLE `perms` (
   `userid` smallint(5) unsigned NOT NULL auto_increment,
   `status` varchar(32) default NULL,
   PRIMARY KEY  (`userid`)
-) ENGINE=MyISAM AUTO_INCREMENT=10282 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=10452 DEFAULT CHARSET=latin1;
 SET character_set_client = @saved_cs_client;
 
 --
@@ -321,7 +328,7 @@ CREATE TABLE `poll_votes` (
   `userid` int(11) default NULL,
   `created` datetime default NULL,
   PRIMARY KEY  (`poll_vote_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=34182 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=34774 DEFAULT CHARSET=latin1;
 SET character_set_client = @saved_cs_client;
 
 --
@@ -337,8 +344,9 @@ CREATE TABLE `secrets` (
   `date` datetime default NULL,
   `display` varchar(5) default NULL,
   `date_approved` datetime default NULL,
-  PRIMARY KEY  (`secret_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=23212 DEFAULT CHARSET=latin1;
+  PRIMARY KEY  (`secret_id`),
+  KEY `display_date` (`display`,`date_approved`)
+) ENGINE=MyISAM AUTO_INCREMENT=25530 DEFAULT CHARSET=latin1;
 SET character_set_client = @saved_cs_client;
 
 --
@@ -387,7 +395,7 @@ CREATE TABLE `subboard` (
   PRIMARY KEY  (`messageid`),
   KEY `threadid` (`threadid`),
   KEY `userid` (`userid`)
-) ENGINE=MyISAM AUTO_INCREMENT=51612 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=52821 DEFAULT CHARSET=latin1;
 SET character_set_client = @saved_cs_client;
 
 --
@@ -416,7 +424,7 @@ CREATE TABLE `tentative_accounts` (
   `token` varchar(16) default NULL,
   `session` varchar(200) default NULL,
   PRIMARY KEY  (`tentative_accounts_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=1625 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=1842 DEFAULT CHARSET=latin1;
 SET character_set_client = @saved_cs_client;
 
 --
@@ -442,4 +450,4 @@ SET character_set_client = @saved_cs_client;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2009-07-30  3:52:23
+-- Dump completed on 2009-12-04  2:26:18

@@ -16,8 +16,8 @@ if (isset($_GET['logout'])) {
 		} else {
 			$user->JsStatus->status = $_POST['js_test_value'];
 			
-			$geoip = Net_GeoIP::getInstance(GEO_DATABASE);
 			try {
+				$geoip = Net_GeoIP::getInstance(GEO_DATABASE);
 				$location = $geoip->lookupLocation($_SERVER['REMOTE_ADDR']);
 				$user->Location->country = $location->countryCode;
 				$user->Location->region = $location->region;

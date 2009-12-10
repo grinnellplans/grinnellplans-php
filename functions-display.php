@@ -203,8 +203,7 @@ function get_opt_links($idcookie)
 	$newarr = array();
 	while ($new_row = mysql_fetch_row($linkarray)) {
 		if ($new_row[2] == 'yes') {
-			$foo = array();
-			preg_match("/href=\"([^\"]+)\"/", $new_row[1], &$foo);
+			preg_match("/href=\"([^\"]+)\"/", $new_row[1], $foo);
 			$href = $foo[1]; // TODO this is silly, let's just store href in the db
 			$thislink = new Hyperlink('opt_link', false, $href, $new_row[0]);
 		} else if ($new_row[0] == 'Secrets') {
@@ -222,8 +221,7 @@ function get_opt_links($idcookie)
 			$thislink = new Hyperlink('mainlink_jumble', true, $url, $linktext);
 		} else {
 			// the forum link needs this, really we just need a better system
-			$foo = array();
-			preg_match("/href=\"([^\"]+)\"/", $new_row[1], &$foo);
+			preg_match("/href=\"([^\"]+)\"/", $new_row[1], $foo);
 			$href = $foo[1];
 			$thislink = new Hyperlink('opt_link', false, $href, $new_row[0]);
 		}

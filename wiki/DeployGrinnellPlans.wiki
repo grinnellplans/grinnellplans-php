@@ -85,6 +85,12 @@ if (!ini_get('register_globals')) {
 }
 }}}
    You should *be careful*: do not commit this code to the repository.
+ # You'll need to enable short open tags.
+   You can do this either in your php.ini file, or with:
+{{{
+ini_set('short_open_tag', true);
+}}}
+   You should *be careful*: do not commit this code to the repository.
 
 Set up your webserver of choice to accept incoming http requests, and make sure it's pointing to the folder where you have all the Plans code (you'll want it to be able to find index.php).
 

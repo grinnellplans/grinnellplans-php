@@ -46,15 +46,13 @@ define('SESSION_ENCRYPTION_KEY', 'SECRETENCRYPTIONKEY!!!!');
 
 Your default settings for PHP will probably work fine, with three small exceptions:
 
-1. The current code includes diff-based plan archiving, which is not revealed through the front-end. This feature requires the xdiff library for PHP. To disable this behavior and avoid errors when working without the xdiff library, place the following code snippet in Configuration.php:
+ # The current code includes diff-based plan archiving, which is not revealed through the front-end. This feature requires the xdiff library for PHP. To disable this behavior and avoid errors when working without the xdiff library, place the following code snippet in Configuration.php:
 {{{
 // Stub for xdiff
 function xdiff_string_diff($a, $b) { return $b; }
 }}}
-
-You should *be careful*: do not commit this code to the repository.
-
-2. The current code requires mcrypt, a PHP extension to encrypt session-data per user. You can work around this dependency by appending the following code snippet to Configuration.php. 
+  You should *be careful*: do not commit this code to the repository.
+ # The current code requires mcrypt, a PHP extension to encrypt session-data per user. You can work around this dependency by appending the following code snippet to Configuration.php. 
 {{{
 // Stubs for mcrypt
 define('MCRYPT_RAND', 0);
@@ -70,11 +68,9 @@ function mcrypt_enc_get_iv_size($a) { return 0; }
 function mcrypt_generic($a, $b) { return $b; }
 function mdecrypt_generic($a, $b) { return $b; }
 }}}
-
-You should *be careful*: do not commit this code to the repository.
-
-3. You'll need to enable "register globals".
-If this option is not available, you can use the following code snippet to emulate its behavior. To use it, place the code at the top of Plans.php.
+   You should *be careful*: do not commit this code to the repository.
+ # You'll need to enable "register globals".
+   If this option is not available, you can use the following code snippet to emulate its behavior. To use it, place the code at the top of Plans.php.
 {{{
 // Emulate register_globals on
 if (!ini_get('register_globals')) {
@@ -88,8 +84,7 @@ if (!ini_get('register_globals')) {
     }
 }
 }}}
-
-You should *be careful*: do not commit this code to the repository.
+   You should *be careful*: do not commit this code to the repository.
 
 Set up your webserver of choice to accept incoming http requests, and make sure it's pointing to the folder where you have all the Plans code (you'll want it to be able to find index.php).
 

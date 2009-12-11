@@ -119,6 +119,11 @@ Now, let's import this into MYSQL:
 {{{
 mysql -u plans -p plansdb < grinnellplans_sample_db.sql
 }}}
+And finally we need to make sure the DB is up to date with the latest and greatest configuration:
+{{{
+cd your_plans_dir; php db/migrate.php
+}}}
+If it throws an exception that says "Already at version # X", don't worry about it. If it throws a different exception, worry.
 
 ==GeoIP==
 The Geo IP library is included with plans, but the location database is not.  In the geo/ folder there is a file called INSTALL which lists where to download the database.  Once downloaded, it needs to be uncompressed and renamed so plans can find and use it.

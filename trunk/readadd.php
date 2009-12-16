@@ -73,7 +73,7 @@ if (!$searchnum) //if no search number given
 	
 } //$if (!$searchnum)
 
-if (!$planinfo = get_items($mydbh, "username,pseudo,login,changed,plan,webview", "accounts", "userid", $searchnum)) //get all of persons plan info
+if (!$planinfo = get_items($mydbh, "username,pseudo,login,changed,webview", "accounts", "userid", $searchnum)) //get all of persons plan info
 {
 	//if we failed, complain
 	$page->append(new AlertText("Could not retrieve plan.", 'DB Error', true));

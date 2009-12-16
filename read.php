@@ -85,7 +85,7 @@ if (User::logged_in()) {
 	        mysql_query("DELETE FROM autofinger WHERE owner = '$idcookie' and interest = '$searchnum'");
 	        $yay = new InfoText("User " . $planinfo[0][0] . " removed from your autoread list.");
 	    } else {
-	        mysql_query("INSERT INTO autofinger VALUES ('$idcookie', '$searchnum', '$privlevel') ON DUPLICATE KEY UPDATE privlevel=$privlevel");
+	        mysql_query("INSERT INTO autofinger (owner, interest, priority) VALUES ('$idcookie', '$searchnum', '$privlevel') ON DUPLICATE KEY UPDATE priority=$privlevel");
 	        $yay = new InfoText("User " . $planinfo[0][0] . " is now on your autoread list with priority level of " . $privlevel . ".");
 	    }
 		$page->append($yay);

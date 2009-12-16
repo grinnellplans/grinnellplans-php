@@ -88,7 +88,7 @@ $(document).ready(function() {
 	  </tr>
 	  <tr class="boxes">
 		<td colspan=2 align=center class="boxes">
-			<form name="post" action="<?=$_SERVER['PHP_SELF']?>" method="POST">
+			<form name="post" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST">
 			<div class="boxes">
 				Username: <input type="text" id="username" name="username"><br>
 				Password: <input type="password" id="password" name="password"><br>
@@ -105,7 +105,7 @@ document.post.js_test_value.value = "on";
 -->
 </script>  
 			</form></td>
-		<form action="<?=$_SERVER['PHP_SELF']?>" method="POST"> <!--gimmick to make the buttons display at the same height-->
+		<form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST"> <!--gimmick to make the buttons display at the same height-->
 		<td align=left width="50%">
 			<input type="hidden" value="1" name="guest">
 			<input type="submit" name="submit" value="Guest">
@@ -117,7 +117,7 @@ document.post.js_test_value.value = "on";
 	if (isset($msg)) {
 ?>
 		<font face=verdana>
-		<p><?=$msg?>
+		<p><?php echo $msg; ?>
 		</p>
 		<?php
 	}

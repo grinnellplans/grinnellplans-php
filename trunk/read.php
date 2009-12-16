@@ -76,8 +76,23 @@ if (!$searchnum) //if no search number given
 if (User::logged_in()) {
 	//TODO add searchname instead?
 	$page->url = add_param($page->url, 'searchnum', $searchnum);
-	$my_result = mysql_query("Select priority From autofinger where
-			owner = '$idcookie' and interest = '$searchnum'");
+	
+	$addtolist = (isset($_POST['addtolist']) ? $_POST['addtolist'] : false);
+	// if person is manipulating which tier this plan is on their autoread list
+	if ($addtolist == 1) {
+        $privlevel = (isset($_POST['privlevel']) ? $_POST['privlevel'] : 0);
+	    if ($privlevel == 0) {
+	        mysql_query("DELETE FROM autofinger WHERE owner = '$idcookie' and interest = '$searchnum'");
+	        $yay = new InfoText("User " . $planinfo[0][0] . " removed from your autoread list.");
+	    } else {
+	        mysql_query("INSERT INTO autofinger VALUES ('$idcookie', '$searchnum', '$privlevel') ON DUPLICATE KEY UPDATE privlevel=$privlevel");
+	        $yay = new InfoText("User " . $planinfo[0][0] . " is now on your autoread list with priority level of " . $privlevel . ".");
+	    }
+		$page->append($yay);
+	}
+	
+	// Update autofinger as read.
+	$my_result = mysql_query("Select priority From autofinger where owner = '$idcookie' and interest = '$searchnum'");
 	$onlist = mysql_fetch_array($my_result);
 	if ($onlist) {
 		update_read($dbh, $idcookie, $searchnum); //mark as having been read
@@ -140,11 +155,9 @@ if (User::logged_in()) //if is a valid user, give them the option of putting the
 	{
 		$addform = new Form('autoreadadd', 'Set Priority');
 		$thisplan->addform = $addform;
-		$addform->action = 'readadd.php';
+		$addform->action = "read.php?searchnum=$searchnum";
 		$addform->method = 'POST';
 		$item = new HiddenInput('addtolist', 1);
-		$addform->append($item);
-		$item = new HiddenInput('searchnum', $searchnum);
 		$addform->append($item);
 		$levels = new FormItemSet('readadd_levels', true);
 		$addform->append($levels);

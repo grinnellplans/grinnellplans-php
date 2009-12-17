@@ -33,7 +33,7 @@ if (!User::logged_in()) {
 			if (strlen($mypassword) > 3) {
 				$crpassword = User::hashPassword($mypassword);
 				set_item($dbh, "accounts", "password", $crpassword, "userid", $idcookie); //set the password
-				$success = new InfoText("Password changed to <b>$mypassword</b>.", 'Success');
+				$success = new InfoText("Your password has been changed!", 'Success');
 				$thispage->append($success);
 
 			} else {

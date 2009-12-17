@@ -2,6 +2,9 @@
 require_once("Plans.php");
 
 class ProjectInformation {
+        public static function recentBugsUrl() {
+		return "http://code.google.com/p/grinnellplans/issues/list?sort=-id";
+	}
 
 	public static function projectUrl() {
 		return "http://code.google.com/p/grinnellplans/";

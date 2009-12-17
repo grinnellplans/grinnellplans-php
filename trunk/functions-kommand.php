@@ -11,7 +11,7 @@ function insert_user($added_name, $password, $gradyear, $email, $type, $status =
 	}
 	$crpassword = User::hashPassword($password);
 	$dbh = db_connect();
-	$myrow = array("", $added_name, "", $crpassword, $email, "", "", "", "", "", "", "", $gradyear, "70", "14", "", "", "", $type, "", "", 0);
+	$myrow = array("", $added_name, "", $crpassword, $email, "", "", "", "", "", "", $gradyear, "70", "14", "", "", $type, "", "", 0);
 	add_row($dbh, "accounts", $myrow);
 	mysql_query("UPDATE accounts SET created = NOW() WHERE
 			username = '$added_name'");

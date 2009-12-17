@@ -62,6 +62,7 @@ if ($mysearch) //if no search query, give search form
                 $donotsearch = true;
             } else {
                 $plansearchname = "[" . $mysearch . "]";
+                $mysearch = $plansearchname;
                 $donotsearch = false;
             }
         } //if planlove

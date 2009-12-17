@@ -12,7 +12,7 @@ if (isset($_GET['logout'])) {
 	} else {
 		$user = User::login($_POST['username'], $_POST['password']);
 		if (!$user) {
-			$msg = "Invalid username or password.";
+			$msg = "Invalid username or password. <a href=\"passwordreset.php\">Forgot your password?</a>";
 		} else {
 			$user->JsStatus->status = $_POST['js_test_value'];
 			

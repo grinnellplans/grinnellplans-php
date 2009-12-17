@@ -67,12 +67,6 @@ function cleanText($plan)
 				if (preg_match('/^\d+$/', $mycheck) && $item = get_item($dbh, "messageid", "subboard", "messageid", $mycheck)) {
 					$plan = preg_replace("/\[" . preg_quote($mycheck, "/") . "\]/s", "[<a href=\"board_messages.php?messagenum=$item#$item\" class=\"boardlink\">$mycheck</a>]", $plan);
 				}
-				if ($mycheck == "dnew") {
-					$plan = preg_replace("/\[dnew\]/s", "<b>" . date("F j, Y, l H:i") . "</b>", $plan);
-				}
-				if ($mycheck == "date") {
-					$plan = preg_replace("/\[date\]/s", "<b>" . date("l F j, Y. g:i A") . "</b>", $plan);
-				}
 				if (strrpos($mycheck, ":")) {
 					if (strrpos($mycheck, "|")) {
  						preg_match("/(.+?)\|(.+)/si",$mycheck,$love_replace);

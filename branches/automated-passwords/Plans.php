@@ -1,9 +1,7 @@
 <?php
-// Set some settings only for when we're called through /beta/.
-if ((strstr($_SERVER['REQUEST_URI'], '/dev/') != FALSE) ||
-	($_SERVER['SERVER_NAME'] == 'dev.grinnellplans.com') ||
- 	(strstr($_SERVER['SERVER_NAME'], 'localhost') != FALSE) ||
-	(strstr($_SERVER['REQUEST_URI'], '/trunk/') != FALSE)) {
+require_once('bootstrap.php');
+
+if (ENVIRONMENT == 'dev') {
 	// Error reporting for development
 	ini_set('error_reporting', E_ALL);
 	ini_set('display_errors', TRUE);
@@ -27,48 +25,30 @@ if ((strstr($_SERVER['REQUEST_URI'], '/dev/') != FALSE) ||
 	$GLOBALS['ENVIRONMENT'] = 'production';
 }
 
-// Boilerplate code for _all_ Plans scripts
-define('__ROOT__', dirname(__FILE__));
-require_once('Configuration.php');
-ini_set('include_path', '.:' . __ROOT__ . ':' . __ROOT__ . '/inc');
-putenv('TZ=' . TZ);
+// Turn off magic quotes if they're on
+if (get_magic_quotes_gpc()) {
+	function stripslashes_deep($value)
+	{
+		$value = is_array($value) ?
+			array_map('stripslashes_deep', $value) :
+			stripslashes($value);
 
-// Plans Revision
-if (file_exists(__ROOT__ . '/.svn/entries')) {
-    $svn = file(__ROOT__ . '/.svn/entries');
-    if (is_numeric(trim($svn[3]))) {
-        $version = $svn[3];
-    } else { // pre 1.4 svn used xml for this file
-        $version = explode('"', $svn[4]);
-        $version = $version[1];    
-    }
-    define ('PLANS_REVISION', trim($version));
-    unset ($svn);
-    unset ($version);
-} else {
-    define ('PLANS_REVISION', 0); // default if no svn data avilable
+		return $value;
+	}
+
+	$_POST = array_map('stripslashes_deep', $_POST);
+	$_GET = array_map('stripslashes_deep', $_GET);
+	$_COOKIE = array_map('stripslashes_deep', $_COOKIE);
+	$_REQUEST = array_map('stripslashes_deep', $_REQUEST);
 }
-
-// Doctrine setup
-require_once('lib/doctrine/lib/Doctrine.php');
-spl_autoload_register(array('Doctrine', 'autoload'));
-Doctrine_Manager::getInstance()->setAttribute('model_loading', 'conservative');
-Doctrine::loadModels(__ROOT__ . '/db'); // This call will not require the found .php files
-Doctrine_Manager::connection(DB_URI);
 
 // Simple functions
 require_once('functions.php');
 
-// Autoloader for classes
-function plans_autoload($classname) {
-	$filename = str_replace('_', '/', $classname);
-	require_once("$filename.php");
-}
-spl_autoload_register('plans_autoload');
+require_once('functions-main.php');
 
 new ResourceCounter();
 new SessionBroker();
-new ClickstreamEvent();
 header('Content-Type: text/html; charset=UTF-8');
 
 // If we're on a testing environment, warn them

@@ -110,7 +110,7 @@ function show_username_taken($username)
 function show_form()
 {
 	$form = new Form('signup', true);
-	$form->action = 'GET';
+	$form->method = 'GET';
 
 	$message = new InfoText('If you have an @grinnell.edu email address for yourself or a student group, you may use this page to register a Plan for that username.<br />
 	<b>If you are an alum</b>, please <a href="mailto:grinnellplans@gmail.com">Send us</a> your alumni.grinnell.edu email address and we will contact you through it with a username and password.  Please include your year of graduation, if any.<br />

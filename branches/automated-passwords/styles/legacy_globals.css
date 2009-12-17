@@ -20,3 +20,7 @@
 #edit_fill_meter.danger .full_amount {
 	background: url("../images/old/danger.gif");
 }
+
+#poweredby .logo {
+	vertical-align: middle;
+}

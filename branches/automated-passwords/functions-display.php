@@ -101,6 +101,7 @@ function populate_page(PlansPage $page, $dbh, $idcookie)
 	}
 	$footer = new Footer();
 	$footer->doyouread = get_just_updated();
+	$footer->powered_by = get_powered_by();
 	$footer->legal = new RegularText(get_disclaimer());
 	$page->footer = $footer;
 }
@@ -128,6 +129,7 @@ function populate_guest_page(PlansPage $page)
 	$mp->autoreads = NULL;
 	$footer = new Footer();
 	$footer->doyouread = NULL;
+	$footer->powered_by = get_powered_by();
 	$footer->legal = new RegularText(get_disclaimer(), NULL);
 	$page->footer = $footer;
 }
@@ -201,8 +203,7 @@ function get_opt_links($idcookie)
 	$newarr = array();
 	while ($new_row = mysql_fetch_row($linkarray)) {
 		if ($new_row[2] == 'yes') {
-			$foo = array();
-			preg_match("/href=\"([^\"]+)\"/", $new_row[1], &$foo);
+			preg_match("/href=\"([^\"]+)\"/", $new_row[1], $foo);
 			$href = $foo[1]; // TODO this is silly, let's just store href in the db
 			$thislink = new Hyperlink('opt_link', false, $href, $new_row[0]);
 		} else if ($new_row[0] == 'Secrets') {
@@ -220,8 +221,7 @@ function get_opt_links($idcookie)
 			$thislink = new Hyperlink('mainlink_jumble', true, $url, $linktext);
 		} else {
 			// the forum link needs this, really we just need a better system
-			$foo = array();
-			preg_match("/href=\"([^\"]+)\"/", $new_row[1], &$foo);
+			preg_match("/href=\"([^\"]+)\"/", $new_row[1], $foo);
 			$href = $foo[1];
 			$thislink = new Hyperlink('opt_link', false, $href, $new_row[0]);
 		}
@@ -273,6 +273,16 @@ function get_just_updated()
     $temp = new PlanLink($new_plans[1]);
     // But we want a generic Hyperlink, so it can be styled separately.
     return new Hyperlink('justupdatedlink', true, $temp->href, $new_plans[1]);
+}
+
+function get_powered_by()
+{
+	$text = 'Powered by <a href="' .  ProjectInformation::projectUrl()
+		. '">GrinnellPlans</a> ' . ProjectInformation::version()
+		. ', an opensource project. File a <a href="' . ProjectInformation::bugReportUrl() . '">bug report</a>.';
+	$msg = new RegularText($text);
+	$msg->identifier = 'poweredby';
+	return $msg;
 }
 
 function wants_secrets($idcookie)

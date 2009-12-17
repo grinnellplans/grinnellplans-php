@@ -16,8 +16,8 @@ if (isset($_GET['logout'])) {
 		} else {
 			$user->JsStatus->status = $_POST['js_test_value'];
 			
-			$geoip = Net_GeoIP::getInstance(GEO_DATABASE);
 			try {
+				$geoip = Net_GeoIP::getInstance(GEO_DATABASE);
 				$location = $geoip->lookupLocation($_SERVER['REMOTE_ADDR']);
 				$user->Location->country = $location->countryCode;
 				$user->Location->region = $location->region;
@@ -65,21 +65,33 @@ if (isset($_GET['logout'])) {
 			}
 	-->
 	</STYLE>
+<script src="http://www.google.com/jsapi"></script>
+<script type="text/javascript" charset="utf-8">
+google.load("jquery", "1.3.2");
+google.load("jqueryui", "1.7.2");
+</script>
+<script src="js/chroma-hash.js" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript" charset="utf-8">
+$(document).ready(function() {
+	$("#username").focus();
+	$("input:password").chromaHash({bars: 3, salt: "5bf999ac93430ed303cd0b56f976e289", minimum: 4});
+});
+</script>
 </head>
-<body bgcolor="#ffffff" onLoad="self.focus();document.post.username.focus()">       
+<body bgcolor="#ffffff">       
 	<div class="left"><br><br>
 	  <table cellpadding=0 width="100%">
 	  <tr>
 		<td colspan=2 align=center>
-			<img src="images/logo.jpg">
+			<img src="images/logo.png">
 		</td>
 	  </tr>
 	  <tr class="boxes">
 		<td colspan=2 align=center class="boxes">
-			<form name="post" action="<?=$_SERVER['PHP_SELF']?>" method="POST">
+			<form name="post" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST">
 			<div class="boxes">
-				Username: <input type="text" name="username"><br>
-				Password: <input type="password" name="password"><br>
+				Username: <input type="text" id="username" name="username"><br>
+				Password: <input type="password" id="password" name="password"><br>
 			</div>
 		</td>
 	  </tr>
@@ -93,7 +105,7 @@ document.post.js_test_value.value = "on";
 -->
 </script>  
 			</form></td>
-		<form action="<?=$_SERVER['PHP_SELF']?>" method="POST"> <!--gimmick to make the buttons display at the same height-->
+		<form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST"> <!--gimmick to make the buttons display at the same height-->
 		<td align=left width="50%">
 			<input type="hidden" value="1" name="guest">
 			<input type="submit" name="submit" value="Guest">
@@ -105,7 +117,7 @@ document.post.js_test_value.value = "on";
 	if (isset($msg)) {
 ?>
 		<font face=verdana>
-		<p><?=$msg?>
+		<p><?php echo $msg; ?>
 		</p>
 		<?php
 	}

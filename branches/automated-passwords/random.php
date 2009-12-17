@@ -6,11 +6,13 @@ require('functions-main.php');
 $dbh = db_connect(); //get the database connection
 $idcookie = User::id();
 
-$result = mysql_query("select username from accounts order by rand() limit 1");
-$result_row = mysql_fetch_array($result);
-$random_user = $result_row[0];
-header("Location: read.php?searchname=" . $random_user); //Send the user to that plan
+$q = Doctrine_Query::create()
+    ->from('Accounts a')
+    ->leftJoin('a.Plan p')
+    ->where('LENGTH(p.edit_text) != 0')
+    ->orderby('RAND()')
+    ->limit(1);
+$user = $q->fetchOne();
+header("Location: read.php?searchname=" . $user->username); //Send the user to that plan
 db_disconnect($dbh);
 ?>
-
-

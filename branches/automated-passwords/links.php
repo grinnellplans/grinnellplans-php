@@ -54,7 +54,7 @@ if (!User::logged_in()) {
 			
 		}
 		$o = 0;
-		$linksform = new Form('guestviewableform', true);
+		$linksform = new Form('optionallinks', true);
 		$thispage->append($linksform);
 		while ($all_links[$o][0]) {
 			//display each link

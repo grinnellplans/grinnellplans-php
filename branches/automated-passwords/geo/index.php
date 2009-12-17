@@ -17,7 +17,7 @@
   <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
     <title>Grinnellians of the World</title>
-    <script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=<?=$key?>" type="text/javascript"></script>
+    <script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=<?php echo $key; ?>" type="text/javascript"></script>
         <style>
                 .n { width: 400px; }
                 body { text-align: center; }
@@ -41,10 +41,10 @@
                 }
                 $text .= "</p>";
 ?>
-        var marker<?=$i?> = new GMarker(new GLatLng(<?=$m['latitude']?>, <?=$m['longitude']?>));
-        map.addOverlay(marker<?=$i?>);
-        GEvent.addListener(marker<?=$i?>, "click", function() {
-                marker<?=$i?>.openInfoWindowHtml("<?=$text?>");
+        var marker<?php echo $i; ?> = new GMarker(new GLatLng(<?php echo $m['latitude']; ?>, <?php echo $m['longitude']; ?>));
+        map.addOverlay(marker<?php echo $i; ?>);
+        GEvent.addListener(marker<?php echo $i; ?>, "click", function() {
+                marker<?php echo $i; ?>.openInfoWindowHtml("<?php echo $text; ?>");
         });
 <?php
                 $i++;
@@ -57,7 +57,7 @@
 </head>
 <body onload="load()" onunload="GUnload()">
         <div id="map" style="width: 1000px; height: 600px"></div>
-        <p><?=$total?> Grinnellians have been geolocated.</p>
+        <p><?pho echo $total; ?> Grinnellians have been geolocated.</p>
         <p>Everytime somebody logs in on Plans, the software geolocates their IP address, id est it traces their IP address to a city, region (state, province, et cetera), and country. The
 map shows the last known location of everybody who has logged in since Monday, September 29, 2008 (midnight CST). Locations are generally accurate within the given region, depending on the
 Intrnet Service Provider. If you are being routed through a proxy, a Tor circuit, or a VPN, the location of the endpoint will be recorded.</p>

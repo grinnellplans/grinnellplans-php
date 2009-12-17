@@ -6,13 +6,12 @@ require_once('Plans.php');
 */
 function db_connect()
 {
-	$dbh = mysql_connect(MYSQL_HOST, MYSQL_USER, MYSQL_PASS);
-	mysql_select_db(MYSQL_DB);
-	echo mysql_error();
-	if (!$dbh) {
-		print "Obviously, the above messages suggest that the database connection failed. It's not a bad idea to report this error to grinnellplans@gmail.com";
+	$dbh = @mysql_connect(MYSQL_HOST, MYSQL_USER, MYSQL_PASS);
+	if (!$dbh || !mysql_select_db(MYSQL_DB)) {
+		print "Something's wrong with the database. You could report the error to grinnellplans@gmail.com. <br/><pre>" . mysql_error() . "</pre>";
 		exit;
-	} else return $dbh;
+	}
+	return $dbh;
 }
 /*
 *Given the database handler, closes the connection to the database.
@@ -33,7 +32,7 @@ function add_row($dbh, $table, $row)
 	$joined_row = join(',', $row);
 	if (!mysql_query("INSERT INTO $table VALUES($joined_row)")) {
 		echo "Error adding entry to $table";
-		//echo $joined_row . "<br />";
+		echo $joined_row . "<br />";
 		mysql_close($dbh);
 		exit();
 	}

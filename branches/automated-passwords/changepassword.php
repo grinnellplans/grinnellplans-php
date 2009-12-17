@@ -31,7 +31,7 @@ if (!User::logged_in()) {
 	if ($changed == 'pass') {
 		if (!(strstr($mypassword, "\"") or strstr($mypassword, "\'"))) {
 			if (strlen($mypassword) > 3) {
-				$crpassword = crypt($mypassword, "ab"); //encrypt the password,
+				$crpassword = User::hashPassword($mypassword);
 				set_item($dbh, "accounts", "password", $crpassword, "userid", $idcookie); //set the password
 				$success = new InfoText("Password changed to <b>$mypassword</b>.", 'Success');
 				$thispage->append($success);

@@ -8,5 +8,5 @@
 <span id="<?php echo $this->post_id; ?>i"><?php echo $this->votes; ?></span>
  Votes)</td>
 <td><?php echo date(DATE_FORMAT, $this->date) ?></td><?php?>
-<td><center><?php echo $this->post_author_template->display(); ?></center></td><?php?>
+<td><center>[<?php echo $this->post_author_template->display(); ?>]</center></td><?php?>
 </tr></table></td></tr><tr><td><?php echo $this->text; ?></td></tr></table>

@@ -167,32 +167,32 @@ function doReadTask() {
         update_read($dbh, $idcookie, $searchnum);//mark as having been read
   		  setReadTime($dbh, $idcookie,$searchnum); //and mark time that was read
   		}
+        $response_info= array();
+
+        $q = Doctrine_Query::create()
+            ->from('Accounts a')
+            ->leftJoin('a.Plan p')
+            ->where('a.userid = ?', $searchnum);
+        $user = $q->fetchOne();
 		
-  		$response_info= array();
-  		$planinfo = get_items($mydbh,"username,pseudo,DATE_FORMAT(login, 
-            '%c/%e/%y, %l:%i %p'),DATE_FORMAT(changed, 
-            '%c/%e/%y, %l:%i %p'),plan,webview","accounts","userid", $searchnum);
-            
-      $planinfo[0][1] = stripslashes($planinfo[0][1]);
-      $response_info['username'] = $planinfo[0][0];
+      $response_info['username'] = $user->username;
       
-      //these bits are akward, and depend on the date format above
-      if ($planinfo[0][2] == null || stristr($planinfo[0][2], "0/0/00,")) {
+      if ($user->login == '0000-00-00 00:00:00') {
         $response_info['last_login'] = "";
       }
       else {
-        $response_info['last_login'] = $planinfo[0][2];
+        $response_info['last_login'] = date('n/j/y, g:i A', strtotime($user->login));
 
       }
       
-      if ($planinfo[0][3] == null || stristr($planinfo[0][3], "0/0/00,")) {
+      if ($user->changed == '0000-00-00 00:00:00') {
         $response_info['last_updated'] = "";
       }
       else {
-        $response_info['last_updated'] = $planinfo[0][3];
+        $response_info['last_login'] = date('n/j/y, g:i A', strtotime($user->changed));
       }
 
-      $response_info['pseudo'] = $planinfo[0][1] == null ? "" : $planinfo[0][1];
+      $response_info['pseudo'] = $user->pseudo == null ? "" : $user->pseudo;
 		
   		if ($read_link) {
   		  //NOTE:  If the planlove link ever changes, you may want to look at this pattern....
@@ -200,36 +200,34 @@ function doReadTask() {
   		  
   		  //We expect the read_link to have {username} in it somewhere, which we'll swap in for the username
   		  $replace = str_replace('{username}', '\1', $read_link);
-  		  $planinfo[0][4] = preg_replace($search, $replace, $planinfo[0][4]);
+  		  $user->Plan->plan = preg_replace($search, $replace, $user->Plan->plan);
   		}
   		
-  		$planinfo[0][4] = stripslashes($planinfo[0][4]);
-  		
   		if ($limit_size) { //they requested a partial plan
-  		  $width = strlen($planinfo[0][4]); //we're preparing for multi byte characters
+  		  $width = strlen($user->Plan->plan); //we're preparing for multi byte characters
   		  if ($width > $MAX_PLAN_LEN) {
   		    $width_remaining = $width - $MAX_PLAN_LEN;
   		    if ($width_remaining > $WIGGLE_PLAN_LEN) {
   		      $response_info['partial'] = true;
-  		      $response_info['plan'] = mb_strimwidth($planinfo[0][4], 0, $MAX_PLAN_LEN);
+  		      $response_info['plan'] = mb_strimwidth($user->Plan->plan, 0, $MAX_PLAN_LEN);
   		      $response_info['remaining'] = $width_remaining;
   		    }
   		    else {
-  		      $response_info['plan'] = $planinfo[0][4];
+  		      $response_info['plan'] = $user->Plan->plan;
   		    }
   		  }
   		  else {
   		    $response_info['partial'] = false;
-		      $response_info['plan'] =$planinfo[0][4];
+		      $response_info['plan'] =$user->Plan->plan;
   		  }
-  		  $log->addToLog("PLAN WIDTH: ". strlen($planinfo[0][4]) );
+  		  $log->addToLog("PLAN WIDTH: ". strlen($user->Plan->plan) );
   		}
   		else if ($partial) { //they requested only the last part of the plan
-  		  $response_info['remainingplan'] = mb_substr($planinfo[0][4], $MAX_PLAN_LEN);
+  		  $response_info['remainingplan'] = mb_substr($user->Plan->plan, $MAX_PLAN_LEN);
   		}
   		else {
   		  $response_info['partial'] = false;
-  		  $response_info['plan'] = $planinfo[0][4];
+  		  $response_info['plan'] = $user->Plan->plan;
   		}
 		
   		$response['plandata'] = $response_info;

@@ -7,10 +7,7 @@ require ("functions-main.php");
 if ($username) {
 	$dbh = db_connect();
 	$orig_pass = $password;
-	$password = crypt($password, "ab"); //encrypt the password, change to ab
-	$read_pass = get_item($dbh, "password", "accounts", "username", $username); //get password encrypted password in db
-	if ($password == $read_pass) //compare actual password and provided on
-	{
+	if (User::checkPassword($username, $password)) {
 		$idcookie = get_item($dbh, "userid", "accounts", "username", $username);
 		set_item($dbh, "display", "style", "1", "userid", $idcookie);
 		delete_item($dbh, "stylesheet", "userid", $idcookie);

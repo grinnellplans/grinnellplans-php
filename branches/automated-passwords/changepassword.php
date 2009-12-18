@@ -14,6 +14,7 @@ if (!User::logged_in()) {
 
 	$real_pass = get_item($dbh, "guest_password", "accounts", "userid", $idcookie);
 	$username = get_item($dbh, "username", "accounts", "userid", $idcookie);
+	$email = get_item($dbh, "email", "accounts", "userid", $idcookie);
 	if ($changed && ($checknumb != $idcookie)) {
 		$denied = new AlertText('Checknumbers do not match.', 'Error', true);
 		$thispage->append($denied);
@@ -21,7 +22,7 @@ if (!User::logged_in()) {
 		db_disconnect($dbh);
 		exit(0);
 	}
-	if ($changed && ($mypassword != $mypassword2)) {
+	if ($changed && ($changed != "email") && ($mypassword != $mypassword2)) {
 		$denied = new AlertText('Passwords do not match.', 'Error', true);
 		$thispage->append($denied);
 		interface_disp_page($thispage);
@@ -50,6 +51,18 @@ if (!User::logged_in()) {
 		set_item($dbh, "accounts", "guest_password", $guest_password, "userid", $idcookie);
 		$real_pass = $guest_password;
 	}
+	if ($changed == 'email')
+	{
+		$newemail = $_POST['newemail'];
+		if (isValidEmail($newemail)) {
+			set_item($dbh, "accounts", "email", $newemail, "userid", $idcookie);
+			$email = $newemail;
+		} else {
+			$denied = new AlertText('Invalid email address!');
+			$thispage->append($denied);
+		}
+	}
+
 
 	$heading = new HeadingText('Change Login Password', 2);
 	$thispage->append($heading);
@@ -68,6 +81,22 @@ if (!User::logged_in()) {
 	$passwordform->append($checknumb);
 	$sub = new SubmitInput('Change Password');
 	$passwordform->append($sub);
+	
+	$heading = new HeadingText('Password Reset E-mail Account',2);
+	$thispage->append($heading);
+	$about = new InfoText("Your password reset email account is currently $email");
+	$thispage->append($about);
+	$email = new Form("emailform", true);
+	$newemail = new TextInput('newemail');
+	$newemail->title = 'New E-mail:';
+	$email->append($newemail);
+	$changed = new HiddenInput('changed', 'email');
+	$email->append($changed);
+	$checknumb = new HiddenInput('checknumb', $idcookie);
+	$email->append($checknumb);
+	$sub = new SubmitInput('Change E-mail Address');
+	$email->append($sub);	
+	$thispage->append($email);	
 
 	$heading = new HeadingText('Set Guest Password', 2);
 	$thispage->append($heading);

@@ -1,6 +1,13 @@
 <?php
 require_once("Plans.php");
 
+if(!USE_NATIVE_MAIL) {
+	$path = '/usr/share/php';
+	set_include_path(get_include_path() . PATH_SEPARATOR . $path);
+
+	include("Mail.php");
+}
+
 class User {
 	public static function login($username, $password) {
 		if (User::checkPassword($username, $password)) {
@@ -16,6 +23,56 @@ class User {
 		} else {
 			return false;
 		}
+	}
+
+	/*
+	 * @return boolean true if password reset sent successfully
+	 */
+
+	public static function resetPassword($username, $email) {
+		$user = Doctrine_Query::create()
+						->from('Accounts a')
+						->where('username = ?', $username)
+						->fetchOne();
+		if ($user->email == $email) {
+			for($i = 0; $i < 8; $i += 1) {
+				$rnum = rand(0,62);
+				if($rnum < 10) {
+					$pass .= $rnum;
+				} else if ($rnum < 36) {
+					$pass .= chr($rnum + 55);
+				} else {
+					$pass .= chr($rnum + 61);
+				}
+			}
+			$body = "Your new GrinnellPlans password is: " . $pass . "\n";
+			$body .= "Please change your password to something you can remember.";
+			if (USE_NATIVE_MAIL) {
+				$subject = "Your new GrinnellPlans password!";
+				$header = "From: " . MAILER_ADDRESS . "\n";
+				if(mail($email, $subject, $body, $header)) {
+					$user->password = crypt($pass);
+					$user->save();
+					return true;
+				}
+			} else {
+				$header['From'] = MAILER_ADDRESS;
+				$header['To'] = $email;
+				$header['Subject'] = "Your new GrinnellPlans password!";
+				$params['host'] = SMTP_SERVER_URI;
+				$params['auth'] = SMTP_USE_AUTH;
+				$params['username'] = SMTP_USERNAME;
+				$params['password'] = SMTP_PASSWORD;
+				$params['port'] = SMTP_SERVER_PORT;
+				$mailer =& Mail::factory("smtp", $params);
+				if($mailer->send($email, $header, $body)) {
+					$user->password = crypt($pass);
+					$user->save();
+					return true;
+				}
+			}
+		}	
+		return false;
 	}
 
 	/**

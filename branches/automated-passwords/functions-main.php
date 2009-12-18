@@ -17,5 +17,6 @@ require_once ("functions-autofinger.php");
 require_once ("functions-display.php");
 require_once ("functions-edit.php");
 require_once ("functions-core.php");
+require_once ("functions-email.php");
 require ("core-perms.php");
 ?>

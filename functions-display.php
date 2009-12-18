@@ -279,7 +279,7 @@ function get_powered_by()
 {
 	$text = 'Powered by <a href="' .  ProjectInformation::projectUrl()
 		. '">GrinnellPlans</a> ' . ProjectInformation::version()
-		. ', an opensource project. File a <a href="' . ProjectInformation::bugReportUrl() . '">bug report</a> after taking a look at the <a href="' . ProjectInformation::recentBugsUrl() . '">recentl bugs</a> to avoid duplicates.';
+		. ', an opensource project. File a <a href="' . ProjectInformation::bugReportUrl() . '">bug report</a> after taking a look at the <a href="' . ProjectInformation::recentBugsUrl() . '">recent bugs</a> to avoid duplicates.';
 	$msg = new RegularText($text);
 	$msg->identifier = 'poweredby';
 	return $msg;

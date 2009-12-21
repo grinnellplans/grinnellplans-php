@@ -51,7 +51,7 @@ foreach($markers as $m) {
 </head>
 <body onload="load()" onunload="GUnload()">
         <div id="map" style="width: 1000px; height: 600px"></div>
-        <p><?pho echo $total; ?> Grinnellians have been geolocated.</p>
+        <p><?php echo $total; ?> Grinnellians have been geolocated.</p>
         <p>Everytime somebody logs in on Plans, the software geolocates their IP address, id est it traces their IP address to a city, region (state, province, et cetera), and country. The
 map shows the last known location of everybody who has logged in since Monday, September 29, 2008 (midnight CST). Locations are generally accurate within the given region, depending on the
 Intrnet Service Provider. If you are being routed through a proxy, a Tor circuit, or a VPN, the location of the endpoint will be recorded.</p>

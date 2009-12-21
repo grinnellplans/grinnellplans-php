@@ -32,6 +32,9 @@ if (get_magic_quotes_gpc()) {
     $_COOKIE = array_map('stripslashes_deep', $_COOKIE);
     $_REQUEST = array_map('stripslashes_deep', $_REQUEST);
 }
+
+ini_set('short_open_tag', FALSE); // Has no effect after PHP 4.0.0
+
 // Simple functions
 require_once ('functions.php');
 require_once ('functions-main.php');

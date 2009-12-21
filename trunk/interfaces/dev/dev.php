@@ -1,7 +1,4 @@
-<?
-
-
-
+<?php
 function disp_begin($dbh,$idcookie,$myurl,$myprivl,$cssloc,$jsfile)
 {
 if (!$myprivl == 2 or !$myprivl == 3)
@@ -19,8 +16,8 @@ if (isset($_GET['searchname'])) {
 <META NAME="ROBOTS" CONTENT="NOARCHIVE">
 <title><?php echo $title ?></title>
 <link rel=stylesheet
-href="<?=$cssloc?>">
-<?
+href="<?php echo $cssloc; ?>">
+<?php
 if ( !is_null( $jsfile ) )
     echo "<script language=\"javascript\" type=\"text/javascript\" src=\"$jsfile\"></script>";
 ?>
@@ -34,27 +31,27 @@ class="main">
 <p class="logo"> </p>
 <Form action="read.php" method="get">
 <input name="searchname" type="text"><br>
-<input type="hidden" name="myprivl" value="<? echo $myprivl; ?>">
+<input type="hidden" name="myprivl" value="<?php echo $myprivl; ?>">
 <input type="submit" value="Read"></form>
 
 <table class="lowerpanel"><tr>
 <td><p class="imagelev1"> </p></td><td></td><td></td>
-<td><a href="edit.php?myprivl=<? echo $myprivl;?>" class="main">edit 
+<td><a href="edit.php?myprivl=<?php echo $myprivl;?>" class="main">edit 
 plan</a></td>
 </tr>
 
 <tr>
 <td><p class="imagelev1"> </p></td><td></td><td></td>
-<td><a href="search.php?myprivl=<? echo $myprivl;?>"
+<td><a href="search.php?myprivl=<?php echo $myprivl;?>"
 class="main">search plans</a></td>
 </tr>
 
 <tr>
 <td><p class="imagelev1"> </p></td><td></td><td></td>
-<td><a href="customize.php?myprivl=<? echo $myprivl;?>"
+<td><a href="customize.php?myprivl=<?php echo $myprivl;?>"
 class="main">preferences</a></td>
 </tr>
-<?
+<?php
 
 $buf = '<td><p class="imagelev1"> </p></td><td></td><td></td>';
 show_opt_links($idcookie, $buf);
@@ -78,7 +75,7 @@ show_opt_links($idcookie, $buf);
 
 <tr><td>
 
-<?
+<?php
 
 } 
 
@@ -125,14 +122,14 @@ class="imagelev1"> </p></td><td></td><td></td>
 <td><p class="main">auto read list</p></td>
 </tr>
 
-<?
+<?php
 
 autoread_list ($myurl, $idcookie, $myprivl);
 ?>
 </table>
 </td></tr></table>
 </td></tr></table>
-<?
+<?php
 disclaimer();
 ?>
 
@@ -141,7 +138,7 @@ disclaimer();
 
 
 </html>
-<?
+<?php
 }
 
 

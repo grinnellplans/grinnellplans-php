@@ -1,6 +1,5 @@
 <?php
 require_once ("../Plans.php");
-
 $added_name = $_POST['username'];
 require ("auth.php");
 require ("../functions-kommand.php");
@@ -11,22 +10,21 @@ require ("../functions-kommand.php");
 require ("dbfunctions.php");
 $dbh = db_connect();
 if ($added_name) {
-	if (isvaliduser($dbh, $added_name)) {
-		echo "User already exists.";
-	} else {
-		$type = $_POST['type'];
-		$password = $_POST['password'];
-		$email = $_POST['email'];
-		$perms = $_POST['perms'];
-		$gradyear = $_POST['gradyear'];
-
-		if ($type == "other") {
-			$type = $_POST['other'];
-		}
-		$results = insert_user($added_name, $password, $gradyear, $email, $type, $perms);
-		$password = $results[0];
-		$email = $results[1];
-		echo "Account created for " . $added_name . " with password " . $password . ", email " . $email . ", and graduation year " . $gradyear . ".<br>";
+    if (isvaliduser($dbh, $added_name)) {
+        echo "User already exists.";
+    } else {
+        $type = $_POST['type'];
+        $password = $_POST['password'];
+        $email = $_POST['email'];
+        $perms = $_POST['perms'];
+        $gradyear = $_POST['gradyear'];
+        if ($type == "other") {
+            $type = $_POST['other'];
+        }
+        $results = insert_user($added_name, $password, $gradyear, $email, $type, $perms);
+        $password = $results[0];
+        $email = $results[1];
+        echo "Account created for " . $added_name . " with password " . $password . ", email " . $email . ", and graduation year " . $gradyear . ".<br>";
 ?>
 		<form action="email.php" method="POST">
 		<input type="hidden" name="username" value="<?php echo $added_name
@@ -43,7 +41,7 @@ if ($added_name) {
 		<input type="submit" value="Send Email">
 		</form>
 		<?php
-	}
+    }
 } else {
 ?>
 	<form name="signup" action="adduser.php" method="POST">

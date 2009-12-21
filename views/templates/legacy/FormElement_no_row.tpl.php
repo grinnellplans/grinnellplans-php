@@ -4,8 +4,10 @@
 </td><td>
 <?php if ($this->label !== null): ?>
 <b><?php echo $this->label; ?></b>
-<?php endif ?>
+<?php
+endif ?>
 <?php if ($this->description !== null): ?>
 <?php echo $this->description; ?>
-<?php endif ?>
+<?php
+endif ?>
 </td>

@@ -20,7 +20,7 @@ if (User::is_admin()) {
 <a href="style-stats.php">Display Prefs Statistics</a><br/>
 <pre>
 <?php
-	show_penetration();
+    show_penetration();
 ?>
 </pre>
 </body>
@@ -47,8 +47,8 @@ if (User::is_admin()) {
 </html>
 <?php
 }
-function show_penetration()
-{
-//	system('/title/grinnellplans.com/class-year-penetration/run-counts.sh');
+function show_penetration() {
+    //	system('/title/grinnellplans.com/class-year-penetration/run-counts.sh');
+    
 }
 ?>

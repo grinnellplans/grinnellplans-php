@@ -3,7 +3,8 @@
 	<div id="justupdated">
 		<div>Do you read <?php $this->doyouread_link_template->display(); ?>, who just updated?</div>
 	</div>
-<?php endif ?>
+<?php
+endif ?>
 
 
 	<div id="poweredby"><div>
@@ -15,5 +16,6 @@
 	<div id="legal"><div>
 		<?php $this->legal_template->display(); ?>
 	</div></div>
-<?php endif ?>
+<?php
+endif ?>
 </div>

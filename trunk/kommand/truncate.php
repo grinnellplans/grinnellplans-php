@@ -10,9 +10,9 @@ require ("auth.php");
 require ("../dbfunctions.php");
 $dbh = db_connect();
 if ($mysubmit) {
-	$plan = get_item($dbh, "plan", "accounts", "username", $username);
-	$new_plan = substr($plan, 0, -1 * $length);
-	set_item($dbh, "accounts", "plan", $new_plan, "username", $username);
+    $plan = get_item($dbh, "plan", "accounts", "username", $username);
+    $new_plan = substr($plan, 0, -1 * $length);
+    set_item($dbh, "accounts", "plan", $new_plan, "username", $username);
 }
 ?>
 <form action="truncate.php" method="POST">

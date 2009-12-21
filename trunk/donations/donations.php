@@ -17,111 +17,105 @@ foreach($_POST as $varname => $value) $formVars[$varname] = $value;
 //   $formVars["dbpass"] = "readonly";
 //}
 if (!($connection = @mysql_pconnect($hostName, $username, $password))) {
-	showError();
-	exit;
+    showError();
+    exit;
 }
 if (!(mysql_select_db($databaseName, $connection))) {
-	showerror();
-	exit;
+    showerror();
+    exit;
 }
 if (!empty($_POST)) {
-	if (!($formVars["date"])) {
-		$formVars["date"] = "CURDATE()";
-	}
-	$insertQuery = "INSERT INTO donations (donor, amount, date, comment) values
+    if (!($formVars["date"])) {
+        $formVars["date"] = "CURDATE()";
+    }
+    $insertQuery = "INSERT INTO donations (donor, amount, date, comment) values
                     ('" . $formVars["donor_name"] . "','
 		    " . $formVars["amount_added"] . "','
 		    " . $formVars["date"] . "','
 		    " . $formVars["comments_added"] . "')";
-	if (!(mysql_query($insertQuery, $connection))) {
-		showerror();
-	}
+    if (!(mysql_query($insertQuery, $connection))) {
+        showerror();
+    }
 }
-function p_print($text)
-{
-	echo "<p>";
-	echo "$text";
-	echo "</p>";
+function p_print($text) {
+    echo "<p>";
+    echo "$text";
+    echo "</p>";
 }
-function show_donations_table($conn)
-{
-	echo "    <table border=\"2\">
+function show_donations_table($conn) {
+    echo "    <table border=\"2\">
       <tr>
 	<th>Donor</th>
 	<th>Amount ($)</th>
 	<th>Date</th>
 	<th>Comments</th>
       </tr>";
-	$selectQuery = "SELECT donor, amount, DATE_FORMAT(date,'%m/%d/%Y'), comment FROM donations order by date desc, donor";
-	if (!($infoz = mysql_query($selectQuery, $conn))) {
-		showerror();
-		exit;
-	}
-	if ($row = mysql_fetch_array($infoz)) {
-		do {
-			echo "<tr align=\"center\">\n\t<td>" . $row["donor"] . "</td>";
-			echo "\n\t<td>" . $row["amount"] . "</td>";
-			echo "\n\t<td>" . $row["DATE_FORMAT(date,'%m/%d/%Y')"] . "</td>";
-			echo "\n\t<td>" . $row["comment"] . "</td>";
-			echo "\n</tr>\n\n";
-		}
-		while ($row = mysql_fetch_array($infoz));
-	}
-	echo "</table>";
+    $selectQuery = "SELECT donor, amount, DATE_FORMAT(date,'%m/%d/%Y'), comment FROM donations order by date desc, donor";
+    if (!($infoz = mysql_query($selectQuery, $conn))) {
+        showerror();
+        exit;
+    }
+    if ($row = mysql_fetch_array($infoz)) {
+        do {
+            echo "<tr align=\"center\">\n\t<td>" . $row["donor"] . "</td>";
+            echo "\n\t<td>" . $row["amount"] . "</td>";
+            echo "\n\t<td>" . $row["DATE_FORMAT(date,'%m/%d/%Y')"] . "</td>";
+            echo "\n\t<td>" . $row["comment"] . "</td>";
+            echo "\n</tr>\n\n";
+        }
+        while ($row = mysql_fetch_array($infoz));
+    }
+    echo "</table>";
 }
-function show_expenses_table($conn)
-{
-	echo "    <table border=\"2\">
+function show_expenses_table($conn) {
+    echo "    <table border=\"2\">
       <tr>
 	<th>Expense</th>
 	<th>Amount ($)</th>
 	<th>Date</th>
       </tr>";
-	$selectQuery = "SELECT expense, amount, DATE_FORMAT(date,'%m/%d/%Y') FROM expenses order by date desc, expense";
-	if (!($infoz = mysql_query($selectQuery, $conn))) {
-		showerror();
-		exit;
-	}
-	if ($row = mysql_fetch_array($infoz)) {
-		do {
-			echo "<tr align=\"center\">\n\t<td>" . $row["expense"] . "</td>";
-			echo "\n\t<td>" . $row["amount"] . "</td>";
-			echo "\n\t<td>" . $row["DATE_FORMAT(date,'%m/%d/%Y')"] . "</td>";
-			echo "\n</tr>\n\n";
-		}
-		while ($row = mysql_fetch_array($infoz));
-	}
-	echo "</table>\n";
+    $selectQuery = "SELECT expense, amount, DATE_FORMAT(date,'%m/%d/%Y') FROM expenses order by date desc, expense";
+    if (!($infoz = mysql_query($selectQuery, $conn))) {
+        showerror();
+        exit;
+    }
+    if ($row = mysql_fetch_array($infoz)) {
+        do {
+            echo "<tr align=\"center\">\n\t<td>" . $row["expense"] . "</td>";
+            echo "\n\t<td>" . $row["amount"] . "</td>";
+            echo "\n\t<td>" . $row["DATE_FORMAT(date,'%m/%d/%Y')"] . "</td>";
+            echo "\n</tr>\n\n";
+        }
+        while ($row = mysql_fetch_array($infoz));
+    }
+    echo "</table>\n";
 }
-function get_table_total($conn, $tbl)
-{
-	$sumquery = "SELECT SUM(amount) From $tbl";
-	if (!($result = mysql_query($sumquery, $conn))) {
-		showerror();
-		exit;
-	}
-	$val = mysql_fetch_array($result);
-	return $val[0];
+function get_table_total($conn, $tbl) {
+    $sumquery = "SELECT SUM(amount) From $tbl";
+    if (!($result = mysql_query($sumquery, $conn))) {
+        showerror();
+        exit;
+    }
+    $val = mysql_fetch_array($result);
+    return $val[0];
 }
-function get_table_count($conn, $tbl)
-{
-	$countquery = "SELECT count(*) From $tbl";
-	if (!($result = mysql_query($countquery, $conn))) {
-		showerror();
-		exit;
-	}
-	$val = mysql_fetch_array($result);
-	return $val[0];
+function get_table_count($conn, $tbl) {
+    $countquery = "SELECT count(*) From $tbl";
+    if (!($result = mysql_query($countquery, $conn))) {
+        showerror();
+        exit;
+    }
+    $val = mysql_fetch_array($result);
+    return $val[0];
 }
-function show_statistics($conn)
-{
-	$donations_total = get_table_total($conn, 'donations');
-	$expenses_total = get_table_total($conn, 'expenses');
-	$difference = $donations_total - $expenses_total;
-	p_print("There has been <b>\$$donations_total</b> in donations and <b>\$$expenses_total</b> in expenses for a net total of <b>\$$difference</b>.");
-	$donations_count = get_table_count($conn, 'donations');
-	$expenses_count = get_table_count($conn, 'expenses');
-	p_print("There have been <b>$donations_count</b> donations and <b>$expenses_count</b> expense(s).");
+function show_statistics($conn) {
+    $donations_total = get_table_total($conn, 'donations');
+    $expenses_total = get_table_total($conn, 'expenses');
+    $difference = $donations_total - $expenses_total;
+    p_print("There has been <b>\$$donations_total</b> in donations and <b>\$$expenses_total</b> in expenses for a net total of <b>\$$difference</b>.");
+    $donations_count = get_table_count($conn, 'donations');
+    $expenses_count = get_table_count($conn, 'expenses');
+    p_print("There have been <b>$donations_count</b> donations and <b>$expenses_count</b> expense(s).");
 }
 ?>
 <table><tr><td><p align="center"><strong>Donations</strong></p>

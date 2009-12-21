@@ -1,15 +1,9 @@
 <?php
-        require('../Plans.php');
-        $key = GEO_GMAPS_API;
-        $markers = Doctrine_Query::create()
-                                                ->select("l.latitude, l.longitude, l.country, l.region, l.city, group_concat(a.username) as usernames, count(*) as count")
-                                                ->from('Location l')
-                                                ->where('latitude != 0 and longitude != 0')
-                                                ->innerJoin('l.Accounts a')
-                                                ->groupBy('l.country, l.region, l.city')
-                                                ->fetchArray();
-        $userid = $i;
-        $total = 0;
+require ('../Plans.php');
+$key = GEO_GMAPS_API;
+$markers = Doctrine_Query::create()->select("l.latitude, l.longitude, l.country, l.region, l.city, group_concat(a.username) as usernames, count(*) as count")->from('Location l')->where('latitude != 0 and longitude != 0')->innerJoin('l.Accounts a')->groupBy('l.country, l.region, l.city')->fetchArray();
+$userid = $i;
+$total = 0;
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
@@ -32,14 +26,14 @@
         map.addControl(new GMapTypeControl());
                 map.enableScrollWheelZoom();
 <?php
-        $i = 0;
-        foreach ($markers as $m) {
-                $total += $m['count'];
-                $text = "<p class='n'><b>" . $m['count'] . "</b> Grinnellian" . ($m['count'] > 1 ? 's' : '') . ' in ' . $m['city'] . ', ' . $m['region'] . ', ' . $m['country'] . '. ';
-                if (isset($_GET['x'])) {
-                        $text .= str_replace(',', ', ', $m['Accounts'][0]['usernames']);
-                }
-                $text .= "</p>";
+$i = 0;
+foreach($markers as $m) {
+    $total+= $m['count'];
+    $text = "<p class='n'><b>" . $m['count'] . "</b> Grinnellian" . ($m['count'] > 1 ? 's' : '') . ' in ' . $m['city'] . ', ' . $m['region'] . ', ' . $m['country'] . '. ';
+    if (isset($_GET['x'])) {
+        $text.= str_replace(',', ', ', $m['Accounts'][0]['usernames']);
+    }
+    $text.= "</p>";
 ?>
         var marker<?php echo $i; ?> = new GMarker(new GLatLng(<?php echo $m['latitude']; ?>, <?php echo $m['longitude']; ?>));
         map.addOverlay(marker<?php echo $i; ?>);
@@ -47,8 +41,8 @@
                 marker<?php echo $i; ?>.openInfoWindowHtml("<?php echo $text; ?>");
         });
 <?php
-                $i++;
-        }
+    $i++;
+}
 ?>
                 }
         }
@@ -64,5 +58,5 @@ Intrnet Service Provider. If you are being routed through a proxy, a Tor circuit
 </body>
 </html>
 <?php
-        $i = $userid;
+$i = $userid;
 ?>

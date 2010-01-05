@@ -4,7 +4,6 @@ new SessionBroker();
 $mysearch = (isset($_GET['mysearch']) ? $_GET['mysearch'] : false);
 $planlove = (isset($_GET['planlove']) ? $_GET['planlove'] : false);
 $donotsearch = (isset($_GET['donotsearch']) ? $_GET['donotsearch'] : false);
-$regexp = (isset($_GET['regexp']) ? $_GET['regexp'] : false);
 require ('functions-main.php');
 require ('syntax-classes.php'); //load display functions
 $dbh = db_connect(); //connect to the database
@@ -23,10 +22,6 @@ $thispage->append($searchform);
 $searchprompt = new FormItemSet('search_opts', true);
 $searchform->append($searchprompt);
 $item = new TextInput('mysearch', $mysearch);
-$searchprompt->append($item);
-$item = new CheckboxInput('regexp', 1);
-$item->description = 'Reg. Exp.';
-$item->checked = $regexp;
 $searchprompt->append($item);
 $item = new CheckboxInput('planlove', 1);
 $item->description = 'Planlove';
@@ -59,16 +54,11 @@ if ($mysearch) //if no search query, give search form
             }
         } //if planlove
         if (!$donotsearch) {
-            if (!$regexp) {
-                $mysearch = preg_replace("/\&/", "&amp;", $mysearch);
-                $mysearch = preg_replace("/\</", "&lt;", $mysearch);
-                $mysearch = preg_replace("/\>/", "&gt;", $mysearch);
-                $mysearch = preg_quote($mysearch);
-                $q->where('p.edit_text LIKE ?', "%$mysearch%");
-            } //if not regexp
-            else {
-                $q->where('p.edit_text RLIKE ?', $mysearch);
-            }
+            $mysearch = preg_replace("/\&/", "&amp;", $mysearch);
+            $mysearch = preg_replace("/\</", "&lt;", $mysearch);
+            $mysearch = preg_replace("/\>/", "&gt;", $mysearch);
+            $mysearch = preg_quote($mysearch);
+            $q->where('p.edit_text LIKE ?', "%$mysearch%");
             if (!$idcookie) {
                 $q->addWhere('webview=1');
             }
@@ -101,13 +91,8 @@ if ($mysearch) //if no search query, give search form
                 //$mysearch = preg_quote($mysearch,"/");
                 /*
                 */
-                if (!$regexp) {
-                    $matchcount = preg_match_all("/(" . preg_quote($mysearch, "/") . ")/si", $new_row[1], $matcharray);
-                    $new_row[1] = preg_replace("/(" . preg_quote($mysearch, "/") . ")/si", "<b>\\1</b>", $new_row[1]);
-                } else {
-                    $matchcount = preg_match_all("/(" . $mysearch . ")/si", $new_row[1], $matcharray);
-                    $new_row[1] = preg_replace("/(" . $mysearch . ")/si", "<b>\\1</b>", $new_row[1]);
-                }
+                $matchcount = preg_match_all("/(" . preg_quote($mysearch, "/") . ")/si", $new_row[1], $matcharray);
+                $new_row[1] = preg_replace("/(" . preg_quote($mysearch, "/") . ")/si", "<b>\\1</b>", $new_row[1]);
                 /*
                 $matchcount = preg_match_all("/(" . $mysearch . ")/si", $new_row[1], $matcharray);
                 $new_row[1] = preg_replace("/(" . $mysearch . ")/si", "<b>\\1</b>", $new_row[1]);

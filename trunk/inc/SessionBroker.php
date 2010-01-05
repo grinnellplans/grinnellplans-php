@@ -14,9 +14,7 @@ class SessionBroker {
             ob_start();
             session_set_save_handler(array(&$this, 'open'), array(&$this, 'close'), array(&$this, 'read'), array(&$this, 'write'), array(&$this, 'destroy'), array(&$this, 'gc'));
             register_shutdown_function('session_write_close');
-            session_set_cookie_params(0, '/', COOKIE_DOMAIN);
             session_start();
-            setcookie(session_name(), "", 0, '/', COOKIE_DOMAIN, false, true);
         }
         SessionBroker::$instances++;
     }
@@ -59,9 +57,10 @@ class SessionBroker {
             mcrypt_module_close($td);
             $signature = base64_encode(md5(COOKIE_SIGNATURE_SALT . $arg_str_session_data, true));
             
-            setcookie(session_name(), "", 0, "/", COOKIE_DOMAIN);
-            setcookie(COOKIE_PAYLOAD, $cypher, 0, "/", COOKIE_DOMAIN, false, true);
-            setcookie(COOKIE_SIGNATURE, $signature, 0, "/", COOKIE_DOMAIN, false, true);
+            $expiration = time() + COOKIE_EXPIRATION;
+
+            setcookie(COOKIE_PAYLOAD, $cypher, $expiration, "/", COOKIE_DOMAIN, false, true);
+            setcookie(COOKIE_SIGNATURE, $signature, $expiration, "/", COOKIE_DOMAIN, false, true);
             ob_end_flush();
         }
         return true;

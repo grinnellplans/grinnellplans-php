@@ -1,45 +1,44 @@
 <?php
-require_once('Plans.php');
-
+require_once ('Plans.php');
 if (isset($_GET['logout'])) {
-	User::logout();
-	$msg = 'You have been successfully logged out.';
+    User::logout();
+    $msg = 'You have been successfully logged out.';
 } else if (User::logged_in()) {
-	Redirect('home.php');
+    Redirect('home.php');
 } else if (isset($_POST['submit'])) {
-	if (isset($_POST['guest'])) {
-		Redirect('home.php');
-	} else {
-		$user = User::login($_POST['username'], $_POST['password']);
-		if (!$user) {
-			$msg = "Invalid username or password.";
-		} else {
-			$user->JsStatus->status = $_POST['js_test_value'];
-			
-			$geoip = Net_GeoIP::getInstance(GEO_DATABASE);
-			try {
-				$location = $geoip->lookupLocation($_SERVER['REMOTE_ADDR']);
-				$user->Location->country = $location->countryCode;
-				$user->Location->region = $location->region;
-				$user->Location->city = $location->city;
-				$user->Location->latitude = $location->latitude;
-				$user->Location->longitude = $location->longitude;
-		
-				$user->Location->save();
-			} catch (Exception $e) {
-				// Ignore
-			}
-			$user->save();
-			Redirect('home.php');
-		}
-	}
+    if (isset($_POST['guest'])) {
+        Redirect('home.php');
+    } else {
+        $user = User::login($_POST['username'], $_POST['password']);
+        if (!$user) {
+            $msg = "Invalid username or password.";
+        } else {
+            $user->JsStatus->status = $_POST['js_test_value'];
+            try {
+                $geoip = Net_GeoIP::getInstance(GEO_DATABASE);
+                $location = $geoip->lookupLocation($_SERVER['REMOTE_ADDR']);
+                $user->Location->country = $location->countryCode;
+                $user->Location->region = $location->region;
+                $user->Location->city = $location->city;
+                $user->Location->latitude = $location->latitude;
+                $user->Location->longitude = $location->longitude;
+                $user->Location->save();
+            }
+            catch(Exception $e) {
+                // Ignore
+                
+            }
+            $user->save();
+            Redirect('home.php');
+        }
+    }
 }
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">   
 <html dir="ltr">
 <head>
 	<title>GrinnellPlans</title>
-	<STYLE TYPE="text/css">
+	<style type="text/css">
 	<!--
 	BODY { 
 			font-family: verdana;
@@ -88,7 +87,7 @@ $(document).ready(function() {
 	  </tr>
 	  <tr class="boxes">
 		<td colspan=2 align=center class="boxes">
-			<form name="post" action="<?=$_SERVER['PHP_SELF']?>" method="POST">
+			<form name="post" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
 			<div class="boxes">
 				Username: <input type="text" id="username" name="username"><br>
 				Password: <input type="password" id="password" name="password"><br>
@@ -105,7 +104,7 @@ document.post.js_test_value.value = "on";
 -->
 </script>  
 			</form></td>
-		<form action="<?=$_SERVER['PHP_SELF']?>" method="POST"> <!--gimmick to make the buttons display at the same height-->
+		<form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post"> <!--gimmick to make the buttons display at the same height-->
 		<td align=left width="50%">
 			<input type="hidden" value="1" name="guest">
 			<input type="submit" name="submit" value="Guest">
@@ -114,14 +113,14 @@ document.post.js_test_value.value = "on";
 	  <tr>
 		<td align=center colspan=2>
 <?php
-	if (isset($msg)) {
+if (isset($msg)) {
 ?>
 		<font face=verdana>
-		<p><?=$msg?>
+		<p><?php echo $msg; ?>
 		</p>
 		<?php
-	}
-		?>
+}
+?>
 		<br>
 		<br>Need a plan? <a href="register.php">Register</a> if you have an @grinnell.edu email address.
 <br />  

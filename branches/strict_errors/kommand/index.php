@@ -1,15 +1,16 @@
 <?php
 require_once ("../Plans.php");
-require ("dbfunctions.php");
-if (User::is_admin()) {
 ?>
 <html>
 <body>
+<?php
+require ("dbfunctions.php");
+if (User::is_admin()) {
+?>
 <a href="adduser.php">Add a User</a><br>
 <a href="deleteuser.php">Delete User</a><br>
 <a href="changepassword.php">Change Password</a><br>
-<a href="changemotd.php">Change MOTD</a></br />
-<a href="truncate.php">Truncate a Plan</a><br />
+<a href="changemotd.php">Change MOTD</a><br />
 <a href="secrets.php">Manage Secrets</a><br />
 <a href="manage-donations.php">Manage Donations</a><br />
 <a href="/chat/usage.cgi">Chat Usage</a><br />
@@ -20,11 +21,9 @@ if (User::is_admin()) {
 <a href="style-stats.php">Display Prefs Statistics</a><br/>
 <pre>
 <?php
-	show_penetration();
+    show_penetration();
 ?>
 </pre>
-</body>
-</html>
 <?php
 } else if ($wrong_passwrod) {
 ?>
@@ -33,8 +32,6 @@ if (User::is_admin()) {
 <input type="password" name="password"><br>
 <input type="submit" value="Kommand">
 </form>
-</body>
-</html>
 <?php
 } else {
 ?>
@@ -43,12 +40,12 @@ if (User::is_admin()) {
 <input type="password" name="password"><br>
 <input type="submit" value="Kommand">
 </form>
-</body>
-</html>
 <?php
 }
-function show_penetration()
-{
-//	system('/title/grinnellplans.com/class-year-penetration/run-counts.sh');
+function show_penetration() {
+    //	system('/title/grinnellplans.com/class-year-penetration/run-counts.sh');
+    
 }
 ?>
+</body>
+</html>

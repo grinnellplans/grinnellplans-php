@@ -1,4 +1,4 @@
-<?
+<?php
 require_once("Plans.php");
 require_once("Configuration.php");
 require("functions-main.php");//load main functions
@@ -23,6 +23,6 @@ else //elseallowed to edit
 }
 ?>
 Success
-<?
+<?php
 db_disconnect($dbh);
 ?>

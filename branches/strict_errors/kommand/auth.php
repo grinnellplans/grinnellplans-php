@@ -2,11 +2,10 @@
 require_once ("../Plans.php");
 if (User::is_admin()) {
 } else {
-	redirect_kommand("Sorry, you don't seem to have a kommand session.");
-	exit;
+    redirect_kommand("Sorry, you don't seem to have a kommand session.");
+    exit;
 }
-function redirect_kommand($message)
-{
+function redirect_kommand($message) {
 ?>
 <html>
 <head>

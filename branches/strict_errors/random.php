@@ -1,16 +1,11 @@
 <?php
-require_once('Plans.php');
+/**
+ * Redirects a user to a random plan.
+ */
+require_once ('Plans.php');
 new SessionBroker();
+require ('functions-main.php');
 
-require('functions-main.php');
-$dbh = db_connect(); //get the database connection
-$idcookie = User::id();
-
-$result = mysql_query("select username from accounts where length(plan) != 0 order by rand() limit 1");
-$result_row = mysql_fetch_array($result);
-$random_user = $result_row[0];
-header("Location: read.php?searchname=" . $random_user); //Send the user to that plan
-db_disconnect($dbh);
+$random_user = Doctrine_Query::create()->from('Accounts a')->leftJoin('a.Plan p')->where('LENGTH(p.edit_text) != 0')->orderby('RAND()')->limit(1)->fetchOne();
+header("Location: read.php?searchname=" . $random_user->username);
 ?>
-
-

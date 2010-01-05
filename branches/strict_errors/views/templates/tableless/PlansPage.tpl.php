@@ -5,12 +5,14 @@
 <head>
 <title><?php echo $this->page_title ?></title>
 
-<?php foreach ($this->stylesheets as $css): ?>
+<?php foreach($this->stylesheets as $css): ?>
 	<link rel="stylesheet" type="text/css" href="<?php echo $css; ?>">
-<?php endforeach; ?>
-<?php foreach ($this->scripts as $scriptfile): ?>
+<?php
+endforeach; ?>
+<?php foreach($this->scripts as $scriptfile): ?>
 	<script type="text/javascript" src="<?php echo $scriptfile; ?>"></script>
-<?php endforeach; ?>
+<?php
+endforeach; ?>
 
 </head>
 <body id="<?php echo $this->body_id; ?>" class="<?php echo $this->body_class; ?>">
@@ -19,15 +21,16 @@
 
 <?php $this->mainpanel_template->display(); ?>
 <?php
-			//if ($page->mainpanel) $this->disp_mainpanel($page);
+//if ($page->mainpanel) $this->disp_mainpanel($page);
+
 ?>
 
 <div id="main"><div>
 
 <?php
-	foreach ($this->contents as $template):
-		$template->display();
-	endforeach
+foreach($this->contents as $template):
+    $template->display();
+endforeach
 ?>
 </div></div>
 

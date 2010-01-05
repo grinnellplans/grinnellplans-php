@@ -27,18 +27,16 @@
 
 /**
  * This class represents a location record as returned by Net_GeoIP::lookupLocation().
- * 
+ *
  * This class is primarily a collection of values (the public properties of the class), but
  * there is also a distance() method to calculate the km distance between two points.
- * 
+ *
  * @author Hans Lellelid <hans@xmpl.org>
  * @version $Revision: 1.1 $
  * @package Net_GeoIP
  * @see Net_GeoIP::lookupLocation()
  */
-class Net_GeoIP_Location
-{
-
+class Net_GeoIP_Location {
     public $countryCode;
     public $countryName;
     public $region;
@@ -48,35 +46,28 @@ class Net_GeoIP_Location
     public $longitude;
     public $areaCode;
     public $dmaCode;
-          
     /**
      * Calculate the distance in km between two points.
      * @param Net_GeoIP_Location $loc The other point to which distance will be calculated.
      * @return float The number of km between two points on the globe.
      */
-    public function distance(Net_GeoIP_Location $loc)
-	{        
-        // ideally these should be class constants, but class constants 
-		// can't be operations.
+    public function distance(Net_GeoIP_Location $loc) {
+        // ideally these should be class constants, but class constants
+        // can't be operations.
         $RAD_CONVERT = M_PI / 180;
         $EARTH_DIAMETER = 2 * 6378.2;
-        
         $lat1 = $this->latitude;
         $lon1 = $this->longitude;
         $lat2 = $loc->latitude;
         $lon2 = $loc->longitude;
-
         // convert degrees to radians
-        $lat1 *= $RAD_CONVERT;
-        $lat2 *= $RAD_CONVERT;
-
+        $lat1*= $RAD_CONVERT;
+        $lat2*= $RAD_CONVERT;
         // find the deltas
         $delta_lat = $lat2 - $lat1;
         $delta_lon = ($lon2 - $lon1) * $RAD_CONVERT;
-
         // Find the great circle distance
-        $temp = pow(sin($delta_lat/2), 2) + cos($lat1) * cos($lat2) * pow(sin($delta_lon/2), 2);
-        return $EARTH_DIAMETER * atan2(sqrt($temp),sqrt(1-$temp));
+        $temp = pow(sin($delta_lat / 2), 2) + cos($lat1) * cos($lat2) * pow(sin($delta_lon / 2), 2);
+        return $EARTH_DIAMETER * atan2(sqrt($temp), sqrt(1 - $temp));
     }
-                
 }

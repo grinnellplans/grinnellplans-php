@@ -1,5 +1,4 @@
 <?php
-	require_once('../Plans.php');
-
-	Doctrine::createTablesFromModels();
+require_once ('../Plans.php');
+Doctrine::createTablesFromModels();
 ?>

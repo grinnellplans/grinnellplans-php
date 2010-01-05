@@ -8,4 +8,5 @@
 <BR><BR><BR><BR><BR><center>
 <?php $this->addform_template->display(); ?>
 </center>
-<?php endif ?>
+<?php
+endif ?>

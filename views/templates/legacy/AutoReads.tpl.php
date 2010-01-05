@@ -5,7 +5,8 @@
 
 </table>
 <table>
-<?php foreach ($this->contents as $template): ?>
+<?php foreach($this->contents as $template): ?>
 	<?php $template->display(); ?>
-<?php endforeach ?>
+<?php
+endforeach ?>
 

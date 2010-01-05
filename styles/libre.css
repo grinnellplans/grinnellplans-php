@@ -297,12 +297,12 @@ p.sub:first-letter {
 	font-size: 0.8em;
 	/* 17.5 / 0.8 for the proportions */
 	margin-left: 21.875em;
-	margin-right: 1em;
+	margin-right: 0em;
 	overflow: auto;
 	/* Always put our footer at the bottom of the page */
 	position: absolute;
 	bottom: 0em;
-	height: 10em;
+	height: 11em;
 }
 
 /* A little space between footer elements */

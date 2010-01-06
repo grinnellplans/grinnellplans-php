@@ -15,6 +15,7 @@ function insert_user($added_name, $password, $gradyear, $email, $type, $status =
     mysql_query("UPDATE accounts SET created = NOW() WHERE
 			username = '$added_name'");
     $added_id = get_item($dbh, "userid", "accounts", "username", $added_name);
+    mysql_query("INSERT INTO plans (user_id) VALUES ($added_id)");
     $myrow = array($added_id, "1", "2");
     add_row($dbh, "display", $myrow);
     foreach(array(2, 4, 6, 8, 14, 15, 16) as $opt_link) {

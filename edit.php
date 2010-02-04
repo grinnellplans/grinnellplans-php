@@ -29,7 +29,7 @@ if (!User::logged_in()) {
         $plan = $_POST["plan"];
 
         $log_msg = "Plan updated: id $idcookie, post \"" . substr($plan, 0, 50) . "..." . substr($plan, -50) . '"';
-        error_log($log_msg);
+        trigger_error($log_msg, E_USER_NOTICE);
 
         // Get the pre-edit text.
         $old_plan = $user->Plan->edit_text;

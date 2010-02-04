@@ -27,6 +27,10 @@ if (!User::logged_in()) {
     } else {
         // Rename received text
         $plan = $_POST["plan"];
+
+        $log_msg = "Plan updated: id $idcookie, post \"" . substr($plan, 0, 50) . "..." . substr($plan, -50) . '"';
+        error_log($log_msg);
+
         // Get the pre-edit text.
         $old_plan = $user->Plan->edit_text;
         // Take a diff versus the new version and store it.
@@ -36,6 +40,10 @@ if (!User::logged_in()) {
         try {
             $user->Plan->edit_text = $plan;
             $user->Plan->save();
+
+            $log_msg = "Plan saved: id $idcookie, edit_text \"" . substr($user->Plan->edit_text, 0, 50) . "..." . substr($user->Plan->edit_text, -50) . '", plan "' . substr($user->Plan->plan, 0, 50) . "..." . substr($user->Plan->plan, -50) . '"';
+            error_log($log_msg);
+
             setUpdatedTime($idcookie); //set the time which keeps track of when the plan was last updated
             set_item($dbh, "autofinger", "updated", 1, "interest", $idcookie); //make the plan show up as updated on other people's autoread list.
             // Leave this page!

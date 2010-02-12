@@ -24,6 +24,9 @@ if (!User::logged_in()) {
         // Add the edit form
         $plantext = $user->Plan->edit_text;
         $page->append(make_editbox($plantext, $user));
+        $log_msg = "Edit page loaded: id $idcookie, edit_text \"" . substr($plantext, 0, 50) . "..." . substr($plantext, -50) . '"';
+        trigger_error($log_msg, E_USER_NOTICE);
+
     } else {
         // Rename received text
         $plan = $_POST["plan"];
@@ -40,9 +43,6 @@ if (!User::logged_in()) {
         try {
             $user->Plan->edit_text = $plan;
             $user->Plan->save();
-
-            $log_msg = "Plan saved: id $idcookie, edit_text \"" . substr($user->Plan->edit_text, 0, 50) . "..." . substr($user->Plan->edit_text, -50) . '", plan "' . substr($user->Plan->plan, 0, 50) . "..." . substr($user->Plan->plan, -50) . '"';
-            error_log($log_msg);
 
             setUpdatedTime($idcookie); //set the time which keeps track of when the plan was last updated
             set_item($dbh, "autofinger", "updated", 1, "interest", $idcookie); //make the plan show up as updated on other people's autoread list.

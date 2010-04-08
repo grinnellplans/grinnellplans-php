@@ -48,7 +48,7 @@ if (!User::logged_in()) {
             set_item($dbh, "autofinger", "updated", 1, "interest", $idcookie); //make the plan show up as updated on other people's autoread list.
             // Leave this page!
             Redirect('read.php?edit_submit=1&searchname=' . User::name());
-            return;
+            exit;
         }
         catch(Doctrine_Validator_Exception $e) {
             $errmsg = 'Sorry, your plan is too long. Please remove some text and try again.';

@@ -1,27 +1,20 @@
 function checkPlanLength() {
-	//var editForm = document.getElementById('editform');
-	var editText = document.getElementById('edit_textarea');
-	var planLength = editText.value.length;
+	var editText = $('#edit_textarea');
+	var planLength = editText.val().length;
 	var perc = Math.round( planLength * 100 / 65535 );
-	if (perc != window.perc) {
-		var fillMeter = document.getElementById('edit_fill_meter');
-		var fillBarElements = fillMeter.getElementsByTagName('div');
+	if (perc != editText.data('perc')) {
+		var fillMeter = $('#edit_fill_meter');
 		// Add or remove danger warning as appropriate
-		if (perc >= 100 && window.perc < 100) {
-			fillMeter.className += ' danger';
+		if (perc >= 100 && editText.data('perc') < 100) {
+			fillMeter.addClass('danger');
 		} else if (window.perc >= 100 && perc < 100) {
-			fillMeter.className = fillMeter.className.replace(/\bdanger\b/, '');
+			fillMeter.removeClass('danger');
 		}
 		// Set the values of the progress bar and percent text
-		for (var i = 0; i < fillBarElements.length; i++) {
-			if (fillBarElements[i].className == 'full_amount') {
-				fillBarElements[i].style.width = Math.min(perc, 100) + "%";
-			} else if (fillBarElements[i].className == 'fill_percent') {
-				fillBarElements[i].innerHTML = perc + "%";
-			}
-		}
-
-		window.perc = perc;
+        $('#edit_fill_meter .full_amount').css('width', Math.min(perc, 100) + '%');
+        $('#edit_fill_meter .fill_percent').text(perc + '%');
+        // Store the current percent so we don't bother to edit the DOM until this changes
+		editText.data('perc', perc);
 	}
 }
-window.onload = checkPlanLength;
+$(document).ready(checkPlanLength);

@@ -80,6 +80,7 @@ abstract class BaseInterface implements DisplayInterface {
     }
     protected function get_local_jsfiles($page) {
         $jsfile_arr = array();
+        $jsfile_arr[] = 'http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js';
         $jsfile_arr[] = 'common.js';
         // Populate the array with any files we need
         switch ($page->identifier) {

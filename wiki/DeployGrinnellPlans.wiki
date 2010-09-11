@@ -46,12 +46,6 @@ define('SESSION_ENCRYPTION_KEY', 'SECRETENCRYPTIONKEY!!!!');
 
 Your default settings for PHP will probably work fine, with three small exceptions:
 
- # The current code includes diff-based plan archiving, which is not revealed through the front-end. This feature requires the xdiff library for PHP. To disable this behavior and avoid errors when working without the xdiff library, place the following code snippet in Configuration.php:
-{{{
-// Stub for xdiff
-function xdiff_string_diff($a, $b) { return $b; }
-}}}
-  You should *be careful*: do not commit this code to the repository.
  # The current code requires mcrypt, a PHP extension to encrypt session-data per user. You can work around this dependency by appending the following code snippet to Configuration.php. 
 {{{
 // Stubs for mcrypt

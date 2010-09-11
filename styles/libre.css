@@ -60,7 +60,7 @@ ul {
 	/* Make sure we leave a little margin on top */
 	margin-top: 0.5em;
 	/* Always leave room for the footer */
-	margin-bottom: 9em;
+	margin-bottom: 12em;
 }
 
 /* Don't display nav headers */
@@ -302,7 +302,7 @@ p.sub:first-letter {
 	/* Always put our footer at the bottom of the page */
 	position: absolute;
 	bottom: 0em;
-	height: 11em;
+	height: 14em;
 }
 
 /* A little space between footer elements */

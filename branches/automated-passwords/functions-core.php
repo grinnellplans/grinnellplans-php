@@ -10,4 +10,8 @@ function isvaliduser($dbh, $username)
                 return 1;
         }
 }
+
+function isValidEmail($email) {
+	return filter_var($email, FILTER_VALIDATE_EMAIL);  
+}  
 ?>

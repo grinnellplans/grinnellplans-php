@@ -7,7 +7,7 @@ $dbh = db_connect();
 
 if (isset($_POST['submit'])) {
 	if(User::resetPassword($_POST['username'], $_POST['email'])) {
-		$msg = "New password sent!";
+		$msg = "New password sent! Check your email, then <a href=\"index.php\">log in again</a>.";
 	} else {
 		$msg = "Unable to verify password reset e-mail address. Please contact <a href=\"mailto:grinnellplans@gmail.com\">grinnellplans@gmail.com</a> for assistance.";
 	}

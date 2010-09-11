@@ -2,10 +2,7 @@
 require_once("Plans.php");
 
 if(!USE_NATIVE_MAIL) {
-	$path = '/usr/share/php';
-	set_include_path(get_include_path() . PATH_SEPARATOR . $path);
-
-	include("Mail.php");
+	require_once("Mail.php");
 }
 
 class User {
@@ -26,9 +23,11 @@ class User {
 	}
 
 	/*
+	 * Send a password reset email
+	 * @param string $username the username supplied by the requestee
+	 * @param string $email the email address supplied by the requestee
 	 * @return boolean true if password reset sent successfully
 	 */
-
 	public static function resetPassword($username, $email) {
 		$user = Doctrine_Query::create()
 						->from('Accounts a')
@@ -47,11 +46,11 @@ class User {
 			}
 			$body = "Your new GrinnellPlans password is: " . $pass . "\n";
 			$body .= "Please change your password to something you can remember.";
-			if (USE_NATIVE_MAIL) {
+			if(USE_NATIVE_MAIL) {
 				$subject = "Your new GrinnellPlans password!";
 				$header = "From: " . MAILER_ADDRESS . "\n";
 				if(mail($email, $subject, $body, $header)) {
-					$user->password = crypt($pass);
+					$user->password = User::hashPassword($mypassword);
 					$user->save();
 					return true;
 				}

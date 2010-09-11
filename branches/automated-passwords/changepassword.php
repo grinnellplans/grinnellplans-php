@@ -12,9 +12,11 @@ if (!User::logged_in()) {
 } else {
 	populate_page($thispage, $dbh, $idcookie);
 
-	$real_pass = get_item($dbh, "guest_password", "accounts", "userid", $idcookie);
-	$username = get_item($dbh, "username", "accounts", "userid", $idcookie);
-	$email = get_item($dbh, "email", "accounts", "userid", $idcookie);
+	$account = Doctrine::getTable('Accounts')->find($idcookie);
+
+	$real_pass = $account->guest_password;
+	$username = $account->username;
+	$email = $account->email;
 	if ($changed && ($checknumb != $idcookie)) {
 		$denied = new AlertText('Checknumbers do not match.', 'Error', true);
 		$thispage->append($denied);
@@ -33,7 +35,8 @@ if (!User::logged_in()) {
 		if (!(strstr($mypassword, "\"") or strstr($mypassword, "\'"))) {
 			if (strlen($mypassword) > 3) {
 				$crpassword = User::hashPassword($mypassword);
-				set_item($dbh, "accounts", "password", $crpassword, "userid", $idcookie); //set the password
+				$account->password = $crpassword;
+				$account->save();
 				$success = new InfoText("Your password has been changed!", 'Success');
 				$thispage->append($success);
 
@@ -48,17 +51,19 @@ if (!User::logged_in()) {
 	}
 	if ($changed == 'guest_pass') {
 		$guest_password = $_POST['guest_password'];
-		set_item($dbh, "accounts", "guest_password", $guest_password, "userid", $idcookie);
+		$account->guest_password = $guest_password;
+		$account->save();
 		$real_pass = $guest_password;
 	}
 	if ($changed == 'email')
 	{
 		$newemail = $_POST['newemail'];
 		if (isValidEmail($newemail)) {
-			set_item($dbh, "accounts", "email", $newemail, "userid", $idcookie);
+			$account->email = $newemail;
+			$account->save();
 			$email = $newemail;
 		} else {
-			$denied = new AlertText('Invalid email address!');
+			$denied = new AlertText('That is not a valid email address', 'Invalid email', true);
 			$thispage->append($denied);
 		}
 	}

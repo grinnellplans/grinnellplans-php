@@ -36,9 +36,6 @@ if (!User::logged_in()) {
 
         // Get the pre-edit text.
         $old_plan = $user->Plan->edit_text;
-        // Take a diff versus the new version and store it.
-        $diff = xdiff_string_diff($old_plan, $plan);
-        mysql_query("insert into diffs(userid, text, date) values($idcookie, \"$diff\", now())");
         // Store the edited plan source, convert it, and store the converted text.
         try {
             $user->Plan->edit_text = $plan;

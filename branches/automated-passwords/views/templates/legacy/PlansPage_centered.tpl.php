@@ -4,12 +4,14 @@
 
 <title><?php echo $this->page_title ?></title>
 
-<?php foreach ($this->stylesheets as $css): ?>
+<?php foreach($this->stylesheets as $css): ?>
 	<link rel="stylesheet" type="text/css" href="<?php echo $css; ?>" />
-<?php endforeach; ?>
-<?php foreach ($this->scripts as $scriptfile): ?>
+<?php
+endforeach; ?>
+<?php foreach($this->scripts as $scriptfile): ?>
 	<script type="text/javascript" src="<?php echo $scriptfile; ?>"></script>
-<?php endforeach; ?>
+<?php
+endforeach; ?>
 
 </head>
 <body>
@@ -29,17 +31,19 @@
 
 <?php if ($this->center): ?>
 <center>
-<?php endif ?>
+<?php
+endif ?>
 
 <?php
-	foreach ($this->contents as $template):
-		$template->display();
-	endforeach
+foreach($this->contents as $template):
+    $template->display();
+endforeach
 ?>
 
 <?php if ($this->center): ?>
 </center>
-<?php endif ?>
+<?php
+endif ?>
 
 </td></tr></table></td>
 

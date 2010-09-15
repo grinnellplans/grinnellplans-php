@@ -4,17 +4,18 @@
 <Form action="<?php echo $this->panel->fingerbox->action
 ?>" method="<?php echo $this->panel->fingerbox->method
 ?>">
-<?php foreach ($this->panel->fingerbox->contents as $input): ?>
+<?php foreach($this->panel->fingerbox->contents as $input): ?>
 	<input type="<?php echo $input->type; ?>" name="<?php echo $input->name; ?>" value="<?php echo $input->value; ?>" />
 	<?php if ($input->name == "searchname") echo "<br>\n"; ?>
-<?php endforeach ?>
+<?php
+endforeach ?>
 </form>
 
 <table class="lowerpanel">
 <?php
 $this->links_template->display();
 if ($this->autoread_template) {
-	$this->autoread_template->display();
+    $this->autoread_template->display();
 }
 ?>
 

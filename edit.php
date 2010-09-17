@@ -13,7 +13,7 @@ if (!User::logged_in()) {
 } else {
     populate_page($page, $dbh, $idcookie);
     // Get the user and plan information
-    $q = Doctrine_Query::create()->from('Accounts a')->innerJoin('a.Plan p')->where('a.userid = ?', $idcookie);
+    $q = Doctrine_Query::create()->from('Accounts a')->innerJoin('a.Plan p')->where('a.userid = ?', $idcookie)->orderBy('p.id ASC');
     $user = $q->fetchOne();
     if (!isset($_POST["plan"])) {
         // If this is the test server, give them a warning

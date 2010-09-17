@@ -112,7 +112,7 @@ if ($guest_pass = $_GET['guest-pass']) {
     }
 }
 // Get the user and plan information
-$q = Doctrine_Query::create()->from('Accounts a')->leftJoin('a.Plan p')->where('a.userid = ?', $searchnum);
+$q = Doctrine_Query::create()->from('Accounts a')->leftJoin('a.Plan p')->where('a.userid = ?', $searchnum)->orderBy('p.id ASC');
 $user = $q->fetchOne();
 if (!$user) {
     $page->append(new AlertText("Could not retrieve plan.", 'DB Error', true));

@@ -11,6 +11,23 @@ class Plans extends BasePlans
         $this->hasMutator('edit_text', 'processText');
     }
 
+    public function save(Doctrine_Connection $conn = null)
+    {
+      $conn = $conn ? $conn : $this->getTable()->getConnection();
+      $conn->beginTransaction();
+      try
+      {
+        $ret = parent::save($conn);
+        $conn->commit();
+        return $ret;
+      }
+      catch (Exception $e)
+      {
+         $conn->rollBack();
+         throw $e;
+      }
+    }
+
     public function processText($text) {
         $text = $this->processDates($text);
         $this->_set('edit_text', $text);

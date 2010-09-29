@@ -7,9 +7,10 @@ require_once ('Configuration.php');
 */
 function db_connect() {
     $dbh = mysql_connect(MYSQL_HOST, MYSQL_USER, MYSQL_PASS);
+    mysql_query($dbh, "SET NAMES utf8");
     mysql_select_db(MYSQL_DB);
-    if (!$dbh) {
-        print "Obviously, the above messages suggest that the database connection failed. It's not a bad idea to report this error to grinnellplans@gmail.com";
+   if (!$dbh) {
+        print "The database connection failed. It's not a bad idea to report this error to grinnellplans@gmail.com after retrying for a few seconds.";
         exit;
     } else return $dbh;
 }

@@ -11,4 +11,8 @@ echo $this->text;
 	</div>
 	<?php $this->button_template->display(); ?>
 </div>
+<?php foreach($this->contents as $template): ?>
+        <?php $template->display(); ?>
+<?php
+endforeach ?>
 </form></div>

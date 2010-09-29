@@ -9,4 +9,8 @@ echo $this->text;
 			<div class="fill_percent">0%</div>
 		</div>
 		&nbsp;&nbsp;&nbsp;<input type="submit" value="Change Plan" />
+<?php foreach($this->contents as $template): ?>
+        <?php $template->display(); ?>
+<?php
+endforeach ?>
 	</form>

@@ -77,7 +77,7 @@ class LegacyDefaultInterface extends BaseInterface {
         $arr = parent::get_local_jsfiles($page);
         switch ($page->identifier) {
             case 'board_messages':
-                $arr[] = 'board_voting.js';
+                $arr[] = 'js/board_voting.js';
             break;
         }
         return $arr;

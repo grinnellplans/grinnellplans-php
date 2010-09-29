@@ -157,9 +157,10 @@ abstract class BaseInterface implements DisplayInterface {
                     $tpl->rows = $obj->rows;
                     $tpl->columns = $obj->columns;
                     $tpl->text = $obj->text->message;
+                    $tpl->submitable = $obj->submitable;
                     //TODO This line should be the responsibility of edit.php, not this object
                     $tpl->otherinputs_template = $this->setup_widget(new HiddenInput('part', 1));
-                    $tpl->button_template = $this->setup_widget(new SubmitInput('Change Plan'));
+		    $tpl->button_template = $this->setup_widget(new SubmitInput('Change Plan'));
                 }
             } else if ($obj instanceof FormItemSet) {
                 $tpl->tag_attributes = self::id_and_class($obj->identifier, array($obj->group, 'formitemset'));

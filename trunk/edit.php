@@ -26,7 +26,6 @@ if (!User::logged_in()) {
 	$editbox = make_editbox($plantext, $user);       
  	$page->append($editbox);
         $editbox->append(new HiddenInput('edit_text_md5', md5($plantext)));
-     	$page->append(new HiddenInput('sneak', '123'));
 	$log_msg = "Edit page loaded: id $idcookie, edit_text \"" . substr($plantext, 0, 50) . "..." . substr($plantext, -50) . '"';
         trigger_error($log_msg, E_USER_NOTICE);
     } else {
@@ -40,7 +39,8 @@ if (!User::logged_in()) {
         // Get the pre-edit text.
         $old_plan = $user->Plan->edit_text;
 	if (md5($old_plan) != $pre_edit_md5) {
-		$page->append(new AlertText("<br/>It seems that this plan was editted by someone else between you clicking the \"edit\" link and submitting your edits.", "Your plan was editted from another instance of the edit page, or there was a corruption while transferring data between the server and you."));
+		$page->append(new AlertText("Your plan was edited from another instance of the edit page, or there was a corruption while transferring data between the server and you. Here's a copy of what you submitted:", "Your plan may have changed after you loaded this Edit page!"));
+		$page->append(make_editbox($plan, $user, false));
 		interface_disp_page($page);
 		db_disconnect($dbh);
 		exit;
@@ -67,12 +67,11 @@ if (!User::logged_in()) {
 /* display the page */
 interface_disp_page($page);
 db_disconnect($dbh);
-function make_editbox($plantext, $user) {
+function make_editbox($plantext, $user, $submitable = true) {
     $plan = new PlanText($plantext, true);
-    $editbox = new EditBox($user->username, $plan, $user->edit_rows, $user->edit_cols);
+    $editbox = new EditBox($user->username, $plan, $user->edit_rows, $user->edit_cols, $submitable);
     $editbox->action = 'edit.php';
     $editbox->method = 'post';
-    $editbox->append(new HiddenInput('edit_md5', '1'));
     return $editbox;
 }
 ?>

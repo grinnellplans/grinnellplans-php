@@ -464,12 +464,13 @@ class EditBox extends Form {
      * @see TextareaInput::$columns
      */
     public $columns;
-    public function __construct($username, $text, $rows, $cols) {
+    public function __construct($username, $text, $rows, $cols, $submitable = true) {
         parent::__construct('editbox', true);
         $this->username = $username;
         $this->rows = $rows;
         $this->columns = $cols;
         $this->text = $text;
+	$this->submitable = $submitable;
     }
 }
 class PlanContent extends Widget {

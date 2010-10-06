@@ -1,7 +1,7 @@
 <?php
 define('__ROOT__', dirname(__FILE__));
 require_once ('Configuration.php');
-ini_set('include_path', '.:' . __ROOT__ . ':' . __ROOT__ . '/inc');
+set_include_path(get_include_path() . ':' . __ROOT__ . ':' . __ROOT__ . '/inc');
 putenv('TZ=' . TZ);
 // Doctrine setup
 require_once ('lib/doctrine/Doctrine.php');

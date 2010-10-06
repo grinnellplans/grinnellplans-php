@@ -81,11 +81,11 @@ abstract class BaseInterface implements DisplayInterface {
     protected function get_local_jsfiles($page) {
         $jsfile_arr = array();
         $jsfile_arr[] = 'http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js';
-        $jsfile_arr[] = 'common.js';
+        $jsfile_arr[] = 'js/common.js';
         // Populate the array with any files we need
         switch ($page->identifier) {
             case 'edit':
-                $jsfile_arr[] = 'edit.js';
+                $jsfile_arr[] = 'js/edit.js';
             break;
         }
         return $jsfile_arr;
@@ -157,9 +157,10 @@ abstract class BaseInterface implements DisplayInterface {
                     $tpl->rows = $obj->rows;
                     $tpl->columns = $obj->columns;
                     $tpl->text = $obj->text->message;
+                    $tpl->submitable = $obj->submitable;
                     //TODO This line should be the responsibility of edit.php, not this object
                     $tpl->otherinputs_template = $this->setup_widget(new HiddenInput('part', 1));
-                    $tpl->button_template = $this->setup_widget(new SubmitInput('Change Plan'));
+		    $tpl->button_template = $this->setup_widget(new SubmitInput('Change Plan'));
                 }
             } else if ($obj instanceof FormItemSet) {
                 $tpl->tag_attributes = self::id_and_class($obj->identifier, array($obj->group, 'formitemset'));

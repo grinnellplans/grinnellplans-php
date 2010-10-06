@@ -130,7 +130,6 @@ function populate_guest_page(PlansPage $page) {
  * @return Autoread
  */
 function get_autoread($idcookie, $p) {
-    $newarr = array();
     $privarray = mysql_query("Select autofinger.interest,accounts.username
 		From autofinger, accounts where owner = '$idcookie' and priority =
 		'$p' and updated = '1' and autofinger.interest=accounts.userid order by accounts.changed desc");

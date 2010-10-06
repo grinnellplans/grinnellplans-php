@@ -8,5 +8,9 @@ echo $this->text;
 			<div class="fill_bar"><div class="full_amount"></div></div>
 			<div class="fill_percent">0%</div>
 		</div>
-		&nbsp;&nbsp;&nbsp;<input type="submit" value="Change Plan" />
+		&nbsp;&nbsp;&nbsp;<?php if ($this->submitable == 1) { ?><input type="submit" value="Change Plan" /><?php } ?>
+<?php foreach($this->contents as $template): ?>
+        <?php $template->display(); ?>
+<?php
+endforeach ?>
 	</form>

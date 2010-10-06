@@ -9,6 +9,10 @@ echo $this->text;
 		<div class="fill_bar"><div class="full_amount"></div></div>
 		<div class="fill_percent">0%</div>
 	</div>
-	<?php $this->button_template->display(); ?>
+	<?php if ($this->submitable == 1) { $this->button_template->display(); } ?>
 </div>
+<?php foreach($this->contents as $template): ?>
+        <?php $template->display(); ?>
+<?php
+endforeach ?>
 </form></div>

@@ -2,39 +2,28 @@
 require_once ("../Plans.php");
 require ("auth.php");
 ?>
-
 <html>
-<html>
+<head>
+    <title>Change Message of the Day</title>
+</head>
 <body>
 <?php
 require ("dbfunctions.php");
 $dbh = db_connect();
-if ($mysubmit) {
-    $motd = preg_replace("/\n/s", "<br>", $motd);
-    $motd = addslashes($motd);
-    mysql_query("UPDATE system SET motd = '$motd'");
-    echo $motd;
-} //if a username
-{ //if no username
-    //$addrow = array("My message","");
-    //add_row($dbh, "system", $addrow);
-    //$motd = get_item($dbh,"motd","system","username", $username);
-    $my_result = mysql_query("Select motd From system");
-    $my_row = mysql_fetch_array($my_result);
-    $motd = $my_row[0];
-    $motd = ereg_replace("<br>", "", $motd);
-    $motd = stripslashes($motd);
+if (isset($_POST['submit'])) {
+    $motd = addslashes(preg_replace("/\n/s", "<br>", $_POST['motd']));
+    mysql_query(sprintf("UPDATE `system` SET motd = '%s'", mysql_real_escape_string($motd)));
+}
+$row = mysql_fetch_array(mysql_query("SELECT motd FROM system"));
+$motd = preg_replace("/<br>/", "\n", stripslashes($row[0]));
 ?>
 <form action="changemotd.php" method="POST">
 <textarea name="motd" cols="100" rows="40" >
-<?php echo $motd
-?>
+<?php echo $motd ?>
 </textarea>
-<input type="hidden" name="mysubmit" value="1">
-<input type="submit" value="Change MOTD">
+<input type="submit" name="submit" value="Change MOTD">
 </form>
 <?php
-}
 db_disconnect($dbh);
 ?>
 </html>

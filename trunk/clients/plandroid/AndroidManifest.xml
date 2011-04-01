@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 
+ *  Copyright (c) 2011 The GrinnellPlans Developers 
+ *  <grinnellplans-development@groups.google.com>
+ *  Released under the GPLv3 license. All rights reserved.
+ *  
+ *  Filename: AndroidManifest.xml
+ *  Author: Saul St. John
+-->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+      android:versionName="0.8b" android:versionCode="1" package="com.grinnellplans.plandroid">
+    <application android:icon="@drawable/icon" android:enabled="true" android:killAfterRestore="false" android:restoreAnyVersion="false" android:persistent="false" android:restoreNeedsApplication="true" android:hasCode="true" android:allowTaskReparenting="false" android:debuggable="false">
+
+
+    
+
+
+<activity android:label="Plans" android:exported="true" android:enabled="true" android:name="PlansLauncherActivity" android:theme="@android:style/Theme.NoTitleBar"><intent-filter><category android:name="android.intent.category.LAUNCHER"></category>
+<action android:name="android.intent.action.MAIN"></action>
+</intent-filter>
+</activity>
+
+<service android:enabled="true" android:exported="true" android:name="SessionService">
+</service>
+
+<activity android:name="LoginActivity" android:enabled="true" android:exported="true" android:theme="@android:style/Theme.NoTitleBar"><intent-filter><action android:name="com.grinnellplans.plandroid.LOGIN"></action>
+<category android:name="android.intent.category.DEFAULT"></category>
+</intent-filter>
+</activity>
+<activity android:name="AutofingerActivity" android:enabled="true" android:theme="@android:style/Theme.NoTitleBar"><intent-filter><action android:name="com.grinellplans.plandroid.AUTOFINGER"></action>
+<category android:name="android.intent.category.DEFAULT"></category>
+</intent-filter>
+</activity>
+<activity android:name="PlanReadActivity" android:enabled="true">
+
+<intent-filter><category android:name="android.intent.category.DEFAULT"></category>
+
+<category android:name="android.intent.category.BROWSABLE"></category>
+<data android:host="*" android:scheme="plans" android:pathPrefix="/plan/"></data>
+<action android:name="android.intent.action.VIEW"></action>
+</intent-filter>
+</activity>
+</application>
+    <uses-sdk android:minSdkVersion="8" />
+
+
+
+<uses-permission android:name="android.permission.INTERNET"></uses-permission>
+
+</manifest> 

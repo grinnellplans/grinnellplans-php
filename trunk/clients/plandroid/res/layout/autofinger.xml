@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 
+ *  Copyright (c) 2011 The GrinnellPlans Developers 
+ *  <grinnellplans-development@groups.google.com>
+ *  Released under the GPLv3 license. All rights reserved.
+ *  
+ *  Filename: autofinger.xml
+ *  Author: Saul St. John
+-->
+<LinearLayout 
+	xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+>
+	<ListView
+		android:id="@+id/autofingerContainer"
+	>
+		<ListView
+			android:id="@+id/afLevelOne"
+		>
+		</ListView>
+		<ListView
+			android:id="@+id/afLevelTwo"
+		>
+		</ListView>
+		<ListView
+			android:id="@+id/afLevelThree"
+		>
+		</ListView>
+	</ListView>
+</LinearLayout>

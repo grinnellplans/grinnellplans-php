@@ -64,7 +64,7 @@ function cleanText($plan) {
                 if (preg_match('/^\d+$/', $mycheck) && $item = get_item($dbh, "messageid", "subboard", "messageid", $mycheck)) {
                     $plan = preg_replace("/\[" . preg_quote($mycheck, "/") . "\]/s", "[<a href=\"board_messages.php?messagenum=$item#$item\" class=\"boardlink\">$mycheck</a>]", $plan);
                 }
-                if (preg_match("/(http|https|mailto):/", $mycheck)) {
+                if (preg_match("/^(http|https|mailto):/", $mycheck)) {
                     if (strrpos($mycheck, "|")) {
                         preg_match("/(.+?)\|(.+)/si", $mycheck, $love_replace);
                         // Here, we need to escape $'s so they don't get treated as back-references

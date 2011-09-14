@@ -112,7 +112,8 @@ ul {
 	font-family: Tahoma, Didot, Georgia, serif;
 	font-weight: bold;
 	font-style: italic;
-	/*margin: 2px 2px 0px 42px;*/
+	/* Apple browsers have stupid chrome */
+	padding: 0;
 }
 /* When we hover, show a full border */
 #finger .textinput input:hover, #finger .textinput input:focus {
@@ -428,8 +429,11 @@ p.sub:first-letter {
 	text-decoration: underline;
 }
 /* Avoid clearing problems */
-.notes_content {
+#notes_thread {
 	float: left;
+}
+.notes_content {
+	overflow: auto;
 }
 .notes_post_header {
 	padding-bottom: 0.8em;

@@ -3,11 +3,13 @@ require_once ('Plans.php');
 new SessionBroker();
 require ("functions-main.php");
 require ("functions-kommand.php");
+require ("functions-email.php");
 require ("syntax-classes.php");
 $idcookie = User::id();
 $userid = $idcookie;
 $dbh = db_connect();
-$admin_email = "grinnellplans@gmail.com";
+$admin_email = MAILER_ADDRESS;
+$domain = "grinnell.edu";
 $thispage = new PlansPage('Utilities', 'register', PLANSVNAME . ' - Registration', 'register.php');
 if (User::logged_in()) {
     populate_page($thispage, $dbh, $idcookie);
@@ -19,7 +21,7 @@ $thispage->append($heading);
 if ($_GET['submitted']) {
     $username = $_GET['username'];
     $match = array();
-    if (preg_match('/(.*)@grinnell.edu/', $username, $match)) {
+    if (preg_match("/(.*)@$domain/", $username, $match)) {
         $username = $match[1];
     }
     $orig_username = $username;
@@ -36,10 +38,10 @@ if ($_GET['submitted']) {
         $token = make_token();
         $data = array('username' => $username, 'year' => $year, 'type' => $type);
         $storable = serialize($data);
-        $email = $username . '@grinnell.edu';
+        $email = $username . '@' . $domain;
         mysql_query("insert into tentative_accounts set session = '$storable', token = '$token', created = now()");
         $message = "Click the following link to activate your Plan:\n" . "www.grinnellplans.com/register.php?token=$token\n\n" . "The link will expire in 24 hours.";
-        mail($email, "Activate your new plan.", $message, "From:$admin_email\nReply-to:$admin_email");
+        send_mail($email, "Activate your new plan.", $message, $admin_email,$admin_email);
         $message = new InfoText("An email has been sent to $email with a link to activate your Plan.  You will probably receive it right away, but if you don't get it within a few hours, <a href=" . '"mailto:grinnellplans@gmail.com"' . ">Bug us</a>.", 'Email Sent');
         $thispage->append($message);
     }
@@ -54,7 +56,7 @@ if ($_GET['submitted']) {
         $username = $data['username'];
         $type = $data['type'];
         $year = $data['year'];
-        $email = $username . '@grinnell.edu';
+        $email = $username . '@' . $domain;
         if (get_item($dbh, 'username', 'accounts', 'username', $username)) {
             $message = new AlertText('A plan with the username ' . $username . ' already exists, meaning this token has been used.  If you are the owner of that email, your password was given to you when you first clicked the link.  If you\'ve lost the password, or for anything else, <a href="mailto:grinnellplans@gmail.com">Email</a> us.', 'Plan exists');
             $thispage->append($message);
@@ -65,9 +67,9 @@ if ($_GET['submitted']) {
             $message = new InfoText("Your account has been created!  Your username is $username and your initial password is $password." . '  Go <a href="http://www.grinnellplans.com/">Here</a> to test them out.', 'Plan Created');
             $thispage->append($message);
             $message = "A new plan has been created with \nusername:  $username\nGrad Year: $year\n$username self-identifies as $type.";
-            mail($admin_email, "Plan Created: $username", $message, "From:$admin_email\nReply-to:$admin_email");
+            send_mail($admin_email, "Plan Created: $username", $message, $admin_email,$admin_email);
             $message = "Your account has been created!  Your username is $username and your initial password is $password. Go to http://www.grinnellplans.com/ to get started.\n";
-            mail("$email", "Plan Created", $message, "From:$admin_email\nReply-to:$admin_email");
+            send_mail($email, "Plan Created", $message, $admin_email, $admin_email);
         }
     }
 } else {

@@ -12,6 +12,7 @@ function send_mail($to, $subject, $text, $from, $reply_to) {
         $opt = array('ReplyToAddresses'=>$reply_to);
         $ses = new AmazonSES(AWS_KEY,AWS_SECRET_KEY);
         $ret = $ses->send_email($from,array('ToAddresses'=>$to),$message,$opt);
+        return $ret->isOK();
     }
 }
 ?>

@@ -64,7 +64,7 @@ if (isset($_GET['logout'])) {
 			}
 	-->
 	</STYLE>
-<script src="http://www.google.com/jsapi"></script>
+<script src="https://www.google.com/jsapi" type="text/javascript"></script>
 <script type="text/javascript" charset="utf-8">
 google.load("jquery", "1.3.2");
 google.load("jqueryui", "1.7.2");

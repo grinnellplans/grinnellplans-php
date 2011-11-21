@@ -19,6 +19,7 @@ if (!User::logged_in()) {
     $content->append($header);
     $replyform = new Form('notes_replyform', true);
     $replyform->action = 'board_submit.php';
+    $replyform->method = 'post';
     $replylink = new DisplayToggleLink('post_reply_toggle', true, $replyform, 'Reply', 'Cancel');
     $content->append($replylink);
     $content->append($replyform);

@@ -8,19 +8,19 @@ require ("auth.php");
 <?php
 require ("dbfunctions.php");
 $dbh = db_connect();
-if ($_GET['submit']) {
+if (isset($_POST['submit'])) {
     //print_r ($_GET);
-    foreach(array_keys($_GET) as $get_key) {
+    foreach(array_keys($_POST) as $get_key) {
         if (preg_match('/^(\w+)_id_(\d+)$/', $get_key, $matches)) {
             $secret_id = $matches[2];
-            //      echo "Matched on id = $secret_id, got " . $_GET[$get_key] . ".<br />";
-            if ($_GET[$get_key]) {
+            //      echo "Matched on id = $secret_id, got " . $_POST[$get_key] . ".<br />";
+            if ($_POST[$get_key]) {
                 $new_display = 'yes';
             } else {
                 $new_display = 'no';
             }
-            $query = "update secrets set display = '$new_display', date_approved = now() where secret_id = $secret_id";
-            echo "<p>" . $query . "</p>";
+            $query = "update secrets set display = '$new_display', date_approved = now() where secret_id = $secret_id and display != '$new_display'";
+            //echo "<p>" . $query . "</p>";
             $results = mysql_query($query) or mysql_error();
             /*
             
@@ -33,7 +33,7 @@ if ($_GET['submit']) {
     }
 }
 $count = 60;
-$offset = $_GET['offset'];
+$offset = isset($_GET['offset'])?$_GET['offset']:0;
 if ($offset < 0) {
     $offset = 0;
 }
@@ -49,7 +49,7 @@ if (!$secrets) {
 }
 ?>
 
-<form method="GET" action="">
+<form method="POST" action="">
 <input type="submit" name="submit" value="Submit">
 
 <?php

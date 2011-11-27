@@ -38,7 +38,7 @@ $page->append($post_secret);
 $page->append($submitform);
 if (isset($_POST['secret_submitted'])) {
     $secret = $_POST['secret'];
-    $secret = addslashes($secret);
+    $secret = mysql_real_escape_string($secret);
     $secret = cleanText($secret);
     $sql = "insert into secrets(secret_text, date, display) values (substring('$secret',1,4000), now(), 'no')";
     mysql_query($sql);
@@ -49,13 +49,20 @@ if (User::logged_in()) {
     if (!is_numeric($offset)) {
         $offset = 0;
     }
-    $link = new Hyperlink('older_secrets', true, 'anonymous.php?offset=' . ($offset + $count), 'Older Secrets');
-    $page->append($link);
+    $linkbox = new WidgetGroup("linkbox",false);
+    $linkbox->append(new RegularText("<br />"));
+    if (isset($offset) && $offset > 0) {
+       $link = new Hyperlink('newer_secrets', false, 'anonymous.php?offset=' . ($offset - $count), 'Newer Secrets');
+       $linkbox->append($link);
+    }
+    $link = new Hyperlink('older_secrets', false, 'anonymous.php?offset=' . ($offset + $count), 'Older Secrets');
+    $linkbox->append($link);
     $select_query = "select * from secrets where display = 'yes' or display = 'pref'  order by date desc limit $offset, $count";
     if (!$secrets = mysql_query($select_query)) {
         $page->append(new AlertText("No secrets", false));
     } else {
         $box_o_secrets = new WidgetGroup('secrets', true);
+	$box_o_secrets->append($linkbox);
         $page->append($box_o_secrets);
         while ($row = mysql_fetch_array($secrets)) {
             $text = $row['secret_text'];
@@ -64,6 +71,7 @@ if (User::logged_in()) {
             $secret->secret_id = $row['secret_id'];
             $box_o_secrets->append($secret);
         }
+        $box_o_secrets->append($linkbox);
     }
 }
 interface_disp_page($page);

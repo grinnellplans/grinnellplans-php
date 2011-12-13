@@ -135,7 +135,6 @@ function doReadTask() {
             $onlist = mysql_fetch_array($my_result);
             if ($onlist) {
                 update_read($dbh, $idcookie, $searchnum); //mark as having been read
-                setReadTime($dbh, $idcookie, $searchnum); //and mark time that was read
                 
             }
             $response_info = array();

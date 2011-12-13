@@ -16,17 +16,10 @@ function setpriv($myprivl, $cookpriv) {
 }
 //////////
 /*
-*Simply sets a plan that's on a person's autoread list to be marked as read
+*Sets a plan that's on a person's autoread list as read
 */
 function update_read($dbh, $owner, $updated) {
-    mysql_query("UPDATE autofinger SET updated = '0' WHERE owner = '$owner' and interest = '$updated'");
-}
-//////////
-/*
-*Marks when a person reads a plan
-*/
-function setReadTime($dbh, $idcookie, $interest) {
-    mysql_query("UPDATE autofinger SET readtime = NOW() WHERE owner = $idcookie AND interest = $interest");
+    mysql_query("UPDATE autofinger SET updated = '0', readtime = NOW() WHERE owner = '$owner' and interest = '$updated'");
 }
 function mark_as_read($dbh, $owner, $myprivl) {
     $query = "UPDATE autofinger set updated = 0 where owner ='$owner' and priority = '$myprivl'";

@@ -33,7 +33,11 @@ class User {
      * @return string a one-way hash of the password, suitable for storage
      */
     public static function hashPassword($password) {
-        return crypt($password);
+        $alphabet='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
+        $salt = '$1$';
+        for ($i-0;$i<9;$i++) $salt.=$alphabet[mt_rand(0,63)];
+        $salt .= '$';
+        return crypt($password,$salt);
     }
 
     public static function get() {

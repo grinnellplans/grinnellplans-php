@@ -26,7 +26,7 @@ CREATE TABLE `accounts` (
   `userid` smallint(5) unsigned NOT NULL AUTO_INCREMENT,
   `username` varchar(16) NOT NULL DEFAULT '',
   `created` datetime DEFAULT NULL,
-  `password` varchar(86) DEFAULT NULL,
+  `password` varchar(128) DEFAULT NULL,
   `email` varchar(255) DEFAULT NULL,
   `pseudo` varchar(64) DEFAULT NULL,
   `login` datetime DEFAULT NULL,

@@ -26,8 +26,8 @@ CREATE TABLE `accounts` (
   `userid` smallint(5) unsigned NOT NULL AUTO_INCREMENT,
   `username` varchar(16) NOT NULL DEFAULT '',
   `created` datetime DEFAULT NULL,
-  `password` varchar(34) DEFAULT NULL,
-  `email` varchar(64) DEFAULT NULL,
+  `password` varchar(86) DEFAULT NULL,
+  `email` varchar(255) DEFAULT NULL,
   `pseudo` varchar(64) DEFAULT NULL,
   `login` datetime DEFAULT NULL,
   `changed` datetime DEFAULT NULL,
@@ -344,7 +344,7 @@ CREATE TABLE `migration_version` (
 
 LOCK TABLES `migration_version` WRITE;
 /*!40000 ALTER TABLE `migration_version` DISABLE KEYS */;
-INSERT INTO `migration_version` VALUES (3);
+INSERT INTO `migration_version` VALUES (5);
 /*!40000 ALTER TABLE `migration_version` ENABLE KEYS */;
 UNLOCK TABLES;
 

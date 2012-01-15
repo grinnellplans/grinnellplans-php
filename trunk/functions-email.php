@@ -13,7 +13,7 @@ function send_mail($to, $subject, $text, $from, $reply_to) {
                          'Body'=>array('Text'=>array('Data'=>$text)));
         $opt = array('ReplyToAddresses'=>$reply_to);
         $ses = new AmazonSES();
-        $ret = $ses->send_email($from,array('ToAddresses'=>$to),$message,$opt);
+        $ret = $ses->send_email($from,array('ToAddresses'=>array($to)),$message,$opt);
         return $ret->isOK();
     }
 }

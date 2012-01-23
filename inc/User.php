@@ -31,10 +31,37 @@ class User {
         if ($user->username != $username) return false;
         if (($oldpassword !== null) && ($user->password != crypt($oldpassword,$user->password)))
             return false;
-	if (strlen($newpassword) < 4) return false;
+        if (strlen($newpassword) < 4) return false;
         $user->password = User::hashPassword($newpassword);
         $user->save();
         return true;
+    }
+    /**
+     * @return string the user's new password.
+     */
+    public static function resetPassword($username, $expires, $hash, $password = null) {
+        $user = User::get($username);
+        $validhash = User::getPasswordResetHash($username,$expires,$user);
+        if ($expires < time()) return false;
+        if ($hash != $validhash) return false;
+        if ($user === false || $user->username != $username) return false;
+        if ($password === null) {
+                //If we don't get a password, generate an 8-character one for the user, using the Base64 character set (0-9A-Za-z+-.
+                $password = base64_encode(pack("n*",mt_rand(0,65535),mt_rand(0,65535),mt_rand(0,65535)));
+        }
+        User::changePassword($user->username,$password);
+        return $password;
+    }
+    /**
+     * @return string the HMAC-SHA1 hash that's currently valid for the user, or false if the username doesn't exist.
+     */
+    public static function getPasswordResetHash($username, $expires, $user = null) {
+        if ($user === null) $user = User::get($username);
+        if ($user === false) return false;
+        // Include current password in hash so link can only be used once
+        $hashtext = "$user->username|$user->password|$expires";
+        // Generate the hash, and base64-encode it to save space over hex-encoding
+        return strtr(rtrim(base64_encode(hash_hmac('sha1',$hashtext,COOKIE_SIGNATURE_SALT,true)),'='),'+/','._');
     }
     /** 
      * @return string user's current email address 

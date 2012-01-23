@@ -33,7 +33,7 @@ if (!User::logged_in()) {
     if ($changed == 'pass') {
         if (!(strstr($mypassword, "\"") or strstr($mypassword, "\'"))) {
             if (strlen($mypassword) > 3) {
-                User::changePassword(null,$mypassword);
+                User::changePassword(User::name(),$mypassword);
                 $success = new InfoText("Your password has been changed!", 'Success');
                 $thispage->append($success);
 

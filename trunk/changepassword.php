@@ -4,6 +4,8 @@ require ('functions-main.php');
 require ('syntax-classes.php');
 $dbh = db_connect();
 $idcookie = User::id();
+$changed = isset($_REQUEST['changed'])?$_REQUEST['changed']:false;
+$checknumb = isset($_REQUEST['checknumb'])?$_REQUEST['checknumb']:false;
 $thispage = new PlansPage('Preferences', 'password', PLANSVNAME . ' - Change Password', 'changepassword.php');
 if (!User::logged_in()) {
     populate_guest_page($thispage);
@@ -14,9 +16,6 @@ if (!User::logged_in()) {
 
     $real_pass = get_item($dbh, "guest_password", "accounts", "userid", $idcookie);
     $username = get_item($dbh, "username", "accounts", "userid", $idcookie);
-    $email = get_item($dbh, "email", "accounts", "userid", $idcookie);
-    $changed = $_POST['changed'];
-    $checknumb = $_POST['checknumb'];
     if ($changed && ($checknumb != $idcookie)) {
         $denied = new AlertText('Checknumbers do not match.', 'Error', true);
         $thispage->append($denied);
@@ -34,8 +33,7 @@ if (!User::logged_in()) {
     if ($changed == 'pass') {
         if (!(strstr($mypassword, "\"") or strstr($mypassword, "\'"))) {
             if (strlen($mypassword) > 3) {
-                $crpassword = User::hashPassword($mypassword);
-                set_item($dbh, "accounts", "password", $crpassword, "userid", $idcookie); //set the password
+                User::changePassword(null,$mypassword);
                 $success = new InfoText("Your password has been changed!", 'Success');
                 $thispage->append($success);
 
@@ -53,19 +51,6 @@ if (!User::logged_in()) {
         set_item($dbh, "accounts", "guest_password", $guest_password, "userid", $idcookie);
         $real_pass = $guest_password;
     }
-    if ($changed == 'email') {
-        $newemail = $_POST['email'];
-	if ($newemail == "" || filter_var($newemail, FILTER_VALIDATE_EMAIL)) {
-	    set_item($dbh, "accounts", "email", $newemail, "userid", $idcookie);
-	    $email = $newemail;
-	    $success = new InfoText("Your email address has been updated!",'Success');
-	    $thispage->append($success);
-	} else {
-	    $msg = new AlertText('Not a valid email address.','Invalid Email', true);
-	    $thispage->append($msg);
-	}
-    }
-
     $heading = new HeadingText('Change Login Password', 2);
     $thispage->append($heading);
 
@@ -111,29 +96,6 @@ At any time, you may change this password to prevent people from accessing your 
     $passwordform->append($checknumb);
     $sub = new SubmitInput('Set Guest Password');
     $passwordform->append($sub);
-
-    $heading = new HeadingText('Change Permanent Email Address', 2);
-    $thispage->append($heading);
-    $about = new InfoText('This is your permanent email address. If you lose or forget your password, you will be able to have a new password sent to you. <br /> We will not use your email address for any other purpose. If you do not wish to provide your email address, leave the form blank.');
-
-    $thispage->append($about);
-
-    if (stristr($email, "@grinnell.edu") && (get_item($dbh, "user_type", "accounts", "userid", $idcookie)=="student")) {
-        $about = new InfoText("Your email address ends with @grinnell.edu. We recommend using an email address that you will retain access to after you leave the College.");
-        $thispage->append($about);
-    }
-
-    $emailform = new Form('emailform', true);
-    $thispage->append($emailform);
-    $eml = new TextInput('email', $email);
-    $emailform->append($eml);
-    $changed = new HiddenInput('changed', 'email');
-    $emailform->append($changed);
-    $checknumb = new HiddenInput('checknumb', $idcookie);
-    $emailform->append($checknumb);
-    $sub = new SubmitInput('Set Permanent Email');
-    $emailform->append($sub);    
-    
 }
 interface_disp_page($thispage);
 db_disconnect($dbh);

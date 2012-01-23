@@ -3,10 +3,7 @@ require_once ("Plans.php");
 class User {
     public static function login($username, $password) {
         if (User::checkPassword($username, $password)) {
-            $user = Doctrine_Query::create()
-                            ->from('Accounts a')
-                            ->where('username = ?', $username)
-                            ->fetchOne();
+            $user = User::get($username);
             $user->login = mysql_timestamp();
             $user->save();
             $_SESSION['glbs_u'] = $user->username;
@@ -21,14 +18,47 @@ class User {
      * @return boolean true if the given password matched the stored password
      */
     public static function checkPassword($username, $password) {
-        $user = Doctrine_Query::create()
-                        ->from('Accounts a')
-                        ->where('username = ?', $username)
-                        ->fetchOne();
+	$user = User::get($username);
+        if ($user == false) return false;
         $newpass = crypt($password, $user->password);
         return ($newpass != '' && $newpass == $user->password);
     }
-
+    /**
+     * @return boolean true if password updated successfully
+     */
+    public static function changePassword($username, $newpassword, $oldpassword = null) {
+        $user = User::get($username);
+        if ($user->username != $username) return false;
+        if (($oldpassword !== null) && ($user->password != crypt($oldpassword,$user->password)))
+            return false;
+	if (strlen($newpassword) < 4) return false;
+        $user->password = User::hashPassword($newpassword);
+        $user->save();
+        return true;
+    }
+    /** 
+     * @return string user's current email address 
+     */
+    public static function getEmail($username = null) {
+        $user = User::get($username);
+        if ($user === false) return false;
+        return $user->email;
+    }
+    /**
+     * @return boolean true if email updated successfully.
+     */
+    public static function setEmail($email, $username = null) {
+        $user = User::get($username);
+        if ($user === false) return false;
+        if ($email != "") $email = filter_var($email, FILTER_VALIDATE_EMAIL);
+        if ($email !== false) {
+                $user->email = $email;
+                $user->save();
+                return true;
+        } else {
+                return false;
+        }
+    }
     /**
      * @return string a one-way hash of the password, suitable for storage
      */
@@ -36,11 +66,19 @@ class User {
         return crypt($password);
     }
 
-    public static function get() {
-        if (logged_in()) {
-            return Doctrine::getTable('Accounts')->find($_SESSION['glbs_i']);            
+    public static function get($username = null) {
+        if ($username !== null) {
+                $user = Doctrine_Query::create()
+                        ->from('Accounts a')
+                        ->where('username = ?', $username)
+                        ->fetchOne();
+                return $user;
+        }
+        else if (User::logged_in()) {
+            return Doctrine_Query::create()->from('Accounts a')
+                ->where('userid = ?', User::id())->fetchOne();            
         } else {
-            throw new Exception('dunno');
+            return false;
         }
     }
 

@@ -31,8 +31,8 @@ abstract class BaseAccounts extends Doctrine_Record {
         $this->hasColumn('userid', 'integer', 2, array('type' => 'integer', 'length' => 2, 'unsigned' => 1, 'primary' => true, 'autoincrement' => true,));
         $this->hasColumn('username', 'string', 16, array('type' => 'string', 'length' => 16, 'fixed' => false, 'primary' => false, 'default' => '', 'notnull' => true, 'autoincrement' => false,));
         $this->hasColumn('created', 'timestamp', null, array('type' => 'timestamp', 'primary' => false, 'notnull' => false, 'autoincrement' => false,));
-        $this->hasColumn('password', 'string', 34, array('type' => 'string', 'length' => 34, 'fixed' => false, 'primary' => false, 'notnull' => false, 'autoincrement' => false,));
-        $this->hasColumn('email', 'string', 64, array('type' => 'string', 'length' => 64, 'fixed' => false, 'primary' => false, 'notnull' => false, 'autoincrement' => false,));
+        $this->hasColumn('password', 'string', 128, array('type' => 'string', 'length' => 128, 'fixed' => false, 'primary' => false, 'notnull' => false, 'autoincrement' => false,));
+        $this->hasColumn('email', 'string', 255, array('type' => 'string', 'length' => 255, 'fixed' => false, 'primary' => false, 'notnull' => false, 'autoincrement' => false,));
         $this->hasColumn('pseudo', 'string', 64, array('type' => 'string', 'length' => 64, 'fixed' => false, 'primary' => false, 'notnull' => false, 'autoincrement' => false,));
         $this->hasColumn('login', 'timestamp', null, array('type' => 'timestamp', 'primary' => false, 'notnull' => false, 'autoincrement' => false,));
         $this->hasColumn('changed', 'timestamp', null, array('type' => 'timestamp', 'primary' => false, 'notnull' => false, 'autoincrement' => false,));

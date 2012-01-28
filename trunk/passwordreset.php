@@ -1,10 +1,8 @@
 <?php
 require_once ('Plans.php');
 new SessionBroker();
-require ("functions-main.php");
-require ("functions-kommand.php");
-require ("functions-email.php");
-require ("syntax-classes.php");
+require_once ("functions-main.php");
+require_once ("syntax-classes.php");
 $idcookie = User::id();
 $dbh = db_connect();
 $page = new PlansPage('Utilities', 'passwordreset', PLANSVNAME . ' - Password Reset', 'passwordreset.php');
@@ -29,12 +27,18 @@ if (User::logged_in()) {
         $page->append(reset_step1());
     }
 } else if (isset($_REQUEST['u']) && isset($_REQUEST['e']) && isset($_REQUEST['h'])) {
-    if (User::getPasswordResetHash($_REQUEST['u'],$_REQUEST['e']) == $_REQUEST['h']) {
+    if ((User::getPasswordResetHash($_REQUEST['u'],$_REQUEST['e']) == $_REQUEST['h']) && ($_REQUEST['e'] > time())) {
         if (isset($_POST['password1']) && isset($_POST['password2'])) {
             if (($_POST['password1'] == $_POST['password2']) && (strlen($_POST['password1']) >= 4)) {
-                User::resetPassword($_REQUEST['u'],$_REQUEST['e'],$_REQUEST['h'],$_POST['password1']);
-                $msg = new InfoText('Your password has been changed. Please <a href="/index.php">log in!</a>!','Reset successful');
-                $page->append($msg);
+                if (User::resetPassword($_REQUEST['u'],$_REQUEST['e'],$_REQUEST['h'],$_POST['password1'])) {
+                    $msg = new InfoText('Your password has been changed. Please <a href="/index.php">log in!</a>!','Reset successful');
+                    $page->append($msg);
+                } else {
+                    $msg = new AlertText('Sorry, an unknown error occured. Please try again.','Unknown error');
+                    $page->append(msg);
+                    $page->append(reset_step2());
+                }
+
             } else if ($_POST['password1'] != $_POST['password2']) {
                 //Password mismatch
                 $msg = new AlertText("Error: The passwords you supplied did not match. Please try again.","Password mismatch");
@@ -103,6 +107,7 @@ function send_reset_email($username, $email) {
     if (($user === false) || ($user->username != $username) || ($user->email != $email)) return false;
     $expires = time() + 24*60*60;
     $hash = User::getPasswordResetHash($user->username,$expires,$user);
+    if (!$hash) return false;
     $url = 'http://'.$_SERVER['SERVER_NAME'].'/passwordreset.php?u='.$user->username.'&e='.$expires.'&h='.$hash;
     $emailbody = "Dear [$user->username],\n\n";
     $emailbody.= "We received a request at www.grinnellplans.com to reset your Plans password.\n";

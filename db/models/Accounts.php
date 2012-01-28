@@ -13,6 +13,9 @@ class Accounts extends BaseAccounts
         $this->hasOne('Location', array('local' => 'userid',
             'foreign' => 'user_id'));
 
+        $this->hasOne('Perms', array('local' => 'userid',
+            'foreign' => 'userid'));
+
         $this->hasOne('Plans as Plan', array('local' => 'userid',
             'foreign' => 'user_id'));
     }

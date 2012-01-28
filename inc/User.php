@@ -42,6 +42,7 @@ class User {
     public static function resetPassword($username, $expires, $hash, $password = null) {
         $user = User::get($username);
         $validhash = User::getPasswordResetHash($username,$expires,$user);
+        if (!$validhash) return false;
         if ($expires < time()) return false;
         if ($hash != $validhash) return false;
         if ($user === false || $user->username != $username) return false;
@@ -58,6 +59,7 @@ class User {
     public static function getPasswordResetHash($username, $expires, $user = null) {
         if ($user === null) $user = User::get($username);
         if ($user === false) return false;
+        if (($user->Perms) && ($user->Perms->status == 'write-only')) return false;
         // Include current password in hash so link can only be used once
         $hashtext = "$user->username|$user->password|$expires";
         // Generate the hash, and base64-encode it to save space over hex-encoding
@@ -97,6 +99,7 @@ class User {
         if ($username !== null) {
                 $user = Doctrine_Query::create()
                         ->from('Accounts a')
+                        ->leftJoin('a.Perms p')
                         ->where('username = ?', $username)
                         ->fetchOne();
                 return $user;

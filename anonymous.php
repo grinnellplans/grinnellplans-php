@@ -9,8 +9,7 @@ $idcookie = User::id();
 $page = new PlansPage('Extras', 'secrets', PLANSVNAME . ' - Secrets', 'anonymous.php');
 if (User::logged_in()) {
     $db = new Database();
-    $db->query("delete from viewed_secrets where userid = $idcookie");
-    $db->query("insert into viewed_secrets (userid, date) values($idcookie, now())");
+    $db->query("insert into viewed_secrets (userid, date) values($idcookie, now()) on duplicate key update date=now()");
     populate_page($page, $dbh, $idcookie);
 } else
 //begin guest user display

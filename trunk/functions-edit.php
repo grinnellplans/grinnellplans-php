@@ -44,21 +44,17 @@ function cleanText($plan) {
     $plan = preg_replace("/\&lt\;u\&gt\;(.*?)\&lt\;\/u\&gt\;/si", "<span class=\"underline\">\\1</span><!--u-->", $plan); //allow stuff in the underline tag back in
     $plan = preg_replace("/\&lt\;a.+?href=.&quot\;(.+?).&quot\;&gt\;(.+?)&lt\;\/a&gt\;/si", "<a href=\"\\1\" class=\"onplan\">\\2</a>", $plan);
     //$plan = preg_replace("/\&lt\;a.href=.&quot\;(.+).&quot\;/si", "EEE",$plan);
-    $somearray = preg_match_all("/.*?\[(.*?)\].*?/s", $plan, $mymatches); //get an array of everything in brackets
-    $matchcount = count($mymatches[1]);
-    for ($o = 0;$o < $matchcount;$o++) //do a loop to test whether everything in brackets is a valid user or not
+    preg_match_all("/\[([^\[\]]*?)\]/s", $plan, $mymatches); //get an array of everything in brackets
+    foreach ($mymatches[1] as $mycheck) //do a loop to test whether everything in brackets is a valid user or not
     {
-        $mycheck = $mymatches[1][$o]; //get the current thing being tested
         //echo '<!-- ' ."/\[$mycheck\]/s" . ' -->' . "\n";
-        $jlw = preg_replace("/\//", '\/', $mycheck);
-        //echo '<!-- ' ."/\[$jlw\]/s" . ' -->' . "\n";
         if (!isset($checked[$mycheck])) //make sure current thing being checked has not already been checked
         {
             //check for plan with username
             $dbh = db_connect();
             if ($item = get_item($dbh, "username", "accounts", "username", $mycheck)) //see if is a valid user, if so also gets username
             {
-                $plan = preg_replace("/\[$mycheck\]/s", "[<a href=\"read.php?searchname=$item\" class=\"planlove\">$mycheck</a>]", $plan); //change all occurences of person on plan
+                $plan = preg_replace("/\[".preg_quote($mycheck,'/')."\]/s", "[<a href=\"read.php?searchname=$item\" class=\"planlove\">$mycheck</a>]", $plan); //change all occurences of person on plan
                 
             } else {
                 if (preg_match('/^\d+$/', $mycheck) && $item = get_item($dbh, "messageid", "subboard", "messageid", $mycheck)) {
@@ -75,11 +71,11 @@ function cleanText($plan) {
                     }
                 }
             }
-            $checked[$mymatches[1][$o]] = 1; //mark checked values as checked, so don't have to check again
+            $checked[$mycheck] = 1; //mark checked values as checked, so don't have to check again
             
         } //if (!$checked[$mycheck])
         
-    } //for ($o=0; $mymatches[1][$o]; $o++)
+    } //foreach ($mymatches[1] as $mycheck)
     $plan = trim($plan);
     return $plan;
 }

@@ -126,7 +126,7 @@ if ($mysearch) //if no search query, give search form
                 } //while $o<$matchcount-1
                 $sublist = new WidgetList('result_sublist', false);
                 $result->append($sublist);
-                $endsize = strlen($new_row[1]) - 1;
+                $endsize = strlen($new_row[1]);
                 for ($num = 0;$num < count($start_array);$num++) {
                     //Produce excerpts
                     if ($start_array[$num] < 0) {

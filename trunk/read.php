@@ -128,9 +128,6 @@ if (!$user) {
     if ($_GET['edit_submit'] == 1) {
         $changed_msg = new InfoText('Plan changed successfully.');
         $page->append($changed_msg);
-        if ($_GET['fb'] == 1||true) {
-		include 'fb_af.php';
-        }
     }
     $plantext = new PlanText($plantext, false);
     $thisplan = new PlanContent($user->username, $user->pseudo, strtotime($user->login), strtotime($user->changed), $plantext);

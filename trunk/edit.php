@@ -38,25 +38,8 @@ if (!User::logged_in()) {
 
         // Get the pre-edit text.
         $old_plan = $user->Plan->edit_text;
-
-require_once 'Text/Diff.php';
-require_once 'Text/Diff/Renderer/unified.php';
-$diffo     = new Text_Diff('auto', array(explode("\n", $old_plan), explode("\n", $plan)));
-$renderer = new Text_Diff_Renderer_unified();
-
-$diffout = explode("\n", $renderer->render($diffo));
-
-function plus($x) {
-return (substr($x, 0, 1) === "+") && ($x !== "+[date]") && strlen($x)>4;
-}
-function noplus($x) {
-return (substr($x, 1));
-}
-$diffout = array_filter($diffout, "plus");
-$diffout = array_map("noplus", $diffout);
-$diffout = implode(" ", $diffout);
-$diffout = (strlen($diffout) > 120) ? substr($diffout,0,120).'...' : $diffout;
-$_SESSION['d'] = $diffout;
+	
+	unset($_SESSION['d']); // clean up from april fools 2012
 
 	if (md5($old_plan) != $pre_edit_md5) {
 		$page->append(new AlertText("Your plan was edited from another instance of the edit page, or there was a corruption while transferring data between the server and you. Here's a copy of what you submitted:", "Your plan may have changed after you loaded this Edit page!"));

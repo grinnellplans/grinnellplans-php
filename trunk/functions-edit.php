@@ -25,7 +25,7 @@ function get_letters($dbh, $first_letter, $second_letter, $idcookie) {
 /*
 *Handles the cleaning up of a plan, such as allowing only certain html links in
 */
-function cleanText($plan) {
+function cleanText($plan, &$planlove = array()) {
     $plan = htmlspecialchars($plan); //take out html
     //fix the dollar sign error- by josh
     //$plan = preg_replace("(\|(\w\s)*)\$
@@ -54,6 +54,7 @@ function cleanText($plan) {
             $dbh = db_connect();
             if ($item = get_item($dbh, "username", "accounts", "username", $mycheck)) //see if is a valid user, if so also gets username
             {
+                $planlove[] = $mycheck;
                 $plan = preg_replace("/\[".preg_quote($mycheck,'/')."\]/s", "[<a href=\"read.php?searchname=$item\" class=\"planlove\">$mycheck</a>]", $plan); //change all occurences of person on plan
                 
             } else {

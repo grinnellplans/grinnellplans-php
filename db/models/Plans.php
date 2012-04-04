@@ -9,6 +9,7 @@ class Plans extends BasePlans
     public function setUp()
     {
         $this->hasMutator('edit_text', 'processText');
+        $this->hasOne('Accounts as Account', array('local' => 'user_id', 'foreign' => 'userid'));
     }
 
     public function save(Doctrine_Connection $conn = null)
@@ -31,8 +32,23 @@ class Plans extends BasePlans
     public function processText($text) {
         $text = $this->processDates($text);
         $this->_set('edit_text', $text);
-        $html_text = cleanText($text);
+        $planloves = array();
+        $html_text = cleanText($text, $planloves);
         $this->_set('plan', $html_text);
+        Doctrine_Query::create()->delete('Planlove p')->where('p.lover_id = ?', $this->user_id)->execute();
+        // cleanText will return multiple copies of a username if different capitalizations are used 
+        // on a plan. Make sure we don't try to add a row twice.
+        $done = array();
+        foreach ($planloves as $planlove) {
+           $lovee = Doctrine_Query::create()->select('a.userid')->from('Accounts a')->where('a.username = ?', $planlove)->fetchOne();
+           if (!in_array($lovee->userid,$done)) {
+               $love = new Planlove();
+               $love->Lover = $this->Account;
+               $love->Lovee = $lovee;
+               $love->save();
+               $done[] = $lovee->userid;
+           }
+        }
     }
 
     protected function processDates($text) {

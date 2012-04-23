@@ -11,7 +11,7 @@ if (isset($_GET['logout'])) {
     } else {
         $user = User::login($_POST['username'], $_POST['password']);
         if (!$user) {
-            $msg = 'Invalid username or password. <a href="/passwordreset.php">Reset your password?</a>';
+            $msg = 'Invalid username or password.</a>';
         } else {
             $user->JsStatus->status = $_POST['js_test_value'];
             try {
@@ -121,12 +121,13 @@ if (isset($msg)) {
 		<?php
 }
 ?>
-		<br>
+        <br><a href="passwordreset.php">Forgot your password?</a>
+        <br>
 		<br>Need a plan? <a href="register.php">Register</a> if you have an @grinnell.edu email address.
 <br />  
-<span style="font-size:.7em"> 
+<span style="font-size: 1em"> 
 Otherwise <a href="mailto:grinnellplans@gmail.com">email us</a>.
-Alumni, please include your @alumni.grinnell.edu forwarding address (which you can get <a href="http://www.alumniconnections.com/olc/pub/GRN/permanentemail.html">here</a>) and grad year.
+Alumni, please include your <a href="https://loggia.grinnell.edu/page.aspx?pid=308">@alumni.grinnell.edu forwarding address</a> and grad year.
 <br />
  
 </span>

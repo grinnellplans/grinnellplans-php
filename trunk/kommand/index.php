@@ -9,6 +9,7 @@ if (User::is_admin()) {
 ?>
 <a href="adduser.php">Add a User</a><br>
 <a href="deleteuser.php">Delete User</a><br>
+<a href="changeemail.php">Change Email</a><br>
 <a href="changepassword.php">Change Password</a><br>
 <a href="changemotd.php">Change MOTD</a><br />
 <a href="secrets.php">Manage Secrets</a><br />

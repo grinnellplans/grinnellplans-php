@@ -81,8 +81,27 @@ class User {
         if ($user === false) return false;
         if ($email != "") $email = filter_var($email, FILTER_VALIDATE_EMAIL);
         if ($email !== false) {
+                $old = $user->email;
                 $user->email = $email;
                 $user->save();
+                $sysadminemail = ADMIN_ADDRESS;
+                $msg = <<<EOT
+Hello [$user->username],
+
+The email of record for your Plans account has been changed from "$old"
+to "$email". It's important to have a correct email address, in case you
+need to reset your password.
+
+If $email isn't your email, email us at $sysadminemail pronto!
+
+Your email is kept in the strictest confidence.
+
+-The GrinnellPlans Administrators
+EOT;
+                //Only send mail to non-blank addresses; otherwise, send_mail fails
+                if ($old !== "") $to_addrs[] = $old;
+                if ($email !== "") $to_addrs[] = $email;
+                send_mail($to_addrs, "Email address changed", $msg);
                 return true;
         } else {
                 return false;

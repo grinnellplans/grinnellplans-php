@@ -13,7 +13,7 @@ if (User::setEmail($_POST['email'],$_REQUEST['username'])) {
 $audit = User::get()->username." changed ".$_REQUEST['username']."'s email address.\n";
 $audit.= "Former email address: ".$oldemail." \n";
 $audit.= "New email address: ".$_REQUEST['email']." \n";
-send_mail(ADMIN_ADDRESS,"Plans audit event: email for ".$_REQUEST['username']." changed", $audit, MAILER_ADDRESS, MAILER_ADDRESS);
+send_mail(ADMIN_ADDRESS,"Plans audit event: email for ".$_REQUEST['username']." changed", $audit);
 echo 'Email address updated.';
 } else {
 echo 'Error updating email address. <a href="changeemail.php?username="'.htmlentities($_REQUEST['username']).'">Try again?</a>';
@@ -30,7 +30,7 @@ Username : <input type="text" name="username" value="<?php if (isset($_REQUEST['
 <input type="submit" value="Look Up" /></form>
 <?php } /* !isset(username) */ ?>
 </form>
-<br />Usage of this tool will send audit emails to other administrators.
+<br />Usage of this tool will send audit emails to other administrators, and will email the user's old and new addresses.
 <br /><a href="index.php">Return to Kommand</a>
 </body>
 </html>

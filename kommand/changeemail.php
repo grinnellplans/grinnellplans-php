@@ -27,7 +27,7 @@ Email Address : <input type="email" name="email" value="<?php echo htmlspecialch
 if (isset($_REQUEST['username'])) echo 'Invalid or nonexistent username.<br />';
 ?>
 Username : <input type="text" name="username" value="<?php if (isset($_REQUEST['username'])) echo htmlspecialchars($_REQUEST['username']); ?>" /> 
-<input type="submit" value="Look Up" /></form>
+<input type="submit" value="Look Up" />
 <?php } /* !isset(username) */ ?>
 </form>
 <br />Usage of this tool will send audit emails to other administrators, and will email the user's old and new addresses.

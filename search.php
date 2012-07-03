@@ -71,19 +71,10 @@ if ($mysearch) //if no search query, give search form
                 // Just stuff our results into an array for the legacy code
                 $new_row = array(0 => $row->username, 1 => $row->Plan->plan, 2 => $row->userid,);
                 //$new_row[1] is the plan content
-                $new_row[1] = preg_replace("/<br>/", "|br|", $new_row[1]);
-                $new_row[1] = preg_replace("/<.*?>/s", "", $new_row[1]);
-                $new_row[1] = preg_replace("/\|br\|/", "<br>", $new_row[1]);
-                /*
-                $new_row[1] = preg_replace("/<br>/","", $new_row[1]);
-                
-                $new_row[1] = preg_replace("/<b>/","", $new_row[1]);
-                $new_row[1] = preg_replace("/<\/b>/","", $new_row[1]);
-                $new_row[1] = preg_replace("/<i>/","", $new_row[1]);
-                $new_row[1] = preg_replace("/<\/i>/","", $new_row[1]);
-                $new_row[1] = preg_replace("/<u>/","", $new_row[1]);
-                $new_row[1] = preg_replace("/<\/u>/","", $new_row[1]);
-                */
+
+                //strip all tags except '<br>' and '<br/>' 
+                $new_row[1] = strip_tags($new_row[1], '<br>');
+
                 $new_row[1] = stripslashes($new_row[1]);
                 if ($planlove) {
                     $mysearch = $plansearchname;

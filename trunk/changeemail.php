@@ -14,7 +14,7 @@ if (!User::logged_in()) {
 
     $changed = isset($_POST['changed'])?$_POST['changed']:false;
     $checknumb = isset($_POST['checknumb'])?$_POST['checknumb']:false;
-    if ($changed && ($checknumb != $idcookie)) {
+    if ($changed && ($checknumb != User::id())) {
         $denied = new AlertText('Checknumbers do not match.', 'Error', true);
         $thispage->append($denied);
         interface_disp_page($thispage);
@@ -23,20 +23,26 @@ if (!User::logged_in()) {
     }
     if ($changed == 'email') {
         $newemail = $_POST['email'];
-	if ($newemail == "" || filter_var($newemail, FILTER_VALIDATE_EMAIL) !== false) {
+        $user = User::get();
+        if (isset($_POST['password']) && ($user->password == crypt($_POST['password'],$user->password))) {
+	    if ($newemail == "" || filter_var($newemail, FILTER_VALIDATE_EMAIL) !== false) {
             if (User::setEmail($newemail)) {
-	        $success = new InfoText("Your email address has been updated!",'Success');
-	        $thispage->append($success);
+	            $success = new InfoText("Your email address has been updated!",'Success');
+	            $thispage->append($success);
             } else {
                 $msg = new AlertText('An unexpected error occurred.','Unknown Error');
                 $thispage->append($msg);
             }
-	} else {
-	    $msg = new AlertText('Not a valid email address.','Invalid Email', true);
-	    $thispage->append($msg);
-	}
+	    } else {
+	        $msg = new AlertText('Not a valid email address.','Invalid Email', true);
+	        $thispage->append($msg);
+	    }
+	    } else {
+	        $msg = new AlertText('Your password was not entered correctly. Please try again.', 'Incorrect password', true);
+	        $thispage->append($msg);
+	    }
     }    
-    $email = User::getEmail();
+    $email = isset($newemail) ? $newemail : User::getEmail();
 
     $heading = new HeadingText('Change Permanent Email Address', 2);
     $thispage->append($heading);
@@ -52,10 +58,14 @@ if (!User::logged_in()) {
     $emailform = new Form('emailform', true);
     $thispage->append($emailform);
     $eml = new TextInput('email', $email);
+    $eml->title = 'Email address:';
     $emailform->append($eml);
+    $passwd = new PasswordInput('password');
+    $passwd->title = 'Current password:';
+    $emailform->append($passwd);
     $changed = new HiddenInput('changed', 'email');
     $emailform->append($changed);
-    $checknumb = new HiddenInput('checknumb', $idcookie);
+    $checknumb = new HiddenInput('checknumb', User::id());
     $emailform->append($checknumb);
     $sub = new SubmitInput('Set Permanent Email');
     $emailform->append($sub);    

@@ -14,48 +14,48 @@ if (!User::logged_in()) {
 } else {
     populate_page($thispage, $dbh, $idcookie);
 
-    $real_pass = get_item($dbh, "guest_password", "accounts", "userid", $idcookie);
-    $username = get_item($dbh, "username", "accounts", "userid", $idcookie);
-    if ($changed && ($checknumb != $idcookie)) {
+    $guest_pass = User::get()->guest_password;
+    if ($changed && ($checknumb != User::id())) {
         $denied = new AlertText('Checknumbers do not match.', 'Error', true);
         $thispage->append($denied);
         interface_disp_page($thispage);
         db_disconnect($dbh);
         exit(0);
     }
-    if ($changed && ($mypassword != $mypassword2)) {
-        $denied = new AlertText('Passwords do not match.', 'Error', true);
-        $thispage->append($denied);
-        interface_disp_page($thispage);
-        db_disconnect($dbh);
-        exit(0);
-    }
     if ($changed == 'pass') {
-        if (!(strstr($mypassword, "\"") or strstr($mypassword, "\'"))) {
-            if (strlen($mypassword) > 3) {
-                User::changePassword(User::name(),$mypassword);
-                $success = new InfoText("Your password has been changed!", 'Success');
-                $thispage->append($success);
-
+        if ($_POST['mypassword'] == $_POST['mypassword2']) {
+            if (strlen($_POST['mypassword']) > 3) {
+                if (User::changePassword(User::get()->username,$_POST['mypassword'],$_POST['oldpassword'])) {
+                    $success = new InfoText("Your password has been changed!", 'Success');
+                    $thispage->append($success);
+                } else {
+                    $denied = new AlertText('Could not change password. Did you type your old password correctly?', 'Bad Password', true);
+                    $thispage->append($denied);
+                }
             } else {
                 $denied = new AlertText('Could not change password. Your password must be 4 or more characters.', 'Bad Password', true);
                 $thispage->append($denied);
             }
         } else {
-            $denied = new AlertText('Illegal character in password. Please do not use " or \'.', 'Bad Password', true);
+            $denied = new AlertText('Could not change password. New passwords do not match.', 'Bad Password', true);
             $thispage->append($denied);
         }
     }
     if ($changed == 'guest_pass') {
-        $guest_password = $_POST['guest_password'];
-        set_item($dbh, "accounts", "guest_password", $guest_password, "userid", $idcookie);
-        $real_pass = $guest_password;
+        $new_guest_password = $_POST['guest_password'];
+        $user = User::get();
+        $user->guest_password = $new_guest_password;
+        $user->save();
+        $guest_pass = $new_guest_password;
     }
     $heading = new HeadingText('Change Login Password', 2);
     $thispage->append($heading);
 
     $passwordform = new Form('passwordform', true);
     $thispage->append($passwordform);
+    $oldpw = new PasswordInput('oldpassword');
+    $oldpw->title = 'Old password:';
+    $passwordform->append($oldpw);
     $pw1 = new PasswordInput('mypassword');
     $pw1->title = 'New Password:';
     $passwordform->append($pw1);
@@ -64,7 +64,7 @@ if (!User::logged_in()) {
     $passwordform->append($pw2);
     $changed = new HiddenInput('changed', 'pass');
     $passwordform->append($changed);
-    $checknumb = new HiddenInput('checknumb', $idcookie);
+    $checknumb = new HiddenInput('checknumb', User::id());
     $passwordform->append($checknumb);
     $sub = new SubmitInput('Change Password');
     $passwordform->append($sub);
@@ -76,10 +76,10 @@ This feature is intended to allow people to share their Plans with a small numbe
 At any time, you may change this password to prevent people from accessing your plan using the old guest password.');
     $thispage->append($about);
 
-    if ($real_pass) {
+    if ($guest_pass) {
         $about = new InfoText('You may give this link out to anyone who you would like to be able to read you plan and ask them to bookmark it:');
         $thispage->append($about);
-        $link = new Hyperlink('guestpass', true, "http://www.grinnellplans.com/read.php?searchname=$username&amp;guest-pass=$real_pass");
+        $link = new Hyperlink('guestpass', true, "http://www.grinnellplans.com/read.php?searchname=$username&amp;guest-pass=$guest_pass");
         $thispage->append($link);
     } else {
         $about = new InfoText('Currently, your plan is completely private since you do not have a guest password set up.');
@@ -88,11 +88,11 @@ At any time, you may change this password to prevent people from accessing your 
 
     $passwordform = new Form('guestpasswordform', true);
     $thispage->append($passwordform);
-    $pw1 = new TextInput('guest_password', $real_pass);
+    $pw1 = new TextInput('guest_password', $guest_pass);
     $passwordform->append($pw1);
     $changed = new HiddenInput('changed', 'guest_pass');
     $passwordform->append($changed);
-    $checknumb = new HiddenInput('checknumb', $idcookie);
+    $checknumb = new HiddenInput('checknumb', User::id());
     $passwordform->append($checknumb);
     $sub = new SubmitInput('Set Guest Password');
     $passwordform->append($sub);

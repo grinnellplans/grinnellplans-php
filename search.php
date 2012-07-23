@@ -41,9 +41,10 @@ if ($mysearch) //if no search query, give search form
     //otherwise, go on with the search
     {
         // Make the beginnings of our query
-        $q = Doctrine_Query::create()->from('Accounts a')->leftJoin('a.Plan p');
+        $q = Doctrine_Query::create();
         if ($planlove) {
-            if (!$thesearchnum = get_item($dbh, "userid", "accounts", "username", $mysearch)) {
+            $thesearchnum = get_item($dbh, "userid", "accounts", "username", $mysearch);
+            if (!$thesearchnum) {
                 $err = new AlertText("Plan [$mysearch] does not exist. Please check your spelling.", 'Search failed');
                 $thispage->append($err);
                 $donotsearch = true;
@@ -58,7 +59,17 @@ if ($mysearch) //if no search query, give search form
             $mysearch = preg_replace("/\</", "&lt;", $mysearch);
             $mysearch = preg_replace("/\>/", "&gt;", $mysearch);
             $mysearch = preg_quote($mysearch);
-            $q->where('p.edit_text LIKE ?', "%$mysearch%");
+            if ($planlove) {
+                // hit the index
+                $q->select('a.username, p.plan, l.lover_id');
+                $q->from('Planlove l')->leftJoin('l.Lover a')->leftJoin('a.Plan p');
+                $q->where('l.lovee_id = ?', "$thesearchnum");
+            } else {
+                // do a slow query
+                $q->select('a.username, p.plan');
+                $q->from('Accounts a')->leftJoin('a.Plan p');
+                $q->where('p.edit_text LIKE ?', "%$mysearch%");
+            };
             if (!$idcookie) {
                 $q->addWhere('webview=1');
             }
@@ -69,7 +80,11 @@ if ($mysearch) //if no search query, give search form
             $thispage->append($result_list);
             foreach($results as $row) {
                 // Just stuff our results into an array for the legacy code
-                $new_row = array(0 => $row->username, 1 => $row->Plan->plan, 2 => $row->userid,);
+                if ($planlove) {
+                    $new_row = array(0 => $row->Lover->username, 1 => $row->Lover->Plan->plan,);
+                } else {
+                    $new_row = array(0 => $row->username, 1 => $row->Plan->plan,);
+                };
                 //$new_row[1] is the plan content
 
                 //strip all tags except '<br>' and '<br/>' 

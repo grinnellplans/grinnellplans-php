@@ -71,7 +71,7 @@ if ($mysearch) //if no search query, give search form
                 $q->where('p.edit_text LIKE ?', "%$mysearch%");
             };
             if (!$idcookie) {
-                $q->addWhere('webview=1');
+                $q->addWhere('a.webview=1');
             }
             $q->orderBy('a.username');
             // Run the query

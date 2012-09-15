@@ -8,7 +8,7 @@ require ("syntax-classes.php");
 $idcookie = User::id();
 $userid = $idcookie;
 $dbh = db_connect();
-$admin_email = MAILER_ADDRESS;
+$admin_email = ADMIN_ADDRESS;
 $domain = "grinnell.edu";
 $thispage = new PlansPage('Utilities', 'register', PLANSVNAME . ' - Registration', 'register.php');
 if (User::logged_in()) {

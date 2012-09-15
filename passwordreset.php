@@ -116,6 +116,6 @@ function send_reset_email($username, $email) {
     $emailbody.= "If you are still having trouble accessing your GrinnellPlans account, reply to this email, and tell us what's going on.\n";
     $emailbody.= "If you did not request a password reset, you may safely ignore this email. Your password will not be changed.\n\n";
     $emailbody.= "Thanks for your continued interest in Plans!\nThe Plans Admins";
-    return send_mail($email,"GrinnellPlans password reset",$emailbody,MAILER_ADDRESS,MAILER_ADDRESS);
+    return send_mail($email,"GrinnellPlans password reset",$emailbody);
 }
 ?>

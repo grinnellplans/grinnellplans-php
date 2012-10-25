@@ -18,6 +18,11 @@ class Accounts extends BaseAccounts
 
         $this->hasOne('Plans as Plan', array('local' => 'userid',
             'foreign' => 'user_id'));
+
+        $this->hasMany('Autofinger as Interests', array(
+            'local' => 'userid',
+            'foreign' => 'owner',
+        ));
     }
 
     public function getEditCols() {
@@ -36,6 +41,38 @@ class Accounts extends BaseAccounts
             return 14;
         }
         return $rows;
+    }
+
+    public function getAutofinger($updated = true) {
+        // retrieve this user's autoread lists.
+        //
+        // returns arrays of usernames nested within an array of autoread 
+        // priority levels.
+        //
+        // by default, show only unread plans.
+        // set $updated = false to show un-updated plans.
+        // or  $updated = null to show all plans.
+        $id = $this->get('userid');
+        $q = Doctrine_Query::create()
+            ->select('f.priority, a.username')
+            ->from('Autofinger f')
+            ->leftJoin('f.Interest a')
+            ->where('f.owner = ?', $id);
+        if(!is_null($updated)) {
+            $q->andWhere('f.updated = ?', $updated);
+        };
+            $q->orderBy('f.priority, a.changed desc');
+        // perform query and organize result.
+        $result = array();
+        // make sure there are empty arrays for the 3 levels
+        for($i = 1; $i <= 3; $i++){
+            $result[$i] = array();
+        };
+        foreach($q->execute() as $row) {
+            $result[$row->priority][] = $row->Interest->username;
+        };
+        return $result;
+
     }
 
 }

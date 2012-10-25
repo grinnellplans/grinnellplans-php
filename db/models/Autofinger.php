@@ -5,5 +5,11 @@
  */
 class Autofinger extends BaseAutofinger
 {
+    public function setUp() {
+        parent::setUp();
+        $this->hasOne('Accounts as Owner', array('local' => 'owner', 'foreign' => 'userid'));
+        //TODO 'interest' column should really use plan ids (not user ids)
+        $this->hasOne('Accounts as Interest', array('local' => 'interest', 'foreign' => 'userid'));
+    }
 
 }

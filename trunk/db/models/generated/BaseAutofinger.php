@@ -5,9 +5,20 @@
 abstract class BaseAutofinger extends Doctrine_Record {
     public function setTableDefinition() {
         $this->setTableName('autofinger');
-        $this->hasColumn('id', 'integer', 20, array('type' => 'integer', 'autoincrement' => true, 'primary' => true, 'length' => '20'));
-        $this->hasColumn('owner', 'integer', 2, array('type' => 'integer', 'unsigned' => '1', 'default' => '0', 'notnull' => true, 'length' => '2'));
-        $this->hasColumn('interest', 'integer', 2, array('type' => 'integer', 'unsigned' => '1', 'default' => '0', 'notnull' => true, 'length' => '2'));
+        $this->hasColumn('owner', 'integer', 2, array(
+            'type' => 'integer',
+            'unsigned' => '1',
+            'primary' => true,
+            'autoincrement' => false,
+            'length' => '2',
+        ));
+        $this->hasColumn('interest', 'integer', 2, array(
+            'type' => 'integer',
+            'unsigned' => '1',
+            'primary' => true,
+            'autoincrement' => false,
+            'length' => '2',
+        ));
         $this->hasColumn('priority', 'integer', 1, array('type' => 'integer', 'unsigned' => '1', 'length' => '1'));
         $this->hasColumn('updated', 'string', 1, array('type' => 'string', 'fixed' => 1, 'length' => '1'));
         $this->hasColumn('updtime', 'timestamp', 25, array('type' => 'timestamp', 'length' => '25'));

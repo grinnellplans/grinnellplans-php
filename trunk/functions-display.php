@@ -61,6 +61,7 @@ function interface_disp_page(PlansPage $page) {
  * @param int $idcookie The user's id
  */
 function populate_page(PlansPage $page, $dbh, $idcookie) {
+    $user = User::get();
     //get the paths of the interface and style files that the user indicated as wanting to use
     $my_result = mysql_query("SELECT style.path FROM
 	style, display WHERE
@@ -86,9 +87,13 @@ function populate_page(PlansPage $page, $dbh, $idcookie) {
         $mp->links->append($link);
     }
     $mp->autoreads = new WidgetList('autoread', true);
-    for ($i = 1;$i <= 3;$i++) {
-        $mp->autoreads->append(get_autoread($idcookie, $i));
-    }
+    foreach ($user->getAutofinger() as $p => $autoreadlist) {
+        $ar = new AutoRead($p, "setpriv.php?myprivl=$p");
+        foreach ($autoreadlist as $autoreadlink) {
+            $ar->append(new PlanLink($autoreadlink));
+        };
+        $mp->autoreads->append($ar);
+    };
     $footer = new Footer();
     $footer->doyouread = get_just_updated();
     $footer->powered_by = get_powered_by();
@@ -121,27 +126,6 @@ function populate_guest_page(PlansPage $page) {
     $footer->powered_by = get_powered_by();
     $footer->legal = new RegularText(get_disclaimer(), NULL);
     $page->footer = $footer;
-}
-/**
- * Create an autoread list for the given priority
- *
- * @param int $p The priority level to retrieve
- * @param int $idcookie The user's id
- * @return Autoread
- */
-function get_autoread($idcookie, $p) {
-    $privarray = mysql_query("Select autofinger.interest,accounts.username
-		From autofinger, accounts where owner = '$idcookie' and priority =
-		'$p' and updated = '1' and autofinger.interest=accounts.userid order by accounts.changed desc");
-    $autoreadlist = array();
-    while ($new_row = mysql_fetch_row($privarray)) {
-        $autoreadlist[] = $new_row;
-    }
-    $ar = new AutoRead($p, "setpriv.php?myprivl=$p");
-    foreach($autoreadlist as $autoreadlink){
-        $ar->append(new PlanLink($autoreadlink[1]));
-    }
-    return $ar;
 }
 /**
  * Get all links

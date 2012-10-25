@@ -371,6 +371,11 @@ class FormItem extends Widget {
      */
     public $type;
     /**
+     * The disabled state of the item
+     * @var bool
+     */
+    public $disabled;
+    /**
      * The form this set is in
      * @var Form
      */
@@ -412,6 +417,11 @@ class CheckboxInput extends FormItem {
 }
 class TextInput extends FormItem {
     public $type = 'text';
+    /**
+     * Is the item read-only?
+     * @var bool
+     */
+    public $readonly = false;
 }
 class PasswordInput extends FormItem {
     public $type = 'password';
@@ -587,7 +597,7 @@ class HeadingText extends Text {
      */
     public $sublevel;
     public function __construct($_message, $_level) {
-        parent::__construct('heading' . $sublevel, NULL);
+        parent::__construct('heading' . $_level, NULL);
         $this->message = $_message;
         $this->sublevel = $_level;
     }

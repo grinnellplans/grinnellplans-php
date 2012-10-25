@@ -2,14 +2,6 @@
 require_once ('Plans.php');
 //////////
 /*
-*Set the time when the plan was updated
-*/
-function setUpdatedTime($idcookie) {
-    $t = timestamp();
-    mysql_query("UPDATE accounts SET changed = $t WHERE userid = $idcookie");
-}
-//////////
-/*
 *Get all of the plans that fall between two letters (usually the same one)
 */
 function get_letters($dbh, $first_letter, $second_letter, $idcookie) {

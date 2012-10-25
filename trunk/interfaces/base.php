@@ -20,6 +20,9 @@ class Plans_Savant3 extends Savant3 {
  * generic template for an object that previously had no template set).
  */
 abstract class BaseInterface implements DisplayInterface {
+
+    protected $element_ids = array();
+
     public function display_page(PlansPage $page) {
         $tpl = $this->setup_page($page);
         $tpl->display();
@@ -194,6 +197,7 @@ abstract class BaseInterface implements DisplayInterface {
             // If it's possible there are multiple inputs with the same name,
             // append a number to the end to make it unique
             if ($obj instanceof CheckboxInput || $obj instanceof RadioInput) {
+                if (!isset($this->element_ids[$item_id])) $this->element_ids[$item_id] = 0;
                 $num = (int)$this->element_ids[$item_id]++;
                 $item_id = $item_id . $num;
             }
@@ -203,6 +207,10 @@ abstract class BaseInterface implements DisplayInterface {
             $tpl->type = $obj->type;
             $tpl->name = $obj->name;
             $tpl->value = $obj->value;
+            $tpl->disabled = $obj->disabled;
+            if (isset($obj->readonly)) {
+                $tpl->readonly = $obj->readonly;
+            }
             if (isset($obj->checked)) {
                 $tpl->checked = $obj->checked;
             }

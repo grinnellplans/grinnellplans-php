@@ -85,6 +85,10 @@ function reset_step2() {
     $form->method = 'POST';
     $msg = new InfoText('Please choose a new password for your GrinnellPlans account. Passwords must be four characters long or more.','Choose new password');
     $form->append($msg);
+    $username = new TextInput('u',$_REQUEST['u']);
+    $username->title = 'Username:';
+    $username->readonly = true;
+    $form->append($username);
     $pw1 = new PasswordInput('password1');
     $pw1->title = "New Password:";
     $form->append($pw1);
@@ -93,8 +97,6 @@ function reset_step2() {
     $form->append($pw2);
     $submit = new SubmitInput('Change Password');
     $form->append($submit);
-    $u = new HiddenInput('u',$_REQUEST['u']);
-    $form->append($u);
     $e = new HiddenInput('e',$_REQUEST['e']);
     $form->append($e);
     $h = new HiddenInput('h',$_REQUEST['h']);

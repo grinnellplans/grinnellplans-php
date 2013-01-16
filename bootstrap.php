@@ -11,8 +11,8 @@ $manager->setAttribute('model_loading', 'conservative');
 $manager->setAttribute('validate', 'lengths');
 Doctrine::loadModels(__ROOT__ . '/db/models'); // This call will not require the found .php files
 $conn = Doctrine_Manager::connection(DB_URI);
-$conn->setCharset('utf8');
-$conn->setCollate('utf8_unicode_ci');
+$conn->setCharset('utf8mb4');
+$conn->setCollate('utf8mb4_unicode_ci');
 // Autoloader for classes
 function plans_autoload($classname) {
     $filename = str_replace('_', '/', $classname);

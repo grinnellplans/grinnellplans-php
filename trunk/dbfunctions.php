@@ -10,6 +10,7 @@ function db_connect() {
         print "Something's wrong with the database. You could report the error to grinnellplans@gmail.com. <br/><pre>" . mysql_error() . "</pre>";
         exit;
     }
+    @mysql_query($dbh, "SET NAMES 'utf8mb4';");
     return $dbh;
 }
 /*

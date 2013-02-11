@@ -79,7 +79,7 @@ At any time, you may change this password to prevent people from accessing your 
     if ($guest_pass) {
         $about = new InfoText('You may give this link out to anyone who you would like to be able to read you plan and ask them to bookmark it:');
         $thispage->append($about);
-        $link = new Hyperlink('guestpass', true, "http://www.grinnellplans.com/read.php?searchname=$username&amp;guest-pass=$guest_pass");
+        $link = new Hyperlink('guestpass', true, "http://www.grinnellplans.com/read.php?searchname=".User::name()."&amp;guest-pass=$guest_pass");
         $thispage->append($link);
     } else {
         $about = new InfoText('Currently, your plan is completely private since you do not have a guest password set up.');

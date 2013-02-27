@@ -99,9 +99,8 @@ Your email is kept in the strictest confidence.
 -The GrinnellPlans Administrators
 EOT;
                 //Only send mail to non-blank addresses; otherwise, send_mail fails
-                if ($old !== "") $to_addrs[] = $old;
-                if ($email !== "") $to_addrs[] = $email;
-                send_mail($to_addrs, "Email address changed", $msg);
+                if ($old !== "") send_mail($old, "Email address changed", $msg);
+                if ($email !== "") send_mail($email, "Email address changed", $msg);
                 return true;
         } else {
                 return false;

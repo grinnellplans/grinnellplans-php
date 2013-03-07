@@ -24,8 +24,7 @@ if ($_GET['submitted']) {
     if (preg_match("/(.*)@$domain/", $username, $match)) {
         $username = $match[1];
     }
-    $orig_username = $username;
-    $username = preg_replace('/[^a-zA-A+0-9]/', '', $username);
+    $username = preg_replace('/[^a-z0-9]/', '', strtolower($username));
     $year = $_GET['gradyear'];
     $year = preg_replace("/[^0-9]/", '', $year);
     $type = $_GET['type'];
@@ -33,7 +32,7 @@ if ($_GET['submitted']) {
         $type = $_GET['other'];
     }
     if ($username == '' || get_item($dbh, 'username', 'accounts', 'username', $username)) {
-        $thispage->append(show_username_taken($orig_username));
+        $thispage->append(show_username_taken($username));
     } else {
         $token = make_token();
         $data = array('username' => $username, 'year' => $year, 'type' => $type);
@@ -41,8 +40,11 @@ if ($_GET['submitted']) {
         $email = $username . '@' . $domain;
         mysql_query("insert into tentative_accounts set session = '$storable', token = '$token', created = now()");
         $message = "Click the following link to activate your Plan:\n" . "www.grinnellplans.com/register.php?token=$token\n\n" . "The link will expire in 24 hours.";
-        send_mail($email, "Activate your new plan.", $message, $admin_email,$admin_email);
-        $message = new InfoText("An email has been sent to $email with a link to activate your Plan.  You will probably receive it right away, but if you don't get it within a few hours, <a href=" . '"mailto:grinnellplans@gmail.com"' . ">Bug us</a>.", 'Email Sent');
+        if (send_mail($email, "Activate your new plan.", $message)) {
+        $message = new InfoText("An email has been sent to $email with a link to activate your Plan.  You will probably receive it right away, but if you don't get it within a few hours, <a href=\"mailto:$admin_email\">Bug us</a>.", 'Email Sent');
+        } else {
+        $message = new AlertText("We were not able to send you an activation email, possibly because your email address is not accepting messages at this time. Please contact <a href=\"mailto:$admin_email\">$admin_email</a> for assistance.",'Activation email could not be sent');
+        }
         $thispage->append($message);
     }
 } else if ($_GET['token']) {
@@ -58,7 +60,7 @@ if ($_GET['submitted']) {
         $year = $data['year'];
         $email = $username . '@' . $domain;
         if (get_item($dbh, 'username', 'accounts', 'username', $username)) {
-            $message = new AlertText('A plan with the username ' . $username . ' already exists, meaning this token has been used.  If you are the owner of that email, your password was given to you when you first clicked the link.  If you\'ve lost the password, or for anything else, <a href="mailto:grinnellplans@gmail.com">Email</a> us.', 'Plan exists');
+            $message = new AlertText("A plan with the username $username already exists, meaning this token has been used.  If you are the owner of that email, your password was given to you when you first clicked the link.  If you've lost the password, or for anything else, <a href=\"mailto:$admin_email\">Email us</a>.", 'Plan exists');
             $thispage->append($message);
             $thispage->append(show_form());
         } else {
@@ -67,9 +69,9 @@ if ($_GET['submitted']) {
             $message = new InfoText("Your account has been created!  Your username is $username and your initial password is $password." . '  Go <a href="http://www.grinnellplans.com/">Here</a> to test them out.', 'Plan Created');
             $thispage->append($message);
             $message = "A new plan has been created with \nusername:  $username\nGrad Year: $year\n$username self-identifies as $type.";
-            send_mail($admin_email, "Plan Created: $username", $message, $admin_email,$admin_email);
+            send_mail($admin_email, "Plan Created: $username", $message);
             $message = "Your account has been created!  Your username is $username and your initial password is $password. Go to http://www.grinnellplans.com/ to get started.\n";
-            send_mail($email, "Plan Created", $message, $admin_email, $admin_email);
+            send_mail($email, "Plan Created", $message);
         }
     }
 } else {

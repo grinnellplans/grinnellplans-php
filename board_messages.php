@@ -25,7 +25,7 @@ if (!User::logged_in()) {
     $content->append($replyform);
     $cook = new HiddenInput('checknum', $idcookie);
     $replyform->append($cook);
-    $thread = new HiddenInput('threadid', $_REQUEST['threadid']);
+    $thread = new HiddenInput('threadid', isset($_REQUEST['threadid'])?$_REQUEST['threadid']:"");
     $replyform->append($thread);
     $sub = new HiddenInput('submit', 1);
     $replyform->append($sub);
@@ -120,12 +120,18 @@ if (!User::logged_in()) {
         $thread->append($post);
         if ($new_row[3]) {
             $post->poster = new PlanLink($new_row[3]);
+        } else {
+            $post->poster = new RegularText("unknown");
         }
-        if ($new_row[7] == 1) {
+        switch ($new_row[7]) {
+            case 1:
             $post->user_vote = 'yes';
-        }
-        if ($new_row[7] == - 1) {
+            break;
+            case -1:
             $post->user_vote = 'no';
+            break;
+            default:
+            $post->user_vote = '';
         }
         $post->id = $new_row[0];
         $post->score = $new_row[6];

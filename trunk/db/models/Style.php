@@ -5,5 +5,12 @@
  */
 class Style extends BaseStyle
 {
+    public function setUp()
+    {
+        $this->hasMany('Display as Users', array(
+            'local' => 'style',
+            'foreign' => 'style',
+        ));
+    }
 
 }

@@ -4,7 +4,7 @@ class User {
     public static function login($username, $password) {
         if (User::checkPassword($username, $password)) {
             $user = User::get($username);
-            $user->login = mysql_timestamp();
+            $user->login = new Doctrine_Expression('NOW()');
             $user->save();
             $_SESSION['glbs_u'] = $user->username;
             $_SESSION['glbs_i'] = $user->userid;
@@ -151,13 +151,9 @@ EOT;
     }
 
     public static function is_admin() {
-        $db = new Database();
-        $privileges = $db->value_from_query("SELECT is_admin FROM accounts WHERE username = '" . User::name() . "'");
-        if ($privileges) {
-            return true;
-        } else {
-            return false;
-        }
+        $user = User::get();
+        if (!$user) return false;
+        else return $user->is_admin != 0;
     }
 
     public static function is_guest() {

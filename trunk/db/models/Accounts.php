@@ -7,6 +7,7 @@ class Accounts extends BaseAccounts
         $this->hasAccessor('edit_rows', 'getEditRows');
         $this->hasAccessor('edit_cols', 'getEditCols');
         $this->hasAccessor('stylesheet', 'getStylesheet');
+        $this->hasAccessor('interface', 'getInterface');
 
         $this->hasOne('JsStatus', array('local' => 'userid',
             'foreign' => 'userid'));
@@ -103,6 +104,18 @@ class Accounts extends BaseAccounts
             $css = $row->Style->path;
         };
         return $css;
+    }
+
+    public function getInterface() {
+        // retrieve the path to this user's interface.
+        $id = $this->get('userid');
+        $q = Doctrine_Query::create()
+                ->select('d.userid, i.path')
+                ->from('Display d')
+                ->leftJoin('d.Interface i')
+                ->where('d.userid = ?', $id);
+        $row = $q->fetchOne();
+        return $row->Interface->path;
     }
 
 }

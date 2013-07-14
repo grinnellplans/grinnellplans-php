@@ -8,27 +8,6 @@ function Redirect($url) {
     Header("Location: $url");
 }
 /**
- * Get the preferred interface for this user.
- *
- * Finds the interface the user has set in their preferences and loads up the required file.
- *
- * @param int $idcookie The user's id, or null if it's a guest
- */
-function get_interface($idcookie) {
-    // If there's no id, it's a guest
-    if (!$idcookie) {
-        require_once ("interfaces/default/defaultinterface.php"); //TODO hardcoding! bleh!
-        return;
-    }
-    // Get the path to the interface this user has active
-    $my_result = mysql_query("SELECT interface.path FROM
-	interface, display WHERE
-	display.userid = '$idcookie' AND display.interface = interface.interface");
-    $new_row = mysql_fetch_row($my_result);
-    require_once ($new_row[0]); //loads up the interface functions
-    
-}
-/**
  * All interface objects for displaying pages must implement this (OO) interface.
  * @package Interfaces
  */
@@ -42,8 +21,13 @@ interface DisplayInterface {
     public function display_page(PlansPage $page);
 }
 function interface_disp_page(PlansPage $page) {
-    $id = User::id();
-    get_interface($id);
+    $user = User::get();
+    if (!$user) { // for guests, use default interface
+        $interface_path = "interfaces/default/defaultinterface.php";
+    } else {
+        $interface_path = $user->interface;
+    };
+    require_once($interface_path);
     $interface = interface_construct();
     if ($interface instanceof DisplayInterface) {
         $interface->display_page($page);

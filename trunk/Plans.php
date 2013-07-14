@@ -36,7 +36,6 @@ if (get_magic_quotes_gpc()) {
 ini_set('short_open_tag', FALSE); // Has no effect after PHP 4.0.0
 
 // Simple functions
-require_once ('functions.php');
 require_once ('functions-main.php');
 new ResourceCounter();
 new SessionBroker();

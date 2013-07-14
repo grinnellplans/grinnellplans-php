@@ -62,20 +62,10 @@ function interface_disp_page(PlansPage $page) {
  */
 function populate_page(PlansPage $page, $dbh, $idcookie) {
     $user = User::get();
-    //get the paths of the interface and style files that the user indicated as wanting to use
-    $my_result = mysql_query("SELECT style.path FROM
-	style, display WHERE
-	display.userid = '$idcookie' AND display.style=style.style");
-    $new_row = mysql_fetch_row($my_result);
-    // Check for a custom stylesheet
-    $css = get_item($dbh, "stylesheet", "stylesheet", "userid", $idcookie);
     // get the global stylesheet
     $page->stylesheets[] = 'styles/global.css';
-    if ($css) {
-        $page->stylesheets[] = $css;
-    } else {
-        $page->stylesheets[] = $new_row[0];
-    }
+    // get user stylesheet
+    $page->stylesheets[] = $user->stylesheet;
     $myprivl = get_myprivl();
     $page->autoreadpriority = $myprivl;
     $mp = new MainPanel();

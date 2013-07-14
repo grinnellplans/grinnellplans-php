@@ -6,6 +6,7 @@ class Accounts extends BaseAccounts
     {
         $this->hasAccessor('edit_rows', 'getEditRows');
         $this->hasAccessor('edit_cols', 'getEditCols');
+        $this->hasAccessor('stylesheet', 'getStylesheet');
 
         $this->hasOne('JsStatus', array('local' => 'userid',
             'foreign' => 'userid'));
@@ -18,6 +19,9 @@ class Accounts extends BaseAccounts
 
         $this->hasOne('Plans as Plan', array('local' => 'userid',
             'foreign' => 'user_id'));
+
+        $this->hasOne('Display', array('local' => 'userid',
+            'foreign' => 'userid'));
 
         $this->hasMany('Autofinger as Interests', array(
             'local' => 'userid',
@@ -73,6 +77,32 @@ class Accounts extends BaseAccounts
         };
         return $result;
 
+    }
+
+    public function getStylesheet() {
+        // retrieve the path to this user's stylesheet.
+        //
+        // directly accessing $user->Display->Style->path won't pick 
+        // up custom stylesheets, so use this method instead.
+        $id = $this->get('userid');
+        // check for a custom stylesheet
+        $q = Doctrine_Query::create()
+            ->select('s.stylesheet')
+            ->from('Stylesheet s')
+            ->where('s.userid = ?', $id);
+        $row = $q->fetchOne();
+        if ($row) {
+            $css = $row['stylesheet'];
+        } else {
+            $q = Doctrine_Query::create()
+                    ->select('d.userid, s.path')
+                    ->from('Display d')
+                    ->leftJoin('d.Style s')
+                    ->where('d.userid = ?', $id);
+            $row = $q->fetchOne();
+            $css = $row->Style->path;
+        };
+        return $css;
     }
 
 }

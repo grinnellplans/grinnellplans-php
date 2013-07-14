@@ -5,5 +5,12 @@
  */
 class OutputInterface extends BaseOutputInterface
 {
+    public function setUp()
+    {
+        $this->hasMany('Display as Users', array(
+            'local' => 'interface',
+            'foreign' => 'interface',
+        ));
+    }
 
 }

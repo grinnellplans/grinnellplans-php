@@ -14,7 +14,7 @@ abstract class BasePlans extends Doctrine_Record {
         $this->setTableName('plans');
         $this->hasColumn('id', 'integer', 2, array('type' => 'integer', 'length' => 2, 'unsigned' => 0, 'primary' => true, 'autoincrement' => true,));
         $this->hasColumn('user_id', 'integer', 2, array('type' => 'integer', 'length' => 2, 'unsigned' => 0, 'primary' => false, 'notnull' => false, 'autoincrement' => false,));
-        $this->hasColumn('plan', 'clob', 196605, array('type' => 'string', 'fixed' => false, 'primary' => false, 'notnull' => false, 'autoincrement' => false,));
-        $this->hasColumn('edit_text', 'string', 65535, array('type' => 'string', 'fixed' => false, 'primary' => false, 'notnull' => false, 'autoincrement' => false,));
+        $this->hasColumn('plan', 'clob', 16777256, array('type' => 'string', 'fixed' => false, 'primary' => false, 'notnull' => false, 'autoincrement' => false,));
+        $this->hasColumn('edit_text', 'string', 1048576, array('type' => 'string', 'fixed' => false, 'primary' => false, 'notnull' => false, 'autoincrement' => false,));
     }
 }

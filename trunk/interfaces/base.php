@@ -153,7 +153,7 @@ abstract class BaseInterface implements DisplayInterface {
                 }
             }
             if ($obj instanceof Form) {
-                $tpl->tag_attributes = self::id_and_class($obj->identifier, array($obj->group, 'form'));
+                $tpl->tag_attributes = self::id_and_class($obj->identifier, array($obj->group, 'form')) . ' enctype="multipart/form-data"';
                 $tpl->method = strtolower($obj->method);
                 $tpl->action = $obj->action;
                 if ($obj instanceof EditBox) {

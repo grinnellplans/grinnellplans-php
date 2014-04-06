@@ -149,7 +149,7 @@ function doReadTask() {
             if ($user->changed == '0000-00-00 00:00:00') {
                 $response_info['last_updated'] = "";
             } else {
-                $response_info['last_login'] = date('n/j/y, g:i A', strtotime($user->changed));
+                $response_info['last_updated'] = date('n/j/y, g:i A', strtotime($user->changed));
             }
             $response_info['pseudo'] = $user->pseudo == null ? "" : $user->pseudo;
             if ($read_link) {

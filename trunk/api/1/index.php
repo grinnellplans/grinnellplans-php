@@ -224,22 +224,15 @@ function doLoginTask() {
  *
  */
 function getAutofingerList() {
-    $idcookie = User::id();
-    if ($idcookie === false) {
+    $user = User::get();
+    if ($user === false) {
         return;
     }
-    $af_levels = array("1", "2", "3");
     $af_list = array();
-    foreach($af_levels as $level) {
+    foreach($user->getAutofinger() as $level => $autoreadlist) {
         $container = array();
-        $container['level'] = $level;
-        $container['usernames'] = array();
-        $privarray = mysql_query("Select autofinger.interest,accounts.username
-		From autofinger, accounts where owner = '$idcookie' and priority =
-		'$level' and updated = '1' and autofinger.interest=accounts.userid");
-        while ($new_row = mysql_fetch_assoc($privarray)) {
-            $container['usernames'][] = $new_row["username"];
-        }
+        $container['level'] = "$level";
+        $container['usernames'] = $autoreadlist;
         $af_list[] = $container;
     }
     return $af_list;

@@ -73,7 +73,16 @@ if (User::logged_in()) {
     $page->url = add_param($page->url, 'searchnum', $searchnum);
     $addtolist = (isset($_POST['addtolist']) ? $_POST['addtolist'] : false);
     // if person is manipulating which tier this plan is on their autoread list
-    if ($addtolist == 1) {
+    if (isset($_POST['block_user'])) {
+        if ($_POST['block_user'] == 1) {
+            Block::addBlock($idcookie, $searchnum);
+            $msg = new InfoText("User " . $planinfo[0][0] . " has been blocked.");
+        } else {
+            Block::removeBlock($idcookie, $searchnum);
+            $msg = new InfoText("User " . $planinfo[0][0] . " has been unblocked.");
+        }
+        $page->append($msg);
+    } else if ($addtolist == 1) {
         $privlevel = (isset($_POST['privlevel']) ? $_POST['privlevel'] : 0);
         if ($privlevel == 0) {
             mysql_query("DELETE FROM autofinger WHERE owner = '$idcookie' and interest = '$searchnum'");
@@ -154,6 +163,20 @@ if (!$user) {
             }
             $item = new SubmitInput('Set Priority');
             $addform->append($item);
+
+            $blocking = new Form('block', 'User blocking options');
+            if (Block::isBlocking($idcookie, $searchnum)) {
+                $item = new HiddenInput('block_user', 0);
+                $blocking->append($item);
+                $item = new SubmitInput('Unblock this user');
+                $blocking->append($item);
+            } else {
+                $item = new HiddenInput('block_user', 1);
+                $blocking->append($item);
+                $item = new SubmitInput('Block this user');
+                $blocking->append($item);
+            }
+            $page->append($blocking);
         }
     }
 }

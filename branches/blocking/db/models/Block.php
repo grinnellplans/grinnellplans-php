@@ -34,7 +34,6 @@ class Block extends BaseBlock
             ->orWhere("blocked_user_id = ?", $user_id);
         $ids = [];
         foreach ($q->fetchArray() as $row) {
-            print_r($row);
             if ($row["blocking_user_id"] == $user_id) {
                 array_push($ids, $row["blocked_user_id"]);
             } else {

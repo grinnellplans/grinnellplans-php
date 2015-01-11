@@ -60,7 +60,6 @@ if ($mysearch) //if no search query, give search form
             $mysearch = preg_replace("/\>/", "&gt;", $mysearch);
             $mysearch = preg_quote($mysearch);
             $ids_to_hide = Block::allUserIdsWithBlockingRelationships($idcookie);
-            print_r($ids_to_hide);
             if ($planlove) {
                 // hit the index
                 $q->select('a.username, p.plan, l.lover_id');

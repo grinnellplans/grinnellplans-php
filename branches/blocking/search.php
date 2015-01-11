@@ -59,16 +59,20 @@ if ($mysearch) //if no search query, give search form
             $mysearch = preg_replace("/\</", "&lt;", $mysearch);
             $mysearch = preg_replace("/\>/", "&gt;", $mysearch);
             $mysearch = preg_quote($mysearch);
+            $ids_to_hide = Block::allUserIdsWithBlockingRelationships($idcookie);
+            print_r($ids_to_hide);
             if ($planlove) {
                 // hit the index
                 $q->select('a.username, p.plan, l.lover_id');
                 $q->from('Planlove l')->leftJoin('l.Lover a')->leftJoin('a.Plan p');
                 $q->where('l.lovee_id = ?', "$thesearchnum");
+                $q->andWhereNotIn('l.lover_id', $ids_to_hide);
             } else {
                 // do a slow query
                 $q->select('a.username, p.plan');
                 $q->from('Accounts a')->leftJoin('a.Plan p');
                 $q->where('p.edit_text LIKE ?', "%$mysearch%");
+                $q->andWhereNotIn('a.userid', $ids_to_hide);
             };
             if (!$idcookie) {
                 $q->addWhere('a.webview=1');

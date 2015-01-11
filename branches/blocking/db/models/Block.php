@@ -8,6 +8,7 @@ class Block extends BaseBlock
         $block->blocked_user_id = $to_block;
         $block->save();
     }
+
     public static function removeBlock($blocker, $to_unblock) {
         Doctrine_Query::create()
             ->delete("Block b")
@@ -23,5 +24,23 @@ class Block extends BaseBlock
             ->where("blocking_user_id = ?", $blocker)
             ->andWhere("blocked_user_id = ?", $blocked);
         return ($q->fetchOne()->c > 0);
+    }
+
+    public static function allUserIdsWithBlockingRelationships($user_id) {
+        $q = Doctrine_Query::create()
+            ->select("*")
+            ->from("Block")
+            ->where("blocking_user_id = ?", $user_id)
+            ->orWhere("blocked_user_id = ?", $user_id);
+        $ids = [];
+        foreach ($q->fetchArray() as $row) {
+            print_r($row);
+            if ($row["blocking_user_id"] == $user_id) {
+                array_push($ids, $row["blocked_user_id"]);
+            } else {
+                array_push($ids, $row["blocking_user_id"]);
+            }
+        }
+        return array_unique($ids);
     }
 }

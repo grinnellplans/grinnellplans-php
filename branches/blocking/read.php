@@ -138,31 +138,38 @@ if (!$user) {
         $changed_msg = new InfoText('Plan changed successfully.');
         $page->append($changed_msg);
     }
-    $plantext = new PlanText($plantext, false);
-    $thisplan = new PlanContent($user->username, $user->pseudo, strtotime($user->login), strtotime($user->changed), $plantext);
-    $page->append($thisplan);
+    if (Block::isBlocking($searchnum, $idcookie)) {
+        $blocked_msg = new InfoText("You cannot view this user's plan.");
+        $page->append($blocked_msg);
+    } else {
+        $plantext = new PlanText($plantext, false);
+        $thisplan = new PlanContent($user->username, $user->pseudo, strtotime($user->login), strtotime($user->changed), $plantext);
+        $page->append($thisplan);
+    }
     $page->title = '[' . $user->username . "]'s Plan";
     if (User::logged_in()) //if is a valid user, give them the option of putting the plan on their autoread list, or taking it off, and also if plan is on their autoread list, mark as read and mark time
     {
         if (!($searchnum == $idcookie)) //if person is not looking at their own plan, give them a small form to set the priority of the persons plan on their autoread list
         {
-            $addform = new Form('autoreadadd', 'Set Priority');
-            $thisplan->addform = $addform;
-            $addform->action = "read.php?searchnum=$searchnum";
-            $addform->method = 'POST';
-            $item = new HiddenInput('addtolist', 1);
-            $addform->append($item);
-            $levels = new FormItemSet('readadd_levels', true);
-            $addform->append($levels);
-            for ($j = 0;$j < 4;$j++) {
-                $item = new RadioInput('privlevel', $j);
-                if ($j == 0) $item->description = 'X';
-                else $item->description = "$j";
-                $item->checked = ($myonlist == $item->description);
-                $levels->append($item);
+            if (!Block::isBlocking($searchnum, $idcookie)) {
+                $addform = new Form('autoreadadd', 'Set Priority');
+                $thisplan->addform = $addform;
+                $addform->action = "read.php?searchnum=$searchnum";
+                $addform->method = 'POST';
+                $item = new HiddenInput('addtolist', 1);
+                $addform->append($item);
+                $levels = new FormItemSet('readadd_levels', true);
+                $addform->append($levels);
+                for ($j = 0;$j < 4;$j++) {
+                    $item = new RadioInput('privlevel', $j);
+                    if ($j == 0) $item->description = 'X';
+                    else $item->description = "$j";
+                    $item->checked = ($myonlist == $item->description);
+                    $levels->append($item);
+                }
+                $item = new SubmitInput('Set Priority');
+                $addform->append($item);
             }
-            $item = new SubmitInput('Set Priority');
-            $addform->append($item);
 
             $blocking = new Form('block', 'User blocking options');
             if (Block::isBlocking($idcookie, $searchnum)) {

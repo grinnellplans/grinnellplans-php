@@ -26,24 +26,24 @@ $item->cols = 2;
 $timeform->append($item);
 $item = new SubmitInput('See Plans');
 $timeform->append($item);
-if (User::logged_in()) {
-    $webview = '';
-} else {
-    $webview = 'and webview = 1';
+$q = Doctrine_Query::create()
+    ->select("userid,username,DATE_FORMAT(changed,
+'%l:%i %p, %a %M %D ') as updated")
+    ->from("Accounts a")
+    ->where("changed > DATE_SUB(NOW(), INTERVAL ? HOUR)", $mytime)
+    ->orderBy("changed desc");
+if (!User::logged_in()) {
+    $q->andWhere('webview = 1');
 }
-$my_planwatch = mysql_query("select userid,username,DATE_FORMAT(changed,
-'%l:%i %p, %a %M %D ') from accounts where
-changed > DATE_SUB(NOW(), INTERVAL $mytime HOUR)  
-$webview
-ORDER BY changed desc");
+$results = $q->fetchArray();
 //do the query with specifying date format to be returned
 $newplanslist = new WidgetList('new_plan_list', true);
 $thispage->append($newplanslist);
 //display the results of the query
-while ($new_plans = mysql_fetch_row($my_planwatch)) {
+foreach ($results as $new_plans) {
     $entry = new WidgetGroup('newplan', false);
-    $plan = new PlanLink($new_plans[1]);
-    $time = new RegularText($new_plans[2], 'Date Created');
+    $plan = new PlanLink($new_plans["username"]);
+    $time = new RegularText($new_plans["updated"], 'Date Created');
     $entry->append($plan);
     $entry->append($time);
     $newplanslist->append($entry);

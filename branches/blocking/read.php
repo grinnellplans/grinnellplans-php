@@ -127,21 +127,21 @@ if (!$user) {
 } else if (!$idcookie && $user->webview != 1 && !$guest_auth) {
     $page->append(new AlertText("There is either no plan with that name or it is not viewable to guests.", 'Plan not found', false));
 } else {
-    // Get the plan text
-    $plantext = $user->Plan->plan;
-    // Jumble it if requested
-    if ($_GET['jumbled'] == 'yes' || ($_COOKIE['jumbled'] == 'yes' && $_GET['jumbled'] != 'no')) {
-        $plantext = jumble($plantext);
-    }
-    // If we're redirecting from edit.php, assure the user that their change was applied
-    if ($_GET['edit_submit'] == 1) {
-        $changed_msg = new InfoText('Plan changed successfully.');
-        $page->append($changed_msg);
-    }
     if (Block::isBlocking($searchnum, $idcookie)) {
         $blocked_msg = new InfoText("You cannot view this user's plan.");
         $page->append($blocked_msg);
     } else {
+        // If we're redirecting from edit.php, assure the user that their change was applied
+        if ($_GET['edit_submit'] == 1) {
+            $changed_msg = new InfoText('Plan changed successfully.');
+            $page->append($changed_msg);
+        }
+        // Get the plan text
+        $plantext = $user->Plan->plan;
+        // Jumble it if requested
+        if ($_GET['jumbled'] == 'yes' || ($_COOKIE['jumbled'] == 'yes' && $_GET['jumbled'] != 'no')) {
+            $plantext = jumble($plantext);
+        }
         $plantext = new PlanText($plantext, false);
         $thisplan = new PlanContent($user->username, $user->pseudo, strtotime($user->login), strtotime($user->changed), $plantext);
         $page->append($thisplan);

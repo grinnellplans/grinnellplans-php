@@ -13,12 +13,13 @@ if (!User::logged_in()) {
 } else {
     $title = new HeadingText('Optional Links', 1);
     $thispage->append($title);
-    if ($submit) //if form has been submitted
+    if (isset($_REQUEST['submit'])) //if form has been submitted
     {
         //if list of available links gets too long, may have to add code in to parse
         //lists so only adding or deleting changing stuff, but for now easier to just
         //delete all and start again
         delete_item($dbh, "opt_links", "userid", $idcookie); //delete current links
+        $mylinks = $_REQUEST['mylinks'];
         if (count($mylinks)) //if there are any links, add them
         { //if values to add
             while (list($key, $items) = each($mylinks)) //for each link the user wants to add, do the loop

@@ -127,14 +127,24 @@ if (!$user) {
 } else if (!$idcookie && $user->webview != 1 && !$guest_auth) {
     $page->append(new AlertText("There is either no plan with that name or it is not viewable to guests.", 'Plan not found', false));
 } else {
-    if (Block::isBlocking($searchnum, $idcookie)) {
-        $blocked_msg = new InfoText("You cannot view this user's plan.");
+    // Perform these queries once for the page
+    $is_blocking_this_user = Block::isBlocking($idcookie, $searchnum);
+    $this_user_is_blocking_you = Block::isBlocking($searchnum, $idcookie);
+
+    if ($this_user_is_blocking_you) {
+        $blocked_msg = new AlertText("You cannot view this user's plan.");
         $page->append($blocked_msg);
     } else {
         // If we're redirecting from edit.php, assure the user that their change was applied
         if ($_GET['edit_submit'] == 1) {
             $changed_msg = new InfoText('Plan changed successfully.');
             $page->append($changed_msg);
+        }
+        if ($is_blocking_this_user) {
+            $blocked_msg = new InfoText("You are currently blocking this
+                user.<br/>They cannot read your plan, and will not show up in
+                quicklove or search.");
+            $page->append($blocked_msg);
         }
         // Get the plan text
         $plantext = $user->Plan->plan;
@@ -151,8 +161,7 @@ if (!$user) {
     {
         if (!($searchnum == $idcookie)) //if person is not looking at their own plan, give them a small form to set the priority of the persons plan on their autoread list
         {
-            if (!Block::isBlocking($searchnum, $idcookie) &&
-                !Block::isBlocking($idcookie, $searchnum)) {
+            if (!$this_user_is_blocking_you && !$is_blocking_this_user) {
                 $addform = new Form('autoreadadd', 'Set Priority');
                 $thisplan->addform = $addform;
                 $addform->action = "read.php?searchnum=$searchnum";
@@ -173,7 +182,7 @@ if (!$user) {
             }
 
             $blocking = new Form('block', 'User blocking options');
-            if (Block::isBlocking($idcookie, $searchnum)) {
+            if ($is_blocking_this_user) {
                 $item = new HiddenInput('block_user', 0);
                 $blocking->append($item);
                 $item = new SubmitInput('Unblock this user');

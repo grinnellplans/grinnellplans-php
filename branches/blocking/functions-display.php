@@ -206,6 +206,8 @@ function get_just_updated() {
         ->select("userid, username")
         ->from("Accounts")
         ->where("username != 'test'")
+        ->andWhereNotIn("userid",
+            Block::allUserIdsWithBlockingRelationships(User::id()))
         ->orderBy("changed DESC")
         ->limit(1);
     //return the results of the query

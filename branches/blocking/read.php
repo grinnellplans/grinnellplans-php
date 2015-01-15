@@ -151,7 +151,8 @@ if (!$user) {
     {
         if (!($searchnum == $idcookie)) //if person is not looking at their own plan, give them a small form to set the priority of the persons plan on their autoread list
         {
-            if (!Block::isBlocking($searchnum, $idcookie)) {
+            if (!Block::isBlocking($searchnum, $idcookie) &&
+                !Block::isBlocking($idcookie, $searchnum)) {
                 $addform = new Form('autoreadadd', 'Set Priority');
                 $thisplan->addform = $addform;
                 $addform->action = "read.php?searchnum=$searchnum";

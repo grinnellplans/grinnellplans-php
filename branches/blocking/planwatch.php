@@ -32,7 +32,10 @@ $q = Doctrine_Query::create()
     ->from("Accounts a")
     ->where("changed > DATE_SUB(NOW(), INTERVAL ? HOUR)", $mytime)
     ->orderBy("changed desc");
-if (!User::logged_in()) {
+if (User::logged_in()) {
+    $q->andWhereNotIn("userid",
+        Block::allUserIdsWithBlockingRelationships(User::id()));
+} else {
     $q->andWhere('webview = 1');
 }
 $results = $q->fetchArray();

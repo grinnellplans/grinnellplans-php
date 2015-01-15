@@ -7,6 +7,13 @@ class Block extends BaseBlock
         $block->blocking_user_id = $blocker;
         $block->blocked_user_id = $to_block;
         $block->save();
+        # Take the blocker of the blocked autoread
+        $q = Doctrine_Query::create()
+            ->update("Autofinger")
+            ->set("updated", 0)
+            ->where("interest = ?", $blocker)
+            ->andWhere("owner = ?", $to_block);
+        $q->execute();
     }
 
     public static function removeBlock($blocker, $to_unblock) {

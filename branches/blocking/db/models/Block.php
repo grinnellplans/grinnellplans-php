@@ -3,6 +3,11 @@
 class Block extends BaseBlock
 {
     public static function addBlock($blocker, $to_block) {
+        if ($blocker == $to_block) {
+            // Blocking yourself would be stupid, don't do it.
+            return;
+        }
+
         $block = new Block();
         $block->blocking_user_id = $blocker;
         $block->blocked_user_id = $to_block;

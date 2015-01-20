@@ -19,6 +19,7 @@ $random_query = Doctrine_Query::create()
     ->where('LENGTH(p.edit_text) != 0')
     ->andWhere('changed > DATE_SUB(NOW(), INTERVAL 1 YEAR)')
     ->andWhereNotIn('a.userid', $ids_to_hide);
-$random_user = $random_query->offset(rand(0,$random_query->count()))->limit(1)->fetchOne();
+$offset = rand(0,$random_query->count() - 1);
+$random_user = $random_query->offset($offset)->limit(1)->fetchOne();
 header("Location: read.php?searchname=" . $random_user->username);
 ?>

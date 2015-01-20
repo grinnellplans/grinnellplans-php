@@ -76,7 +76,9 @@ if (User::logged_in()) {
     if (isset($_POST['block_user'])) {
         if ($_POST['block_user'] == 1) {
             Block::addBlock($idcookie, $searchnum);
-            $msg = new InfoText("User " . $planinfo[0][0] . " has been blocked.");
+            $msg = new InfoText("<p>You have blocked this user. Blocking a user is one-directional. Selecting \"Block\" renders the contents of your plan unavailable to this user. Neither will see any [planlove] by the other, and any updates either make will not show up on each other’s planwatch.</p>
+
+<p>If this block was made in error, please use the option at the bottom of the page to un-do.</p>");
         } else {
             Block::removeBlock($idcookie, $searchnum);
             $msg = new InfoText("User " . $planinfo[0][0] . " has been unblocked.");
@@ -132,7 +134,7 @@ if (!$user) {
     $this_user_is_blocking_you = Block::isBlocking($searchnum, $idcookie);
 
     if ($this_user_is_blocking_you) {
-        $blocked_msg = new AlertText("You cannot view this user's plan.");
+        $blocked_msg = new AlertText("[$user->username] has enabled the block feature. This plan is not available.");
         $page->append($blocked_msg);
     } else {
         // If we're redirecting from edit.php, assure the user that their change was applied
@@ -141,9 +143,7 @@ if (!$user) {
             $page->append($changed_msg);
         }
         if ($is_blocking_this_user) {
-            $blocked_msg = new InfoText("You are currently blocking this
-                user.<br/>They cannot read your plan, and will not show up in
-                quicklove or search.");
+            $blocked_msg = new InfoText("You have enabled the blocking feature for this user. This means the contents of your plan are unavailable to this user. Searching for your plan, quicklove, and planwatch are also disabled for this user. To unblock, use the button at the bottom of the page.");
             $page->append($blocked_msg);
         }
         // Get the plan text
@@ -182,18 +182,23 @@ if (!$user) {
             }
 
             $blocking = new Form('block', 'User blocking options');
+            $page->append($blocking);
             if ($is_blocking_this_user) {
                 $item = new HiddenInput('block_user', 0);
                 $blocking->append($item);
                 $item = new SubmitInput('Unblock this user');
                 $blocking->append($item);
+                $explanation = new InfoText("You have blocked [$user->username]. Blocking a user is one-directional. Searching for your plan, quicklove, and planwatch are also disabled for this user. <a href=\"/blocking-about.php\">See the FAQ for more information</a>.
+                    <br /><br />If you wish to remove the block, select \"Unblock this user\".");
+                $page->append($explanation);
             } else {
                 $item = new HiddenInput('block_user', 1);
                 $blocking->append($item);
                 $item = new SubmitInput('Block this user');
                 $blocking->append($item);
+                $explanation = new InfoText('Blocking a user is one-directional. Selecting "Block this user" renders the contents of your plan unavailable to this user. Searching for your plan, quicklove, and planwatch will also be disabled for this user. <a href="/blocking-about.php">See the FAQ for more information</a>.');
+                $page->append($explanation);
             }
-            $page->append($blocking);
         }
     }
 }

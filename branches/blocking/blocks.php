@@ -4,8 +4,6 @@ require ('functions-main.php');
 require ('syntax-classes.php');
 $dbh = db_connect();
 $idcookie = User::id();
-//$changed = isset($_REQUEST['changed'])?$_REQUEST['changed']:false;
-//$checknumb = isset($_REQUEST['checknumb'])?$_REQUEST['checknumb']:false;
 $thispage = new PlansPage('Preferences', 'blocks', PLANSVNAME . ' - Blocking', 'blocks.php');
 if (!User::logged_in()) {
     populate_guest_page($thispage);
@@ -24,7 +22,9 @@ if (!User::logged_in()) {
     $heading = new HeadingText('Blocking', 1);
     $header->append($heading);
     $thispage->append($header);
-    $about = new InfoText('Users that you have blocked will not be able to read your plan, and you will not see each other listed in quicklove or search results.<br /><br />
+    $about = new InfoText('Users that you have blocked will not be able to read your plan, and you will not see each other listed in quicklove or search results.
+        <a href="/blocking-about.php">See the FAQ for more information</a>.
+        <br /><br />
         <b>Please be aware that your activity on Notes is still visible to everyone.</b> If you feel this presents a serious problem to you, please <a href="mailto:grinnellplans@gmail.com">contact the administrators</a>.');
     $header->append($about);
 

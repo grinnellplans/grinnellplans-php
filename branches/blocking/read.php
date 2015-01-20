@@ -75,6 +75,13 @@ if (User::logged_in()) {
     // if person is manipulating which tier this plan is on their autoread list
     if (isset($_POST['block_user'])) {
         if ($_POST['block_user'] == 1) {
+            $user = User::get();
+            if ($user->webview == 1) {
+                $warning = new AlertText("Warning! Your plan is set to be viewable by guests. This will allow blocked users to read your plan
+simply by logging out. If you would like to change this setting, please visit
+<a href=\"/webview.php\">the guest settings page</a>.");
+                $page->append($warning);
+            }
             Block::addBlock($idcookie, $searchnum);
             $msg = new InfoText("<p>You have blocked this user. Blocking a user is one-directional. Selecting \"Block\" renders the contents of your plan unavailable to this user. Neither will see any [planlove] by the other, and any updates either make will not show up on each other’s planwatch.</p>
 

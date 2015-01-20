@@ -22,6 +22,15 @@ if (!User::logged_in()) {
     $heading = new HeadingText('Blocking', 1);
     $header->append($heading);
     $thispage->append($header);
+
+    $user = User::get();
+    if ($user->webview == 1) {
+        $warning = new AlertText("Warning! Your plan is set to be viewable by guests. This will allow blocked users to read your plan
+            simply by logging out. If you would like to change this setting, please visit
+            <a href=\"/webview.php\">the guest settings page</a>.");
+        $header->append($warning);
+    }
+
     $about = new InfoText('Users that you have blocked will not be able to read your plan, and you will not see each other listed in quicklove or search results.
         <a href="/blocking-about.php">See the FAQ for more information</a>.
         <br /><br />

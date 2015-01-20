@@ -16,6 +16,8 @@ if ($deleted_name) {
         delete_item($dbh, "autofinger", "owner", $deleted_id);
         delete_item($dbh, "autofinger", "interest", $deleted_id);
         delete_item($dbh, "display", "userid", $deleted_id);
+        delete_item($dbh, "blocks", "blocking_user_id", $deleted_id);
+        delete_item($dbh, "blocks", "blocked_user_id", $deleted_id);
         delete_item($dbh, "opt_links", "userid", $deleted_id);
         delete_item($dbh, "plans", "user_id", $deleted_id);
         echo "Account deleted";

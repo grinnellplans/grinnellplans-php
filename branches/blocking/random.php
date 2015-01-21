@@ -10,7 +10,7 @@ if (User::logged_in()) {
     $ids_to_hide = Block::allUserIdsWithBlockingRelationships(User::id());
     array_push($ids_to_hide, User::id());
 } else {
-    $ids_to_hide = [];
+    $ids_to_hide = array();
 }
 $random_query = Doctrine_Query::create()
     ->select('a.username')

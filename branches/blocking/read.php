@@ -140,7 +140,7 @@ if (!$user) {
     $is_blocking_this_user = Block::isBlocking($idcookie, $searchnum);
     $this_user_is_blocking_you = Block::isBlocking($searchnum, $idcookie);
 
-    if ($this_user_is_blocking_you) {
+    if ($this_user_is_blocking_you && !User::is_admin()) {
         $blocked_msg = new AlertText("[$user->username] has enabled the block feature. This plan is not available.");
         $page->append($blocked_msg);
     } else {

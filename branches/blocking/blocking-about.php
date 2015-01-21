@@ -58,6 +58,8 @@ Your <a href="/blocks.php">blocked list</a> can be found in "Preferences" under 
 <dt>Can someone circumvent the block?</dt>
 <dd>
 Yes. The blocking feature does not disable the guest readable function on plans. However, the ToS states that Plans Administrators have the right to “Terminate or suspend Users who intentionally and maliciously circumvent any security or authentication measures or any features intended to block or limit contact between Users.”
+
+Plans administrators will also be able to read your plan regardless of whether you have blocked them.
 </dd>
 
 <dt>What is the guest readable function, and where can I find it?</dt>

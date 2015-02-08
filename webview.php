@@ -26,6 +26,17 @@ if (!User::logged_in()) {
         $thisitem = new InfoText('Preference set.', '');
         $thispage->append($thisitem);
     }
+
+    $q = Doctrine_Query::create()
+        ->from('Block b')
+        ->where('b.blocking_user_id = ?', $idcookie)
+        ->count();
+    $has_blocks = ($q != 0);
+    if ($has_blocks) {
+        $warning = new AlertText("Warning! You are currently blocking some users. Making your plan viewable to guests will allow blocked users to read your plan simply by logging out. To see the list of users you are blocking, visit <a href=\"/blocks.php\">the blocking page</a>.");
+        $thispage->append($warning);
+    }
+
     // Make our form
     $viewableform = new Form('guestviewableform', true);
     $thispage->append($viewableform);

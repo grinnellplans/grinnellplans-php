@@ -16,7 +16,7 @@ if (!User::logged_in()) {
     $thispage->append($heading);
     $preflist = new WidgetList('preflist', "Preferences");
     // make the list of preference pages
-    $arr = array('Change Password' => "changepassword.php", 'Change Name' => "changename.php", 'Change Permanent Email' => 'changeemail.php', 'Guest Readable' => "webview.php", 'Customize' => '', 'Interfaces' => "interfaces.php", 'Styles' => "styles.php", 'Edit Text Box Size' => "textbox.php", 'Optional Links' => "links.php");
+    $arr = array('Change Password' => "changepassword.php", 'Change Name' => "changename.php", 'Change Permanent Email' => 'changeemail.php', 'Guest Readable' => "webview.php", "Blocking" => 'blocks.php', 'Customize' => '', 'Interfaces' => "interfaces.php", 'Styles' => "styles.php", 'Edit Text Box Size' => "textbox.php", 'Optional Links' => "links.php");
     foreach($arr as $name => $ref) {
         if (strtolower($name) != 'customize') {
             $alink = new Hyperlink('preflink', false, $ref, $name);

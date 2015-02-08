@@ -12,4 +12,13 @@ class Autofinger extends BaseAutofinger
         $this->hasOne('Accounts as Interest', array('local' => 'interest', 'foreign' => 'userid'));
     }
 
+    public static function updateFor($user_id) {
+        $blocks = Block::allUserIdsWithBlockingRelationships($user_id);
+        $q = Doctrine_Query::create()
+            ->update("Autofinger")
+            ->set("updated", 1)
+            ->where("interest = ?", $user_id)
+            ->andWhereNotIn("owner", $blocks);
+        return $q->execute();
+    }
 }

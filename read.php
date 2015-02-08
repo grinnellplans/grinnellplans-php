@@ -73,7 +73,25 @@ if (User::logged_in()) {
     $page->url = add_param($page->url, 'searchnum', $searchnum);
     $addtolist = (isset($_POST['addtolist']) ? $_POST['addtolist'] : false);
     // if person is manipulating which tier this plan is on their autoread list
-    if ($addtolist == 1) {
+    if (isset($_POST['block_user'])) {
+        if ($_POST['block_user'] == 1) {
+            $user = User::get();
+            if ($user->webview == 1) {
+                $warning = new AlertText("Warning! Your plan is set to be viewable by guests. This will allow blocked users to read your plan
+simply by logging out. If you would like to change this setting, please visit
+<a href=\"/webview.php\">the guest settings page</a>.");
+                $page->append($warning);
+            }
+            Block::addBlock($idcookie, $searchnum);
+            $msg = new InfoText("<p>You have blocked this user. Blocking a user is one-directional. Selecting \"Block\" renders the contents of your plan unavailable to this user. Neither will see any [planlove] by the other, and any updates either make will not show up on each other’s planwatch.</p>
+
+<p>If this block was made in error, please use the option at the bottom of the page to un-do.</p>");
+        } else {
+            Block::removeBlock($idcookie, $searchnum);
+            $msg = new InfoText("User " . $planinfo[0][0] . " has been unblocked.");
+        }
+        $page->append($msg);
+    } else if ($addtolist == 1) {
         $privlevel = (isset($_POST['privlevel']) ? $_POST['privlevel'] : 0);
         if ($privlevel == 0) {
             mysql_query("DELETE FROM autofinger WHERE owner = '$idcookie' and interest = '$searchnum'");
@@ -118,42 +136,76 @@ if (!$user) {
 } else if (!$idcookie && $user->webview != 1 && !$guest_auth) {
     $page->append(new AlertText("There is either no plan with that name or it is not viewable to guests.", 'Plan not found', false));
 } else {
-    // Get the plan text
-    $plantext = $user->Plan->plan;
-    // Jumble it if requested
-    if ($_GET['jumbled'] == 'yes' || ($_COOKIE['jumbled'] == 'yes' && $_GET['jumbled'] != 'no')) {
-        $plantext = jumble($plantext);
+    // Perform these queries once for the page
+    $is_blocking_this_user = Block::isBlocking($idcookie, $searchnum);
+    $this_user_is_blocking_you = Block::isBlocking($searchnum, $idcookie);
+
+    if ($this_user_is_blocking_you && !User::is_admin()) {
+        $blocked_msg = new AlertText("[$user->username] has enabled the block feature. This plan is not available.");
+        $page->append($blocked_msg);
+    } else {
+        // If we're redirecting from edit.php, assure the user that their change was applied
+        if ($_GET['edit_submit'] == 1) {
+            $changed_msg = new InfoText('Plan changed successfully.');
+            $page->append($changed_msg);
+        }
+        if ($is_blocking_this_user) {
+            $blocked_msg = new InfoText("You have enabled the blocking feature for this user. This means the contents of your plan are unavailable to this user. Searching for your plan, quicklove, and planwatch are also disabled for this user. To unblock, use the button at the bottom of the page.");
+            $page->append($blocked_msg);
+        }
+        // Get the plan text
+        $plantext = $user->Plan->plan;
+        // Jumble it if requested
+        if ($_GET['jumbled'] == 'yes' || ($_COOKIE['jumbled'] == 'yes' && $_GET['jumbled'] != 'no')) {
+            $plantext = jumble($plantext);
+        }
+        $plantext = new PlanText($plantext, false);
+        $thisplan = new PlanContent($user->username, $user->pseudo, strtotime($user->login), strtotime($user->changed), $plantext);
+        $page->append($thisplan);
     }
-    // If we're redirecting from edit.php, assure the user that their change was applied
-    if ($_GET['edit_submit'] == 1) {
-        $changed_msg = new InfoText('Plan changed successfully.');
-        $page->append($changed_msg);
-    }
-    $plantext = new PlanText($plantext, false);
-    $thisplan = new PlanContent($user->username, $user->pseudo, strtotime($user->login), strtotime($user->changed), $plantext);
-    $page->append($thisplan);
     $page->title = '[' . $user->username . "]'s Plan";
     if (User::logged_in()) //if is a valid user, give them the option of putting the plan on their autoread list, or taking it off, and also if plan is on their autoread list, mark as read and mark time
     {
         if (!($searchnum == $idcookie)) //if person is not looking at their own plan, give them a small form to set the priority of the persons plan on their autoread list
         {
-            $addform = new Form('autoreadadd', 'Set Priority');
-            $thisplan->addform = $addform;
-            $addform->action = "read.php?searchnum=$searchnum";
-            $addform->method = 'POST';
-            $item = new HiddenInput('addtolist', 1);
-            $addform->append($item);
-            $levels = new FormItemSet('readadd_levels', true);
-            $addform->append($levels);
-            for ($j = 0;$j < 4;$j++) {
-                $item = new RadioInput('privlevel', $j);
-                if ($j == 0) $item->description = 'X';
-                else $item->description = "$j";
-                $item->checked = ($myonlist == $item->description);
-                $levels->append($item);
+            if (!$this_user_is_blocking_you && !$is_blocking_this_user) {
+                $addform = new Form('autoreadadd', 'Set Priority');
+                $thisplan->addform = $addform;
+                $addform->action = "read.php?searchnum=$searchnum";
+                $addform->method = 'POST';
+                $item = new HiddenInput('addtolist', 1);
+                $addform->append($item);
+                $levels = new FormItemSet('readadd_levels', true);
+                $addform->append($levels);
+                for ($j = 0;$j < 4;$j++) {
+                    $item = new RadioInput('privlevel', $j);
+                    if ($j == 0) $item->description = 'X';
+                    else $item->description = "$j";
+                    $item->checked = ($myonlist == $item->description);
+                    $levels->append($item);
+                }
+                $item = new SubmitInput('Set Priority');
+                $addform->append($item);
             }
-            $item = new SubmitInput('Set Priority');
-            $addform->append($item);
+
+            $blocking = new Form('block', 'User blocking options');
+            $page->append($blocking);
+            if ($is_blocking_this_user) {
+                $item = new HiddenInput('block_user', 0);
+                $blocking->append($item);
+                $item = new SubmitInput('Unblock this user');
+                $blocking->append($item);
+                $explanation = new InfoText("You have blocked [$user->username]. Blocking a user is one-directional. Searching for your plan, quicklove, and planwatch are also disabled for this user. <a href=\"/blocking-about.php\">See the FAQ for more information</a>.
+                    <br /><br />If you wish to remove the block, select \"Unblock this user\".");
+                $page->append($explanation);
+            } else {
+                $item = new HiddenInput('block_user', 1);
+                $blocking->append($item);
+                $item = new SubmitInput('Block this user');
+                $blocking->append($item);
+                $explanation = new InfoText('Blocking a user is one-directional. Selecting "Block this user" renders the contents of your plan unavailable to this user. Searching for your plan, quicklove, and planwatch will also be disabled for this user. <a href="/blocking-about.php">See the FAQ for more information</a>.');
+                $page->append($explanation);
+            }
         }
     }
 }

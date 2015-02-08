@@ -202,16 +202,21 @@ function get_linkhome() {
  */
 function get_just_updated() {
     // Get the most recently updated plan
-    $my_planwatch = mysql_query("SELECT userid, username 
-                            FROM accounts
-                            WHERE username != 'test'
-		            ORDER BY changed DESC LIMIT 1");
+    $q = Doctrine_Query::create()
+        ->select("userid, username")
+        ->from("Accounts")
+        ->where("username != 'test'")
+        ->andWhereNotIn("userid",
+            Block::allUserIdsWithBlockingRelationships(User::id()))
+        ->orderBy("changed DESC")
+        ->limit(1);
     //return the results of the query
-    $new_plans = mysql_fetch_row($my_planwatch);
+    $new_plans = $q->fetchOne();
     // Get the appropriate URI for a plan link
-    $temp = new PlanLink($new_plans[1]);
+    $temp = new PlanLink($new_plans["username"]);
     // But we want a generic Hyperlink, so it can be styled separately.
-    return new Hyperlink('justupdatedlink', true, $temp->href, $new_plans[1]);
+    return new Hyperlink('justupdatedlink', true, $temp->href,
+        $new_plans["username"]);
 }
 function get_powered_by() {
     $text = 'Powered by <a href="' . ProjectInformation::projectUrl() . '">GrinnellPlans</a> ' . ProjectInformation::version() . ', an opensource project. File a <a href="' . ProjectInformation::bugReportUrl() . '">bug report</a> after taking a look at the <a href="' . ProjectInformation::recentBugsUrl() . '">recent bugs</a> to avoid duplicates.';

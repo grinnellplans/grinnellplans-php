@@ -55,7 +55,7 @@ if (!User::logged_in()) {
 
             $user->changed = new Doctrine_Expression('NOW()'); //set the time which keeps track of when the plan was last updated
             $user->save();
-            set_item($dbh, "autofinger", "updated", 1, "interest", $idcookie); //make the plan show up as updated on other people's autoread list.
+            Autofinger::updateFor($idcookie);
             // Leave this page!
             Redirect('read.php?edit_submit=1&searchname=' . User::name());
             exit;

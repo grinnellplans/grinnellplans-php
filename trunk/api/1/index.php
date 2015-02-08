@@ -123,13 +123,16 @@ function doReadTask() {
     if (!User::logged_in()) {
         $response['message'] = 'login required';
     } else {
+        $idcookie = User::id();
+        $mydbh = db_connect();
+        $dbh = $mydbh;
+        $searchnum = get_item($mydbh, "userid", "accounts", "username", $searchname);
+
         if (!isvaliduser($dbh, $searchname)) {
             $response['message'] = 'invalid user name';
+        } else if (Block::isBlocking($searchnum, $idcookie)) {
+            $response['message'] = 'blocked';
         } else {
-            $idcookie = User::id();
-            $mydbh = db_connect();
-            $dbh = $mydbh;
-            $searchnum = get_item($mydbh, "userid", "accounts", "username", $searchname);
             $my_result = mysql_query("Select priority From autofinger where
     			owner = '$idcookie' and interest = '$searchnum'");
             $onlist = mysql_fetch_array($my_result);

@@ -17,7 +17,7 @@ class LegacyDefaultInterface extends BaseInterface {
         $tpl->scripts = $this->get_local_jsfiles($page);
         $tpl->body_id = 'planspage_' . strtolower($page->identifier);
         $tpl->body_class = strtolower($page->group);
-        if ($page->group == 'Preferences' && $page->identifier != 'autoreadedit') {
+        if ($page->group == 'Preferences' && $page->identifier != 'blocks' && $page->identifier != 'autoreadedit') {
             $tpl->center = true;
         } else {
             $tpl->center = false;

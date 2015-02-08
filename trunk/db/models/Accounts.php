@@ -28,6 +28,11 @@ class Accounts extends BaseAccounts
             'local' => 'userid',
             'foreign' => 'owner',
         ));
+
+        $this->hasMany('Block as BlockedBy', array(
+            'local' => 'userid',
+            'foreign' => 'blocked_user_id',
+        ));
     }
 
     public function getEditCols() {

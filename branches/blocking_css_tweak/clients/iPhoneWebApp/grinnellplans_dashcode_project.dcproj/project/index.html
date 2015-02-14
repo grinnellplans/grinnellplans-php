@@ -1,0 +1,81 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+    <title>Grinnell Plans</title>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="minimum-scale=1.0, width=device-width, maximum-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="YES">
+    <link rel="apple-touch-icon" href="Images/WebClipIcon.png">
+    <link rel="stylesheet" href="main.css">
+    <link rel="stylesheet" href="Parts/Transitions.css">
+    <link rel="stylesheet" type="text/css" href="Parts/ActivityIndicator.css">
+    <script type="text/javascript" src="Parts/setup.js" charset="utf-8"></script>
+    <script type="text/javascript" src="Parts/Header.js" charset="utf-8"></script>
+    <script type="text/javascript" src="Parts/utilities.js" charset="utf-8"></script>
+    <script type="text/javascript" src="Parts/Transitions.js" charset="utf-8"></script>
+    <script type="text/javascript" src="Parts/StackLayout.js" charset="utf-8"></script>
+    <script type="text/javascript" src="Parts/Browser.js" charset="utf-8"></script>
+    <script type="text/javascript" src="Parts/Text.js" charset="utf-8"></script>
+    <script type="text/javascript" src="Parts/List.js" charset="utf-8"></script>
+    <script type="text/javascript" src="Parts/PushButton.js" charset="utf-8"></script>
+    <script type="text/javascript" src="Parts/ButtonHandler.js" charset="utf-8"></script>
+    <script type="text/javascript" src="main.js" charset="utf-8"></script>
+    <script type="text/javascript" src="Parts/ActivityIndicator.js" charset="utf-8"></script>
+</head>
+<body onload="load();">
+    <div apple-part="com.apple.Dashcode.part.browser" id="browser">
+        <div apple-part="com.apple.Dashcode.part.header" apple-part-locked="true" apple-style="image-theme: 1; image-shape: 3; image-button-type: 3; image-opacity: 1.00; image-top-color: 0.592156887,0.65882355,0.741176486,1; image-bottom-color: 0.411764711,0.513725519,0.635294139,1; image-radius: 0,0,0,0; image-border: 0; image-border-color: 0.529399991,0.529399991,0.529399991,1; image-border-width: 0; shine-on: 1; shine-strength: 0.08; shine-alpha-level: 0.00; shine-height: 0.50; glass-arc-height: 0.00; shadow-include-shadow: 0;" apple-group="header" id="header">
+            <div apple-part="com.apple.Dashcode.part.gobackbutton" id="back_button" class="apple-no-children back_button_template dashcode-header-backbutton" apple-part-locked="true" apple-text-overflow="ellipsis" apple-style="image-theme: 0; image-shape: 11; image-button-type: 0; image-opacity: 1.00; image-top-color: 0.290196091,0.423529416,0.607843161,1; image-bottom-color: 1,1,1,1; image-radius: 5,5,5,5; image-border: 1; image-border-color: 0,0,0,0.2; image-border-width: 1; shine-on: 1; shine-strength: 0.17; shine-alpha-level: 0.04; shine-height: 0.50; glass-arc-height: 0.00; embossed-on: 1; embossed-depth: 1; embossed-shadow: 0.68; embossed-highlight: 0.3; shadow-include-shadow: 0;" apple-template="true"></div>
+        </div>
+        <div apple-part="com.apple.Dashcode.part.StackLayout" apple-part-locked="true" id="stackLayout">
+            <div id="loginLevel" apple-part-locked="true">
+                <div apple-part="com.apple.Dashcode.part.box" id="box">
+                    <img src="Images/logo.jpg" id="img">
+                    <div apple-part="com.apple.Dashcode.part.ColumnLayout" id="columnLayout" apple-group="columnLayout">
+                        <div apple-part-locked="true" class="apple-collapse" apple-group="columnLayout" id="columnLayout1"><div id="column" apple-part-locked="true" apple-group="columnLayout">
+                                <div apple-part="com.apple.Dashcode.part.webtext" class="apple-text apple-no-children" apple-default-image-visibility="hidden" apple-text-overflow="ellipsis" id="text" apple-style="part-width-dependent: true;part-height-dependent: true;"></div>
+                                <div apple-part="com.apple.Dashcode.part.webtext" class="apple-text apple-no-children" apple-default-image-visibility="hidden" apple-text-overflow="ellipsis" id="text1" apple-style="part-width-dependent: true;part-height-dependent: true;"></div>
+                            </div></div><div apple-part-locked="true" class="apple-collapse" apple-group="columnLayout" id="columnLayout2"><div id="column1" apple-part-locked="true" apple-group="columnLayout">
+                                <input type="text" name="" value="" class="apple-textfield apple-no-children" apple-part="com.apple.Dashcode.part.textfield" id="loginUsername">
+                                <input type="password" name="" value="" class="apple-textfield apple-no-children" apple-part="com.apple.Dashcode.part.textfield" id="loginPassword">
+                            </div></div></div>
+                    <div apple-part="com.apple.Dashcode.part.pushbutton" class="apple-no-children" apple-text-overflow="ellipsis" apple-style="image-theme: 0; image-shape: 3; image-button-type: 0; image-opacity: 1.00; image-top-color: 0.290196091,0.423529416,0.607843161,1; image-bottom-color: 1,1,1,1; image-radius: 5,5,5,5; image-border: 1; image-border-color: 0,0,0,0.2; image-border-width: 1; shine-on: 1; shine-strength: 0.17; shine-alpha-level: 0.04; shine-height: 0.50; glass-arc-height: 0.00; embossed-on: 1; embossed-depth: 1; embossed-shadow: 0.68; embossed-highlight: 0.3; shadow-include-shadow: 0;" id="button"></div>
+                </div>
+            </div><div id="listLevel" apple-part-locked="true">
+                <ul apple-part="com.apple.Dashcode.part.edgeToEdgeList" id="list">
+                    <li id="listRowTemplate" class="listRowTemplate_template" apple-template="true">
+                        <div apple-part="com.apple.Dashcode.part.webtext" class="apple-text apple-no-children rowTitle_template" apple-text-overflow="ellipsis" id="rowTitle"></div>
+                        <div apple-part="com.apple.Dashcode.part.box" id="rowArrow" class="rowArrow_template"></div>
+                    </li>
+                </ul>
+                <div apple-part="com.apple.Dashcode.part.pushbutton" class="apple-no-children" apple-text-overflow="ellipsis" apple-style="image-theme: 0; image-shape: 3; image-button-type: 0; image-opacity: 1.00; image-top-color: 0.290196091,0.423529416,0.607843161,1; image-bottom-color: 1,1,1,1; image-radius: 5,5,5,5; image-border: 1; image-border-color: 0,0,0,0.2; image-border-width: 1; shine-on: 1; shine-strength: 0.17; shine-alpha-level: 0.04; shine-height: 0.50; glass-arc-height: 0.00; embossed-on: 1; embossed-depth: 1; embossed-shadow: 0.68; embossed-highlight: 0.3; shadow-include-shadow: 0;" id="refreshButton" apple-always-show-guides="true"></div>
+                <img apple-part="com.apple.Dashcode.part.activityindicator" src="Images/ActivityIndicator.png" id="refreshActivityIndicator">
+            </div>
+            <div id="listUsernamesLevel" apple-part-locked="true">
+                <ul apple-part="com.apple.Dashcode.part.edgeToEdgeList" id="listUsernames">
+                    <li id="listUsernamesRowTemplate" apple-template="true" class="listUsernamesRowTemplate_template">
+                        <div id="rowUsernameTitle" apple-part="com.apple.Dashcode.part.webtext" class="apple-text apple-no-children rowUsernameTitle_template" apple-text-overflow="ellipsis"></div>
+                        <div id="rowUsernameArrow" apple-part="com.apple.Dashcode.part.box" class="rowUsernameArrow_template">
+                        </div>
+                    </li>
+                </ul>
+            </div><div id="detailLevel" apple-part-locked="true">
+                <div apple-part="com.apple.Dashcode.part.box" id="detailBox">
+                    <div apple-part="com.apple.Dashcode.part.toprectanglewebshape" apple-style="image-theme: 0; image-shape: 9; image-button-type: 3; image-opacity: 1.00; image-top-color: 0.615400016,0.615400016,0.615400016,1; image-bottom-color: 1,1,1,1; image-radius: 8,8,-1,-1; image-border: 1; image-border-color: 0.529399991,0.529399991,0.529399991,1; image-border-width: 1; shine-strength: 0.90; shine-alpha-level: 0.67; shine-height: 0.50; glass-arc-height: 0.06; shadow-include-shadow: 0;" id="topRectangleShape">
+                    </div>
+                    <div apple-part="com.apple.Dashcode.part.webtext" class="apple-text apple-no-children" apple-text-overflow="ellipsis" id="detailUsername" apple-style="part-width-dependent: true;part-height-dependent: true;"></div>
+                    <div apple-part="com.apple.Dashcode.part.webtext" class="apple-text apple-no-children" apple-default-image-visibility="hidden" apple-text-overflow="ellipsis" id="detailLastLogin" apple-style="part-width-dependent: true;part-height-dependent: true;"></div>
+                    <div apple-part="com.apple.Dashcode.part.webtext" class="apple-text apple-no-children" apple-default-image-visibility="hidden" apple-text-overflow="ellipsis" id="detailLastUpdated" apple-style="part-width-dependent: true;part-height-dependent: true;"></div>
+                    <div apple-part="com.apple.Dashcode.part.webtext" class="apple-text apple-no-children" apple-default-image-visibility="hidden" apple-text-overflow="ellipsis" id="detailName" apple-style="part-width-dependent: true;part-height-dependent: true;"></div>
+                </div>
+                <div apple-part="com.apple.Dashcode.part.box" id="detailPlanBox" apple-group="detailBox1" apple-always-show-guides="true">
+                </div>
+                <img apple-part="com.apple.Dashcode.part.activityindicator" src="Images/ActivityIndicator.png" id="activityIndicator">
+                <div apple-part="com.apple.Dashcode.part.box" id="downloadRemaining" onclick="detailController.downloadRemaining(event)">
+                    <div apple-part="com.apple.Dashcode.part.webtext" class="apple-text apple-no-children" apple-default-image-visibility="hidden" apple-text-overflow="ellipsis" id="downloadRemainingText" apple-style="part-width-dependent: true;part-height-dependent: true;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

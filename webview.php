@@ -15,10 +15,12 @@ if (!User::logged_in()) {
 } else {
     //allowed to edit
     populate_page($thispage, $dbh, $idcookie);
+
     $heading = new HeadingText('Guest Viewable', 1);
     $thispage->append($heading);
     // If the form was submitted, set the preference and print a message
-    if ($part) {
+    if (isset($_REQUEST['part'])) {
+        $webview = $_REQUEST['webview'];
         if ($webview != 1) {
             $webview = 0;
         }

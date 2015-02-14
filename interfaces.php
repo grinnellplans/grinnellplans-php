@@ -17,9 +17,9 @@ else
     populate_page($thispage, $dbh, $idcookie);
     $heading = new HeadingText('Interface Options', 2);
     $thispage->append($heading);
-    if ($part) //if form has been submitted
+    if (isset($_REQUEST['part'])) //if form has been submitted
     {
-        set_item($dbh, "display", "interface", $interface, "userid", $idcookie); //set which interface they selected
+        set_item($dbh, "display", "interface", $_POST["interface"], "userid", $idcookie); //set which interface they selected
         //Let user know the interface has been set
         $message = new InfoText('Interface set.', 'Success');
         $thispage->append($message);

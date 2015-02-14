@@ -1,0 +1,3 @@
+User-agent: *
+Disallow: /read.php
+Disallow: /listusers.php

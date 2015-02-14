@@ -1,0 +1,45 @@
+<?php
+/* Centralized file to hold all configuration parameters */
+define('ENVIRONMENT', 'dev');
+
+define("PLANSVERSION", "3");
+define("PLANSVNAME", "Plans " . PLANSVERSION);
+
+define('GOOGLE_CODE_SECRET', '');
+
+define('TZ', 'America/Chicago');
+define('MYSQL_DB', 'plans');
+define('MYSQL_USER', 'username');
+define('MYSQL_PASS', 'password');
+define('MYSQL_HOST', 'localhost');
+
+define('DB_URI', 'mysql://' . MYSQL_USER . ':' . MYSQL_PASS . '@' . MYSQL_HOST . '/' . MYSQL_DB);
+
+define('COOKIE_DOMAIN', ''); 
+define('COOKIE_PAYLOAD', 'pe');
+define('COOKIE_SIGNATURE', 'ps');
+define('COOKIE_ENCRYPTION_KEY', '');
+define('COOKIE_SIGNATURE_SALT', '');
+define('COOKIE_EXPIRATION', 60*60*24*2); // 2 days
+
+define('NOTES_THREADS_PER_PAGE', 25);
+define('NOTES_MSGS_PER_PAGE', 25);
+
+define('USER_GUEST_NAME', 'guest');
+
+define('GEO_GMAPS_API', '');
+define('GEO_DATABASE', __ROOT__ . '/geo/geo.dat');
+
+define('MAILER_ADDRESS', "noreply@grinnellplans.com");
+define('USE_NATIVE_MAIL', true);	//~(use AWS mail service if false)
+
+//AWS credentials - needed if aws mail is enabled
+define('AWS_KEY', '');
+define('AWS_SECRET_KEY', '');
+
+
+
+// Use this if you wish to override the auto-detected environment type.
+// Options are 'development', 'production', or 'testing'
+// $GLOBALS['ENVIRONMENT'] = 'testing';
+?>

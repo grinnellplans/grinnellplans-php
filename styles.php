@@ -44,6 +44,7 @@ else {
             }
         } else {
             delete_item($dbh, "stylesheet", "userid", $idcookie);
+            $style = $_POST['style'];
             set_item($dbh, "display", "style", $style, "userid", $idcookie); //set the style that they selected
             $message = new InfoText('Style Set', 'Success');
             $thispage->append($message);

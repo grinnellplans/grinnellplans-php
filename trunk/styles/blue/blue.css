@@ -1,3 +1,6 @@
+/* postmodern like modern */
+@import url('../modern.css');
+
 /**************
  * Main stuff *
  **************/
@@ -23,13 +26,13 @@ p.logo {
   width: 150px;
   height: 75px;
 }
-table.main {
+table.main, div#wrapper {
  bgcolor: #fff;
   background: url(stripes.jpg) repeat;
   border: 1px #CCC solid;
   padding: 10px;
 }
-td.left {
+td.left, div#nav {
   border: #000 solid;
   border-width: 0px 1px 0px 0px;
 }
@@ -41,10 +44,11 @@ td.right {
 /******************
  * Forms and misc *
  ******************/
-input {
+input, button {
   background-color: #FFF;
 }
-table.mainpanel input {
+table.mainpanel input,
+div#nav input, div#nav button {
  background-color: #eee;
   border: 1px #999 solid;
  color: #005
@@ -56,7 +60,7 @@ hr {
 /*************
  * Nav links *
  *************/
-a.main {
+a.main, #links a {
 
   display: block;
   background: url(blueborder.jpg) no-repeat;
@@ -69,65 +73,52 @@ a.main {
   text-decoration: none;
   text-align: center;
   color: #000;
+  padding-top: 5px;
+  margin-top: -5px;
 }
-a.main:hover {
+a.main:hover, #links a:hover {
   background: url(bluesolid.jpg) no-repeat;
+}
+#nav li {
+  margin-left: 0;
 }
 /********************
  * Top of plan info *
  ********************/
-p.main {
+p.main, p.main2, p.main3, p.main4,
+#header li span.title {
+  width: 150px;
+  height: 24px;
+  font-family: Geneva, Arial, Helvetica, san-serif;
+  font-weight: bold;
+  font-variant: small-caps;
+  font-size: x-small;
+  text-decoration: none;
+  text-align: center;
+  color: #000;
+  padding-top: 5px;
+  margin-top: -5px;
+}
+#header li span.title {
+  display: inline-block;
+}
+p.main, #header li.username span.title {
   background: url(greysolid.jpg) no-repeat;
-  width: 150px;
-  height: 24px;
-  font-family: Geneva, Arial, Helvetica, san-serif;
-  font-weight: bold;
-  font-variant: small-caps;
-  font-size: x-small;
-  text-decoration: none;
-  text-align: center;
-  color: #000;
 }
-p.main2 {
+p.main2, #header li.lastupdated span.title {
   background: url(bluesolid.jpg) no-repeat;
-  width: 150px;
-  height: 24px;
-  font-family: Geneva, Arial, Helvetica, san-serif;
-  font-weight: bold;
-  font-variant: small-caps;
-  font-size: x-small;
-  text-decoration: none;
-  text-align: center;
-  color: #000;
 }
-p.main3 {
+p.main3, #header li.lastlogin span.title {
   background: url(yellowsolid.jpg) no-repeat;
-  width: 150px;
-  height: 24px;
-  font-family: Geneva, Arial, Helvetica, san-serif;
-  font-weight: bold;
-  font-variant: small-caps;
-  font-size: x-small;
-  text-decoration: none;
-  text-align: center;
-  color: #000;
 }
-p.main4 {
+p.main4, #header li.planname span.title {
   background: url(redsolid.jpg) no-repeat;
-  width: 150px;
-  height: 24px;
-  font-family: Geneva, Arial, Helvetica, san-serif;
-  font-weight: bold;
-  font-variant: small-caps;
-  font-size: x-small;
-  text-decoration: none;
-  text-align: center;
-  color: #000;
 }
 /******************
  * Autofinger nav *
  ******************/
-p.lev2 {
+p.lev2, a.lev2, a.lev3,
+a.autoreadlink, li.autoreadentry a {
   background: url(yellowborder.jpg) no-repeat;
   width: 150px;
   height: 24px;
@@ -138,38 +129,26 @@ p.lev2 {
   text-decoration: none;
   text-align: center;
   color: #000;
+  padding-top: 5px;
+  margin-top: -5px;
 }
-a.lev2 {
+a.lev2, a.lev3 {
   display: block;
-  background: url(yellowborder.jpg) no-repeat;
-  width: 150px;
-  height: 24px;
-  font-family: Geneva, Arial, Helvetica, san-serif;
-  font-weight: bold;
-  font-variant: small-caps;
-  font-size: x-small;
-  text-decoration: none;
-  text-align: center;
-  color: #000;
 }
-a.lev2:hover {
+#autoread a {
+  display: inline-block;
+}
+a.lev2:hover, #autoread a.autoreadlink:hover {
   background: url(yellowsolid.jpg) no-repeat;
 }
-a.lev3 {
-  display: block;
+a.lev3, #autoread li.autoreadentry a {
   background: url(redsolid.jpg) no-repeat;
-  width: 150px;
-  height: 24px;
-  font-family: Geneva, Arial, Helvetica, san-serif;
-  font-weight: normal;
-  font-variant: small-caps;
-  font-size: x-small;
-  text-decoration: none;
-  text-align: center;
   color: #000;
+  font-weight: normal;
 }
-a.lev3:hover {
+a.lev3:hover, #autoread li.autoreadentry a:hover {
   background: url(redborder.jpg) no-repeat;
+  text-decoration: none;
 }
 /*****************
  * In-plan Links *
@@ -212,13 +191,13 @@ a.onplan:visited {
 /***************
  * Notes Board *
  ***************/
-.noteslight {
+.noteslight, #notes_board tr.even, #notes_thread li.even {
   background: #fffff0;  
   border-style: solid;
   border-width: 1px;
   border-color: #47a;
 }
-.notesdark {
+.notesdark, #notes_board tr.odd, #notes_thread li.odd {
   background: #f0eeff;
   border-style: solid;
   border-width: 1px;

@@ -71,7 +71,7 @@ if (!$searchnum) //if no search number given
 if (User::logged_in()) {
     //TODO add searchname instead?
     $page->url = add_param($page->url, 'searchnum', $searchnum);
-    $addtolist = (isset($_POST['addtolist']) ? $_POST['addtolist'] : false);
+    $addtolist = (isset($_POST['addtolist']) ? (bool)$_POST['addtolist'] : false);
     // if person is manipulating which tier this plan is on their autoread list
     if (isset($_POST['block_user'])) {
         if ($_POST['block_user'] == 1) {
@@ -91,12 +91,12 @@ simply by logging out. If you would like to change this setting, please visit
             $msg = new InfoText("User " . $planinfo[0][0] . " has been unblocked.");
         }
         $page->append($msg);
-    } else if ($addtolist == 1) {
-        $privlevel = (isset($_POST['privlevel']) ? $_POST['privlevel'] : 0);
+    } else if ($addtolist) {
+        $privlevel = (isset($_POST['privlevel']) ? (int)$_POST['privlevel'] : 0);
         if ($privlevel == 0) {
             mysql_query("DELETE FROM autofinger WHERE owner = '$idcookie' and interest = '$searchnum'");
             $yay = new InfoText("User " . $planinfo[0][0] . " removed from your autoread list.");
-        } else {
+        } else if ($privlevel > 0 && $privlevel <= 3) {
             mysql_query("INSERT INTO autofinger (owner, interest, priority) VALUES ('$idcookie', '$searchnum', '$privlevel') ON DUPLICATE KEY UPDATE priority=$privlevel");
             $yay = new InfoText("User " . $planinfo[0][0] . " is now on your autoread list with priority level of " . $privlevel . ".");
         }

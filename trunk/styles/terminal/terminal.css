@@ -44,7 +44,7 @@ a:hover {
 }
 
 p.logo, #logo a {
-  background: #000 url("logo.jpg") no-repeat;
+  background: #000 url("../../images/logo-small.png") no-repeat;
 }
 
 p.logo {

@@ -126,8 +126,7 @@ if (isset($msg)) {
 		<br>Need a plan? <a href="register.php">Register</a> if you have an @grinnell.edu email address.
 <br />  
 <span style="font-size: 1em"> 
-Otherwise <a href="mailto:grinnellplans@gmail.com">email us</a>.
-Alumni, please include your <a href="https://loggia.grinnell.edu/page.aspx?pid=308">@alumni.grinnell.edu forwarding address</a> and grad year.
+If you no longer have access to your @grinnell.edu email address, you may reactivate it <a href="https://forum.grinnell.edu/webform/request-upgrade-grinnell-email-account-service">here</a>. <br />If you're still having problems registering on plans, <a href="mailto:grinnellplans@gmail.com">email us</a>.
 <br />
  
 </span>

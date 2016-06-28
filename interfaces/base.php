@@ -66,7 +66,7 @@ abstract class BaseInterface implements DisplayInterface {
      * @param WidgetList|null $autoreads
      * @param int $lvl
      */
-    protected function setup_autoreads($autoreads, $lvl) {
+    protected function setup_autoreads(WidgetList $autoreads, $lvl) {
         if (!$autoreads) {
             return false;
         }

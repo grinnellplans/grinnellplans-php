@@ -5,7 +5,7 @@ require_once ('interfaces/default/defaultinterface.php');
  * Some relic of Plans of yore.
  */
 class LegacyOldTermInterface extends LegacyDefaultInterface {
-    protected function setup_links($links) {
+    protected function setup_links(WidgetList $links) {
         $tpl = parent::setup_links($links);
         $tpl->setTemplate('views/templates/legacy/Links_oldterm.tpl.php');
         return $tpl;

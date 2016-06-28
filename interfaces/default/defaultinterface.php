@@ -37,7 +37,7 @@ class LegacyDefaultInterface extends BaseInterface {
         $tpl->setTemplate('views/templates/legacy/Mainpanel.tpl.php');
         return $tpl;
     }
-    protected function setup_links($links) {
+    protected function setup_links(WidgetList $links) {
         $tpl = $this->setup_widget($links);
         foreach($tpl->contents as $t) {
             $t->description = strtolower($t->description);
@@ -46,7 +46,7 @@ class LegacyDefaultInterface extends BaseInterface {
         $tpl->setTemplate('views/templates/legacy/Links.tpl.php');
         return $tpl;
     }
-    protected function setup_autoreads($autoreads, $lvl) {
+    protected function setup_autoreads(WidgetList $autoreads, $lvl) {
         if (!$autoreads) {
             return false;
         }

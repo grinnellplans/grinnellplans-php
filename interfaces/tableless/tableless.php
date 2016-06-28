@@ -30,7 +30,7 @@ class TablelessInterface extends BaseInterface {
         $tpl->setTemplate('views/templates/tableless/Links.tpl.php');
         return $tpl;
     }
-    protected function setup_autoreads(WidgetList $autoreads, $lvl) {
+    protected function setup_autoreads(WidgetList $autoreads = NULL, $lvl) {
         $tpl = parent::setup_autoreads($autoreads, $lvl);
         $tpl->setTemplate('views/templates/tableless/AutoReads.tpl.php');
         return $tpl;

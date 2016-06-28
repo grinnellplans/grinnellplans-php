@@ -46,7 +46,7 @@ class LegacyDefaultInterface extends BaseInterface {
         $tpl->setTemplate('views/templates/legacy/Links.tpl.php');
         return $tpl;
     }
-    protected function setup_autoreads(WidgetList $autoreads, $lvl) {
+    protected function setup_autoreads(WidgetList $autoreads = NULL, $lvl) {
         if (!$autoreads) {
             return false;
         }

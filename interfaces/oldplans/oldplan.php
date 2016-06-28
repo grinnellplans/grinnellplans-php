@@ -10,7 +10,7 @@ class LegacyOldTermInterface extends LegacyDefaultInterface {
         $tpl->setTemplate('views/templates/legacy/Links_oldterm.tpl.php');
         return $tpl;
     }
-    protected function setup_autoreads(WidgetList $autoreads, $lvl) {
+    protected function setup_autoreads(WidgetList $autoreads = NULL, $lvl) {
         $tpl = parent::setup_autoreads($autoreads, $lvl);
         $tpl->setTemplate('views/templates/legacy/AutoReads_oldterm.tpl.php');
         return $tpl;

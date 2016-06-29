@@ -2,19 +2,6 @@
 require_once ('Plans.php');
 //////////
 /*
-*Get all of the plans that fall between two letters (usually the same one)
-*/
-function get_letters($dbh, $first_letter, $second_letter, $idcookie) {
-    if (!$idcookie) {
-        $guest = "AND webview=1";
-    }
-    $my_result = mysql_query("Select userid,username From accounts where username > '$first_letter' and username < '$second_letter' $guest ORDER BY username");
-    while ($new_row = mysql_fetch_row($my_result)) {
-        $all[] = $new_row;
-    }
-    return $all;
-}
-/*
 *Handles the cleaning up of a plan, such as allowing only certain html links in
 */
 function cleanText($plan, &$planlove = array()) {

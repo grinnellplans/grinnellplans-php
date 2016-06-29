@@ -19,7 +19,7 @@ if (!$searchnum) //if no search number given
 {
     if (isvaliduser($dbh, $searchname)) //if valid username, change to num
     {
-        $searchnum = get_item($mydbh, "userid", "accounts", "username", $searchname);
+        $searchnum = get_item($dbh, "userid", "accounts", "username", $searchname);
     } else
     //if is not a valid username
     {
@@ -117,12 +117,11 @@ simply by logging out. If you would like to change this setting, please visit
 }
 //TODO should this go inside if(!$auth) ?
 $guest_auth = false;
-if ($guest_pass = $_GET['guest-pass']) {
+if (isset($_GET['guest-pass'])) {
     $real_pass = get_item($dbh, "guest_password", "accounts", "userid", $searchnum);
-    //error_log("JLW real pass is $real_pass");
     if ($real_pass == '') {
         $guest_auth = false;
-    } else if ($real_pass == $guest_pass) {
+    } else if ($real_pass == $_GET['guest-pass']) {
         $guest_auth = true;
     } else {
         $guest_auth = false;
@@ -145,7 +144,7 @@ if (!$user) {
         $page->append($blocked_msg);
     } else {
         // If we're redirecting from edit.php, assure the user that their change was applied
-        if ($_GET['edit_submit'] == 1) {
+        if (isset($_GET['edit_submit']) && $_GET['edit_submit'] == 1) {
             $changed_msg = new InfoText('Plan changed successfully.');
             $page->append($changed_msg);
         }

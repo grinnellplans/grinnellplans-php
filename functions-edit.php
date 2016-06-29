@@ -21,8 +21,8 @@ function cleanText($plan, &$planlove = array()) {
     $plan = htmlspecialchars($plan); //take out html
     //fix the dollar sign error- by josh
     //$plan = preg_replace("(\|(\w\s)*)\$
-    $plan = preg_replace("/((\[\w*\],?){8})(?=[^ ,])/s", "$1 ", $plan);
-    $plan = preg_replace("/\n/s", "<br>", $plan);
+    $plan = preg_replace("/((\[\w*\],?){8})(?=[^ ,])/s", "$1 ", $plan); //break groups of eight or more planlove in a row without a space to prevent page widening
+    $plan = nl2br($plan); //use nl2br instead of a regex because it handles unix, mac, and windows line endings correctly.
     $plan = preg_replace("/\&lt\;hr\&gt\;/si", "</p><hr><p class=\"sub\">", $plan);
     // replace the first </p> that we just inserted erroneously
     //$plan = preg_replace("</p>", "", $plan, 1);

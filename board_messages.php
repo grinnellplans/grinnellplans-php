@@ -17,25 +17,6 @@ if (!User::logged_in()) {
     $thispage->append($content);
     $header = new WidgetGroup('notes_header', false);
     $content->append($header);
-    $replyform = new Form('notes_replyform', true);
-    $replyform->action = 'board_submit.php';
-    $replyform->method = 'post';
-    $replylink = new DisplayToggleLink('post_reply_toggle', true, $replyform, 'Reply', 'Cancel');
-    $content->append($replylink);
-    $content->append($replyform);
-    $cook = new HiddenInput('checknum', $idcookie);
-    $replyform->append($cook);
-    $thread = new HiddenInput('threadid', isset($_REQUEST['threadid'])?$_REQUEST['threadid']:"");
-    $replyform->append($thread);
-    $sub = new HiddenInput('submit', 1);
-    $replyform->append($sub);
-    $text = new TextareaInput('messagecontents');
-    $text->rows = 11;
-    $text->cols = 50;
-    $text->title = 'Post Reply';
-    $replyform->append($text);
-    $button = new SubmitInput('Submit');
-    $replyform->append($button);
     $messagenum = (isset($_GET['messagenum']) ? $_GET['messagenum'] : 0);
     $threadid = (isset($_GET['threadid']) ? $_GET['threadid'] : 0);
     if ($messagenum > 0) {

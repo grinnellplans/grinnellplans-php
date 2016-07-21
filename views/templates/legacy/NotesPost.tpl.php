@@ -1,7 +1,6 @@
 <table class="<?php echo $this->list_attributes; ?>" width="100%"><tr><td><tr><td><b><p id="<?php echo $this->post_id; ?>"></p></b></td></tr><tr><td><?php?>
 <table border="1" width="100%"><tr><td><?php echo $this->post_id; ?></td><?php?>
-<td><span id="<?php echo $this->post_id; ?>y" onclick="vote(<?php echo $this->post_id; ?>,'y');" class="clickable"<?php echo $this->yes_style; ?>>↑</span>
-<span id="<?php echo $this->post_id; ?>n" onclick="vote(<?php echo $this->post_id; ?>,'n');" class="clickable"<?php echo $this->no_style; ?>>↓</span>
+<td>
 (
 <span id="<?php echo $this->post_id; ?>c"><?php echo $this->score; ?></span>
 ) (

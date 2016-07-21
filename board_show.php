@@ -15,9 +15,6 @@ if (!User::logged_in()) {
     $thispage->append($content);
     $header = new WidgetGroup('notes_header', false);
     $content->append($header);
-    $href = "board_submit.php?newthread=1";
-    $newthread = new Hyperlink('notes_new_thread', true, $href, 'New Thread');
-    $header->append($newthread);
     $my_result = mysql_query("Select COUNT(*) From mainboard");
     $totalthreads = mysql_fetch_row($my_result);
     $max_page = ceil($totalthreads[0] / NOTES_THREADS_PER_PAGE) - 1;

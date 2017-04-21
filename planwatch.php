@@ -9,15 +9,14 @@ if (!User::logged_in()) {
 } else {
     populate_page($thispage, $dbh, $idcookie);
 }
-$mytime = $_POST['mytime'];
-$mytime = (isset($_POST['mytime']) ? $_POST['mytime'] : 12);
+$mytime = (isset($_GET['mytime']) ? (int)$_GET['mytime'] : 12);
 if (!($mytime > 0 and $mytime < 100)) {
     $mytime = 12;
 } //if time is out of acceptable period, set to 12
 //give form to set how many hours back to look
 $timeform = new Form('planwatchtimeform', true);
 $timeform->action = 'planwatch.php';
-$timeform->method = 'POST';
+$timeform->method = 'GET';
 $thispage->append($timeform);
 $item = new TextInput('mytime', $mytime);
 $item->title = 'Plans updated in the past:';

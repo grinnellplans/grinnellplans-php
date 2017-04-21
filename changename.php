@@ -17,9 +17,9 @@ if (!User::logged_in()) {
     populate_page($page, $dbh, $idcookie);
     $title = new HeadingText('Change Name', 1);
     $page->append($title);
-    if ($changed == 1) //check to see if form has been submitted, process if so.
+    if (isset($_POST['user_name'])) //check to see if form has been submitted, process if so.
     {
-        $user_name = htmlspecialchars($user_name); //strip out html chars
+        $user_name = htmlspecialchars($_POST['user_name']); //strip out html chars
         set_item($dbh, "accounts", "pseudo", $user_name, "userid", $idcookie); //set pseudoname in database
         $message = new InfoText("Name changed to <b>" . stripslashes($user_name) . "</b>.", NULL); //tell user their name has been changed
         $page->append($message);
@@ -33,10 +33,6 @@ if (!User::logged_in()) {
         $nameform->method = 'POST';
         /* add fields to the form */
         $item = new TextInput('user_name', $old_name);
-        $nameform->append($item);
-        $item = new HiddenInput('myprivl', $myprivl);
-        $nameform->append($item);
-        $item = new HiddenInput('changed', 1);
         $nameform->append($item);
         $item = new SubmitInput('Change Name');
         $nameform->append($item);

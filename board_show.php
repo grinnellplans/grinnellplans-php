@@ -18,8 +18,8 @@ if (!User::logged_in()) {
     $href = "board_submit.php?newthread=1";
     $newthread = new Hyperlink('notes_new_thread', true, $href, 'New Thread');
     $header->append($newthread);
-    $my_result = mysql_query("Select COUNT(*) From mainboard");
-    $totalthreads = mysql_fetch_row($my_result);
+    $my_result = mysqli_query($dbh,"Select COUNT(*) From mainboard");
+    $totalthreads = mysqli_fetch_row($my_result);
     $max_page = ceil($totalthreads[0] / NOTES_THREADS_PER_PAGE) - 1;
     $nav = new NotesNavigation('board_nav', false);
     $header->append($nav);
@@ -84,10 +84,10 @@ BY
 lastupdated
 DESC
 LIMIT " . $rowoffset . "," . NOTES_THREADS_PER_PAGE;
-    $my_result = mysql_query($the_query);
+    $my_result = mysqli_query($dbh,$the_query);
     //error_log($the_query);
     $colorswitch = 0;
-    while ($new_row = mysql_fetch_row($my_result)) {
+    while ($new_row = mysqli_fetch_row($my_result)) {
         $topic = new NotesTopic('notes_topic', false);
         $topic->summary = true;
         $board->append($topic);

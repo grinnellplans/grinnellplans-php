@@ -41,11 +41,11 @@ if (!User::logged_in()) {
         foreach ($selected_links as $selected_link) {
             $myselected[$selected_link[0]] = true; //set up so current links will show up in form as checked
         }
-        $my_result = mysql_query("Select linknum,linkname,descr From
+        $my_result = mysqli_query($dbh,"Select linknum,linkname,descr From
 	avail_links"); //get the info on the currently available links
         $linksform = new Form('optionallinks', true);
         $thispage->append($linksform);
-        while ($link = mysql_fetch_row($my_result)) {
+        while ($link = mysqli_fetch_row($my_result)) {
             //display each link
             $item = new CheckboxInput('mylinks[]', $link[0]);
             $item->checked = isset($myselected[$link[0]]);

@@ -47,12 +47,12 @@ if (!User::logged_in()) {
             interface_disp_page($thispage);
             stop();
         }
-        $my_result = mysql_query("Select COUNT(*) From subboard WHERE userid != 0 AND created >= \"" . $messagevals[0][1] . "\" and threadid=\"" . $threadid . "\"");
-        $pagefind = mysql_fetch_row($my_result);
+        $my_result = mysqli_query($dbh,"Select COUNT(*) From subboard WHERE userid != 0 AND created >= \"" . $messagevals[0][1] . "\" and threadid=\"" . $threadid . "\"");
+        $pagefind = mysqli_fetch_row($my_result);
         $pagenumber = floor($pagefind[0] / NOTES_MSGS_PER_PAGE);
     }
-    $my_result = mysql_query("Select COUNT(*) From subboard WHERE userid != 0 AND threadid=\"" . $threadid . "\"");
-    $totalmessages = mysql_fetch_row($my_result);
+    $my_result = mysqli_query($dbh,"Select COUNT(*) From subboard WHERE userid != 0 AND threadid=\"" . $threadid . "\"");
+    $totalmessages = mysqli_fetch_row($my_result);
     $pagenumber = (isset($_GET['pagenumber']) ? $_GET['pagenumber'] : 0);
     if (!($pagenumber > 0)) {
         $pagenumber = 0;
@@ -113,9 +113,9 @@ if (!User::logged_in()) {
 		AND userid != 0 
                 ORDER BY subboard.messageid DESC 
                 LIMIT " . $rowoffset . "," . NOTES_MSGS_PER_PAGE;
-    $my_result = mysql_query($query);
+    $my_result = mysqli_query($dbh,$query);
     $colorswitch = 0;
-    while ($new_row = mysql_fetch_row($my_result)) {
+    while ($new_row = mysqli_fetch_row($my_result)) {
         $post = new NotesPost('notes_post', false);
         $thread->append($post);
         if ($new_row[3]) {

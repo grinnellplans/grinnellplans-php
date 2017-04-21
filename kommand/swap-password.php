@@ -21,18 +21,18 @@ Username to switch with test:
     require ("dbfunctions.php");
     $dbh = db_connect();
     $sql = 'set @user_pass=(select password from accounts where username = "' . $user . '")';
-    mysql_query($sql);
+    mysqli_query($dbh,$sql);
     $sql = 'set @test_pass=(select password from accounts where username = "test")';
-    mysql_query($sql);
+    mysqli_query($dbh,$sql);
     $sql = 'select @test_pass';
-    $result = mysql_query($sql);
-    while ($new_row = mysql_fetch_array($result)) {
+    $result = mysqli_query($dbh,$sql);
+    while ($new_row = mysqli_fetch_array($result)) {
         print_r($new_row);
     }
     $sql = 'update accounts set password=@user_pass where username = "test" limit 1';
-    mysql_query($sql);
+    mysqli_query($dbh,$sql);
     $sql = 'update accounts set password=@test_pass where username = "' . $user . '" limit 1';
-    mysql_query($sql);
+    mysqli_query($dbh,$sql);
     echo "<br />";
     echo "Looks like it might have worked...";
     echo "<br />";

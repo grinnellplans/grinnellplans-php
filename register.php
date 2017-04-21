@@ -38,7 +38,7 @@ if ($_GET['submitted']) {
         $data = array('username' => $username, 'year' => $year, 'type' => $type);
         $storable = serialize($data);
         $email = $username . '@' . $domain;
-        mysql_query("insert into tentative_accounts set session = '$storable', token = '$token', created = now()");
+        mysqli_query($dbh,"insert into tentative_accounts set session = '$storable', token = '$token', created = now()");
         $message = "Click the following link to activate your Plan:\n" . "www.grinnellplans.com/register.php?token=$token\n\n" . "The link will expire in 24 hours.";
         if (send_mail($email, "Activate your new plan.", $message)) {
         $message = new InfoText("An email has been sent to $email with a link to activate your Plan.  You will probably receive it right away, but if you don't get it within a few hours, <a href=\"mailto:$admin_email\">Bug us</a>.", 'Email Sent');

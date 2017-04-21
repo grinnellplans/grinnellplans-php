@@ -39,7 +39,7 @@ $log = new ErrorConsoleLogger();
 if (isset($_GET['task'])) {
     $task = strtolower($_GET['task']);
     $dbh = db_connect();
-    $mydbh = db_connect();
+    $mydbh = $dbh;
     $response = array("message" => "", "success" => false);
     /*
     *  It may be useful to have the cookie payload passed explicetly, but
@@ -133,9 +133,9 @@ function doReadTask() {
         } else if (Block::isBlocking($searchnum, $idcookie)) {
             $response['message'] = 'blocked';
         } else {
-            $my_result = mysql_query("Select priority From autofinger where
+            $my_result = mysqli_query($dbh,"Select priority From autofinger where
     			owner = '$idcookie' and interest = '$searchnum'");
-            $onlist = mysql_fetch_array($my_result);
+            $onlist = mysqli_fetch_array($my_result);
             if ($onlist) {
                 update_read($dbh, $idcookie, $searchnum); //mark as having been read
                 

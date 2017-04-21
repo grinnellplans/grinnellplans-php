@@ -19,17 +19,18 @@ function setpriv($myprivl, $cookpriv) {
 *Sets a plan that's on a person's autoread list as read
 */
 function update_read($dbh, $owner, $updated) {
-    mysql_query("UPDATE autofinger SET updated = '0', readtime = NOW() WHERE owner = '$owner' and interest = '$updated'");
+    mysqli_query($dbh,"UPDATE autofinger SET updated = '0', readtime = NOW() WHERE owner = '$owner' and interest = '$updated'");
 }
 function mark_as_read($dbh, $owner, $myprivl) {
     $query = "UPDATE autofinger set updated = 0 where owner ='$owner' and priority = '$myprivl'";
-    mysql_query($query);
+    mysqli_query($dbh,$query);
 }
+
 function add_param($url, $name, $value) {
-    if (ereg($name, $url)) {
-        return ereg_replace("$name=[^&]*", $name . '=' . $value, $url);
+    if (strstr($url, $name)) {
+        return preg_replace("/$name=[^&]*/", $name . '=' . $value, $url);
     } else {
-        if (ereg("\?", $url)) {
+        if (strstr($url,"?")) {
             return $url . '&amp;' . $name . '=' . $value;
         } else {
             return $url . '?' . $name . '=' . $value;
@@ -37,8 +38,8 @@ function add_param($url, $name, $value) {
     }
 }
 function remove_param($url, $name) {
-    $url = ereg_replace("$name=[^&]*", '', $url);
-    $url = preg_replace(array("@&$@"), array(''), $url);
+    $url = preg_replace("/$name=[^&]*/", '', $url);
+    $url = preg_replace("@&$@", '', $url);
     return $url;
 }
 ?>

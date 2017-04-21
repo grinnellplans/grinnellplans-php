@@ -21,10 +21,10 @@ if (isset($_POST['submit'])) {
             }
             $query = "update secrets set display = '$new_display', date_approved = now() where secret_id = $secret_id and display != '$new_display'";
             //echo "<p>" . $query . "</p>";
-            $results = mysql_query($query) or mysql_error();
+            $results = mysqli_query($dbh,$query) or mysqli_error($dbh);
             /*
             
-            while($row = mysql_fetch_array($results)) {
+            while($row = mysqli_fetch_array($results)) {
             array_push($addresses, $row['address']);
             $total++;
             }
@@ -43,7 +43,7 @@ if (!($offset > 0)) {
 echo "<p><a href=\"secrets.php?offset=" . ($offset - 60) . "\">Next " . $count . "</a></p>";
 echo "<p><a href=\"secrets.php?offset=" . ($offset + 60) . "\">Prev " . $count . "</a></p>";
 $sql = "select * from secrets order by secret_id desc limit $offset, $count";
-$secrets = mysql_query($sql);
+$secrets = mysqli_query($dbh,$sql);
 if (!$secrets) {
     echo "Query Failed";
 }
@@ -53,7 +53,7 @@ if (!$secrets) {
 <input type="submit" name="submit" value="Submit">
 
 <?php
-while ($row = mysql_fetch_array($secrets)) {
+while ($row = mysqli_fetch_array($secrets)) {
     echo '<p class="sub">';
     $secret = $row['secret_text'];
     $date = $row['date'];

@@ -24,29 +24,29 @@ if ($poll_question_id) {
 												created = now()
 											where poll_question_id = $poll_question_id";
         //echo $sql;
-        mysql_query($sql);
+        mysqli_query($dbh,$sql);
         foreach($responses['new'] as $response) {
             $sql = "insert into poll_choices set html = '$response',
 												poll_question_id = '$poll_question_id',
 												created = now()";
             //echo $sql;
-            mysql_query($sql);
+            mysqli_query($dbh,$sql);
         }
         foreach(array_keys($responses['updated']) as $poll_choice_id) {
             $new_response = $responses['updated'][$poll_choice_id];
             $sql = "update poll_choices set html = '$new_response'
 											where poll_choice_id = '$poll_choice_id'";
             //echo $sql;
-            mysql_query($sql);
+            mysqli_query($dbh,$sql;
         }
         foreach($responses['deleted'] as $poll_choice_id) {
             $sql = "delete from poll_choices where poll_choice_id = $poll_choice_id";
             //echo $sql;
-            mysql_query($sql);
+            mysqli_query($dbh,$sql);
         }
     }
     //populate values
-    //mysql_query("select * from poll_question where
+    //mysqli_query($dbh,"select * from poll_question where
     
 } else {
     //echo "No";
@@ -57,14 +57,14 @@ if ($poll_question_id) {
 												type = '$type',
 												created = now()";
         echo $sql;
-        mysql_query($sql);
-        $poll_question_id = mysql_insert_id();
+        mysqli_query($dbh,$sql);
+        $poll_question_id = mysqli_insert_id($dbh);
         foreach($responses['new'] as $response) {
             $sql = "insert into poll_choices set html = '$response',
 												poll_question_id = '$poll_question_id',
 												created = now()";
             echo $sql;
-            mysql_query($sql);
+            mysqli_query($dbh,$sql);
         }
     } else {
         $first_view = 1;
@@ -79,8 +79,8 @@ if ($poll_question_id) {
 	left join poll_choices c using (poll_question_id) 
 	where q.poll_question_id = $poll_question_id order by c.html";
     //echo $sql;
-    $res = mysql_query($sql);
-    while ($new_row = mysql_fetch_array($res)) {
+    $res = mysqli_query($dbh,$sql);
+    while ($new_row = mysqli_fetch_array($res)) {
         $responses[$new_row['poll_choice_id']] = $new_row['choice'];
         $html = $new_row['question'];
         $type = $new_row['type'];
@@ -227,9 +227,9 @@ function fetch_responses() {
 }
 function list_polls() {
     $sql = "select html, poll_question_id from poll_questions order by poll_question_id desc";
-    $res = mysql_query($sql);
+    $res = mysqli_query($dbh,$sql);
     echo '<table>';
-    while ($new_row = mysql_fetch_array($res)) {
+    while ($new_row = mysqli_fetch_array($res)) {
         echo '<tr><td>';
         echo $new_row['html'];
         echo '</td><td>';

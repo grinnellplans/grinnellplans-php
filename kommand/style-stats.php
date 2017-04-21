@@ -7,7 +7,7 @@ $ifacecount = array();
 $combinecount = array();
 $db = new Database();
 $userid_res = $db->query("SELECT userid FROM accounts");
-while ($userid_row = mysql_fetch_row($userid_res)) {
+while ($userid_row = mysqli_fetch_row($userid_res)) {
     $userid = $userid_row[0];
     $interfaceid = $db->value_from_query("SELECT interface.path FROM interface, display WHERE display.userid = " . $userid . " AND display.interface = interface.interface");
     $styleid = $db->value_from_query("SELECT style.path FROM style, display WHERE display.userid = " . $userid . " AND display.style=style.style");

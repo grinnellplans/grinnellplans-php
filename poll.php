@@ -19,15 +19,15 @@ if (User::logged_in()) {
     $submitted = $_GET['submitted'];
     if (!$poll_question_id) {
         $sql = "select max(poll_question_id) as max from poll_questions; ";
-        $res = mysql_query($sql);
-        $new_row = mysql_fetch_array($res);
+        $res = mysqli_query($dbh,$sql);
+        $new_row = mysqli_fetch_array($res);
         $poll_question_id = $new_row['max'];
     }
     $responses = array();
     $sql = "select type, q.html as question from poll_questions q 
 	where poll_question_id = $poll_question_id";
-    $res = mysql_query($sql);
-    $new_row = mysql_fetch_array($res);
+    $res = mysqli_query($dbh,$sql);
+    $new_row = mysqli_fetch_array($res);
     $question = $new_row['question'];
     $type = $new_row['type'];
     if ($submitted) {
@@ -48,12 +48,12 @@ if (User::logged_in()) {
         }
         $sql = "delete poll_votes from poll_votes join poll_choices using (poll_choice_id) 
 		where userid = $userid and poll_question_id = $poll_question_id ";
-        mysql_query($sql);
+        mysqli_query($dbh,$sql);
         foreach($poll_choice_ids as $poll_choice_id) {
             $sql = "insert into poll_votes set userid = $userid,
 			created = now(),
 			poll_choice_id = $poll_choice_id";
-            mysql_query($sql);
+            mysqli_query($dbh,$sql;
         }
     }
     $heading = new HeadingText($question, 3);
@@ -62,8 +62,8 @@ if (User::logged_in()) {
     $votingform->method = 'GET';
     $thispage->append($votingform);
     $sql = "select c.html as html, c.poll_choice_id as poll_choice_id, v.userid as checked from poll_choices c left join poll_votes v on v.userid = $userid and v.poll_choice_id = c.poll_choice_id where c.poll_question_id = $poll_question_id order by c.html";
-    $html_res = mysql_query($sql);
-    while ($new_row = mysql_fetch_array($html_res)) {
+    $html_res = mysqli_query($dbh,$sql);
+    while ($new_row = mysqli_fetch_array($html_res)) {
         $html = $new_row['html'];
         $checked = $new_row['checked'];
         $poll_choice_id = $new_row['poll_choice_id'];
@@ -79,8 +79,8 @@ if (User::logged_in()) {
         $set->append($item);
         $sql = "select count(*) as popularity from poll_votes v
 		where v.poll_choice_id = $poll_choice_id";
-        $res = mysql_query($sql);
-        $new_row = mysql_fetch_array($res);
+        $res = mysqli_query($dbh,$sql);
+        $new_row = mysqli_fetch_array($res);
         $popularity = $new_row['popularity'];
         $votes = new RegularText($popularity, 'Popularity');
         $set->append($votes);
@@ -93,8 +93,8 @@ if (User::logged_in()) {
     $item = new SubmitInput('Vote!');
     $votingform->append($item);
     $sql = "select count(*) as voted from poll_votes v join poll_choices c using (poll_choice_id) where userid = $userid and poll_question_id = $poll_question_id";
-    $res = mysql_query($sql);
-    $new_row = mysql_fetch_array($res);
+    $res = mysqli_query($dbh,$sql);
+    $new_row = mysqli_fetch_array($res);
     $voted = $new_row['voted'];
     if ($voted) {
         $msg = new InfoText('You have voted in this poll, but you may change your mind.', 'Vote registered');
@@ -107,8 +107,8 @@ $thispage->append($ask);
 function list_polls() {
     $list = new WidgetList('polls_list', true, 'All Polls');
     $sql = "select html, poll_question_id from poll_questions where poll_question_id not in (16, 17) order by poll_question_id desc";
-    $res = mysql_query($sql);
-    while ($new_row = mysql_fetch_array($res)) {
+    $res = mysqli_query($dbh,$sql);
+    while ($new_row = mysqli_fetch_array($res)) {
         $link = new Hyperlink('poll_link', false, '?poll_question_id=' . $new_row['poll_question_id'], preg_replace('/<[^>]*>/', '', $new_row['html']));
         $list->append($link);
     }

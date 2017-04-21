@@ -53,9 +53,9 @@ else {
         
     }
     populate_page($thispage, $dbh, $idcookie);
-    $my_result = mysql_query("Select style,descr From 
+    $my_result = mysqli_query($dbh,"Select style,descr From 
 				  style"); //get currently available styles and their descriptions
-    while ($new_row = mysql_fetch_row($my_result)) {
+    while ($new_row = mysqli_fetch_row($my_result)) {
         $mystyles[] = $new_row;
     }
     $css = get_item($dbh, "stylesheet", "stylesheet", "userid", $idcookie);

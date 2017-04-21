@@ -49,17 +49,11 @@ else if (User::id() == 0) {
         }
         if (!$showform) {
             if ($newthread) {
-                //$my_result = mysql_query("Select threadid FROM mainboard WHERE lastupdated < DATE_SUB(NOW(), INTERVAL 7 DAY)");
-                //while ($new_row = mysql_fetch_row($my_result)) {
-                    //delete_item($dbh, "subboard", "threadid", $new_row[0]);
-                    
-                //}
-                //mysql_query("DELETE FROM mainboard WHERE lastupdated < DATE_SUB(NOW(), INTERVAL 7 DAY)");
-                mysql_query("INSERT INTO mainboard VALUES(\"\",\"" . mysql_real_escape_string($threadtitle) . "\",NOW(),NOW(),\"" . $idcookie . "\")");
-                $threadid = mysql_insert_id();
+                mysqli_query($dbh,"INSERT INTO mainboard VALUES(\"\",\"" . mysqli_real_escape_string($dbh,$threadtitle) . "\",NOW(),NOW(),\"" . $idcookie . "\")");
+                $threadid = mysqli_insert_id($dbh);
             }
-            mysql_query("INSERT INTO subboard VALUES(\"\",\"" . $threadid . "\",NOW(),\"" . $idcookie . "\", \"" . mysql_real_escape_string($messagetitle) . "\", \"" . mysql_real_escape_string($messagecontents) . "\")");
-            mysql_query("UPDATE mainboard SET lastupdated = NOW() WHERE threadid = \"" . $threadid . "\"");
+            mysqli_query($dbh,"INSERT INTO subboard VALUES(\"\",\"" . $threadid . "\",NOW(),\"" . $idcookie . "\", \"" . mysqli_real_escape_string($dbh,$messagetitle) . "\", \"" . mysqli_real_escape_string($dbh,$messagecontents) . "\")");
+            mysqli_query($dbh,"UPDATE mainboard SET lastupdated = NOW() WHERE threadid = \"" . $threadid . "\"");
             //			echo "Your message has been submitted.";
             //process message here
             

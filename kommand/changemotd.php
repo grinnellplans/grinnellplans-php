@@ -12,9 +12,9 @@ require ("dbfunctions.php");
 $dbh = db_connect();
 if (isset($_POST['submit'])) {
     $motd = addslashes(preg_replace("/\n/s", "<br>", $_POST['motd']));
-    mysql_query(sprintf("UPDATE `system` SET motd = '%s'", mysql_real_escape_string($motd)));
+    mysqli_query($dbh,sprintf("UPDATE `system` SET motd = '%s'", mysqli_real_escape_string($dbh,$motd)));
 }
-$row = mysql_fetch_array(mysql_query("SELECT motd FROM system"));
+$row = mysqli_fetch_array(mysqli_query($dbh,"SELECT motd FROM system"));
 $motd = preg_replace("/<br>/", "\n", stripslashes($row[0]));
 ?>
 <form action="changemotd.php" method="POST">

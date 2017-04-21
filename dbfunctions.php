@@ -5,19 +5,20 @@ require_once ('Plans.php');
 *Establishes a persistant connection.
 */
 function db_connect() {
-    $dbh = @mysql_connect(MYSQL_HOST, MYSQL_USER, MYSQL_PASS);
-    if (!$dbh || !mysql_select_db(MYSQL_DB)) {
-        print "Something's wrong with the database. You could report the error to grinnellplans@gmail.com. <br/><pre>" . mysql_error() . "</pre>";
+    $dbh = @mysqli_connect(MYSQL_HOST, MYSQL_USER, MYSQL_PASS, MYSQL_DB);
+    if (!$dbh) {
+        print "Something's wrong with the database. You could report the error to grinnellplans@gmail.com. <br/><pre>" . mysqli_error($dbh) . "</pre>";
         exit;
     }
-    @mysql_query($dbh, "SET NAMES 'utf8mb4';");
+    $_GLOBALS['dbh'] = $dbh;
+    @mysqli_query($dbh, "SET NAMES 'utf8mb4';");
     return $dbh;
 }
 /*
 *Given the database handler, closes the connection to the database.
 */
 function db_disconnect($dbh) {
-    mysql_close($dbh);
+    mysqli_close($dbh);
 }
 /*
 *Adds a row to a table in the database.
@@ -28,10 +29,10 @@ function add_row($dbh, $table, $row) {
         $row[$key] = "\"" . addslashes($items) . "\"";
     }
     $joined_row = join(',', $row);
-    if (!mysql_query("INSERT INTO $table VALUES($joined_row)")) {
+    if (!mysqli_query($dbh, "INSERT INTO $table VALUES($joined_row)")) {
         echo "Error adding entry to $table";
         echo $joined_row . "<br />";
-        mysql_close($dbh);
+        mysqli_close($dbh);
         exit();
     }
 }
@@ -39,10 +40,10 @@ function add_row($dbh, $table, $row) {
 *Gets a single item from the database. Returns a single item.
 */
 function get_item($dbh, $get_column, $table, $search_column, $search_item) {
-    $search_item = addslashes($search_item);
-    $my_result = mysql_query("Select $get_column From $table where
+    $search_item = mysqli_real_escape_string($dbh,$search_item);
+    $my_result = mysqli_query($dbh,"Select $get_column From $table where
 	$search_column = '$search_item'");
-    $my_row = mysql_fetch_array($my_result);
+    $my_row = mysqli_fetch_array($my_result);
     return $my_row[0];
 }
 /*
@@ -52,10 +53,10 @@ function get_item($dbh, $get_column, $table, $search_column, $search_item) {
 */
 function get_items($dbh, $get_column, $table, $search_column, $search_item) {
     $all = array();
-    $search_item = addslashes($search_item);
-    $my_result = mysql_query("Select $get_column From $table where
+    $search_item = mysqli_real_escape_string($dbh,$search_item);
+    $my_result = mysqli_query($dbh,"Select $get_column From $table where
 	$search_column = '$search_item'");
-    while ($new_row = mysql_fetch_row($my_result)) {
+    while ($new_row = mysqli_fetch_row($my_result)) {
         $all[] = $new_row;
     }
     return $all;
@@ -64,38 +65,18 @@ function get_items($dbh, $get_column, $table, $search_column, $search_item) {
 *Removes a row from the database.
 */
 function delete_item($dbh, $table, $search_column, $search_item) {
-    $search_item = addslashes($search_item);
-    mysql_query("DELETE FROM $table WHERE
+    $search_item = mysqli_real_escape_string($dbh,$search_item);
+    mysqli_query($dbh,"DELETE FROM $table WHERE
 	$search_column = '$search_item'");
 }
 /*
 *Changes an item in the database.
 */
 function set_item($dbh, $dtable, $dcolumn_change, $dcolumn_value, $dsearch_column, $dsearch_item) {
-    $dcolumn_value = addslashes($dcolumn_value);
-    $dsearch_item = addslashes($dsearch_item);
-    mysql_query("UPDATE $dtable SET $dcolumn_change = '$dcolumn_value' WHERE
+    $dcolumn_value = mysqli_real_escape_string($dbh,$dcolumn_value);
+    $dsearch_item = mysqli_real_escape_string($dbh,$dsearch_item);
+    mysqli_query($dbh,"UPDATE $dtable SET $dcolumn_change = '$dcolumn_value' WHERE
 					  $dsearch_column = '$dsearch_item'");
-}
-/*
-*Gets rid of an entire table in the database.
-*/
-function annihilate($dbh, $table) {
-    if (!mysql_query("DROP TABLE $table")) {
-        printf("Error is dropping $table");
-        mysql_close($dbh);
-        exit();
-    }
-}
-/*
-*Adds a table to the database, with items being the creation values
-*for the table (i.e. TINYINT mynumber)
-*/
-function create_table($dbh, $table_name, $items) {
-    $joined_items = join(',', $items);
-    if (!mysql_query("CREATE TABLE $table_name($joined_items)")) {
-        printf("Error creating table $table_name with values $joined_items");
-    }
 }
 /*
 *Searches the database for a partial term and returns those parts
@@ -103,10 +84,10 @@ function create_table($dbh, $table_name, $items) {
 */
 function partial_search($dbh, $get_column, $table, $search_column, $search_item, $orderby) {
     $all = array();
-    $search_item = addslashes($search_item);
-    $my_result = mysql_query("Select $get_column From $table where
+    $search_item = mysqli_real_escape_string($dbh,$search_item);
+    $my_result = mysqli_query($dbh,"Select $get_column From $table where
 							$search_column RLIKE '$search_item' ORDER by $orderby");
-    while ($new_row = mysql_fetch_row($my_result)) {
+    while ($new_row = mysqli_fetch_row($my_result)) {
         $all[] = $new_row;
     }
     return $all;

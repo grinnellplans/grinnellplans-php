@@ -94,17 +94,17 @@ simply by logging out. If you would like to change this setting, please visit
     } else if ($addtolist) {
         $privlevel = (isset($_POST['privlevel']) ? (int)$_POST['privlevel'] : 0);
         if ($privlevel == 0) {
-            mysql_query("DELETE FROM autofinger WHERE owner = '$idcookie' and interest = '$searchnum'");
+            mysqli_query($dbh,"DELETE FROM autofinger WHERE owner = '$idcookie' and interest = '$searchnum'");
             $yay = new InfoText("User " . $planinfo[0][0] . " removed from your autoread list.");
         } else if ($privlevel > 0 && $privlevel <= 3) {
-            mysql_query("INSERT INTO autofinger (owner, interest, priority) VALUES ('$idcookie', '$searchnum', '$privlevel') ON DUPLICATE KEY UPDATE priority=$privlevel");
+            mysqli_query($dbh,"INSERT INTO autofinger (owner, interest, priority) VALUES ('$idcookie', '$searchnum', '$privlevel') ON DUPLICATE KEY UPDATE priority=$privlevel");
             $yay = new InfoText("User " . $planinfo[0][0] . " is now on your autoread list with priority level of " . $privlevel . ".");
         }
         $page->append($yay);
     }
     // Update autofinger as read.
-    $my_result = mysql_query("Select priority From autofinger where owner = '$idcookie' and interest = '$searchnum'");
-    $onlist = mysql_fetch_array($my_result);
+    $my_result = mysqli_query($dbh,"Select priority From autofinger where owner = '$idcookie' and interest = '$searchnum'");
+    $onlist = mysqli_fetch_array($my_result);
     if ($onlist) {
         update_read($dbh, $idcookie, $searchnum); //mark as having been read
         $myonlist = $onlist[0];
@@ -155,9 +155,9 @@ if (!$user) {
         // Get the plan text
         $plantext = $user->Plan->plan;
         // Jumble it if requested
-        if ($_GET['jumbled'] == 'yes' || ($_COOKIE['jumbled'] == 'yes' && $_GET['jumbled'] != 'no')) {
-            $plantext = jumble($plantext);
-        }
+        //if ($_GET['jumbled'] == 'yes' || ($_COOKIE['jumbled'] == 'yes' && $_GET['jumbled'] != 'no')) {
+        //    $plantext = jumble($plantext);
+        //}
         $plantext = new PlanText($plantext, false);
         $thisplan = new PlanContent($user->username, $user->pseudo, strtotime($user->login), strtotime($user->changed), $plantext);
         $page->append($thisplan);

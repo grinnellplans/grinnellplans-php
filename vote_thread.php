@@ -16,12 +16,12 @@ else //elseallowed to edit
 	if (!isset($_REQUEST['messageid']) die("messageid must be specified"); 
 	$messageid = (int)$_REQUEST['messageid'];
 	$vote = isset($_REQUEST['vote'])?$_REQUEST['vote']:"";
-        mysql_query("delete from boardvotes where userid = '$idcookie' and messageid = '$messageid'");
+        mysqli_query($dbh,"delete from boardvotes where userid = '$idcookie' and messageid = '$messageid'");
         if ($vote == "y") {
-            mysql_query("insert into boardvotes (userid, threadid, messageid, vote) values ('$idcookie',(select threadid from subboard where messageid = '$messageid'), '$messageid', 1)");
+            mysqli_query($dbh,"insert into boardvotes (userid, threadid, messageid, vote) values ('$idcookie',(select threadid from subboard where messageid = '$messageid'), '$messageid', 1)");
         }
         if ($vote == "n") {
-            mysql_query("insert into boardvotes (userid, threadid, messageid, vote) values ('$idcookie',(select threadid from subboard where messageid = '$messageid'), '$messageid', -1)");
+            mysqli_query($dbh,"insert into boardvotes (userid, threadid, messageid, vote) values ('$idcookie',(select threadid from subboard where messageid = '$messageid'), '$messageid', -1)");
         }
 }
 ?>

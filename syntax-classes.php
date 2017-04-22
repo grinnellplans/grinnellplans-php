@@ -214,7 +214,7 @@ class FormItemSet extends WidgetList {
     /**
      * @param FormItem|FormItemSet
      */
-    public function append($item) {
+    public function append(Widget $item) {
         $item->parent_form = $this->parent_form;
         parent::append($item);
     }
@@ -336,7 +336,7 @@ class Form extends WidgetGroup {
     /**
      * @param FormItem|FormItemSet
      */
-    public function append($item) {
+    public function append(Widget $item) {
         $item->parent_form = $this;
         parent::append($item);
     }

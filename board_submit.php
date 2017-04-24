@@ -74,20 +74,13 @@ else if (User::id() == 0) {
             $messageform->append($title);
             $messageform->append($hid);
         } //if ($newthread)
-        $boardsize = get_items($dbh, "edit_cols,edit_rows", "accounts", "userid", $idcookie); //get the users chosen box size
-        if ($boardsize[0][1] < 1) {
-            $boardsize[0][0] = 70;
-        }
-        if ($boardsize[0][2] < 1) {
-            $boardsize[0][1] = 14;
-        }
         $message = new TextInput('messagetitle', $messagetitle);
         $message->title = 'Message Title:';
         $messageform->append($message);
         $messagecontents = new TextareaInput('messagecontents', $messagecontents);
         $messagecontents->title = 'Message Contents:';
-        $messagecontents->rows = $boardsize[0][1];
-        $messagecontents->cols = $boardsize[0][0];
+        $messagecontents->rows = 11;
+        $messagecontents->cols = 50;
         $messageform->append($messagecontents);
         $threadid = new HiddenInput('threadid', $threadid);
         $messageform->append($threadid);

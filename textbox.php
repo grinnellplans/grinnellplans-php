@@ -20,9 +20,11 @@ else
     populate_page($thispage, $dbh, $idcookie);
     $heading = new HeadingText('Change Edit Box Size:', 1);
     $thispage->append($heading);
-    if ($_POST['part']) //if form has been submitted
+    if (isset($_POST['notes_asc']) && isset($_POST['cols']) && isset($_POST['rows'])) //if form has been submitted
     {
         $cols = $_POST['cols'];
+	$rows = $_POST['rows'];
+	$notes_asc = $_POST['notes_asc'];
         if ($cols > 150 or $cols < 25) //check to make sure that columns are a reasonable size
         {
             $denied = new AlertText('Column size is not valid.', 'Problem With Your Selection');
@@ -57,8 +59,6 @@ else
         $textboxform->action = 'textbox.php';
         $textboxform->method = 'POST';
         $thispage->append($textboxform);
-        $item = new HiddenInput('part', 1);
-        $textboxform->append($item);
         $item = new TextInput('rows', $edsizes[0][1]);
         $item->title = 'Rows:';
         $textboxform->append($item);

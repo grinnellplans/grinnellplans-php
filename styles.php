@@ -15,10 +15,10 @@ else {
     $title = new HeadingText('Style Options:', 1);
     $thispage->append($title);
     $custom_style_form = '';
-    if ($_POST['part']) //if they are submitting the form
+    if (isset($_POST['style'])) //if they are submitting the form
     {
         if ($_POST['style'] == "custom") {
-            if (!$_POST['urcss']) {
+            if (!isset($_POST['urcss'])) {
                 $custom_style_form = new Form('customstyle', true);
                 $custom_style_form->action = 'styles.php';
                 $custom_style_form->method = 'POST';
@@ -34,6 +34,7 @@ else {
                 $item = new SubmitInput('Submit');
                 $custom_style_form->append($item);
             } else {
+		$urcss = $_POST['urcss'];
                 if (get_item($dbh, "stylesheet", "stylesheet", "userid", $idcookie)) {
                     set_item($dbh, "stylesheet", "stylesheet", $urcss, "userid", $idcookie);
                 } else {
@@ -59,9 +60,9 @@ else {
     }
     $css = get_item($dbh, "stylesheet", "stylesheet", "userid", $idcookie);
     if ($css) {
-        $customstyle = "checked";
+        $checkedstyle = "custom";
     } else {
-        $intcheck[get_item($dbh, "style", "display", "userid", $idcookie) ] = " checked"; //get the style that the user currently has selected, and set it to start out checked
+        $checkedstyle = get_item($dbh, "style", "display", "userid", $idcookie); //get the style that the user currently has selected, and set it to start out checked
         
     }
     $custom_style_form = new Form('styleform', true);
@@ -72,20 +73,18 @@ else {
     $item = new HiddenInput('part', '1');
     $custom_style_form->append($item);
     //begin the form
-    $o = 0;
-    while ($mystyles[$o][0]) {
-        $item = new RadioInput('style', $mystyles[$o][0]);
-        $item->checked = (strtolower($intcheck[$mystyles[$o][0]]) == ' checked');
-        $name_and_desc = $mystyles[$o][1];
+    foreach ($mystyles as $style) {
+        $item = new RadioInput('style', $style[0]);
+        $item->checked = ($style[0] === $checkedstyle);
+        $name_and_desc = $style[1];
         $tmp_matches = array();
         preg_match('/<b>(.*)<\/b><br>(.*)/', $name_and_desc, $tmp_matches);
         $item->title = $tmp_matches[1];
         $item->description = $tmp_matches[2];
         $custom_style_form->append($item);
-        $o++;
     }
     $item = new RadioInput('style', 'custom');
-    $item->checked = ($customstyle == 'checked');
+    $item->checked = ($checkedstyle === "custom");
     $item->description = 'Custom Style Sheet';
     $custom_style_form->append($item);
     $item = new SubmitInput('Change');

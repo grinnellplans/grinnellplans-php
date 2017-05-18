@@ -37,7 +37,7 @@ if ($poll_question_id) {
             $sql = "update poll_choices set html = '$new_response'
 											where poll_choice_id = '$poll_choice_id'";
             //echo $sql;
-            mysqli_query($dbh,$sql;
+            mysqli_query($dbh,$sql);
         }
         foreach($responses['deleted'] as $poll_choice_id) {
             $sql = "delete from poll_choices where poll_choice_id = $poll_choice_id";

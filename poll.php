@@ -53,7 +53,7 @@ if (User::logged_in()) {
             $sql = "insert into poll_votes set userid = $userid,
 			created = now(),
 			poll_choice_id = $poll_choice_id";
-            mysqli_query($dbh,$sql;
+            mysqli_query($dbh,$sql);
         }
     }
     $heading = new HeadingText($question, 3);

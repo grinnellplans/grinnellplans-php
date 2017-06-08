@@ -3,6 +3,8 @@ require_once ('Plans.php');
 new SessionBroker();
 require ('functions-main.php');
 require ("syntax-classes.php");
+$idcookie = User::id();
+$dbh = db_connect();
 $thispage = new PlansPage('Utilities', 'listusers', PLANSVNAME . ' - List All Plans', 'listusers.php');
 if (User::logged_in()) {
     populate_page($thispage, $dbh, $idcookie);
@@ -42,4 +44,5 @@ foreach ($users as $user) {
     $buttonlist->append($name);
 }
 interface_disp_page($thispage);
+db_disconnect($dbh);
 ?>

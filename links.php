@@ -38,28 +38,20 @@ if (!User::logged_in()) {
     {
         populate_page($thispage, $dbh, $idcookie);
         $selected_links = get_items($dbh, "linknum", "opt_links", "userid", $idcookie); //get the current set of links that the user has selected
-        $o = 0;
-        while ($selected_links[$o][0]) {
-            $myselected[$selected_links[$o][0]] = " checked"; //set up so current links will show up in form as checked
-            $o++;
+        foreach ($selected_links as $selected_link) {
+            $myselected[$selected_link[0]] = true; //set up so current links will show up in form as checked
         }
         $my_result = mysql_query("Select linknum,linkname,descr From
 	avail_links"); //get the info on the currently available links
-        while ($new_row = mysql_fetch_row($my_result)) {
-            $all_links[] = $new_row; //get info fron query
-            
-        }
-        $o = 0;
         $linksform = new Form('optionallinks', true);
         $thispage->append($linksform);
-        while ($all_links[$o][0]) {
+        while ($link = mysql_fetch_row($my_result)) {
             //display each link
-            $item = new CheckboxInput('mylinks[]', $all_links[$o][0]);
-            $item->checked = (strtolower(trim($myselected[$all_links[$o][0]])) == 'checked');
-            $item->title = $all_links[$o][1];
-            $item->description = $all_links[$o][2];
+            $item = new CheckboxInput('mylinks[]', $link[0]);
+            $item->checked = isset($myselected[$link[0]]);
+            $item->title = $link[1];
+            $item->description = $link[2];
             $linksform->append($item);
-            $o++;
         }
         $item = new HiddenInput('submit', 1);
         $linksform->append($item);

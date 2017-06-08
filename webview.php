@@ -18,11 +18,14 @@ if (!User::logged_in()) {
     $heading = new HeadingText('Guest Viewable', 1);
     $thispage->append($heading);
     // If the form was submitted, set the preference and print a message
-    if ($part) {
-        if ($webview != 1) {
-            $webview = 0;
+    if (isset($_POST['webview'])) {
+        $webview = $_POST['webview'];
+        if ($webview !== '1') {
+            $webview = '0';
         }
-        set_item($dbh, "accounts", "webview", $webview, "userid", $idcookie);
+        $user = User::get();
+        $user->webview = $webview;
+        $user->save();
         $thisitem = new InfoText('Preference set.', '');
         $thispage->append($thisitem);
     }
@@ -33,7 +36,7 @@ if (!User::logged_in()) {
         ->count();
     $has_blocks = ($q != 0);
     if ($has_blocks) {
-        $warning = new AlertText("Warning! You are currently blocking some users. Making your plan viewable to guests will allow blocked users to read your plan simply by logging out. To see the list of users you are blocking, visit <a href=\"/blocks.php\">the blocking page</a>.");
+        $warning = new AlertText("Warning! You are currently blocking some users. Making your plan viewable to guests will allow blocked users to read your plan simply by logging out. To see the list of users you are blocking, visit <a href=\"/blocks.php\">the blocking page</a>.","You have blocked users");
         $thispage->append($warning);
     }
 
@@ -42,13 +45,11 @@ if (!User::logged_in()) {
     $thispage->append($viewableform);
     $viewableform->action = 'webview.php';
     $viewableform->method = 'POST';
-    if (get_item($dbh, "webview", "accounts", "userid", $idcookie) == 1) {
+    if (User::get()->webview == 1) {
         $viewable = true;
     } else {
         $viewable = false;
     }
-    $item = new HiddenInput('part', 1);
-    $viewableform->append($item);
     $item = new RadioInput('webview', 1);
     $item->checked = $viewable;
     $item->description = "Make plan viewable to guests.";

@@ -27,14 +27,14 @@ if (!User::logged_in()) {
  	$page->append($editbox);
         $editbox->append(new HiddenInput('edit_text_md5', md5($plantext)));
 	$log_msg = "Edit page loaded: id $idcookie, edit_text \"" . substr($plantext, 0, 50) . "..." . substr($plantext, -50) . '"';
-        trigger_error($log_msg, E_USER_NOTICE);
+        if (ENVIRONMENT !== 'production') trigger_error($log_msg, E_USER_NOTICE);
     } else {
         // Rename received text
         $pre_edit_md5 = $_POST["edit_text_md5"];
         $plan = $_POST["plan"];
 
         $log_msg = "Plan updated: id $idcookie, post \"" . substr($plan, 0, 50) . "..." . substr($plan, -50) . '"';
-        trigger_error($log_msg, E_USER_NOTICE);
+        if (ENVIRONMENT !== 'production') trigger_error($log_msg, E_USER_NOTICE);
 
         // Get the pre-edit text.
         $old_plan = $user->Plan->edit_text;

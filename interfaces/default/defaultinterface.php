@@ -163,7 +163,6 @@ class LegacyDefaultInterface extends BaseInterface {
                 else if ($obj->identifier == 'autoread_alphabet') {
                     $tpl->setTemplate('views/templates/legacy/WidgetGroup.tpl.php');
                 } else if ($obj->identifier == 'search_results' || $obj->group == 'result_sublist') {
-                    blkafkjaass;
                     $tpl->setTemplate('views/templates/tableless/WidgetList.tpl.php');
                 }
             } else if ($obj instanceof WidgetGroup) {

@@ -155,7 +155,9 @@ function get_opt_links($idcookie) {
             $thislink = new Hyperlink('mainlink_secrets', true, 'anonymous.php', "Secrets ($count)");
         } else if ($new_row[0] == 'Jumble') {
             $url = $_SERVER['REQUEST_URI'];
-            if ($_GET['jumbled'] == 'yes' || ($_COOKIE['jumbled'] == 'yes' && $_GET['jumbled'] != 'no')) {
+            if ((isset($_GET['jumbled']) && $_GET['jumbled'] == 'yes')
+                || ((isset($_COOKIE['jumbled']) && $_COOKIE['jumbled'] == 'yes') 
+                    && (isset($_GET['jumbled']) && $_GET['jumbled'] != 'no'))) {
                 $url = add_param($url, 'jumbled', 'no');
                 $linktext = 'unjumble';
             } else {

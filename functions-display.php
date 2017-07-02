@@ -227,7 +227,7 @@ function get_powered_by() {
     return $msg;
 }
 function wants_secrets($idcookie) {
-    $wants_secrets = mysqli_query($_GLOBALS['dbh'],"Select avail_links.linknum, avail_links.html_code
+    $wants_secrets = mysqli_query($GLOBALS['dbh'],"Select avail_links.linknum, avail_links.html_code
 	From avail_links, opt_links where avail_links.linknum = 11  and  
 	opt_links.userid = $idcookie and opt_links.linknum = avail_links.linknum");
     if ($row = mysqli_fetch_row($wants_secrets)) {
@@ -237,14 +237,14 @@ function wants_secrets($idcookie) {
     }
 }
 function count_unread_secrets($idcookie) {
-    $last_viewed = mysqli_query($_GLOBALS['dbh'],"select date from viewed_secrets where userid = $idcookie");
+    $last_viewed = mysqli_query($GLOBALS['dbh'],"select date from viewed_secrets where userid = $idcookie");
     if ($date_row = mysqli_fetch_array($last_viewed)) {
         $last = $date_row['date'];
     } else {
         $last = "000-00-00 00:00:00";
     }
     $sql = "select count(*) as n from secrets where display = 'yes' and secrets.date_approved > '$last'";
-    $count = mysqli_query($_GLOBALS['dbh'],$sql);
+    $count = mysqli_query($GLOBALS['dbh'],$sql);
     $count_row = mysqli_fetch_array($count);
     $count = $count_row['n'];
     return $count;

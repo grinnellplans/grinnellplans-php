@@ -110,7 +110,7 @@ function send_reset_email($username, $email) {
     $expires = time() + 24*60*60;
     $hash = User::getPasswordResetHash($user->username,$expires,$user);
     if (!$hash) return false;
-    $url = 'http://'.$_SERVER['SERVER_NAME'].'/passwordreset.php?u='.$user->username.'&e='.$expires.'&h='.$hash;
+    $url = 'http'.((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on')?'s':'').'://'.$_SERVER['SERVER_NAME'].'/passwordreset.php?u='.$user->username.'&e='.$expires.'&h='.$hash;
     $emailbody = "Dear [$user->username],\n\n";
     $emailbody.= "We received a request at www.grinnellplans.com to reset your Plans password.\n";
     $emailbody.= "To confirm this request and reset your GrinnellPlans password, please click the link below: \n\n";

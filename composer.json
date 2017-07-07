@@ -3,7 +3,8 @@
     "description": "GrinnellPlans, a social networking site",
     "type": "project",
     "require": {
-        "amazonwebservices/aws-sdk-for-php": "^1.6"
+        "amazonwebservices/aws-sdk-for-php": "^1.6",
+        "ircmaxell/password-compat": "^1.0"
     },
     "license": "gpl3"
 }

@@ -18,7 +18,7 @@ if (User::logged_in()) {
 }
 $heading = new HeadingText('Plan Registration', 1);
 $thispage->append($heading);
-if ($_GET['submitted']) {
+if (isset($_GET['submitted'])) {
     $username = $_GET['username'];
     $match = array();
     if (preg_match("/(.*)@$domain/", $username, $match)) {
@@ -47,8 +47,8 @@ if ($_GET['submitted']) {
         }
         $thispage->append($message);
     }
-} else if ($_GET['token']) {
-    $session = get_item($dbh, 'session', 'tentative_accounts', 'token', $token);
+} else if (isset($_GET['token'])) {
+    $session = get_item($dbh, 'session', 'tentative_accounts', 'token', $_GET['token']);
     if (!$session) {
         $message = new AlertText('That doesn\'t seem to be a valid or unexpired token, please try again or <a href="mailto:grinnellplans@gmail.com">Email</a> us.', 'Token not recognized');
         $thispage->append($message);

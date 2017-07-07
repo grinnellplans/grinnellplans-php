@@ -24,7 +24,7 @@ if (!User::logged_in()) {
     if ($changed == 'email') {
         $newemail = $_POST['email'];
         $user = User::get();
-        if (isset($_POST['password']) && ($user->password == crypt($_POST['password'],$user->password))) {
+        if (isset($_POST['password']) && password_verify($_POST['password'],$user->password)) {
 	    if ($newemail == "" || filter_var($newemail, FILTER_VALIDATE_EMAIL) !== false) {
             if (User::setEmail($newemail)) {
 	            $success = new InfoText("Your email address has been updated!",'Success');

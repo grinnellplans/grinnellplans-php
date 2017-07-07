@@ -1,10 +1,10 @@
 <?php
 require_once ('Plans.php');
 new SessionBroker();
-require ("functions-main.php");
-require ("functions-kommand.php");
-require ("functions-email.php");
-require ("syntax-classes.php");
+require_once ("functions-main.php");
+require_once ("functions-kommand.php");
+require_once ("functions-email.php");
+require_once ("syntax-classes.php");
 $idcookie = User::id();
 $userid = $idcookie;
 $dbh = db_connect();

@@ -7,13 +7,19 @@ class ProjectInformation {
     public static function projectUrl() {
         return "https://github.com/grinnellplans/grinnellplans-php/";
     }
+    private static $git_revision = "";
     public static function revision() {
-        if (file_exists(__ROOT__ . '/.git/refs/heads/master')) {
+        if (self::$git_revision != "") return self::$git_revision;
+
+        if (function_exists("exec")) {
+            self::$git_revision = exec('git --git-dir="'.__ROOT__.'/.git" rev-parse --short HEAD');
+        } else if (file_exists(__ROOT__ . '/.git/refs/heads/master')) {
             $git = file(__ROOT__ . '/.git/refs/heads/master');
-	    $version = substr($git[0],0,8);
-            return trim($version);
+            $version = substr($git[0],0,8);
+            self::$git_revision = trim($version);
         }
-        return 0;
+
+        return self::$git_revision;
     }
     public static function version() {
         return "r" . ProjectInformation::revision();

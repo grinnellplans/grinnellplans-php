@@ -59,8 +59,8 @@ class SessionBroker {
             
             $expiration = time() + COOKIE_EXPIRATION;
 
-            setcookie(COOKIE_PAYLOAD, $cypher, $expiration, "/", COOKIE_DOMAIN, false, true);
-            setcookie(COOKIE_SIGNATURE, $signature, $expiration, "/", COOKIE_DOMAIN, false, true);
+            setcookie(COOKIE_PAYLOAD, $cypher, $expiration, "/", COOKIE_DOMAIN, (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on'), true);
+            setcookie(COOKIE_SIGNATURE, $signature, $expiration, "/", COOKIE_DOMAIN, (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on'), true);
             ob_end_flush();
         }
         return true;

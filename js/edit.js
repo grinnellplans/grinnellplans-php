@@ -18,3 +18,4 @@ function checkPlanLength() {
 	}
 }
 $(document).ready(checkPlanLength);
+$( '#edit_textarea' ).keyup(checkPlanLength);

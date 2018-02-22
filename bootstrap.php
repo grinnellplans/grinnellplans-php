@@ -1,5 +1,7 @@
 <?php
 define('__ROOT__', dirname(__FILE__));
+// Composer setup 
+require_once(__DIR__.'/vendor/autoload.php');
 require_once ('Configuration.php');
 set_include_path(get_include_path() . ':' . __ROOT__ . ':' . __ROOT__ . '/inc');
 putenv('TZ=' . TZ);

@@ -34,10 +34,10 @@ define('MAILER_ADDRESS', "noreply@grinnellplans.com");
 define('USE_NATIVE_MAIL', true);	//~(use AWS mail service if false)
 
 //AWS credentials - needed if aws mail is enabled
-define('AWS_KEY', '');
-define('AWS_SECRET_KEY', '');
-
-
+if (!USE_NATIVE_MAIL) {
+    define('AWS_KEY', '');
+    define('AWS_SECRET_KEY', '');
+}
 
 // Use this if you wish to override the auto-detected environment type.
 // Options are 'development', 'production', or 'testing'

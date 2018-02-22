@@ -1,3 +1,0 @@
-[submodule "lib/aws"]
-	path = lib/aws
-	url = https://github.com/amazonwebservices/aws-sdk-for-php

@@ -1,9 +1,12 @@
 <?php
 require_once ('Plans.php');
-require_once ('lib/aws/sdk.class.php');
 
-if (defined('AWS_KEY')) {
-    CFCredentials::set(array('default'=>array('key'=>AWS_KEY,'secret'=>AWS_SECRET_KEY)));
+if (USE_NATIVE_MAIL) {
+    if (defined('AWS_KEY')) {
+        CFCredentials::set(array('default'=>array('key'=>AWS_KEY,'secret'=>AWS_SECRET_KEY)));
+    } else {
+        CFCredentials::set(array('default'=>array('default_cache_config'=>'/tmp')));
+    }
 }
 
 function send_mail($to, $subject, $text, $from = MAILER_ADDRESS, $reply_to = ADMIN_ADDRESS) {

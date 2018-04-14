@@ -4,11 +4,10 @@ require_once ('Plans.php');
 
 <?php
 require ("functions-main.php");
-if ($username) {
+if (isset($_POST['username'])) {
     $dbh = db_connect();
-    $orig_pass = $password;
-    if (User::checkPassword($username, $password)) {
-        $idcookie = get_item($dbh, "userid", "accounts", "username", $username);
+    if (User::checkPassword($_POST['username'], $_POST['password'])) {
+        $idcookie = get_item($dbh, "userid", "accounts", "username", $_POST['username']);
         set_item($dbh, "display", "style", "1", "userid", $idcookie);
         delete_item($dbh, "stylesheet", "userid", $idcookie);
         echo "Your style sheet has been reset.";
@@ -18,10 +17,10 @@ if ($username) {
     db_disconnect($dbh);
 } else {
 ?>
-<a href="index.php">Back</a><Br>
+<a href="index.php">Back</a><br>
 Reset style sheet for your account.
 <form action="reset.php" method="post">
-Username: <input type="text" name="username"><Br>
+Username: <input type="text" name="username"><br>
 Password: <input type="password" name="password"><br>
 <input type="submit" value="Reset">
 </form>

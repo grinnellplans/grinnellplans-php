@@ -1,6 +1,5 @@
 <?php
 require_once ('Plans.php');
-new SessionBroker();
 $mysearch = (isset($_GET['mysearch']) ? $_GET['mysearch'] : false);
 $planlove = (isset($_GET['planlove']) ? $_GET['planlove'] : false);
 $donotsearch = (isset($_GET['donotsearch']) ? $_GET['donotsearch'] : false);

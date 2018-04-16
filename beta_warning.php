@@ -4,7 +4,6 @@
  * make sure they understand that they are on a different server now.
  */
 require_once ('Plans.php');
-//new SessionBroker();
 require ('functions-main.php');
 require ('syntax-classes.php');
 $idcookie = User::id();

@@ -37,8 +37,6 @@ ini_set('session.gc_maxlifetime', COOKIE_EXPIRATION); // Used internally by the 
 ini_set('session.cookie_lifetime',COOKIE_EXPIRATION + 3600); //handle incorrect client clocks a bit better
 ini_set('session.cookie_domain', COOKIE_DOMAIN);
 session_start();
-//reset the session cookie to last a little longer on every page load
-setcookie(ini_get("session.name"), session_id(), time()+ini_get("session.cookie_lifetime"), ini_get("session.cookie_path"), ini_get("session.cookie_domain"), ini_get("session.cookie_secure"), ini_get("session.cookie_httponly"));
 
 // Simple functions
 require_once ('functions-main.php');

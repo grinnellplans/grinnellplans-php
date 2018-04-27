@@ -161,6 +161,9 @@ EOT;
     }
     
     public static function logout() {
+	if (isset($_COOKIE[session_name()])) {
+		setcookie(session_name(),"",time()-86400, ini_get('session.cookie_path'), ini_get('session.cookie_domain'), ini_get('session.cookie_secure'), ini_get('session.cookie_httponly'));
+	}
         session_destroy();
     }
 }

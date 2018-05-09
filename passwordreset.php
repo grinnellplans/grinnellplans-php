@@ -1,6 +1,5 @@
 <?php
 require_once ('Plans.php');
-new SessionBroker();
 require_once ("functions-main.php");
 require_once ("syntax-classes.php");
 $idcookie = User::id();

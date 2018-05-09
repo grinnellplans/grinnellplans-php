@@ -26,12 +26,21 @@ if (get_magic_quotes_gpc()) {
     $_REQUEST = array_map('stripslashes_deep', $_REQUEST);
 }
 
-ini_set('short_open_tag', FALSE); // Has no effect after PHP 4.0.0
+// Session setup
+ini_set('session.use_strict_mode',true);
+ini_set('session.gc_maxlifetime', COOKIE_EXPIRATION); // Used internally by the AWS session handler, so still works even if DynamoDB storage is enabled
+ini_set('session.cookie_lifetime',COOKIE_EXPIRATION + 3600); //handle incorrect client clocks a bit better
+ini_set('session.cookie_domain', COOKIE_DOMAIN);
+if(defined('DDB_SESSION_TABLE')) {
+$dynamoDb = new Aws\DynamoDb\DynamoDbClient(['region' => 'us-east-1', 'version' => '2012-08-10']);
+$dynamoDb->registerSessionHandler(['table_name' => DDB_SESSION_TABLE]);
+ini_set('session.gc_probability', 0); // Never garbage collect sessions - let AWS handle it
+}
+session_start();
 
 // Simple functions
 require_once ('functions-main.php');
 new ResourceCounter();
-new SessionBroker();
 header('Content-Type: text/html; charset=UTF-8');
 // If we're on a testing environment, warn them
 if (User::logged_in() && $GLOBALS['ENVIRONMENT'] == 'testing' && !$_SESSION['accept_beta'] && basename($_SERVER['PHP_SELF']) != 'beta_warning.php') {

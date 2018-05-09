@@ -3,7 +3,6 @@
  * Redirects a user to a random plan.
  */
 require_once ('Plans.php');
-new SessionBroker();
 require ('functions-main.php');
 
 if (User::logged_in()) {

@@ -1,13 +1,6 @@
 <?php
 require_once ('Plans.php');
-
-if (USE_NATIVE_MAIL) {
-    if (defined('AWS_KEY')) {
-        CFCredentials::set(array('default'=>array('key'=>AWS_KEY,'secret'=>AWS_SECRET_KEY)));
-    } else {
-        CFCredentials::set(array('default'=>array('default_cache_config'=>'/tmp')));
-    }
-}
+require_once ('vendor/autoload.php');
 
 function send_mail($to, $subject, $text, $from = MAILER_ADDRESS, $reply_to = ADMIN_ADDRESS) {
     if(USE_NATIVE_MAIL) {
@@ -15,13 +8,25 @@ function send_mail($to, $subject, $text, $from = MAILER_ADDRESS, $reply_to = ADM
         return mail($to, $subject, $text, "From:$from\nReply-to:$reply_to");
     }
     else {
-        $message = array('Subject'=>array('Data'=>$subject),
-                         'Body'=>array('Text'=>array('Data'=>$text)));
-        $opt = array('ReplyToAddresses'=>$reply_to);
         if (!is_array($to)) $to = array($to);
-        $ses = new AmazonSES();
-        $ret = $ses->send_email($from,array('ToAddresses'=>$to),$message,$opt);
-        return $ret->isOK();
+	if (defined('AWS_KEY') && defined('AWS_SECRET_KEY')) {
+		$credentials = Aws\Credentials\Credentials(AWS_KEY,AWS_SECRET_KEY);
+	} else {
+		$credentials = Aws\Credentials\CredentialProvider::defaultProvider();
+	}
+        $ses = new Aws\Ses\SesClient(['region'=>'us-east-1','version'=>'2010-12-01','credentials'=>$credentials]);
+        $ret = $ses->sendEmail([
+		'Destination'=>['ToAddresses'=>$to],
+		'Message'=>[
+			'Body'=>[
+				'Text'=>['Charset'=>'utf-8','Data'=>$text]
+			],
+			'Subject'=>['Charset'=>'utf-8','Data'=>$subject]
+		],
+		'ReplyToAddresses'=>[$reply_to],
+		'Source'=>$from
+	]);
+        return $ret;
     }
 }
 ?>

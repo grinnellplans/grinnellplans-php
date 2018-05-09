@@ -3,7 +3,6 @@
  * Change the size of the text box in the edit page.
  */
 require_once ('Plans.php');
-new SessionBroker();
 require ('functions-main.php');
 require ("syntax-classes.php");
 $dbh = db_connect(); //establish the database handler

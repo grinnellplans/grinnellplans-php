@@ -27,15 +27,15 @@ if (get_magic_quotes_gpc()) {
 }
 
 // Session setup
+ini_set('session.use_strict_mode',true);
+ini_set('session.gc_maxlifetime', COOKIE_EXPIRATION); // Used internally by the AWS session handler, so still works even if DynamoDB storage is enabled
+ini_set('session.cookie_lifetime',COOKIE_EXPIRATION + 3600); //handle incorrect client clocks a bit better
+ini_set('session.cookie_domain', COOKIE_DOMAIN);
 if(defined('DDB_SESSION_TABLE')) {
 $dynamoDb = new Aws\DynamoDb\DynamoDbClient(['region' => 'us-east-1', 'version' => '2012-08-10']);
 $dynamoDb->registerSessionHandler(['table_name' => DDB_SESSION_TABLE]);
 ini_set('session.gc_probability', 0); // Never garbage collect sessions - let AWS handle it
 }
-ini_set('session.use_strict_mode',true);
-ini_set('session.gc_maxlifetime', COOKIE_EXPIRATION); // Used internally by the AWS session handler, so still works even if DynamoDB storage is enabled
-ini_set('session.cookie_lifetime',COOKIE_EXPIRATION + 3600); //handle incorrect client clocks a bit better
-ini_set('session.cookie_domain', COOKIE_DOMAIN);
 session_start();
 
 // Simple functions

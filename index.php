@@ -14,20 +14,6 @@ if (isset($_GET['logout'])) {
             $msg = 'Invalid username or password.</a>';
         } else {
             $user->JsStatus->status = $_POST['js_test_value'];
-            try {
-                $geoip = Net_GeoIP::getInstance(GEO_DATABASE);
-                $location = $geoip->lookupLocation($_SERVER['REMOTE_ADDR']);
-                $user->Location->country = $location->countryCode;
-                $user->Location->region = $location->region;
-                $user->Location->city = $location->city;
-                $user->Location->latitude = $location->latitude;
-                $user->Location->longitude = $location->longitude;
-                $user->Location->save();
-            }
-            catch(Exception $e) {
-                // Ignore
-                
-            }
             $user->save();
             Redirect('home.php');
         }

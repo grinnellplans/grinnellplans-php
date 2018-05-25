@@ -21,8 +21,15 @@ class User {
     public static function checkPassword($username, $password) {
 	$user = User::get($username);
         if ($user == false) return false;
-        $newpass = crypt($password, $user->password);
-        return ($newpass != '' && $newpass == $user->password);
+        if (password_verify($password,$user->password)) {
+            if (password_needs_rehash($user->password, PASSWORD_DEFAULT)) {
+                $user->password = User::hashPassword($password);
+                $user->save();
+            }
+            return true;
+        } else {
+            return false;
+        }
     }
     /**
      * @return boolean true if password updated successfully
@@ -30,7 +37,7 @@ class User {
     public static function changePassword($username, $newpassword, $oldpassword = null) {
         $user = User::get($username);
         if ($user->username != $username) return false;
-        if (($oldpassword !== null) && ($user->password != crypt($oldpassword,$user->password)))
+        if (($oldpassword !== null) && (!password_verify($oldpassword,$user->password)))
             return false;
         if (strlen($newpassword) < 4) return false;
         $user->password = User::hashPassword($newpassword);
@@ -111,7 +118,7 @@ EOT;
      * @return string a one-way hash of the password, suitable for storage
      */
     public static function hashPassword($password) {
-        return crypt($password);
+        return password_hash($password,PASSWORD_DEFAULT);
     }
 
     public static function get($username = null) {

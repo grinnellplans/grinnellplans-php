@@ -12,9 +12,6 @@ class Accounts extends BaseAccounts
         $this->hasOne('JsStatus', array('local' => 'userid',
             'foreign' => 'userid'));
 
-        $this->hasOne('Location', array('local' => 'userid',
-            'foreign' => 'user_id'));
-
         $this->hasOne('Perms', array('local' => 'userid',
             'foreign' => 'userid'));
 

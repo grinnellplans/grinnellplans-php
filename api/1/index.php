@@ -200,21 +200,6 @@ function doLoginTask() {
         $response['message'] = "Invalid username or password.";
     } else {
         $response['success'] = true;
-        $geoip = Net_GeoIP::getInstance(GEO_DATABASE);
-        try {
-            $location = $geoip->lookupLocation($_SERVER['REMOTE_ADDR']);
-            $user->Location->country = $location->countryCode;
-            $user->Location->region = $location->region;
-            $user->Location->city = $location->city;
-            $user->Location->latitude = $location->latitude;
-            $user->Location->longitude = $location->longitude;
-            $user->Location->save();
-        }
-        catch(Exception $e) {
-            // Ignore
-            
-        }
-        $user->save();
         $response['autofingerList'] = getAutofingerList();
     }
     return $response;

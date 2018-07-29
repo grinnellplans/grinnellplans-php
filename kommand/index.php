@@ -11,6 +11,7 @@ if (User::is_admin()) {
 <a href="deleteuser.php">Delete User</a><br>
 <a href="changeemail.php">Change Email</a><br>
 <a href="changepassword.php">Change Password</a><br>
+<a href="changewriteonly.php">Change Write-only</a><br>
 <a href="changemotd.php">Change MOTD</a><br />
 <a href="secrets.php">Manage Secrets</a><br />
 <a href="manage-donations.php">Manage Donations</a><br />
@@ -20,32 +21,11 @@ if (User::is_admin()) {
 <a href="update-frequency.cgi">Update Frequency</a><br />
 <a href="swap-password.php">Switch a User's password with that of [test].</a><br />
 <a href="style-stats.php">Display Prefs Statistics</a><br/>
-<pre>
-<?php
-    show_penetration();
-?>
-</pre>
-<?php
-} else if ($wrong_passwrod) {
-?>
-<html><body>Wrong password.<br><form action="index.php" method="POST">
-<input type="text" name="username"><Br>
-<input type="password" name="password"><br>
-<input type="submit" value="Kommand">
-</form>
 <?php
 } else {
 ?>
-<html><body><form action="index.php" method="POST">
-<input type="text" name="username"><Br>
-<input type="password" name="password"><br>
-<input type="submit" value="Kommand">
-</form>
+Usage of these tools is restricted to administrators.
 <?php
-}
-function show_penetration() {
-    //	system('/title/grinnellplans.com/class-year-penetration/run-counts.sh');
-    
 }
 ?>
 </body>

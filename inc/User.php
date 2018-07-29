@@ -34,13 +34,13 @@ class User {
     /**
      * @return boolean true if password updated successfully
      */
-    public static function changePassword($username, $newpassword, $oldpassword = null) {
+    public static function changePassword($username, $newpassword, $oldpassword = null, $override_requirements = false) {
         $user = User::get($username);
         if ($user->username != $username) return false;
         if (($oldpassword !== null) && (!password_verify($oldpassword,$user->password)))
             return false;
-        if (strlen($newpassword) < 4) return false;
-	if ($newpassword === $user->username) return false;
+        if (!$override_requirements && strlen($newpassword) < 4) return false;
+	if (!$override_requirements && $newpassword === $user->username) return false;
         $user->password = User::hashPassword($newpassword);
         $user->save();
         return true;

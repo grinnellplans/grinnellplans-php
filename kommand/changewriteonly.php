@@ -8,6 +8,7 @@ require_once('auth.php');
 <?php
 if (isset($_REQUEST['username']) && isset($_POST['write-only'])) {
 $user = User::get($_REQUEST['username']);
+if (!isset($user->Perms)) $user->Perms = new Perms();
 if ($_POST['write-only'] === "true") {
 $user->Perms->status = 'write-only';
 } else {
@@ -16,7 +17,7 @@ $user->Perms->status = '';
 $user->save();
 echo 'Write-only status updated.';
 } elseif (isset($_REQUEST['username']) && (($user = User::get($_REQUEST['username'])) !== false)) {
-$write_only = ($user->Perms->status == 'write-only');
+$write_only = (isset($user->Perms) && $user->Perms->status == 'write-only');
  ?>
 <table><tr><td>Username: </td><td><?php echo $user->username; ?>
 <input type="hidden" name="username" value="<?php echo htmlspecialchars($user->username); ?>" /></td></tr>

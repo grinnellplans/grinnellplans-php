@@ -40,6 +40,7 @@ class User {
         if (($oldpassword !== null) && (!password_verify($oldpassword,$user->password)))
             return false;
         if (strlen($newpassword) < 4) return false;
+	if ($newpassword === $user->username) return false;
         $user->password = User::hashPassword($newpassword);
         $user->save();
         return true;
@@ -53,6 +54,7 @@ class User {
         if (!$validhash) return false;
         if ($expires < time()) return false;
         if ($hash != $validhash) return false;
+	if ($password === $user->username) return false;
         if ($user === false || $user->username != $username) return false;
         if ($password === null) {
                 //If we don't get a password, generate an 8-character one for the user, using the Base64 character set (0-9A-Za-z+-.

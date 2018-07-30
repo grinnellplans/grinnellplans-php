@@ -129,6 +129,8 @@ function doReadTask() {
 
         if (!isvaliduser($dbh, $searchname)) {
             $response['message'] = 'invalid user name';
+        } else if (get_item($dbh, "status", "perms", "userid", User::id()) == 'write-only' && ($searchnum != $idcookie)) {
+            $response['message'] = 'write-only account';
         } else if (Block::isBlocking($searchnum, $idcookie)) {
             $response['message'] = 'blocked';
         } else {

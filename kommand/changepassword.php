@@ -1,6 +1,5 @@
 <?php
 require_once ("../Plans.php");
-$subject_name = $_POST['username'];
 require ("auth.php");
 ?>
 
@@ -9,25 +8,19 @@ require ("auth.php");
 <?php
 require ("dbfunctions.php");
 $dbh = db_connect();
-if ($subject_name) {
-    if (isvaliduser($dbh, $subject_name)) {
-        $info = get_items($dbh, "userid,email", "accounts", "username", $subject_name);
-        $subject_id = $info[0][0];
-        $email = $info[0][1];
-        if (!$password) {
-            srand(time());
-            $password = rand(0, 999999);
-        }
-        User::changePassword($subject_name,$password);
+if (isset($_POST['username'])) {
+    $user = User::get($_POST['username']);
+    if ($user) {
+        User::changePassword($user->username,$_POST['password'],null,true);
         echo "<form action=\"email.php\" method=\"POST\">";
-        echo "<input type=\"hidden\" name=\"email\" value=\"" . $email . "\">";
-        echo "<input type=\"hidden\" name=\"username\" value=\"" . $subject_name . "\">";
-        echo "<input type=\"hidden\" name=\"password\" value=\"" . $password . "\">";
+        echo "<input type=\"hidden\" name=\"email\" value=\"" . $user->email . "\">";
+        echo "<input type=\"hidden\" name=\"username\" value=\"" . $user->username . "\">";
+        echo "<input type=\"hidden\" name=\"password\" value=\"" . $_POST['password'] . "\">";
         echo "<input type=\"hidden\" name=\"whatoperation\" 
 value=\"changepassword\">";
         echo "<input type=\"submit\" value=\"Send Email\"></form>";
     } else {
-        echo $subject_name . "does not exist.";
+        echo $_POST['username'] . "does not exist.";
     }
 } //if a username
 { //if no username

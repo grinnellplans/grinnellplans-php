@@ -24,7 +24,7 @@ if (!User::logged_in()) {
     }
     if ($changed == 'pass') {
         if ($_POST['mypassword'] == $_POST['mypassword2']) {
-            if (strlen($_POST['mypassword']) > 3) {
+            if (strlen($_POST['mypassword']) > 3 && ($_POST['mypassword'] !== User::get()->username) ) {
                 if (User::changePassword(User::get()->username,$_POST['mypassword'],$_POST['oldpassword'])) {
                     $success = new InfoText("Your password has been changed!", 'Success');
                     $thispage->append($success);
@@ -33,7 +33,7 @@ if (!User::logged_in()) {
                     $thispage->append($denied);
                 }
             } else {
-                $denied = new AlertText('Could not change password. Your password must be 4 or more characters.', 'Bad Password', true);
+                $denied = new AlertText('Could not change password. Your password must be 4 or more characters and must not be the same as your username.', 'Bad Password', true);
                 $thispage->append($denied);
             }
         } else {

@@ -28,7 +28,7 @@ if (User::logged_in()) {
 } else if (isset($_REQUEST['u']) && isset($_REQUEST['e']) && isset($_REQUEST['h'])) {
     if ((User::getPasswordResetHash($_REQUEST['u'],$_REQUEST['e']) == $_REQUEST['h']) && ($_REQUEST['e'] > time())) {
         if (isset($_POST['password1']) && isset($_POST['password2'])) {
-            if (($_POST['password1'] == $_POST['password2']) && (strlen($_POST['password1']) >= 4)) {
+            if (($_POST['password1'] == $_POST['password2']) && (strlen($_POST['password1']) >= 4) && $_POST['u'] !== $_POST['password1']) {
                 if (User::resetPassword($_REQUEST['u'],$_REQUEST['e'],$_REQUEST['h'],$_POST['password1'])) {
                     $msg = new InfoText('Your password has been changed. Please <a href="/index.php">log in!</a>!','Reset successful');
                     $page->append($msg);
@@ -45,7 +45,7 @@ if (User::logged_in()) {
                 $page->append(reset_step2());
             } else {
                 //Length requirement not met
-                $msg = new AlertText("Error: Passwords must be at least four characters long.","Password too short");
+                $msg = new AlertText("Error: Passwords must be at least four characters long and must not be the same as your username.","Password too short or same as username");
                 $page->append($msg);
                 $page->append(reset_step2());
             }

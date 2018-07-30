@@ -7,7 +7,7 @@ $status = get_item($dbh, "status", "perms", "userid", $userid);
 $write_only_access = array('edit.php' => 1, 'index.php' => 1, 'quicklove.php' => 1, 'home.php' => 1);
 if ($status && $status == 'write-only') {
     $php_self = basename($_SERVER['SCRIPT_FILENAME']);
-    if ($write_only_access[$php_self] || (($php_self == 'search.php') && (isset($_GET['mysearch'])) && ($_GET['mysearch'] == User::name())) || (('read.php' === $php_self) && (isset($_GET['searchname'])) && ($_GET['searchname'] == User::name() && (isset($_GET['edit_submit'])) && ($_GET['edit_submit'] == 1)))) {
+    if ($write_only_access[$php_self] || (($php_self == 'search.php') && (isset($_GET['mysearch'])) && ($_GET['mysearch'] == User::name())) || (('read.php' === $php_self) && (isset($_GET['searchname'])) && ($_GET['searchname'] == User::name() && (isset($_GET['edit_submit'])) && ($_GET['edit_submit'] == 1) && (!isset($_GET['searchnum']))))) {
         // Okay
         
     } else {

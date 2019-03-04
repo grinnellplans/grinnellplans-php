@@ -113,7 +113,7 @@ class LegacyDefaultInterface extends BaseInterface {
                 if ($this->page->identifier == 'planname' || $this->page->identifier == 'search') {
                     $tpl = $this->oneline_form($obj, $tpl);
                 } else if ($obj->identifier == 'signup') {
-                    $tpl->contents[2]->setTemplate('views/templates/legacy/FormElement_no_table.tpl.php');
+                    $tpl->contents[3]->setTemplate('views/templates/legacy/FormElement_no_table.tpl.php');
                 } else if ($this->page->identifier == 'poll') {
                     $tpl->setTemplate('views/templates/legacy/PollForm.tpl.php');
                 }

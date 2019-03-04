@@ -5,7 +5,9 @@
     "require": {
         "ircmaxell/password-compat": "^1.0",
         "aws/aws-sdk-php": "^3.60",
-        "google/recaptcha": "^1.2"
+        "google/recaptcha": "^1.2",
+        "touhonoob/rate-limit": "^1.2",
+        "aws/aws-php-sns-message-validator": "^1.5"
     },
     "license": "gpl3"
 }

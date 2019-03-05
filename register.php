@@ -15,20 +15,35 @@ if (User::logged_in()) {
 } else {
     populate_guest_page($thispage);
 }
+$thispage->scripts[] = 'https://www.google.com/recaptcha/api.js" async defer charset="UTF-8'; //hack hack hack
 $heading = new HeadingText('Plan Registration', 1);
 $thispage->append($heading);
-if (isset($_GET['submitted'])) {
-    $username = $_GET['username'];
+if (isset($_REQUEST['submitted'])) {
+    $check = true;
+    if (defined('RECAPTCHA_SITE_KEY')) {
+    $recaptcha = new \ReCaptcha\ReCaptcha(RECAPTCHA_SITE_SECRET);
+    $resp = $recaptcha->setExpectedHostname($_SERVER['SERVER_NAME'])
+                      ->verify($_POST['g-recaptcha-response'], $_SERVER['REMOTE_ADDR']);
+    if (!$resp->isSuccess()) {
+        $check = false;
+    }
+    }
+    if (!$check) {
+        $msg = new AlertText("The reCAPTCHA was not solved correctly. Please try again.","CAPTCHA failed");
+        $thispage->append($msg);
+        $thispage->append(show_form());
+    } else { 
+    $username = $_REQUEST['username'];
     $match = array();
     if (preg_match("/(.*)@$domain/", $username, $match)) {
         $username = $match[1];
     }
     $username = preg_replace('/[^a-z0-9]/', '', strtolower($username));
-    $year = $_GET['gradyear'];
+    $year = $_REQUEST['gradyear'];
     $year = preg_replace("/[^0-9]/", '', $year);
-    $type = $_GET['type'];
-    if ($type == "other") {
-        $type = $_GET['other'];
+    $type = isset($_REQUEST['type'])?$_REQUEST['type']:'other';
+    if ($type == "other" && isset($_REQUEST['other'])) {
+        $type = $_REQUEST['other'];
     }
     if ($username == '' || get_item($dbh, 'username', 'accounts', 'username', $username)) {
         $thispage->append(show_username_taken($username));
@@ -45,6 +60,7 @@ if (isset($_GET['submitted'])) {
         $message = new AlertText("We were not able to send you an activation email, possibly because your email address is not accepting messages at this time. Please contact <a href=\"mailto:$admin_email\">$admin_email</a> for assistance.",'Activation email could not be sent');
         }
         $thispage->append($message);
+    }
     }
 } else if (isset($_GET['token'])) {
     $session = get_item($dbh, 'session', 'tentative_accounts', 'token', $_GET['token']);
@@ -107,13 +123,19 @@ function show_username_taken($username) {
 }
 function show_form() {
     $form = new Form('signup', true);
-    $form->method = 'GET';
+    $form->method = 'POST';
     $message = new InfoText('If you have an @grinnell.edu email address for yourself or a student group, you may use this page to register a Plan for that username.<br />
-	<b>If you are an alum</b>, please <a href="mailto:grinnellplans@gmail.com">Send us</a> your alumni.grinnell.edu email address and we will contact you through it with a username and password.  Please include your year of graduation, if any.<br />
+	<b>If you are an alum</b>, please <a href="mailto:grinnellplans@gmail.com">Send us</a> an email from the email listed in the alumni directory and we will contact you with a username and password.  Please include your year of graduation, if any.<br />
 	If you are somebody else, or have questions, <a href="mailto:grinnellplans@gmail.com">Ask us</a>, and we\'ll see what we can do.', 'Register your plan');
     $form->append($message);
-    $instruct = new InfoText('Enter your Grinnell username below (this is the part of your email address that comes before the \'@\', and click Register.  This will send you an email with a link that will complete your account creation.', 'Email needed');
+    $instruct = new InfoText('Enter your Grinnell username below (this is the part of your email address that comes before the \'@\'), and click Register.  This will send you an email with a link that will complete your account creation.', 'Email needed');
     $form->append($instruct);
+    if (defined('RECAPTCHA_SITE_KEY')) {
+    $item = new RegularText('<div class="g-recaptcha" data-sitekey="'.RECAPTCHA_SITE_KEY.'"></div>');
+    } else {
+    $item = new RegularText(''); // need a placeholder because of a special case in interfaces/default/defaultinterface.php's setup_widget()
+    }
+    $form->append($item);
     $item = new TextInput('username', null);
     $item->title = 'Grinnell email username:';
     $form->append($item);

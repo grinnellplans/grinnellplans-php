@@ -91,6 +91,8 @@ abstract class BaseInterface implements DisplayInterface {
                 $jsfile_arr[] = 'js/edit.js';
             break;
         }
+        $jsfile_arr = array_merge($jsfile_arr, $page->scripts);
+
         return $jsfile_arr;
     }
     protected function setup_footer($footer) {
@@ -183,6 +185,7 @@ abstract class BaseInterface implements DisplayInterface {
                 $tpl->tag_attributes = self::id_and_class($obj->identifier, $obj->group);
             }
         } else if ($obj instanceof SubmitInput) {
+            $tpl->tag_attributes = self::id_and_class($obj->identifier, $obj->group);
             if ($obj->name) {
                 $tpl->tag_attributes.= " name=\"$obj->name\"";
             }

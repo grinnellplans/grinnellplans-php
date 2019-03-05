@@ -5,7 +5,7 @@ class ResourceCounter {
         return ((float)$utime + (float)$time);
     }
     private static $time_statrt;
-    function ResourceCounter() {
+    function __construct() {
         ResourceCounter::$time_statrt = ResourceCounter::now();
     }
     public static function time_elapsed() {

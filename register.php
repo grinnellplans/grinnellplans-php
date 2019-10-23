@@ -22,10 +22,10 @@ if (isset($_REQUEST['submitted'])) {
     $check = true;
     if (defined('RECAPTCHA_SITE_KEY')) {
     $recaptcha = new \ReCaptcha\ReCaptcha(RECAPTCHA_SITE_SECRET);
-    $resp = $recaptcha->setExpectedHostname($_SERVER['SERVER_NAME'])
-                      ->verify($_POST['g-recaptcha-response'], $_SERVER['REMOTE_ADDR']);
+    $resp = $recaptcha->verify($_POST['g-recaptcha-response'], $_SERVER['REMOTE_ADDR']);
     if (!$resp->isSuccess()) {
         $check = false;
+	error_log("Failed reCaptcha:".var_export($resp->getErrorCodes(),true));
     }
     }
     if (!$check) {

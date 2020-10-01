@@ -4,7 +4,7 @@
     "type": "project",
     "require": {
         "ircmaxell/password-compat": "^1.0",
-        "aws/aws-sdk-php": "^3.60",
+        "aws/aws-sdk-php": "^3.119",
         "google/recaptcha": "^1.2",
         "touhonoob/rate-limit": "^1.2",
         "aws/aws-php-sns-message-validator": "^1.5",

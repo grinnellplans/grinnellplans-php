@@ -4,7 +4,7 @@
 
 <head>
 <title><?php echo $this->page_title ?></title>
-
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <?php foreach($this->stylesheets as $css): ?>
 	<link rel="stylesheet" type="text/css" href="<?php echo $css; ?>">
 <?php

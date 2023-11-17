@@ -1,6 +1,11 @@
 <?php
 require_once ('Plans.php');
-?><html><head><title>Reset Style Sheet</title></head><body><center>
+?><html>
+    <head>
+        <title>Reset Style Sheet</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+    </head>
+<body><center>
 
 <?php
 require ("functions-main.php");

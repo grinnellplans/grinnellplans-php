@@ -24,31 +24,12 @@ if (isset($_GET['logout'])) {
 <html dir="ltr">
 <head>
 	<title>GrinnellPlans</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<style type="text/css">
-	<!--
-	BODY { 
-			font-family: verdana;
-			}
-	TD { 
-			align: center;
-			}
-	.boxes { 
-			font-family: courier; 
-			}
-	.buttons {
-			}
-	.graphic{
-			position: relative;
-			top: 50px;
-			}
-	.legalese {
-			position: static; 
-			text-align: justify;
-			cellpadding: 3;
-			font-size: 8pt;
-			font-family: verdana;
-			}
-	-->
+		img {
+			max-width: 100%;
+			height: auto;
+		}
 	</STYLE>
 <script src="https://www.google.com/jsapi" type="text/javascript"></script>
 <script type="text/javascript" charset="utf-8">

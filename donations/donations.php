@@ -6,7 +6,10 @@ include 'inc-error.php';
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html>
-  <head><title>Donations Made to Support Plans</title></head>
+  <head>
+    <title>Donations Made to Support Plans</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head>
   <body>
     <h2>Donations Made to Support Plans</h2>
     <hr />

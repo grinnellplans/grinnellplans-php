@@ -44,7 +44,11 @@ function get_item($dbh, $get_column, $table, $search_column, $search_item) {
     $my_result = mysqli_query($dbh,"Select $get_column From $table where
 	$search_column = '$search_item'");
     $my_row = mysqli_fetch_array($my_result);
-    return $my_row[0];
+    if (NULL !== $my_row) {
+        return $my_row[0];
+    } else {
+        return NULL;
+    }
 }
 /*
 *Returns multiple items from a database.

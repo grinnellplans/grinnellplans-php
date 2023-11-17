@@ -8,7 +8,7 @@ function send_mail($to, $subject, $text, $from = MAILER_ADDRESS, $reply_to = ADM
     $adapter = new RateLimitAdapterAPCu();
     $ipRateLimit = new RateLimit("sendemailfromip", 10, 86400, $adapter); //10 emails per IP per day
     $totalRateLimit = new RateLimit("sendemail", 15, 60, $adapter); // 15 emails per minute total
-    if ($ipRateLimit->check($_SERVER['REMOTE_ADDR']) <= 0 || $totalRateLimit->check('me') <= 0) {
+    if ($to !== ADMIN_ADDRESS && ($ipRateLimit->check($_SERVER['REMOTE_ADDR']) <= 0 || $totalRateLimit->check('me') <= 0)) {
     return false;
     }
     //check blacklist

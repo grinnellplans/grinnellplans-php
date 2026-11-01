@@ -139,7 +139,7 @@ if (!$user) {
     $this_user_is_blocking_you = Block::isBlocking($searchnum, $idcookie);
 
     if ($this_user_is_blocking_you && !User::is_admin()) {
-        $blocked_msg = new AlertText("[$user->username] has enabled the block feature. This plan is not available.");
+        $blocked_msg = new AlertText("[$user->username] has enabled the block feature. This plan is not available.", "Plan not available");
         $page->append($blocked_msg);
     } else {
         // If we're redirecting from edit.php, assure the user that their change was applied
